@@ -290,10 +290,10 @@ export default function LMQReference() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-8">
-      <div className="max-w-6xl mx-auto">
+      <div className="w-full">
         {/* Header */}
         <div className="mb-12">
-          <h1 className="text-4xl font-bold text-slate-900 mb-3">
+          <h1 className="mb-2">
             LMQ Level Reference Guide
           </h1>
           <p className="text-lg text-slate-600">
@@ -305,10 +305,10 @@ export default function LMQReference() {
         <div className="mb-12">
           <h2 className="text-2xl font-bold text-slate-900 mb-6">Key Rules</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="border-l-4 border-l-blue-500 shadow-sm hover:shadow-md transition-shadow">
+            <Card className="border-l-4 border-l-lm-dark shadow-sm hover:shadow-md transition-shadow">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <span className="text-2xl">⚠️</span> Always Required
+                  Always Required
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -323,7 +323,7 @@ export default function LMQReference() {
             <Card className="border-l-4 border-l-green-500 shadow-sm hover:shadow-md transition-shadow">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <span className="text-2xl">🔓</span> Gateway Grade
+                  Gateway Grade
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -337,7 +337,7 @@ export default function LMQReference() {
             <Card className="border-l-4 border-l-purple-500 shadow-sm hover:shadow-md transition-shadow">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <span className="text-2xl">📊</span> Active Instructors
+                  Active Instructors
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -419,9 +419,6 @@ export default function LMQReference() {
                 >
                   <AccordionTrigger className="hover:no-underline py-4">
                     <div className="flex items-center gap-3 text-left">
-                      <span className="text-2xl">
-                        {KEY_ELEMENT_ICONS[element as keyof typeof KEY_ELEMENT_ICONS]}
-                      </span>
                       <div>
                         <p className="font-bold text-slate-900">
                           {KEY_ELEMENT_LABELS[element as keyof typeof KEY_ELEMENT_LABELS]}

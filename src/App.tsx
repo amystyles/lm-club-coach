@@ -11,7 +11,7 @@ import FeedbackBuilder from './pages/FeedbackBuilder';
 
 const PAGE_TITLES: Record<string, { title: string; subtitle?: string }> = {
   dashboard: { title: 'Dashboard', subtitle: 'Team overview & instructor development' },
-  roster: { title: 'Team Roster', subtitle: 'All instructors at a glance' },
+  roster: { title: 'Instructor Team', subtitle: 'All instructors at a glance' },
   assessments: { title: 'Assessment Centre', subtitle: 'Observations, certifications & grade reviews' },
   development: { title: 'Development Pathway', subtitle: 'From Day One to World-Class' },
   'coach-path': { title: 'Club Coach Path', subtitle: 'Your development as a Club Coach' },
@@ -74,7 +74,7 @@ function App() {
   };
 
   return (
-    <div className="dark">
+    <div>
       <AppLayout
         activePage={activePage}
         onNavigate={handleNavigate}

@@ -33,7 +33,7 @@ const navItems: NavItem[] = [
   },
   {
     id: 'roster',
-    label: 'Team Roster',
+    label: 'Instructor Team',
     icon: (
       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-2a6 6 0 0112 0v2zm0 0h6v-2a6 6 0 00-9-5.656v2.656" />
@@ -103,10 +103,10 @@ export const Sidebar = ({ activePage, onNavigate }: SidebarProps) => {
       <div className="p-4 flex items-center justify-between">
         {!collapsed && (
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary rounded-md flex items-center justify-center text-white text-xs font-bold">
+            <div className="w-8 h-8 bg-lm-dark rounded-md flex items-center justify-center text-lm-green text-xs font-bold">
               LM
             </div>
-            <span className="text-sm font-bold text-foreground">CLUB COACH</span>
+            <span className="text-sm font-bold text-lm-dark font-display tracking-wider">CLUB COACH</span>
           </div>
         )}
         <Button
@@ -131,14 +131,14 @@ export const Sidebar = ({ activePage, onNavigate }: SidebarProps) => {
               variant="ghost"
               className={`w-full justify-start gap-3 transition-colors ${
                 isActive
-                  ? 'bg-primary/10 text-primary border-l-2 border-primary'
-                  : 'hover:bg-secondary text-foreground'
+                  ? 'bg-lm-green-mid text-lm-dark border-l-2 border-lm-green'
+                  : 'hover:bg-lm-subtle text-lm-ink-mid'
               }`}
               onClick={() => onNavigate(item.id)}
               title={collapsed ? item.label : undefined}
             >
               {item.icon}
-              {!collapsed && <span className="text-sm">{item.label}</span>}
+              {!collapsed && <span className="text-sm font-medium font-body">{item.label}</span>}
             </Button>
           );
         })}

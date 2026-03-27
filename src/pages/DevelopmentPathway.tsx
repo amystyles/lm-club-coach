@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { AlertTriangle, CheckCircle2, ArrowRight } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, ArrowRight, Info, Star, Clock, MessageCircle, Eye, Megaphone, Check } from 'lucide-react';
 import { STAGE_DATA } from '@/data/mock-data';
 
 export default function DevelopmentPathway() {
@@ -13,44 +13,113 @@ export default function DevelopmentPathway() {
   const stageDetails = {
     1: {
       name: 'Onboarding',
-      subtitle: 'Pre-training prep & mindset',
-      duration: 'Weeks 1-8',
+      subtitle: 'Pre-Training',
+      duration: '21 Days Before IT',
       color: 'hsl(217, 85%, 55%)',
+      coachRole: {
+        summary: 'Your job is to build excitement, set clear expectations, and make sure the instructor completes all pre-work before their training weekend.',
+        context: 'The pre-work is assigned by LMUS 21 days before IT — your role is to welcome the instructor first, then guide and support them through it.',
+        principle: 'A prepared instructor is a confident instructor.',
+      },
+      keyElementFocus: {
+        title: 'This stage is all about building a strong foundation in the first three Key Elements',
+        elements: [
+          { name: 'Choreography', description: 'Are they in sync with the music?' },
+          { name: 'Technique', description: 'Are they demonstrating safe and effective form?' },
+          { name: 'Coaching', description: 'Are their cues clear and layered?' },
+        ],
+      },
+      instructorPreWork: {
+        title: 'What the Instructor Is Doing',
+        description: 'LMUS assigns 5-10 hours of pre-work. The instructor will work through videos, handbook activities, and allocated track preparation at their own pace.',
+        phases: [
+          {
+            name: '1. Watch & Learn',
+            items: [
+              'Introduction to Les Mills Initial Training',
+              'Choreography and Music',
+              'Technique Foundations',
+              'Coaching Layers 1-3',
+              'How to Film and Self-review',
+            ],
+          },
+          {
+            name: '2. Complete Handbook Activities',
+            items: [
+              'Break down their allocated track',
+              'Practice cueing and scripting',
+              'Reflect on their learning',
+            ],
+          },
+          {
+            name: '3. Prepare Allocated Track',
+            items: [
+              'Practice with music — transitions, tempo changes, track focus',
+              'Apply the 3 Key Elements: Choreography, Technique, Coaching',
+              'Film themselves teaching, watch it back, identify strengths and areas to improve',
+            ],
+          },
+          {
+            name: '4. Get Ready for Initial Training',
+            items: [
+              'Handbook (digital or printed), Les Mills Releases App',
+              'Choreography Notes & Masterclass video',
+              'Music and playback device, filming device',
+              'If online: quiet space, up to 3 devices, test tech 24 hours in advance',
+            ],
+          },
+        ],
+      },
       content: [
         {
-          week: 'Week 1-2: Welcome & Assign',
+          week: 'Day 1: Welcome & Connect',
           tasks: [
-            'Mentor assigned within 48 hours',
-            'App access provisioned',
-            'Assigned choreography track',
+            'Reach out personally — phone call or face-to-face, not just email',
+            'Introduce yourself as their Club Coach and what that means for them',
+            'Share your own story: why you coach, what excites you about their journey',
+            'Set the tone — this is a big deal and you are here to support them every step',
           ],
         },
         {
-          week: 'Week 3-4: Watch & Learn',
+          week: 'Days 1-3: Set Expectations',
           tasks: [
-            'Pre-work videos completed',
-            'Observe 4+ live classes minimum',
-            'Mentor shares personal story and journey',
+            'Walk through the 21-day pre-work timeline so nothing is a surprise',
+            'Explain each component: Watch & Learn videos, handbook activities, track prep, self-filming',
+            'Agree on a check-in rhythm (e.g. weekly catch-up, message thread)',
+            'Share what a great IT experience looks like when someone arrives fully prepared',
           ],
         },
         {
-          week: 'Week 5-6: Practice & Script',
+          week: 'Days 3-10: Support Watch & Learn',
           tasks: [
-            'Prepare assigned track with music',
-            'Script Layer 1, 2, and 3 cues',
-            'Film self-review and practice independently',
+            'Check in — have they started the pre-work videos? Any questions?',
+            'Help them understand the 5 Key Elements and why Choreography, Technique, and Coaching come first',
+            'Encourage them to observe 4+ live classes at the club — point them to strong instructors to watch',
+            'Connect them with an experienced instructor or mentor to shadow and ask questions',
           ],
         },
         {
-          week: 'Week 7-8: IMT Readiness',
+          week: 'Days 10-17: Guide Track Preparation',
           tasks: [
-            'All pre-work completed',
-            'Development goals set',
-            'Mindset work: "Make Fear Your Friend"',
-            'Ready for Instructor Master Training (IMT)',
+            'Check they are breaking down their allocated track with Choreography Notes',
+            'Encourage them to practice with music — not just reading, but moving and cueing',
+            'Offer a low-pressure run-through of their track — just you and them',
+            'Watch for the 3 Key Elements: Are they on the beat? Safe form? Clear cues?',
+            'Normalise nerves — every great instructor felt this way before their first IT',
+          ],
+        },
+        {
+          week: 'Days 17-21: IT Readiness Check',
+          tasks: [
+            'Confirm all LMUS pre-work is 100% complete — videos watched, handbook done, track prepared',
+            'Ask them to film a self-review of their track if they haven\'t already',
+            'Final check-in: How are they feeling? Address any last concerns or blockers',
+            'Logistics: confirm what to bring, where to go, what to expect on the day',
+            'Send them off with genuine excitement and belief — they are ready',
           ],
         },
       ],
+      proTip: 'Treat this stage like a rehearsal. The more effort they put in now, the more confident and prepared they\'ll feel during Initial Training.',
     },
     2: {
       name: 'Training → Cert',
@@ -214,33 +283,13 @@ export default function DevelopmentPathway() {
     },
   };
 
-  const deploymentPaths = [
-    {
-      letter: 'A',
-      name: 'Club-Led Development',
-      description: 'Club General Fitness Manager assigns and manages mentors; TAP sets benchmarks and assessment standards.',
-      focus: ['Club mentor ownership', 'Consistent local support', 'Clear progression pathways'],
-    },
-    {
-      letter: 'B',
-      name: 'Mentor + TAP Partnership',
-      description: 'Club Mentor leads day-to-day development; TAP Coach builds capability and provides quarterly assessments.',
-      focus: ['Collaborative approach', 'Expert guidance + local support', 'Balanced accountability'],
-    },
-    {
-      letter: 'C',
-      name: 'TAP Coach Direct',
-      description: 'TAP Coaching provides high-touch, expert-led development and frequent assessment contact.',
-      focus: ['High-touch support', 'Expert-led development', 'Intensive capability building'],
-    },
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-8">
-      <div className="max-w-7xl mx-auto">
+      <div className="w-full">
         {/* Header */}
         <div className="mb-12">
-          <h1 className="text-4xl font-bold text-slate-900 mb-3">
+          <h1 className="mb-2">
             Instructor Development Pathway
           </h1>
           <p className="text-lg text-slate-600">
@@ -362,20 +411,96 @@ export default function DevelopmentPathway() {
             {Object.entries(stageDetails).map(([stageKey, stage]) => {
               const numKey = parseInt(stageKey) as 1 | 2 | 3 | 4 | 5;
               const stageData = stageDetails[numKey];
-              const hasWarning = 'warning' in stageData && stageData.warning;
+              const hasWarning = 'warning' in stageData && (stageData as any).warning;
+              const hasCoachRole = 'coachRole' in stageData && (stageData as any).coachRole;
+              const hasKeyElementFocus = 'keyElementFocus' in stageData && (stageData as any).keyElementFocus;
+              const hasInstructorPreWork = 'instructorPreWork' in stageData && (stageData as any).instructorPreWork;
+              const hasProTip = 'proTip' in stageData && (stageData as any).proTip;
               return (
               <TabsContent key={stageKey} value={stageKey} className="mt-8 space-y-6">
                 <div className="bg-white rounded-lg border border-slate-200 p-6">
+                  {/* Header */}
                   <div className="mb-6">
                     <h3 className="text-2xl font-bold text-slate-900 mb-1">
                       {stage.name}
                     </h3>
                     <p className="text-slate-600">{stage.subtitle}</p>
                     <Badge variant="outline" className="mt-3">
+                      <Clock className="w-3 h-3 mr-1" />
                       {stage.duration}
                     </Badge>
                   </div>
 
+                  {/* Coach Role Banner */}
+                  {hasCoachRole && (
+                    <div className="mb-8 rounded-lg border border-lm-sunken bg-lm-subtle p-5">
+                      <div className="flex items-center gap-2 mb-3">
+                        <Megaphone className="w-5 h-5 text-lm-dark" />
+                        <h4 className="font-bold text-lm-dark">Coach Role</h4>
+                      </div>
+                      <p className="text-lm-dark font-medium mb-2">
+                        {(stageData as any).coachRole.summary}
+                      </p>
+                      <p className="text-lm-ink-mid text-sm mb-4">
+                        {(stageData as any).coachRole.context}
+                      </p>
+                      <div className="flex items-center gap-2 bg-lm-green-mid rounded-md px-4 py-2.5">
+                        <Star className="w-4 h-4 text-lm-dark flex-shrink-0" />
+                        <p className="text-lm-dark font-semibold text-sm italic">
+                          {(stageData as any).coachRole.principle}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Key Element Focus */}
+                  {hasKeyElementFocus && (
+                    <div className="mb-8 rounded-lg border border-slate-200 bg-slate-50 p-5">
+                      <div className="flex items-center gap-2 mb-3">
+                        <Star className="w-5 h-5 text-slate-700" />
+                        <h4 className="font-bold text-slate-900">Key Element Focus</h4>
+                      </div>
+                      <p className="text-slate-700 font-medium mb-4">
+                        {(stageData as any).keyElementFocus.title}
+                      </p>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        {(stageData as any).keyElementFocus.elements.map((el: any) => (
+                          <div key={el.name} className="bg-white rounded-md border border-slate-200 p-3">
+                            <p className="font-semibold text-slate-900 text-sm">{el.name}</p>
+                            <p className="text-slate-600 text-xs mt-1">{el.description}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Instructor Pre-Work (what they're doing) */}
+                  {hasInstructorPreWork && (
+                    <div className="mb-8">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Eye className="w-5 h-5 text-slate-500" />
+                        <h4 className="font-bold text-slate-900">{(stageData as any).instructorPreWork.title}</h4>
+                      </div>
+                      <p className="text-slate-600 text-sm mb-4">{(stageData as any).instructorPreWork.description}</p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {(stageData as any).instructorPreWork.phases.map((phase: any) => (
+                          <div key={phase.name} className="border border-slate-200 rounded-lg p-4 bg-slate-50">
+                            <h5 className="font-semibold text-slate-900 text-sm mb-2">{phase.name}</h5>
+                            <ul className="space-y-1.5">
+                              {phase.items.map((item: string, i: number) => (
+                                <li key={i} className="text-slate-600 text-xs flex gap-2">
+                                  <span className="text-slate-400 mt-0.5">-</span>
+                                  <span>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Warning */}
                   {hasWarning && (
                     <Alert variant="destructive" className="mb-6 bg-red-50 border-red-200">
                       <AlertTriangle className="h-4 w-4 text-red-600" />
@@ -388,24 +513,42 @@ export default function DevelopmentPathway() {
                     </Alert>
                   )}
 
-                  <div className="space-y-5">
-                    {stage.content.map((section, idx) => (
-                      <div key={idx} className="border border-slate-200 rounded-lg p-5 bg-slate-50">
-                        <h4 className="font-bold text-slate-900 mb-3 flex items-center gap-2">
-                          <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
-                          {section.week}
-                        </h4>
-                        <ul className="space-y-2">
-                          {section.tasks.map((task, taskIdx) => (
-                            <li key={taskIdx} className="text-slate-700 text-sm flex gap-2">
-                              <span className="text-slate-400 font-bold">•</span>
-                              <span>{task}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
+                  {/* Coach Actions Timeline */}
+                  <div className="mb-6">
+                    <div className="flex items-center gap-2 mb-4">
+                      <MessageCircle className="w-5 h-5 text-lm-dark" />
+                      <h4 className="font-bold text-slate-900">Your Coach Actions</h4>
+                    </div>
+                    <div className="space-y-4">
+                      {stage.content.map((section, idx) => (
+                        <div key={idx} className="border border-slate-200 rounded-lg p-5 bg-slate-50">
+                          <h4 className="font-bold text-slate-900 mb-3 flex items-center gap-2">
+                            <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
+                            {section.week}
+                          </h4>
+                          <ul className="space-y-2">
+                            {section.tasks.map((task, taskIdx) => (
+                              <li key={taskIdx} className="text-slate-700 text-sm flex gap-2">
+                                <Check className="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5" />
+                                <span>{task}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
                   </div>
+
+                  {/* Pro Tip */}
+                  {hasProTip && (
+                    <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 flex items-start gap-3">
+                      <Info className="w-5 h-5 text-amber-700 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="font-bold text-amber-900 text-sm">Pro Tip</p>
+                        <p className="text-amber-800 text-sm mt-1">{(stageData as any).proTip}</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </TabsContent>
             );
@@ -413,51 +556,6 @@ export default function DevelopmentPathway() {
           </Tabs>
         </div>
 
-        <Separator className="my-12" />
-
-        {/* Section 3: Deployment Paths */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-slate-900 mb-6">Club Deployment Paths</h2>
-          <p className="text-slate-600 mb-8">
-            Development looks different depending on club resources and partnership model. Choose the path that best matches your club.
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {deploymentPaths.map((path) => (
-              <Card key={path.letter} className="border-t-4 shadow-md hover:shadow-lg transition-shadow" style={{ borderTopColor: 'hsl(217, 85%, 55%)' }}>
-                <CardHeader>
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <CardTitle className="text-lg">{path.name}</CardTitle>
-                      <CardDescription className="mt-2">Path {path.letter}</CardDescription>
-                    </div>
-                    <span className="text-4xl font-bold text-slate-200">
-                      {path.letter}
-                    </span>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-sm text-slate-700 leading-relaxed">
-                    {path.description}
-                  </p>
-                  <div>
-                    <p className="text-xs font-bold text-slate-900 uppercase mb-2 tracking-wide">
-                      Key Features
-                    </p>
-                    <ul className="space-y-2">
-                      {path.focus.map((feature, idx) => (
-                        <li key={idx} className="text-sm text-slate-700 flex gap-2">
-                          <span className="text-blue-500 font-bold">✓</span>
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   );

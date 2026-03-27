@@ -1,4 +1,5 @@
 import type { Instructor, ClubCoach, Club, Assessment, DevelopmentNote } from './types';
+import { Music, Dumbbell, Target, Heart, Zap } from 'lucide-react';
 
 export const LM_PROGRAMS = [
   'BODYPUMP', 'BODYPUMP HEAVY', 'LES MILLS TONE', 'LES MILLS STRENGTH DEVELOPMENT',
@@ -17,11 +18,11 @@ export const KEY_ELEMENT_LABELS = {
 } as const;
 
 export const KEY_ELEMENT_ICONS = {
-  choreography: '🎵',
-  technique: '💪',
-  coaching: '🎯',
-  connection: '❤️',
-  performance: '⚡',
+  choreography: Music,
+  technique: Dumbbell,
+  coaching: Target,
+  connection: Heart,
+  performance: Zap,
 } as const;
 
 export const GRADE_LABELS = {
@@ -31,7 +32,7 @@ export const GRADE_LABELS = {
 } as const;
 
 export const STAGE_DATA = [
-  { stage: 1, name: 'Onboarding', subtitle: 'Pre-training prep & mindset', color: 'hsl(217, 85%, 55%)', duration: 'Weeks 1-8' },
+  { stage: 1, name: 'Onboarding', subtitle: 'Pre-Training', color: 'hsl(217, 85%, 55%)', duration: '21 Days Before IT' },
   { stage: 2, name: 'Training → Cert', subtitle: 'IMT to certification', color: 'hsl(160, 65%, 45%)', duration: '30 Days' },
   { stage: 3, name: 'Ready to Teach', subtitle: 'Post-cert to first slot', color: 'hsl(35, 88%, 55%)', duration: 'Weeks 1-12' },
   { stage: 4, name: 'On Timetable', subtitle: 'Nailing the basics', color: 'hsl(280, 60%, 55%)', duration: 'Ongoing' },

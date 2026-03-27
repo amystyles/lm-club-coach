@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,58 +6,39 @@
 
 @layer base {
   :root {
-    --background: 220 20% 97%;
-    --foreground: 220 20% 10%;
+    /* Les Mills Brand Palette */
+    --lm-green: #00FF63;
+    --lm-red: #FF623E;
+    --lm-green-mid: rgba(0,255,99,0.20);
+    --lm-subtle: #F7F7F7;
+    --lm-dark: #0A0A0A;
+    --lm-ink-mid: #444444;
+
+    --background: 0 0% 100%;
+    --foreground: 0 0% 4%;
     --card: 0 0% 100%;
-    --card-foreground: 220 20% 10%;
+    --card-foreground: 0 0% 4%;
     --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 10%;
-    --primary: 220 90% 46%;
+    --popover-foreground: 0 0% 4%;
+    --primary: 0 0% 4%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 220 14% 92%;
-    --secondary-foreground: 220 20% 15%;
-    --muted: 220 14% 95%;
-    --muted-foreground: 220 10% 46%;
-    --accent: 160 70% 42%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 72% 51%;
+    --secondary: 0 0% 94%;
+    --secondary-foreground: 0 0% 7%;
+    --muted: 0 0% 97%;
+    --muted-foreground: 0 0% 53%;
+    --accent: 144 100% 50%;
+    --accent-foreground: 0 0% 4%;
+    --destructive: 14 100% 62%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 13% 89%;
-    --input: 220 13% 89%;
-    --ring: 220 90% 46%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 0 0% 4%;
     --radius: 0.5rem;
-    --chart-1: 220 90% 46%;
-    --chart-2: 160 70% 42%;
+    --chart-1: 144 100% 50%;
+    --chart-2: 14 100% 62%;
     --chart-3: 35 92% 52%;
     --chart-4: 280 65% 55%;
     --chart-5: 350 72% 55%;
-  }
-
-  .dark {
-    --background: 222 25% 8%;
-    --foreground: 210 20% 95%;
-    --card: 222 20% 11%;
-    --card-foreground: 210 20% 95%;
-    --popover: 222 20% 11%;
-    --popover-foreground: 210 20% 95%;
-    --primary: 217 85% 55%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 222 15% 16%;
-    --secondary-foreground: 210 20% 90%;
-    --muted: 222 15% 16%;
-    --muted-foreground: 215 10% 55%;
-    --accent: 160 65% 45%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 62% 45%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 222 12% 18%;
-    --input: 222 12% 18%;
-    --ring: 217 85% 55%;
-    --chart-1: 217 85% 55%;
-    --chart-2: 160 65% 45%;
-    --chart-3: 35 88% 55%;
-    --chart-4: 280 60% 60%;
-    --chart-5: 350 68% 58%;
   }
 }
 
@@ -67,23 +48,58 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: var(--lm-ink-mid);
   }
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Space Grotesk', system-ui, sans-serif;
+  h1, h2, h3 {
+    font-family: 'Barlow Condensed', system-ui, sans-serif;
+    font-weight: 700;
+    color: var(--lm-dark);
+  }
+  h1 {
+    font-size: 48px;
+  }
+  h2 {
+    font-size: 24px;
+  }
+  h4, h5, h6 {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 700;
   }
 }
 
 @layer utilities {
   .text-gradient {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+    background-image: linear-gradient(135deg, var(--lm-green) 0%, hsl(var(--accent)) 100%);
   }
   .glass {
     backdrop-filter: blur(12px) saturate(180%);
     -webkit-backdrop-filter: blur(12px) saturate(180%);
   }
   .glow {
-    box-shadow: 0 0 20px -5px hsl(var(--primary) / 0.3);
+    box-shadow: 0 0 20px -5px rgba(0, 255, 99, 0.3);
+  }
+  .font-display {
+    font-family: 'Barlow Condensed', system-ui, sans-serif;
+  }
+  .font-body {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  .lm-hero {
+    background: linear-gradient(135deg, #0A0A0A 0%, #111111 100%);
+    border-top: 3px solid var(--lm-green);
+    position: relative;
+    overflow: hidden;
+  }
+  .lm-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40%;
+    height: 100%;
+    background: radial-gradient(ellipse at left center, rgba(0,255,99,0.06) 0%, transparent 70%);
+    pointer-events: none;
   }
 }

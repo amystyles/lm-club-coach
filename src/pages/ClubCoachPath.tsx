@@ -30,11 +30,11 @@ export default function ClubCoachPath() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-8">
-      <div className="max-w-7xl mx-auto">
+      <div className="w-full">
         {/* Header */}
         <div className="mb-12">
           <div className="mb-4">
-            <h1 className="text-5xl font-bold mb-2" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
+            <h1 className="mb-2">
               LM COACH
             </h1>
             <h2 className="text-3xl text-slate-700 font-semibold mb-4">
@@ -78,7 +78,7 @@ export default function ClubCoachPath() {
                         </div>
                       ) : stageData.stage === currentCoach.coachStage ? (
                         // Current
-                        <div className="w-14 h-14 rounded-full bg-blue-500 flex items-center justify-center border-4 border-blue-100">
+                        <div className="w-14 h-14 rounded-full bg-lm-dark flex items-center justify-center border-4 border-lm-sunken">
                           <span className="text-white font-bold text-lg">{stageData.stage}</span>
                         </div>
                       ) : (
@@ -160,7 +160,7 @@ export default function ClubCoachPath() {
 
                 <div>
                   <p className="text-sm font-semibold text-slate-600 mb-2">Current Stage</p>
-                  <Badge className="bg-blue-500 text-white">
+                  <Badge className="bg-lm-dark text-white">
                     Stage {currentCoach.coachStage}: {COACH_STAGE_DATA[currentCoach.coachStage - 1]?.name}
                   </Badge>
                 </div>
@@ -234,8 +234,8 @@ function Stage1Content() {
             { phase: 'Days 5-10', activity: 'Priorities Set' },
             { phase: 'End Wk 2', activity: 'Development Plan Live' },
           ].map((item) => (
-            <div key={item.phase} className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-              <p className="text-xs font-semibold text-blue-700 mb-1">{item.phase}</p>
+            <div key={item.phase} className="bg-lm-subtle p-4 rounded-lg border border-lm-sunken">
+              <p className="text-xs font-semibold text-lm-ink-mid mb-1">{item.phase}</p>
               <p className="text-sm text-slate-700">{item.activity}</p>
             </div>
           ))}
@@ -254,7 +254,7 @@ function Stage1Content() {
             'Masterclass as Benchmark',
           ].map((skill) => (
             <div key={skill} className="flex items-center gap-2 text-slate-700">
-              <Circle className="w-2 h-2 fill-blue-500 text-blue-500" />
+              <Circle className="w-2 h-2 fill-lm-dark text-lm-dark" />
               <span className="text-sm">{skill}</span>
             </div>
           ))}
@@ -585,7 +585,7 @@ function Stage5Content() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-sm">
+              <div className="w-8 h-8 rounded-full bg-lm-dark flex items-center justify-center text-white font-bold text-sm">
                 →
               </div>
               <h5 className="font-semibold text-slate-900">As a Coach</h5>

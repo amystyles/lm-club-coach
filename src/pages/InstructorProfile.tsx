@@ -142,13 +142,13 @@ export function InstructorProfile({ instructorId, onBack }: InstructorProfilePro
 
         <div className="flex items-start gap-6 mb-6">
           <Avatar className="h-16 w-16">
-            <AvatarFallback className="bg-blue-100 text-blue-900 text-lg font-bold">
+            <AvatarFallback className="bg-lm-subtle text-lm-dark text-lg font-bold">
               {instructor.initials}
             </AvatarFallback>
           </Avatar>
 
           <div className="flex-1">
-            <h1 className="text-3xl font-bold tracking-tight mb-4" style={{ fontFamily: 'Space Grotesk' }}>
+            <h1 className="mb-2">
               {instructor.name}
             </h1>
 
@@ -171,7 +171,7 @@ export function InstructorProfile({ instructorId, onBack }: InstructorProfilePro
       {/* Section 1: LMQ Profile Card */}
       <Card className="mb-8 border-2">
         <CardHeader>
-          <CardTitle style={{ fontFamily: 'Space Grotesk' }}>LMQ Profile</CardTitle>
+          <CardTitle>LMQ Profile</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
@@ -179,7 +179,6 @@ export function InstructorProfile({ instructorId, onBack }: InstructorProfilePro
               const isPriority = gradeItem.element === instructor.priorityElement;
               const skillsText = SKILLS_DEMONSTRATED[gradeItem.element][gradeItem.grade as 1 | 2 | 3];
               const unlockText = UNLOCK_NEXT[gradeItem.element][gradeItem.grade as 1 | 2 | 3];
-              const icon = KEY_ELEMENT_ICONS[gradeItem.element];
               const label = KEY_ELEMENT_LABELS[gradeItem.element];
 
               return (
@@ -192,13 +191,10 @@ export function InstructorProfile({ instructorId, onBack }: InstructorProfilePro
                   )}
 
                   <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <span className="text-2xl">{icon}</span>
-                      <h3 className="text-lg font-semibold" style={{ fontFamily: 'DM Sans' }}>
-                        {label}
-                      </h3>
-                    </div>
-                    <Badge className="bg-blue-100 text-blue-900">
+                    <h3 className="text-lg font-semibold">
+                      {label}
+                    </h3>
+                    <Badge className="bg-lm-subtle text-lm-dark border border-lm-sunken">
                       {GRADE_LABELS[gradeItem.grade].short}
                     </Badge>
                   </div>
@@ -225,7 +221,7 @@ export function InstructorProfile({ instructorId, onBack }: InstructorProfilePro
         {/* Development Goals */}
         <Card>
           <CardHeader>
-            <CardTitle style={{ fontFamily: 'Space Grotesk' }}>Development Goals</CardTitle>
+            <CardTitle>Development Goals</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
@@ -252,7 +248,7 @@ export function InstructorProfile({ instructorId, onBack }: InstructorProfilePro
         {/* Assessment History */}
         <Card>
           <CardHeader>
-            <CardTitle style={{ fontFamily: 'Space Grotesk' }}>Assessment History</CardTitle>
+            <CardTitle>Assessment History</CardTitle>
           </CardHeader>
           <CardContent>
             {instructorAssessments.length === 0 ? (
@@ -281,7 +277,7 @@ export function InstructorProfile({ instructorId, onBack }: InstructorProfilePro
       {instructorNotes.length > 0 && (
         <Card className="mb-8">
           <CardHeader>
-            <CardTitle style={{ fontFamily: 'Space Grotesk' }}>Development Notes</CardTitle>
+            <CardTitle>Development Notes</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-6">
@@ -289,7 +285,6 @@ export function InstructorProfile({ instructorId, onBack }: InstructorProfilePro
                 <div key={note.id} className="pb-6 border-b last:border-b-0">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-2">
-                      <span className="text-lg">{KEY_ELEMENT_ICONS[note.keyElement]}</span>
                       <div>
                         <p className="font-semibold text-sm">{KEY_ELEMENT_LABELS[note.keyElement]}</p>
                         <p className="text-xs text-slate-500">{note.date}</p>
@@ -318,7 +313,7 @@ export function InstructorProfile({ instructorId, onBack }: InstructorProfilePro
       {priorityGrade && (
         <Card>
           <CardHeader>
-            <CardTitle style={{ fontFamily: 'Space Grotesk' }}>
+            <CardTitle>
               Recommended Practice Drills for {KEY_ELEMENT_LABELS[instructor.priorityElement]}
             </CardTitle>
           </CardHeader>

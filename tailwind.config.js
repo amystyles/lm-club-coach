@@ -41,6 +41,23 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        lm: {
+          green: "#00FF63",
+          red: "#FF623E",
+          "green-mid": "rgba(0,255,99,0.20)",
+          bg: "#FFFFFF",
+          subtle: "#F7F7F7",
+          sunken: "#F0F0F0",
+          dark: "#0A0A0A",
+          "dark-mid": "#111111",
+          ink: "#111111",
+          "ink-mid": "#444444",
+          "ink-muted": "#888888",
+        },
+      },
+      fontFamily: {
+        display: ["'Barlow Condensed'", "system-ui", "sans-serif"],
+        body: ["'Inter'", "system-ui", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",

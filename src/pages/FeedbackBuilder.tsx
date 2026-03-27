@@ -44,7 +44,7 @@ const StepIndicator: React.FC<{ letter: string; label: string; isActive: boolean
     bgColor = 'bg-green-500';
     textColor = 'text-white';
   } else if (isActive) {
-    bgColor = 'bg-blue-500';
+    bgColor = 'bg-lm-dark';
     textColor = 'text-white';
   }
 
@@ -149,10 +149,10 @@ export default function FeedbackBuilder() {
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-5xl mx-auto">
+      <div className="w-full">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900">Feedback Builder</h1>
+          <h1 className="mb-2">Feedback Builder</h1>
           <p className="text-gray-600 mt-2">Turn observations into feedback instructors can use</p>
         </div>
 
@@ -204,7 +204,7 @@ export default function FeedbackBuilder() {
                               <SelectContent>
                                 {KEY_ELEMENTS.map((element) => (
                                   <SelectItem key={element} value={element}>
-                                    {KEY_ELEMENT_ICONS[element]} {KEY_ELEMENT_LABELS[element]}
+                                    {KEY_ELEMENT_LABELS[element]}
                                   </SelectItem>
                                 ))}
                               </SelectContent>
@@ -220,7 +220,7 @@ export default function FeedbackBuilder() {
                     <div className="space-y-6">
                       <div>
                         <h2 className="text-xl font-semibold text-gray-900 mb-6">Step 2: CONNECT</h2>
-                        <p className="text-sm text-gray-700 mb-4 bg-blue-50 p-3 rounded">
+                        <p className="text-sm text-gray-700 mb-4 bg-lm-subtle p-3 rounded">
                           Eye contact, name, genuine observation of something working. Not a compliment — evidence.
                         </p>
                         <Textarea
@@ -286,7 +286,7 @@ export default function FeedbackBuilder() {
                     <Button
                       onClick={handleCRCNext}
                       disabled={crcState.currentStep === 4 || !crcCanProceed}
-                      className="bg-blue-600 hover:bg-blue-700"
+                      className="bg-lm-dark hover:bg-lm-dark/90 text-white"
                     >
                       Next
                     </Button>
@@ -297,7 +297,7 @@ export default function FeedbackBuilder() {
               {/* CRC Preview */}
               <div>
                 <div className="sticky top-8">
-                  <Card className="p-6 bg-white border-2 border-blue-200">
+                  <Card className="p-6 bg-white border-2 border-lm-green/30">
                     <h3 className="font-semibold text-gray-900 mb-4 text-sm">Preview</h3>
 
                     {crcInstructor && crcState.keyElement && (
@@ -309,7 +309,7 @@ export default function FeedbackBuilder() {
                         <div>
                           <p className="text-xs text-gray-600">Focus</p>
                           <Badge variant="secondary" className="text-xs">
-                            {KEY_ELEMENT_ICONS[crcState.keyElement]} {KEY_ELEMENT_LABELS[crcState.keyElement]}
+                            {KEY_ELEMENT_LABELS[crcState.keyElement]}
                           </Badge>
                         </div>
                       </div>
@@ -394,7 +394,7 @@ export default function FeedbackBuilder() {
                     <div className="space-y-6">
                       <StepIndicator letter="G" label="GOAL" isActive={true} isComplete={false} />
                       <h2 className="text-xl font-semibold text-gray-900 mb-6">GOAL</h2>
-                      <p className="text-sm text-gray-700 mb-4 bg-blue-50 p-3 rounded">
+                      <p className="text-sm text-gray-700 mb-4 bg-lm-subtle p-3 rounded">
                         Where do you want to be in the LMQ by end of quarter?
                       </p>
                       <Textarea
@@ -471,7 +471,7 @@ export default function FeedbackBuilder() {
                     <Button
                       onClick={handleGROWNext}
                       disabled={growState.currentStep === 4 || !growCanProceed}
-                      className="bg-blue-600 hover:bg-blue-700"
+                      className="bg-lm-dark hover:bg-lm-dark/90 text-white"
                     >
                       Next
                     </Button>

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
+import { Users, TrendingUp, ClipboardList, AlertTriangle } from 'lucide-react';
 
 interface DashboardProps {
   onViewInstructor: (id: string) => void;
@@ -13,17 +14,17 @@ interface DashboardProps {
 
 
 const AVATAR_COLORS: Record<number, string> = {
-  1: 'bg-blue-500',
-  2: 'bg-teal-500',
+  1: 'bg-lm-dark',
+  2: 'bg-lm-ink-mid',
   3: 'bg-amber-500',
   4: 'bg-purple-500',
   5: 'bg-rose-500',
 };
 
 const GRADE_COLORS: Record<number, string> = {
-  1: 'bg-slate-400',
-  2: 'bg-blue-500',
-  3: 'bg-green-500',
+  1: 'bg-lm-dark',
+  2: 'bg-lm-red',
+  3: 'bg-lm-green',
 };
 
 const KEY_ELEMENT_ORDER: (keyof typeof KEY_ELEMENT_LABELS)[] = [
@@ -90,64 +91,64 @@ export default function Dashboard({ onViewInstructor }: DashboardProps) {
   return (
     <div className="w-full space-y-6 p-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+        <h1 className="mb-2">
           Team Overview
         </h1>
         <p className="text-sm text-gray-600 mt-1">Coach dashboard for managing instructor development</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="border-l-4" style={{ borderLeftColor: '#3b82f6' }}>
+        <Card className="border-t-2 border-t-lm-green">
           <CardContent className="pt-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm text-gray-600 font-medium">Total Instructors</p>
+                <p className="text-sm text-lm-ink-muted font-medium">Total Instructors</p>
                 <p className="text-3xl font-bold mt-2">{instructors.length}</p>
               </div>
-              <div className="w-12 h-12 rounded flex items-center justify-center" style={{ backgroundColor: '#3b82f6' }}>
-                <span className="text-xl text-white">👥</span>
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-lm-subtle">
+                <Users className="w-5 h-5 text-lm-ink-mid" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-l-4" style={{ borderLeftColor: '#10b981' }}>
+        <Card className="border-t-2 border-t-lm-green">
           <CardContent className="pt-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm text-gray-600 font-medium">Average LMQ Level</p>
+                <p className="text-sm text-lm-ink-muted font-medium">Average LMQ Level</p>
                 <p className="text-3xl font-bold mt-2">{averageLMQ}</p>
               </div>
-              <div className="w-12 h-12 rounded flex items-center justify-center" style={{ backgroundColor: '#10b981' }}>
-                <span className="text-xl text-white">📊</span>
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-lm-subtle">
+                <TrendingUp className="w-5 h-5 text-lm-ink-mid" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-l-4" style={{ borderLeftColor: '#f59e0b' }}>
+        <Card className="border-t-2 border-t-lm-green">
           <CardContent className="pt-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm text-gray-600 font-medium">Assessments Due</p>
+                <p className="text-sm text-lm-ink-muted font-medium">Assessments Due</p>
                 <p className="text-3xl font-bold mt-2">{assessmentsDue}</p>
               </div>
-              <div className="w-12 h-12 rounded flex items-center justify-center" style={{ backgroundColor: '#f59e0b' }}>
-                <span className="text-xl text-white">📋</span>
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-lm-subtle">
+                <ClipboardList className="w-5 h-5 text-lm-ink-mid" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-l-4" style={{ borderLeftColor: '#ef4444' }}>
+        <Card className="border-t-2 border-t-lm-red">
           <CardContent className="pt-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm text-gray-600 font-medium">At-Risk Instructors</p>
+                <p className="text-sm text-lm-ink-muted font-medium">At-Risk Instructors</p>
                 <p className="text-3xl font-bold mt-2">{atRiskInstructors}</p>
               </div>
-              <div className="w-12 h-12 rounded flex items-center justify-center" style={{ backgroundColor: '#ef4444' }}>
-                <span className="text-xl text-white">⚠️</span>
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-red-50">
+                <AlertTriangle className="w-5 h-5 text-lm-red" />
               </div>
             </div>
           </CardContent>
@@ -157,7 +158,7 @@ export default function Dashboard({ onViewInstructor }: DashboardProps) {
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         <Card className="lg:col-span-3">
           <CardHeader className="pb-3">
-            <CardTitle style={{ fontFamily: "'Space Grotesk', sans-serif" }}>LMQ Level Distribution</CardTitle>
+            <CardTitle>LMQ Level Distribution</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {Object.entries(lmqDist).map(([level, count]) => {
@@ -167,7 +168,7 @@ export default function Dashboard({ onViewInstructor }: DashboardProps) {
                   <div className="w-8 text-sm font-semibold text-gray-700">L{level}</div>
                   <div className="flex-1 h-8 bg-slate-100 rounded overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-blue-400 to-teal-500 flex items-center justify-end pr-2 transition-all"
+                      className="h-full bg-lm-dark flex items-center justify-end pr-2 transition-all"
                       style={{ width: `${percentage}%` }}
                     >
                       {count > 0 && <span className="text-xs font-semibold text-white">{count}</span>}
@@ -181,7 +182,7 @@ export default function Dashboard({ onViewInstructor }: DashboardProps) {
 
         <Card className="lg:col-span-2">
           <CardHeader className="pb-3">
-            <CardTitle style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Development Stages</CardTitle>
+            <CardTitle>Development Stages</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {STAGE_DATA.map((stageInfo) => {
@@ -213,7 +214,7 @@ export default function Dashboard({ onViewInstructor }: DashboardProps) {
       </div>
 
       <div>
-        <h2 className="text-lg font-bold mb-4" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+        <h2 className="text-lg font-bold mb-4">
           Instructor Cards
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -301,7 +302,7 @@ export default function Dashboard({ onViewInstructor }: DashboardProps) {
 
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Upcoming Assessments</CardTitle>
+          <CardTitle>Upcoming Assessments</CardTitle>
         </CardHeader>
         <CardContent>
           {scheduledAssessments.length === 0 ? (

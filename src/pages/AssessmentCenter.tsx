@@ -18,28 +18,28 @@ const KEY_ELEMENTS: KeyElement[] = ['choreography', 'technique', 'coaching', 'co
 const getAssessmentTypeColor = (type: string) => {
   switch (type) {
     case 'observation':
-      return 'bg-blue-100 text-blue-800';
+      return 'bg-lm-subtle text-lm-ink-mid';
     case 'certification':
       return 'bg-purple-100 text-purple-800';
     case 'grade-review':
       return 'bg-orange-100 text-orange-800';
     case 'quarterly':
-      return 'bg-green-100 text-green-800';
+      return 'bg-lm-green-mid text-lm-dark';
     default:
-      return 'bg-gray-100 text-gray-800';
+      return 'bg-lm-subtle text-lm-ink-muted';
   }
 };
 
 const getStatusColor = (status: string) => {
   switch (status) {
     case 'scheduled':
-      return 'bg-blue-100 text-blue-800';
+      return 'bg-lm-subtle text-lm-ink-mid';
     case 'completed':
-      return 'bg-green-100 text-green-800';
+      return 'bg-lm-green-mid text-lm-dark';
     case 'draft':
       return 'bg-yellow-100 text-yellow-800';
     default:
-      return 'bg-gray-100 text-gray-800';
+      return 'bg-lm-subtle text-lm-ink-muted';
   }
 };
 
@@ -217,7 +217,6 @@ const NewObservationDialog: React.FC<{ isOpen: boolean; onOpenChange: (open: boo
               {KEY_ELEMENTS.map((element) => (
                 <div key={element} className="border rounded-lg p-4">
                   <div className="flex items-center gap-2 mb-3">
-                    <span className="text-lg">{KEY_ELEMENT_ICONS[element]}</span>
                     <h4 className="font-medium text-sm">{KEY_ELEMENT_LABELS[element]}</h4>
                   </div>
 
@@ -333,7 +332,7 @@ const NewObservationDialog: React.FC<{ isOpen: boolean; onOpenChange: (open: boo
             }}>
               Cancel
             </Button>
-            <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
+            <Button type="submit" className="bg-lm-dark hover:bg-lm-dark/90 text-white">
               Submit Observation
             </Button>
           </div>
@@ -354,16 +353,16 @@ export default function AssessmentCenter() {
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-6xl mx-auto">
+      <div className="w-full">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-gray-900">Assessment Centre</h1>
+            <h1 className="mb-2">Assessment Centre</h1>
             <p className="text-gray-600 mt-1">Track observations, track growth</p>
           </div>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white gap-2">
+              <Button className="bg-lm-dark hover:bg-lm-dark/90 text-white gap-2">
                 <Plus className="w-4 h-4" />
                 New Observation
               </Button>
