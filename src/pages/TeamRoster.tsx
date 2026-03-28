@@ -34,15 +34,15 @@ interface TeamRosterProps {
 }
 
 const GRADE_COLORS: Record<number, string> = {
-  1: 'bg-lm-dark text-white',
-  2: 'bg-lm-red text-white',
-  3: 'bg-lm-green text-lm-dark',
+  1: 'bg-lm-subtle text-lm-dark border border-lm-sunken',
+  2: 'bg-red-50 text-lm-red border border-red-200',
+  3: 'bg-lm-green-mid text-lm-dark border border-lm-green/30',
 };
 
 const GRADE_LABELS: Record<number, string> = {
-  1: 'G1',
-  2: 'G2',
-  3: 'G3',
+  1: 'Grade 1',
+  2: 'Grade 2',
+  3: 'Grade 3',
 };
 
 const RISK_COLORS: Record<string, string> = {
@@ -374,7 +374,7 @@ export default function TeamRoster({ onViewInstructor }: TeamRosterProps) {
                         <TableCell key={element} className="py-3">
                           <div className="flex items-center justify-center relative">
                             <span
-                              className={`inline-flex items-center justify-center w-8 h-8 rounded-md text-xs font-bold ${GRADE_COLORS[grade]}`}
+                              className={`inline-flex items-center justify-center px-2.5 py-1 rounded-full text-[11px] font-bold whitespace-nowrap ${GRADE_COLORS[grade]}`}
                             >
                               {GRADE_LABELS[grade]}
                             </span>

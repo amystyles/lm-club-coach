@@ -32,11 +32,11 @@ export const GRADE_LABELS = {
 } as const;
 
 export const STAGE_DATA = [
-  { stage: 1, name: 'Onboarding', subtitle: 'Pre-Training', color: 'hsl(217, 85%, 55%)', duration: '21 Days Before IT' },
-  { stage: 2, name: 'Training → Cert', subtitle: 'IMT to certification', color: 'hsl(160, 65%, 45%)', duration: '30 Days' },
-  { stage: 3, name: 'Ready to Teach', subtitle: 'Post-cert to first slot', color: 'hsl(35, 88%, 55%)', duration: 'Weeks 1-12' },
-  { stage: 4, name: 'On Timetable', subtitle: 'Nailing the basics', color: 'hsl(280, 60%, 55%)', duration: 'Ongoing' },
-  { stage: 5, name: 'World-Class', subtitle: 'Mastery & influence', color: 'hsl(350, 68%, 55%)', duration: 'Ongoing' },
+  { stage: 1, name: 'Onboarding', subtitle: 'Pre-Training', color: '#0A0A0A', duration: '21 Days Before IT' },
+  { stage: 2, name: 'IT \u2192 Certification', subtitle: '30 days to cert submission', color: '#333333', duration: '30 Days' },
+  { stage: 3, name: 'Ready to Teach', subtitle: 'Post-cert to first slot', color: '#00CC4F', duration: 'Weeks 1-12' },
+  { stage: 4, name: 'On Timetable', subtitle: 'Nailing the basics', color: '#00FF63', duration: 'Ongoing' },
+  { stage: 5, name: 'World-Class', subtitle: 'Mastery & influence', color: '#FF623E', duration: 'Ongoing' },
 ];
 
 export const COACH_STAGE_DATA = [
