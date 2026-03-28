@@ -15,7 +15,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { KEY_ELEMENT_ICONS, KEY_ELEMENT_LABELS } from '@/data/mock-data';
+import { KEY_ELEMENT_LABELS } from '@/data/mock-data';
 
 export default function LMQReference() {
   const keyElementDetails = {

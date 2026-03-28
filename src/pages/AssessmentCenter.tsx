@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import type { Assessment, KeyElement, Grade } from '@/data/types';
-import { assessments, instructors, LM_PROGRAMS, KEY_ELEMENT_LABELS, KEY_ELEMENT_ICONS } from '@/data/mock-data';
+import { assessments, instructors, LM_PROGRAMS, KEY_ELEMENT_LABELS } from '@/data/mock-data';
 
 const KEY_ELEMENTS: KeyElement[] = ['choreography', 'technique', 'coaching', 'connection', 'performance'];
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { KeyElement } from '@/data/types';
-import { instructors, assessments, developmentNotes, KEY_ELEMENT_LABELS, KEY_ELEMENT_ICONS, GRADE_LABELS } from '@/data/mock-data';
+import { instructors, assessments, developmentNotes, KEY_ELEMENT_LABELS, GRADE_LABELS } from '@/data/mock-data';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';

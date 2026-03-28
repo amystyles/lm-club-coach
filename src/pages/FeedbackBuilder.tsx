@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import type { KeyElement } from '@/data/types';
-import { instructors, KEY_ELEMENT_LABELS, KEY_ELEMENT_ICONS } from '@/data/mock-data';
+import { instructors, KEY_ELEMENT_LABELS } from '@/data/mock-data';
 
 const KEY_ELEMENTS: KeyElement[] = ['choreography', 'technique', 'coaching', 'connection', 'performance'];
 

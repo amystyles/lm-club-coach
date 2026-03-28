@@ -4,7 +4,6 @@ import {
   instructors,
   STAGE_DATA,
   KEY_ELEMENT_LABELS,
-  KEY_ELEMENT_ICONS,
   LM_PROGRAMS,
 } from '@/data/mock-data';
 import {
@@ -23,7 +22,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Card, CardContent } from '@/components/ui/card';
