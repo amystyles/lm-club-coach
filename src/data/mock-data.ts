@@ -55,7 +55,11 @@ export const clubs: Club[] = [
 
 export const instructors: Instructor[] = [
   {
-    id: 'ins-1', name: 'Jordan Silva', initials: 'JS', programs: ['BODYPUMP', 'BODYCOMBAT', 'RPM'],
+    id: 'ins-1', name: 'Jordan Silva', initials: 'JS', programs: [
+      { name: 'BODYPUMP', lmqLevel: 3 },
+      { name: 'BODYCOMBAT', lmqLevel: 2 },
+      { name: 'RPM', lmqLevel: 1 },
+    ],
     stage: 4, lmqLevel: 3, clubId: 'club-1', joinDate: '2024-06-15', lastAssessment: '2026-02-12',
     nextAssessment: '2026-05-12', certDate: '2024-09-20', riskLevel: 'low',
     grades: [
@@ -69,7 +73,10 @@ export const instructors: Instructor[] = [
     goals: ['Achieve Connection Grade 2 by Q2', 'Use participant names genuinely 3x per class', 'Begin Look, See & Respond practice'],
   },
   {
-    id: 'ins-2', name: 'Mia Thompson', initials: 'MT', programs: ['BODYPUMP', 'LES MILLS CORE'],
+    id: 'ins-2', name: 'Mia Thompson', initials: 'MT', programs: [
+      { name: 'BODYPUMP', lmqLevel: 1 },
+      { name: 'LES MILLS CORE', lmqLevel: 1 },
+    ],
     stage: 2, lmqLevel: 1, clubId: 'club-1', joinDate: '2026-01-10', lastAssessment: '2026-03-01',
     certDate: undefined, riskLevel: 'medium',
     grades: [
@@ -83,7 +90,11 @@ export const instructors: Instructor[] = [
     goals: ['Complete IMT within 2 weeks', 'Submit certification video by Day 30', 'Achieve Choreography Grade 1 consistently'],
   },
   {
-    id: 'ins-3', name: 'Alex Rivera', initials: 'AR', programs: ['BODYCOMBAT', 'BODYATTACK', 'LES MILLS GRIT'],
+    id: 'ins-3', name: 'Alex Rivera', initials: 'AR', programs: [
+      { name: 'BODYCOMBAT', lmqLevel: 7 },
+      { name: 'BODYATTACK', lmqLevel: 5 },
+      { name: 'BODYPUMP', lmqLevel: 4 },
+    ],
     stage: 5, lmqLevel: 7, clubId: 'club-1', joinDate: '2021-03-20', lastAssessment: '2026-01-15',
     nextAssessment: '2026-04-15', certDate: '2021-06-01', riskLevel: 'low',
     grades: [
@@ -97,7 +108,10 @@ export const instructors: Instructor[] = [
     goals: ['Achieve Coaching Grade 3', 'Begin Presenter pathway', 'Mentor 1 new instructor this quarter'],
   },
   {
-    id: 'ins-4', name: 'Priya Patel', initials: 'PP', programs: ['BODYBALANCE', 'LES MILLS YOGA'],
+    id: 'ins-4', name: 'Priya Patel', initials: 'PP', programs: [
+      { name: 'BODYBALANCE', lmqLevel: 2 },
+      { name: 'LES MILLS YOGA', lmqLevel: 1 },
+    ],
     stage: 3, lmqLevel: 2, clubId: 'club-1', joinDate: '2025-08-01', lastAssessment: '2025-12-10',
     nextAssessment: '2026-03-10', certDate: '2025-11-15', riskLevel: 'low',
     grades: [
@@ -111,7 +125,11 @@ export const instructors: Instructor[] = [
     goals: ['Secure regular timetable slot within 8 weeks', 'Team-teach 3 classes with mentor', 'Build Technique to G2'],
   },
   {
-    id: 'ins-5', name: 'Marcus Johnson', initials: 'MJ', programs: ['BODYPUMP', 'RPM', 'LES MILLS SPRINT'],
+    id: 'ins-5', name: 'Marcus Johnson', initials: 'MJ', programs: [
+      { name: 'BODYPUMP', lmqLevel: 5 },
+      { name: 'RPM', lmqLevel: 3 },
+      { name: 'LES MILLS DANCE', lmqLevel: 2 },
+    ],
     stage: 4, lmqLevel: 5, clubId: 'club-1', joinDate: '2023-01-15', lastAssessment: '2026-02-28',
     nextAssessment: '2026-05-28', certDate: '2023-04-20', riskLevel: 'low',
     grades: [
@@ -125,7 +143,10 @@ export const instructors: Instructor[] = [
     goals: ['Achieve Performance Grade 2', 'Work on dramatic contrast', 'Master team-teaching with music'],
   },
   {
-    id: 'ins-6', name: 'Kayla Wright', initials: 'KW', programs: ['LES MILLS DANCE', 'BODYJAM'],
+    id: 'ins-6', name: 'Kayla Wright', initials: 'KW', programs: [
+      { name: 'LES MILLS DANCE', lmqLevel: 4 },
+      { name: 'BODYJAM', lmqLevel: 3 },
+    ],
     stage: 4, lmqLevel: 4, clubId: 'club-1', joinDate: '2023-09-01', lastAssessment: '2026-01-20',
     nextAssessment: '2026-04-20', certDate: '2023-12-01', riskLevel: 'medium',
     grades: [
@@ -139,7 +160,9 @@ export const instructors: Instructor[] = [
     goals: ['Build Layer 2 coaching consistency', 'Achieve Coaching G2 by next quarter', 'Add ≥2 L2 cues per track'],
   },
   {
-    id: 'ins-7', name: 'David Kim', initials: 'DK', programs: ['BODYPUMP'],
+    id: 'ins-7', name: 'David Kim', initials: 'DK', programs: [
+      { name: 'BODYPUMP', lmqLevel: 1 },
+    ],
     stage: 1, lmqLevel: 1, clubId: 'club-1', joinDate: '2026-03-01', lastAssessment: 'N/A',
     riskLevel: 'low',
     grades: [
@@ -153,7 +176,11 @@ export const instructors: Instructor[] = [
     goals: ['Complete all pre-work videos', 'Observe 4+ live BODYPUMP classes', 'Practice allocated track with mentor'],
   },
   {
-    id: 'ins-8', name: 'Aisha Brown', initials: 'AB', programs: ['BODYPUMP', 'BODYCOMBAT', 'LES MILLS CORE', 'LES MILLS GRIT'],
+    id: 'ins-8', name: 'Aisha Brown', initials: 'AB', programs: [
+      { name: 'BODYPUMP', lmqLevel: 8 },
+      { name: 'BODYCOMBAT', lmqLevel: 6 },
+      { name: 'BODYATTACK', lmqLevel: 5 },
+    ],
     stage: 5, lmqLevel: 8, clubId: 'club-1', joinDate: '2020-02-01', lastAssessment: '2026-03-01',
     nextAssessment: '2026-06-01', certDate: '2020-05-15', riskLevel: 'low',
     grades: [
