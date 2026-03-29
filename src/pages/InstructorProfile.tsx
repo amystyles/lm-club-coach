@@ -1,337 +1,276 @@
-import { useState } from 'react';
-import type { KeyElement } from '@/data/types';
-import { instructors, assessments, developmentNotes, KEY_ELEMENT_LABELS, GRADE_LABELS } from '@/data/mock-data';
+import type { KeyElement, Stage, Instructor } from '@/data/types';
+import { instructors, assessments, coaches, STAGE_DATA, KEY_ELEMENT_LABELS } from '@/data/mock-data';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Checkbox } from '@/components/ui/checkbox';
+import TrustMap from '@/components/profile/TrustMap';
 
 interface InstructorProfileProps {
   instructorId: string;
   onBack: () => void;
-  source?: 'dashboard' | 'roster';
+  source: 'dashboard' | 'roster';
 }
 
-const SKILLS_DEMONSTRATED = {
-  choreography: {
-    1: 'Accurate execution. Follows routine structure. Basic flow.',
-    2: 'Smooth, automatic execution. In time with music. Zero significant errors.',
-    3: 'N/A (Max G2 for Choreography)',
-  },
-  technique: {
-    1: 'Clear, safe demonstration. ≥75% competency.',
-    2: 'Precise execution. Weight selection motivates.',
-    3: '100% competency. Inspirational form.',
-  },
-  coaching: {
-    1: 'Track intro, ≥4 L1 cues, setups per exercise.',
-    2: 'Professional L1+L2+L3 coaching.',
-    3: '≥3 L2 + ≥3 L3 at inspirational level.',
-  },
-  connection: {
-    1: 'Welcoming, inclusive, ≥1 connection tool per track.',
-    2: 'Authentic bond. Names used, LSR 2-3x, "we/us" language.',
-    3: 'CRC ≥4x, Four Quadrant scanning.',
-  },
-  performance: {
-    1: 'Prepared, within Essence ~75%.',
-    2: 'Team-teaches with music. Dramatic contrast.',
-    3: 'High interpretation. 5 Voices. Empowering Beliefs.',
-  },
-} as const;
+const KEY_ELEMENTS: KeyElement[] = ['choreography', 'technique', 'coaching', 'connection', 'performance'];
 
-const UNLOCK_NEXT = {
-  choreography: {
-    1: 'Zero errors in full track. Automatic response to music.',
-    2: 'G2 is highest grade. Maintain standard.',
-    3: 'N/A',
-  },
-  technique: {
-    1: '≥85% competency. Technique motivates participants.',
-    2: '100% competency. Inspirational form.',
-    3: 'Maintain and mentor others.',
-  },
-  coaching: {
-    1: '≥2 L2 + ≥2 L3 cues per track.',
-    2: '≥3 L2 + ≥3 L3 at inspirational level.',
-    3: 'Maintain and mentor others.',
-  },
-  connection: {
-    1: 'Names used, LSR 2-3x, "we/us" language.',
-    2: 'CRC ≥4x, Four Quadrant scanning.',
-    3: 'Maintain and mentor others.',
-  },
-  performance: {
-    1: 'Team-teaches with music. Dramatic contrast.',
-    2: 'High interpretation. 5 Voices. Empowering Beliefs.',
-    3: 'Maintain and mentor others.',
-  },
-} as const;
+function getGrade(instructor: Instructor, element: KeyElement): number | null {
+  return instructor.grades.find(g => g.element === element)?.grade ?? null;
+}
 
-const PRACTICE_DRILLS = {
-  connection: [
-    'Learn 3 Names Per Class',
-    'Look, See & Respond',
-    'Four Quadrants Practice',
-    'The 10-Minute Rule',
-  ],
-  coaching: [
-    'Layer Map a Track',
-    'Count Your Layers',
-    'Imagery Practice',
-    'Leave Space',
-  ],
-  choreography: [
-    'Reps Without Music',
-    'Talk & Move Test',
-    'Count the Errors',
-    'Weakest Track Focus',
-  ],
-  technique: [
-    'Exercise Audit',
-    'Record Side-On',
-    'Weight Selection Practice',
-    'Correction Drills',
-  ],
-  performance: [
-    'Map the Musical Arc',
-    'Silence Practice',
-    'Study the 5 Voices',
-    'Find Your Essence Signature',
-  ],
-} as const;
+function pillStyle(lmqLevel: number): string {
+  if (lmqLevel >= 7) return 'border border-green-200 text-green-700 bg-green-50';
+  if (lmqLevel >= 4) return 'border border-amber-200 text-amber-700 bg-amber-50';
+  return 'border border-red-200 text-red-700 bg-red-50';
+}
 
-export function InstructorProfile({ instructorId, onBack }: InstructorProfileProps) {
+type DreyfusStage = 'Not yet assessed' | 'Novice' | 'Advanced Beginner' | 'Competent' | 'Proficient' | 'Expert';
+
+function getDreyfusStage(grade: number | null, element: KeyElement, stage: Stage): DreyfusStage {
+  if (grade === null) return 'Not yet assessed';
+  if (grade === 1) return stage <= 2 ? 'Novice' : 'Advanced Beginner';
+  if (grade === 2) return (element === 'choreography' || stage === 5) ? 'Proficient' : 'Competent';
+  return 'Expert';
+}
+
+const DREYFUS_GUIDANCE: Record<DreyfusStage, string> = {
+  'Not yet assessed': 'Observe — this element is not yet in scope',
+  'Novice': 'Direct — give specific instructions and checklists',
+  'Advanced Beginner': 'Guide — demonstrate and explain why',
+  'Competent': 'Facilitate — ask questions, let them problem-solve',
+  'Proficient': 'Consult — prompt reflection, they lead',
+  'Expert': 'Delegate — support their mentoring of others',
+};
+
+const DREYFUS_BADGE: Record<DreyfusStage, string> = {
+  'Not yet assessed': 'bg-slate-100 text-slate-500',
+  'Novice': 'bg-slate-100 text-slate-600',
+  'Advanced Beginner': 'bg-blue-50 text-blue-700',
+  'Competent': 'bg-amber-50 text-amber-700',
+  'Proficient': 'bg-green-50 text-green-700',
+  'Expert': 'bg-lm-dark text-white',
+};
+
+const TYPE_LABELS: Record<string, string> = {
+  quarterly: 'Quarterly Review',
+  observation: 'Observation',
+  certification: 'Certification',
+  'grade-review': 'Grade Review',
+};
+
+const INTENTIONS: Record<KeyElement, string> = {
+  connection: "If I'm coaching a working track, then I will scan all four quadrants and use one participant's name before the track ends.",
+  choreography: "If I feel myself falling behind the music in a transition, then I will hold the current move for one extra count, reset my timing, and cue the next exercise cleanly.",
+  coaching: "If I see someone struggling with form, then I will move toward them, mirror the correct movement, and give one specific correction.",
+  technique: "If I begin the squat track, then I will check my own alignment in the mirror and demonstrate one perfect rep before cueing participants.",
+  performance: "If the music peaks, then I will commit fully to the energy — no holding back — and let my expression lead the room.",
+};
+
+export function InstructorProfile({ instructorId, onBack, source }: InstructorProfileProps) {
   const instructor = instructors.find(i => i.id === instructorId);
-  const [completedGoals, setCompletedGoals] = useState<Set<string>>(new Set());
 
   if (!instructor) {
     return (
       <div className="p-8">
-        <Button onClick={onBack} variant="outline">Back</Button>
+        <Button onClick={onBack} variant="outline">← Back</Button>
         <p className="mt-4 text-red-600">Instructor not found</p>
       </div>
     );
   }
 
-  const instructorAssessments = assessments.filter(a => a.instructorId === instructorId);
-  const instructorNotes = developmentNotes.filter(n => n.instructorId === instructorId);
-  const priorityGrade = instructor.grades.find(g => g.element === instructor.priorityElement);
+  const stageInfo = STAGE_DATA.find(s => s.stage === instructor.stage);
+  const completedAssessments = assessments
+    .filter(a => a.instructorId === instructorId && a.status === 'completed')
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-  const toggleGoal = (goal: string) => {
-    const newCompleted = new Set(completedGoals);
-    if (newCompleted.has(goal)) {
-      newCompleted.delete(goal);
-    } else {
-      newCompleted.add(goal);
-    }
-    setCompletedGoals(newCompleted);
-  };
-
-  const getPracticeDrills = (element: KeyElement): readonly string[] => {
-    return PRACTICE_DRILLS[element] || [];
-  };
+  const backLabel = source === 'roster' ? '← Back to Team' : '← Back to Dashboard';
 
   return (
-    <div className="min-h-screen bg-slate-50 p-8">
-      {/* Header Section */}
-      <div className="mb-8">
-        <Button onClick={onBack} variant="outline" className="mb-6">
-          ← Back
+    <div className="min-h-screen bg-background">
+
+      {/* Header banner */}
+      <div className="bg-lm-dark text-white px-6 pt-4 pb-8">
+        <Button
+          onClick={onBack}
+          variant="ghost"
+          className="text-white hover:text-white hover:bg-white/10 mb-4 -ml-2"
+        >
+          {backLabel}
         </Button>
 
-        <div className="flex items-start gap-6 mb-6">
-          <Avatar className="h-16 w-16">
+        <div className="flex items-start gap-5">
+          <Avatar className="h-16 w-16 flex-shrink-0">
             <AvatarFallback className="bg-lm-subtle text-lm-dark text-lg font-bold">
               {instructor.initials}
             </AvatarFallback>
           </Avatar>
 
-          <div className="flex-1">
-            <h1 className="mb-2">
-              {instructor.name}
-            </h1>
+          <div className="flex-1 min-w-0">
+            <h1 className="text-white mb-2">{instructor.name}</h1>
 
-            <div className="flex flex-wrap gap-2 mb-4">
-              {instructor.programs.map(program => (
-                <Badge key={program.name} variant="secondary">
-                  {program.name}
-                </Badge>
-              ))}
+            <div className="flex items-center gap-2 mb-3 flex-wrap">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold text-white border border-white/20">
+                <span
+                  className="w-2 h-2 rounded-full flex-shrink-0"
+                  style={{ backgroundColor: stageInfo?.color ?? '#888' }}
+                />
+                {stageInfo?.name ?? `Stage ${instructor.stage}`}
+              </span>
             </div>
 
-            <div className="flex gap-4">
-              <Badge variant="outline">Stage {instructor.stage}</Badge>
-              <Badge variant="outline">LMQ Level {instructor.lmqLevel}</Badge>
+            <div className="flex flex-wrap gap-1.5">
+              {instructor.programs.map(program => (
+                <span
+                  key={program.name}
+                  className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${pillStyle(program.lmqLevel)}`}
+                >
+                  {program.name} L{program.lmqLevel}
+                </span>
+              ))}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Section 1: LMQ Profile Card */}
-      <Card className="mb-8 border-2">
-        <CardHeader>
-          <CardTitle>LMQ Profile</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-6">
-            {instructor.grades.map((gradeItem) => {
-              const isPriority = gradeItem.element === instructor.priorityElement;
-              const skillsText = SKILLS_DEMONSTRATED[gradeItem.element][gradeItem.grade as 1 | 2 | 3];
-              const unlockText = UNLOCK_NEXT[gradeItem.element][gradeItem.grade as 1 | 2 | 3];
-              const label = KEY_ELEMENT_LABELS[gradeItem.element];
+      {/* Body */}
+      <div className="max-w-4xl mx-auto p-6 space-y-6">
+
+        {/* Section 1: Key Element Profile */}
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle>Key Element Profile</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {KEY_ELEMENTS.map(element => {
+              const grade = getGrade(instructor, element);
+              const isChoreography = element === 'choreography';
+              const label = KEY_ELEMENT_LABELS[element];
+
+              let barWidthClass = '';
+              let barColorClass = '';
+              let gradeLabel = 'N/A';
+
+              if (grade !== null) {
+                // Choreography G2 is the ceiling — render full bar
+                if (isChoreography && grade === 2) {
+                  barWidthClass = 'w-full';
+                } else if (grade === 1) {
+                  barWidthClass = 'w-1/3';
+                } else if (grade === 2) {
+                  barWidthClass = 'w-2/3';
+                } else {
+                  barWidthClass = 'w-full';
+                }
+                barColorClass = grade === 1 ? 'bg-red-400' : grade === 2 ? 'bg-amber-400' : 'bg-green-500';
+                gradeLabel = isChoreography && grade === 2 ? 'G2 (max)' : `G${grade}`;
+              }
 
               return (
-                <div
-                  key={gradeItem.element}
-                  className={`pb-6 ${isPriority ? 'border-l-4 border-orange-500 pl-4 bg-orange-50 -mx-4 px-4 py-4' : 'border-b'}`}
-                >
-                  {isPriority && (
-                    <div className="mb-2 text-sm font-semibold text-orange-700">← Priority</div>
-                  )}
-
-                  <div className="flex items-start justify-between mb-3">
-                    <h3 className="text-lg font-semibold">
-                      {label}
-                    </h3>
-                    <Badge className="bg-lm-subtle text-lm-dark border border-lm-sunken">
-                      {GRADE_LABELS[gradeItem.grade].short}
-                    </Badge>
+                <div key={element} className="flex items-center gap-3">
+                  <span className="w-28 text-sm font-medium text-foreground flex-shrink-0">{label}</span>
+                  <div className="flex-1 h-4 bg-slate-100 rounded-full overflow-hidden">
+                    {grade !== null && (
+                      <div className={`h-full rounded-full ${barWidthClass} ${barColorClass}`} />
+                    )}
                   </div>
-
-                  <div className="space-y-2 text-sm">
-                    <div>
-                      <p className="text-slate-600 font-medium">Skills Demonstrated</p>
-                      <p className="text-slate-700">{skillsText}</p>
-                    </div>
-                    <div>
-                      <p className="text-slate-600 font-medium">Unlock the Next Grade</p>
-                      <p className="text-slate-700">{unlockText}</p>
-                    </div>
-                  </div>
+                  <span className={`w-16 text-xs font-medium text-right flex-shrink-0 ${grade === null ? 'text-muted-foreground' : 'text-foreground'}`}>
+                    {gradeLabel}
+                  </span>
                 </div>
               );
             })}
-          </div>
-        </CardContent>
-      </Card>
 
-      {/* Section 2: Two Columns - Development Goals & Assessment History */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-        {/* Development Goals */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Development Goals</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {instructor.goals.map((goal, idx) => (
-                <div key={idx} className="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50">
-                  <Checkbox
-                    checked={completedGoals.has(goal)}
-                    onCheckedChange={() => toggleGoal(goal)}
-                    className="mt-1"
-                  />
-                  <label
-                    className={`flex-1 cursor-pointer text-sm ${
-                      completedGoals.has(goal) ? 'line-through text-slate-400' : 'text-slate-700'
-                    }`}
-                  >
-                    {goal}
-                  </label>
-                </div>
-              ))}
+            <div className="mt-2 flex items-center gap-2 bg-lm-subtle border-l-4 border-lm-green rounded px-3 py-2">
+              <span className="text-xs font-semibold text-foreground">
+                ↑ Priority Focus: {KEY_ELEMENT_LABELS[instructor.priorityElement]} — focus for next observation cycle
+              </span>
             </div>
           </CardContent>
         </Card>
 
-        {/* Assessment History */}
+        {/* Section 2: Teaching Trust Map */}
+        <TrustMap instructor={instructor} />
+
+        {/* Section 3: Dreyfus Stage by Domain */}
         <Card>
-          <CardHeader>
+          <CardHeader className="pb-3">
+            <CardTitle>Dreyfus Stage by Domain</CardTitle>
+            <p className="text-xs text-muted-foreground">Coaching should be different for each skill</p>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {KEY_ELEMENTS.map(element => {
+              const grade = getGrade(instructor, element);
+              const dreyfus = getDreyfusStage(grade, element, instructor.stage);
+              const guidance = DREYFUS_GUIDANCE[dreyfus];
+              const badgeClass = DREYFUS_BADGE[dreyfus];
+              return (
+                <div key={element} className="flex items-center gap-3 flex-wrap">
+                  <span className="w-28 text-sm font-medium text-foreground flex-shrink-0">
+                    {KEY_ELEMENT_LABELS[element]}
+                  </span>
+                  <span className={`px-2 py-0.5 rounded text-xs font-semibold flex-shrink-0 ${badgeClass}`}>
+                    {dreyfus}
+                  </span>
+                  <span className="flex-1 text-xs italic text-muted-foreground bg-lm-subtle px-3 py-1 rounded min-w-0">
+                    {guidance}
+                  </span>
+                </div>
+              );
+            })}
+          </CardContent>
+        </Card>
+
+        {/* Section 4: Assessment History */}
+        <Card>
+          <CardHeader className="pb-3">
             <CardTitle>Assessment History</CardTitle>
           </CardHeader>
           <CardContent>
-            {instructorAssessments.length === 0 ? (
-              <p className="text-slate-500 text-sm">No assessments yet</p>
+            {completedAssessments.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No completed assessments yet.</p>
             ) : (
-              <div className="space-y-4">
-                {instructorAssessments.map((assessment) => (
-                  <div key={assessment.id} className="pb-4 border-b last:border-b-0">
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <p className="font-medium text-sm">{assessment.type}</p>
-                        <p className="text-xs text-slate-500">{assessment.program}</p>
-                      </div>
-                      <Badge variant="outline">Level {assessment.overallLevel}</Badge>
-                    </div>
-                    <p className="text-xs text-slate-500">{assessment.date}</p>
-                  </div>
-                ))}
-              </div>
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border">
+                    <th className="text-left py-2 pr-3 text-xs font-bold text-muted-foreground uppercase tracking-wider">Date</th>
+                    <th className="text-left py-2 pr-3 text-xs font-bold text-muted-foreground uppercase tracking-wider">Program</th>
+                    <th className="text-left py-2 pr-3 text-xs font-bold text-muted-foreground uppercase tracking-wider">Type</th>
+                    <th className="text-left py-2 pr-3 text-xs font-bold text-muted-foreground uppercase tracking-wider">Assessor</th>
+                    <th className="text-right py-2 text-xs font-bold text-muted-foreground uppercase tracking-wider">Level</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {completedAssessments.map(a => {
+                    const assessorCoach = coaches.find(c => c.id === a.assessorId);
+                    return (
+                      <tr key={a.id}>
+                        <td className="py-2 pr-3 text-xs">{a.date}</td>
+                        <td className="py-2 pr-3 text-xs">{a.program}</td>
+                        <td className="py-2 pr-3 text-xs">{TYPE_LABELS[a.type] ?? a.type}</td>
+                        <td className="py-2 pr-3 text-xs">{assessorCoach?.name ?? a.assessorId}</td>
+                        <td className="py-2 text-xs text-right font-medium">L{a.overallLevel}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             )}
           </CardContent>
         </Card>
+
+        {/* Section 5: Current Focus */}
+        <Card className="border-l-4 border-lm-green bg-lm-subtle/40">
+          <CardHeader className="pb-2">
+            <CardTitle>Current Focus</CardTitle>
+            <p className="text-xs text-muted-foreground">Implementation Intention</p>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm italic text-foreground">
+              {INTENTIONS[instructor.priorityElement]}
+            </p>
+          </CardContent>
+        </Card>
+
       </div>
-
-      {/* Section 3: Development Notes */}
-      {instructorNotes.length > 0 && (
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Development Notes</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-6">
-              {instructorNotes.map((note) => (
-                <div key={note.id} className="pb-6 border-b last:border-b-0">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center gap-2">
-                      <div>
-                        <p className="font-semibold text-sm">{KEY_ELEMENT_LABELS[note.keyElement]}</p>
-                        <p className="text-xs text-slate-500">{note.date}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2 text-sm">
-                    <div>
-                      <p className="text-slate-600 font-medium">Observation</p>
-                      <p className="text-slate-700">{note.observation}</p>
-                    </div>
-                    <div>
-                      <p className="text-slate-600 font-medium">Recommendation</p>
-                      <p className="text-slate-700">{note.recommendation}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Section 4: Practice Drills */}
-      {priorityGrade && (
-        <Card>
-          <CardHeader>
-            <CardTitle>
-              Recommended Practice Drills for {KEY_ELEMENT_LABELS[instructor.priorityElement]}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {getPracticeDrills(instructor.priorityElement).map((drill, idx) => (
-                <div
-                  key={idx}
-                  className="p-4 rounded-lg border-2 border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-colors cursor-pointer"
-                >
-                  <p className="font-medium text-sm">{drill}</p>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
     </div>
   );
 }
