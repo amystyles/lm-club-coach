@@ -154,8 +154,8 @@ export function InstructorProfile({ instructorId, onBack }: InstructorProfilePro
 
             <div className="flex flex-wrap gap-2 mb-4">
               {instructor.programs.map(program => (
-                <Badge key={program} variant="secondary">
-                  {program}
+                <Badge key={program.name} variant="secondary">
+                  {program.name}
                 </Badge>
               ))}
             </div>

@@ -1,5 +1,6 @@
 import type { Instructor } from '@/data/types';
 import { instructors, assessments, STAGE_DATA, KEY_ELEMENT_LABELS } from '@/data/mock-data';
+import KeyElementHeatmap from '@/components/KeyElementHeatmap';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -81,9 +82,7 @@ export default function Dashboard({ onViewInstructor }: DashboardProps) {
     (inst) => inst.riskLevel === 'medium' || inst.riskLevel === 'high'
   ).length;
 
-  const lmqDist = getLMQDistribution();
   const stageDist = getStageDistribution();
-  const maxLMQCount = Math.max(...Object.values(lmqDist));
   const maxStageCount = Math.max(...Object.values(stageDist));
 
   const scheduledAssessments = assessments.filter((a) => a.status === 'scheduled');
@@ -156,29 +155,9 @@ export default function Dashboard({ onViewInstructor }: DashboardProps) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-        <Card className="lg:col-span-3">
-          <CardHeader className="pb-3">
-            <CardTitle>LMQ Level Distribution</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            {Object.entries(lmqDist).map(([level, count]) => {
-              const percentage = maxLMQCount > 0 ? (count / maxLMQCount) * 100 : 0;
-              return (
-                <div key={level} className="flex items-center gap-3">
-                  <div className="w-8 text-sm font-semibold text-gray-700">L{level}</div>
-                  <div className="flex-1 h-8 bg-slate-100 rounded overflow-hidden">
-                    <div
-                      className="h-full bg-lm-dark flex items-center justify-end pr-2 transition-all"
-                      style={{ width: `${percentage}%` }}
-                    >
-                      {count > 0 && <span className="text-xs font-semibold text-white">{count}</span>}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </CardContent>
-        </Card>
+        <div className="lg:col-span-3">
+          <KeyElementHeatmap />
+        </div>
 
         <Card className="lg:col-span-2">
           <CardHeader className="pb-3">
@@ -243,8 +222,8 @@ export default function Dashboard({ onViewInstructor }: DashboardProps) {
 
                   <div className="flex flex-wrap gap-1">
                     {instructor.programs.slice(0, 2).map((program) => (
-                      <Badge key={program} variant="secondary" className="text-xs bg-slate-100">
-                        {program.length > 12 ? program.slice(0, 10) + '...' : program}
+                      <Badge key={program.name} variant="secondary" className="text-xs bg-slate-100">
+                        {program.name.length > 12 ? program.name.slice(0, 10) + '...' : program.name}
                       </Badge>
                     ))}
                     {instructor.programs.length > 2 && (

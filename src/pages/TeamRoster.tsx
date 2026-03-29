@@ -94,7 +94,7 @@ export default function TeamRoster({ onViewInstructor }: TeamRosterProps) {
 
     if (programFilter !== 'all') {
       filtered = filtered.filter((inst) =>
-        inst.programs.includes(programFilter)
+        inst.programs.some((p) => p.name === programFilter)
       );
     }
 
@@ -328,10 +328,10 @@ export default function TeamRoster({ onViewInstructor }: TeamRosterProps) {
                       <div className="flex gap-1 flex-wrap">
                         {instructor.programs.slice(0, 2).map((program) => (
                           <span
-                            key={program}
+                            key={program.name}
                             className="text-[10px] font-medium text-lm-ink-mid bg-lm-subtle px-2 py-0.5 rounded"
                           >
-                            {program}
+                            {program.name}
                           </span>
                         ))}
                         {instructor.programs.length > 2 && (
