@@ -1,6 +1,7 @@
 import type { Instructor } from '@/data/types';
 import { instructors, assessments, STAGE_DATA, KEY_ELEMENT_LABELS } from '@/data/mock-data';
 import KeyElementHeatmap from '@/components/KeyElementHeatmap';
+import ProgramProgress from '@/components/ProgramProgress';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -190,6 +191,12 @@ export default function Dashboard({ onViewInstructor }: DashboardProps) {
             })}
           </CardContent>
         </Card>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <div className="lg:col-span-5">
+          <ProgramProgress />
+        </div>
       </div>
 
       <div>
