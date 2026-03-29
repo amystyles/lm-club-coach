@@ -14,6 +14,21 @@ export interface CoachPrompt {
   prompts: string[];
 }
 
+/** A single timed block in a structured session plan */
+export interface SessionPlanBlock {
+  duration: string;
+  title: string;
+  steps: string[];
+  tip?: string;
+}
+
+/** Full structured session plan — a runnable agenda the coach follows */
+export interface SessionPlan {
+  totalDuration: string;
+  format: string; // e.g. "1:1 conversation", "video review", "in-person or video call"
+  blocks: SessionPlanBlock[];
+}
+
 /** Rich coaching session with WHAT / WHY / HOW structure */
 export interface CoachingSession {
   what: string;
@@ -39,6 +54,8 @@ export interface Session {
   };
   /** Structured coaching session detail — WHAT / WHY / HOW */
   coachingSession?: CoachingSession;
+  /** Timed session plan — the runnable agenda for this session */
+  sessionPlan?: SessionPlan;
   instructorPreWork?: {
     title: string;
     description: string;
@@ -52,12 +69,24 @@ export interface Session {
   proTip?: string;
 }
 
+export interface KEActivityItem {
+  title: string;
+  description?: string;
+}
+
+export interface KEActivityGroup {
+  element: string;
+  color: string;
+  items: KEActivityItem[];
+}
+
 export interface StageDetail {
   name: string;
   subtitle: string;
   duration: string;
   color: string;
   sessions: Session[];
+  keActivities?: KEActivityGroup[];
 }
 
 export const stageDetails: Record<number, StageDetail> = {
@@ -67,15 +96,15 @@ export const stageDetails: Record<number, StageDetail> = {
     duration: '21 Days Before IT',
     color: '#0A0A0A',
     sessions: [
-      /* ── Session 1: Kickoff & Orientation ── */
+      /* ── Session 1: Welcome ── */
       {
         id: '1-kickoff',
-        title: 'Kickoff & Orientation',
-        subtitle: 'Week 1',
+        title: 'Welcome',
+        subtitle: 'First session',
         coachRole: {
-          summary: 'Welcome the instructor, set expectations for the pre-work journey, and establish the coaching relationship.',
-          context: 'Pre-work is the self-directed phase where the instructor lays groundwork before attending Initial Training. Your role is to support, guide, and check in — not to deliver the training.',
-          principle: 'Instructors who feel supported from day one are more confident and better prepared.',
+          summary: 'Meet the instructor, establish the coaching relationship, and understand where they are — whether they\'re brand new to Les Mills or joining your club with experience.',
+          context: 'Not every instructor in this stage is doing pre-work for the first time. They may be an experienced instructor new to your team, transferring from another club, or returning after time away. This session is about connection first — find out who they are before you decide what they need.',
+          principle: 'Know who\'s in front of you before you plan where they\'re going.',
         },
         keyElementFocus: {
           title: 'Setting the foundation for all 5 Key Elements',
@@ -86,29 +115,46 @@ export const stageDetails: Record<number, StageDetail> = {
           ],
         },
         coachingSession: {
-          what: 'Welcome the instructor, set expectations for the pre-work journey, and establish the coaching relationship.',
-          why: 'Instructors who feel supported from day one are more confident and better prepared. LMQ alignment — setting the foundation for all 5 Key Elements.',
+          what: 'A genuine meet and greet to establish the coaching relationship and understand the instructor\'s background, goals, and context — before deciding what support they need.',
+          why: 'Not everyone in this stage is a first-time instructor. Some are experienced Les Mills instructors joining your team for the first time. The coaching approach needs to match who they are — and you can\'t know that without asking.',
           how: [
             'Introduce yourself as their Club Coach and explain your role (mentor, not assessor)',
-            'Walk through the 4-stage journey overview: Pre-work \u2192 IT \u2192 Post-work \u2192 Certification',
-            'Review the Pre-work Checklist together',
-            'Set a timeline with milestones',
-            'Share your contact info for questions',
+            'Ask about their background — are they new to Les Mills, new to your club, or returning?',
+            'Listen before you plan — understand their history, goals, and any concerns',
+            'If they are doing pre-work for Initial Training: walk through the journey overview and review the Pre-work Checklist together',
+            'If they\'re an experienced instructor joining the team: focus on understanding their current level and what support looks like for them',
+            'Share your contact details and agree on how you\'ll check in going forward',
           ],
           prompts: [
             {
               label: 'Opening Questions',
               prompts: [
-                'What are you most excited about?',
-                'What feels challenging right now?',
+                'Tell me a bit about yourself — what\'s your background with Les Mills?',
+                'What brings you to this club / what are you hoping to get out of this stage?',
+                'What are you most excited about right now?',
+                'What feels most challenging or uncertain?',
+              ],
+            },
+            {
+              label: 'For New Instructors (Pre-work)',
+              prompts: [
+                'What do you already know about Initial Training?',
+                'Have you had a chance to look at the Pre-work Checklist yet?',
+              ],
+            },
+            {
+              label: 'For Experienced Instructors',
+              prompts: [
+                'What does your current teaching load look like?',
+                'Where do you feel most confident — and where do you want to grow?',
               ],
             },
           ],
-          lmqAlignment: 'Sets the foundation for all 5 Key Elements by framing the entire development journey and establishing a growth mindset from day one.',
+          lmqAlignment: 'Sets the foundation for all 5 Key Elements by establishing a growth mindset and a coaching relationship grounded in the instructor\'s actual context.',
           goals: [
-            'Instructor understands the full pre-work \u2192 IT \u2192 certification journey',
-            'Coaching relationship established with clear communication rhythm',
-            'Pre-work checklist reviewed with timeline and milestones set',
+            'Coaching relationship established — instructor knows who their Club Coach is and what to expect',
+            'Instructor\'s background and context understood before any plan is made',
+            'Next steps agreed and communication rhythm set',
           ],
         },
         instructorPreWork: {
@@ -157,17 +203,195 @@ export const stageDetails: Record<number, StageDetail> = {
             week: 'Coach Actions',
             tasks: [
               'Introduce yourself as their Club Coach and explain your role (mentor, not assessor)',
-              'Walk through the 4-stage journey overview: Pre-work \u2192 IT \u2192 Post-work \u2192 Certification',
-              'Review the Pre-work Checklist together (see checklist below)',
-              'Set a timeline with milestones',
-              'Share your contact info for questions',
-              'Ask: "What are you most excited about? What feels challenging?"',
+              'Ask about their background before making any assumptions',
+              'Listen first — understand who they are and what they need',
+              'Share your contact details and agree on next steps',
             ],
           },
         ],
-        proTip: 'First impressions matter. A warm, personal welcome sets the tone for the entire coaching relationship. Be a mentor, not an assessor.',
+        sessionPlan: {
+          totalDuration: '30 min',
+          format: '1:1 — in-person or video call',
+          blocks: [
+            {
+              duration: '10 min',
+              title: 'Introductions',
+              steps: [
+                'Introduce yourself — name, your program(s), how long you\'ve been a Club Coach',
+                'Be explicit: "I\'m your mentor, not an assessor — my job is to help you succeed"',
+                'Ask: "Tell me a bit about yourself — what\'s your background with Les Mills?"',
+                'Listen fully before moving on',
+              ],
+              tip: 'Don\'t assume they\'re a first-timer. Some instructors joining your team have years of Les Mills experience — start with curiosity, not a script.',
+            },
+            {
+              duration: '15 min',
+              title: 'Understand Their Context',
+              steps: [
+                'Ask: "What brings you to this club / what are you hoping to achieve in this stage?"',
+                'If doing Initial Training pre-work: walk through the journey overview and review the Pre-work Checklist together',
+                'If experienced and joining the team: explore their current teaching level and what support looks like for them',
+                'Identify any concerns or gaps they\'re already aware of',
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Set Up the Coaching Relationship',
+              steps: [
+                'Share your contact details — how and when they can reach you',
+                'Agree on the check-in rhythm: how often, in what format',
+                'Confirm the next session or touchpoint',
+                'Close with genuine energy and belief in them',
+              ],
+            },
+          ],
+        },
+        proTip: 'The best first session is one where the instructor does most of the talking. Ask good questions, listen closely, and you\'ll know exactly how to coach them.',
       },
-      /* ── Session 2: Key Elements Check-in ── */
+      /* ── Session 2: Initial Training Kickoff ── */
+      {
+        id: '1-it-kickoff',
+        title: 'Initial Training Kickoff',
+        subtitle: 'Pre-work start',
+        coachRole: {
+          summary: 'Set expectations for the pre-work journey and make sure the instructor is ready to start their LMUS pre-work with clarity and confidence.',
+          context: 'Pre-work is the self-directed phase where the instructor lays groundwork before attending Initial Training. LMUS assigns 5–10 hours covering videos, handbook activities, and allocated track preparation. Your role is to support and guide — not deliver the training.',
+          principle: 'Instructors who feel supported from day one are more confident and better prepared.',
+        },
+        keyElementFocus: {
+          title: 'Setting the foundation for all 5 Key Elements',
+          elements: [
+            { name: 'Choreography', description: 'Introduce the importance of music and movement sync' },
+            { name: 'Technique', description: 'Frame why safe and effective form matters from day one' },
+            { name: 'Coaching', description: 'Set expectations for cueing and layered coaching' },
+          ],
+        },
+        coachingSession: {
+          what: 'Walk the instructor through their LMUS pre-work, set a timeline with milestones, and make sure they know what to expect at Initial Training.',
+          why: 'Pre-work is the foundation for everything that happens at IT. Instructors who go in underprepared struggle — and the difference is almost always whether someone helped them understand what to focus on before they showed up.',
+          how: [
+            'Walk through the 4-stage journey overview: Pre-work \u2192 IT \u2192 Post-work \u2192 Certification',
+            'Review the Pre-work Checklist together — videos, handbook activities, allocated track preparation',
+            'Confirm their allocated track and access to the Releases App',
+            'Set a realistic timeline with milestone dates',
+            'Share your contact info and agree on the check-in rhythm',
+          ],
+          prompts: [
+            {
+              label: 'Opening Questions',
+              prompts: [
+                'What do you already know about Initial Training?',
+                'Have you had a chance to look at the Pre-work Checklist yet?',
+                'What are you most excited about? What feels most challenging?',
+              ],
+            },
+          ],
+          lmqAlignment: 'Sets the foundation for all 5 Key Elements by framing the entire development journey and establishing a growth mindset from day one.',
+          goals: [
+            'Instructor understands the full pre-work \u2192 IT \u2192 certification journey',
+            'Pre-work Checklist reviewed with timeline and milestones set',
+            'Coaching check-in rhythm agreed and contact details shared',
+          ],
+        },
+        instructorPreWork: {
+          title: 'Pre-Work Checklist',
+          description: 'Review this checklist together during the session. LMUS assigns 5\u201310 hours of pre-work covering videos, handbook activities, and allocated track preparation.',
+          phases: [
+            {
+              name: '1. Watch & Learn',
+              items: [
+                'Introduction to Les Mills Initial Training',
+                'Choreography and Music',
+                'Technique Foundations',
+                'Coaching Layers 1\u20133',
+                'How to Film and Self-review',
+              ],
+            },
+            {
+              name: '2. Complete Handbook Activities',
+              items: [
+                'Break down their allocated track',
+                'Practice cueing and scripting',
+                'Reflect on their learning',
+              ],
+            },
+            {
+              name: '3. Prepare Allocated Track',
+              items: [
+                'Practice with music \u2014 transitions, tempo changes, track focus',
+                'Apply the 3 Key Elements: Choreography, Technique, Coaching',
+                'Film themselves teaching, watch it back, identify strengths and areas to improve',
+              ],
+            },
+            {
+              name: '4. Get Ready for Initial Training',
+              items: [
+                'Handbook (digital or printed), Les Mills Releases App',
+                'Choreography Notes & Masterclass video',
+                'Music and playback device, filming device',
+                'If online: quiet space, up to 3 devices, test tech 24 hours in advance',
+              ],
+            },
+          ],
+        },
+        content: [
+          {
+            week: 'Coach Actions',
+            tasks: [
+              'Walk through the 4-stage journey overview: Pre-work \u2192 IT \u2192 Post-work \u2192 Certification',
+              'Review the Pre-work Checklist together',
+              'Set a timeline with milestones',
+              'Share your contact info for questions',
+            ],
+          },
+        ],
+        sessionPlan: {
+          totalDuration: '30 min',
+          format: '1:1 — in-person or video call',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Quick Reconnect',
+              steps: [
+                'Check in briefly — how are they feeling about starting the pre-work?',
+                'Remind them of your role: "I\'m here to support you through this, not assess you"',
+              ],
+            },
+            {
+              duration: '10 min',
+              title: 'Journey Overview',
+              steps: [
+                'Walk through the 4 stages: Pre-work \u2192 IT \u2192 Post-work \u2192 Certification',
+                'Explain what each stage involves and roughly how long it takes',
+                'Set the frame: "Everything you do in pre-work sets you up for Initial Training"',
+                'Ask: "What do you already know about Initial Training?"',
+              ],
+              tip: 'Keep it visual and high-level. The goal is confidence, not information overload.',
+            },
+            {
+              duration: '10 min',
+              title: 'Pre-Work Checklist Review',
+              steps: [
+                'Open the Pre-Work Checklist together (LMUS assigned — 5–10 hours)',
+                'Walk through each section: Watch & Learn videos, Handbook Activities, Track Preparation',
+                'Set a realistic timeline with milestone dates',
+                'Confirm their allocated track and access to the Releases App',
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Close & Next Steps',
+              steps: [
+                'Agree on the next check-in (Key Elements Check-in, Week 2–3)',
+                'Remind them how to reach you with questions',
+                'Send them off with genuine energy: "You\'re set up for this — let\'s go"',
+              ],
+            },
+          ],
+        },
+        proTip: 'First impressions matter. A clear, structured kickoff removes the uncertainty that makes pre-work feel overwhelming.',
+      },
+      /* ── Session 3: Key Elements Check-in ── */
       {
         id: '1-ke-checkin',
         title: 'Key Elements Check-in',
@@ -256,6 +480,61 @@ export const stageDetails: Record<number, StageDetail> = {
             ],
           },
         ],
+        sessionPlan: {
+          totalDuration: '30 min',
+          format: '1:1 — video call or in-person',
+          blocks: [
+            {
+              duration: '3 min',
+              title: 'Opening Check-In',
+              steps: [
+                'Quick reconnect: "How\'s the pre-work feeling so far?"',
+                'Set the frame: "Today I\'m going to ask you some specific questions — not to test you, but to make sure you\'re set up well for IT"',
+              ],
+            },
+            {
+              duration: '8 min',
+              title: 'Choreography Check',
+              steps: [
+                'Ask: "Tell me about your allocated track — how many sets of work? What are the transitions? What\'s the pattern?"',
+                'Probe: "Can you describe the music structure for your track — when does it change tempo?"',
+                'Check: "Can you read your Choreography Notes? Walk me through one exercise"',
+                'Flag any gaps — point them back to the Choreography & Music pre-work video',
+              ],
+              tip: 'Don\'t accept vague answers. If they say "I think it\'s 3 sets" — get specific. Confidence here = less panic at IT.',
+            },
+            {
+              duration: '10 min',
+              title: 'Technique Check',
+              steps: [
+                'Ask: "Walk me through the Position Setup for a key exercise in your track"',
+                'Listen for: bar/plate position, alignment cues, muscle activation',
+                'Ask: "Now the Execution Setup — body part and direction, target zones, stability"',
+                'If they struggle, don\'t give the answer — ask: "What does the handbook say about this exercise?"',
+              ],
+            },
+            {
+              duration: '7 min',
+              title: 'Coaching Check',
+              steps: [
+                'Ask: "Script me your Layer 1 cues for the first exercise in your track"',
+                'Listen for: track intro, muscle group, equipment/weight selection, track focus, demo note, setup cues, compulsory cues and options',
+                'Ask: "What\'s the purpose of Layer 2 cues?" and "Give me a Layer 3 cue you\'d use in your track"',
+                'Use the Coaching Learning Check questions from the handbook if needed',
+              ],
+            },
+            {
+              duration: '2 min',
+              title: 'Wrap-Up & Gaps',
+              steps: [
+                'Summarise what was strong: "Your technique understanding is solid"',
+                'Name 1–2 specific areas to revisit: "I\'d go back to the Coaching Layers video before we meet next"',
+                'Confirm the timeline is on track for the Track Run-Through session',
+                'Encourage them: "You\'re building the foundation — this is where confidence starts"',
+              ],
+            },
+          ],
+        },
         proTip: 'Don\'t just ask "how\'s the pre-work going?" \u2014 ask specific questions like "script me your Layer 1 cues" to check real understanding, not just completion.',
       },
       /* ── Session 3: Track Run-Through & Self-Review ── */
@@ -351,7 +630,130 @@ export const stageDetails: Record<number, StageDetail> = {
             ],
           },
         ],
+        sessionPlan: {
+          totalDuration: '45 min',
+          format: 'Video call with screen share — or in-person with a device to play back the video',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Set the Frame',
+              steps: [
+                'Open by celebrating: "The fact that you filmed yourself is huge — most people never do this"',
+                'Explain the structure: "We\'ll watch together, then I\'ll ask you three questions before I say anything"',
+                'Confirm you both have access to the video',
+              ],
+              tip: 'Watch the video together in silence the first time — no commentary. Let them sit with it.',
+            },
+            {
+              duration: '10 min',
+              title: 'Self-Review Discussion',
+              steps: [
+                'Ask: "What worked well?" — let them answer fully before you respond',
+                'Ask: "What would you do differently next time?"',
+                'Ask: "What do you think is your biggest strength as an instructor right now?"',
+                'Listen more than you speak. Take notes on what they notice vs. what they miss.',
+              ],
+            },
+            {
+              duration: '8 min',
+              title: 'Choreography Lens',
+              steps: [
+                'Ask: "Were you in time with the music and on the correct beat?"',
+                'Ask: "Did you execute exercises in the correct order with the right reps?"',
+                'If no, identify the specific moment — timestamp it if possible',
+                'Remind them: "At IT, the Trainer will be watching for exactly this — get the music locked in"',
+              ],
+            },
+            {
+              duration: '8 min',
+              title: 'Technique Lens',
+              steps: [
+                'Ask: "Did you show the Setup?"',
+                'Ask: "Were Position Setup and Execution Setup demonstrated clearly?"',
+                'Replay the specific moment together if needed',
+                'Note: setup does not need to be perfect — it needs to be present and intentional',
+              ],
+            },
+            {
+              duration: '8 min',
+              title: 'Coaching Lens',
+              steps: [
+                'Ask: "Did you say the Compulsory Cues?"',
+                'Ask: "How clear were your Layer 1 cues? Would a first-timer know what to do?"',
+                'Identify one coaching layer to focus on before IT',
+                'Avoid over-coaching — they need confidence more than perfection right now',
+              ],
+            },
+            {
+              duration: '6 min',
+              title: 'IT Readiness & Close',
+              steps: [
+                'Set 1–2 specific goals: "Before IT, focus on locking in your Compulsory Cues and the Execution Setup for [exercise]"',
+                'Run the Get Ready checklist: handbook, Releases App, Choreography Notes, masterclass video, music/playback device, filming device',
+                'If online IT: confirm quiet space, up to 3 devices, tech test 24 hours in advance',
+                'Close with belief: "You\'ve done the work. Trust the process. You\'re ready."',
+              ],
+            },
+          ],
+        },
         proTip: 'Treat this session like a rehearsal for how coaching works at Les Mills. You\'re modelling the feedback process they\'ll experience throughout their career.',
+      },
+    ],
+    keActivities: [
+      {
+        element: 'Choreography',
+        color: '#6366f1',
+        items: [
+          { title: 'Choreography Notes Breakdown', description: 'identify transitions, tempo changes, track focus' },
+          { title: 'Learning Check', description: 'quiz on counts, sequences, compulsory cues' },
+          { title: 'Allocated Track Preparation', description: 'practice alongside Masterclass video' },
+          { title: 'Self-Film & Review', description: 'identify timing and transition gaps' },
+          { title: 'Masterclass Video — Voices Off', description: 'practice with music only' },
+        ],
+      },
+      {
+        element: 'Technique',
+        color: '#f59e0b',
+        items: [
+          { title: 'Technique Practice Worksheets', description: 'note Position Setup and Execution Setup' },
+          { title: 'Self-Film & Compare', description: 'film yourself, compare to Masterclass video' },
+          { title: 'Self-Film & Compare', description: 'compare technique to Masterclass video' },
+        ],
+      },
+      {
+        element: 'Coaching',
+        color: '#0A0A0A',
+        items: [
+          { title: 'Coaching & Scripting Worksheets', description: 'script Layer 1, 2, 3 cues' },
+          { title: 'Compulsory Cues identification', description: 'from Choreography Notes' },
+          { title: 'Scripting Worksheet', description: 'write out Layer 1, 2, 3 cues per exercise' },
+        ],
+      },
+      {
+        element: 'Connection',
+        color: '#ef4444',
+        items: [
+          { title: 'Connection Tools Reflection' },
+          { title: 'Facing Fear Tools', description: 'Empowering Belief and Grounding Technique' },
+          { title: 'C.R.C. (Connect, Recommend, Commend)' },
+          { title: 'Four Quadrants', description: 'divide room into 4 sections' },
+          { title: 'C.R.C.', description: 'pause, look, see, respond, acknowledge' },
+          { title: 'Look, See & Respond', description: 'observe before coaching' },
+          { title: 'Teach One Person', description: 'focus direct coaching on one participant' },
+        ],
+      },
+      {
+        element: 'Performance',
+        color: '#00a844',
+        items: [
+          { title: 'Music, Actions, Voice, Amplify & Commit framework' },
+          { title: 'Musical Mapping', description: 'plan vocal contrast and energy delivery' },
+          { title: 'Empowering Beliefs', description: 'replace limiting beliefs before teaching' },
+          { title: 'Music, Actions, Voice framework', description: 'map energy to music' },
+          { title: 'Amplify & Commit', description: 'be your authentic self, but bigger' },
+          { title: '5 Voices', description: 'Conversational, Build, Athletic, Grit, Praise' },
+          { title: 'Musical Mapping', description: 'plan vocal contrast and energy delivery per track' },
+        ],
       },
     ],
   },

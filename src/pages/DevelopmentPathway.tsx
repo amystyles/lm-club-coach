@@ -2,120 +2,45 @@ import React, { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import {
-  AlertTriangle, CheckCircle2, Info, Star, Clock, MessageCircle, Eye,
-  Megaphone, Check, ChevronLeft, ChevronRight, Target,
+  AlertTriangle, CheckCircle2, Info, Star, Clock,
+  Eye, Megaphone, Check, Target,
   GraduationCap, MessageSquareQuote, NotebookPen, Shield,
+  CalendarClock, Users, BookOpen, Plus, Zap, FileText, ArrowUpRight,
 } from 'lucide-react';
 import { STAGE_DATA } from '@/data/mock-data';
-import { stageDetails, type Session } from '@/data/stage-sessions';
+import { stageDetails, type Session, type KEActivityGroup } from '@/data/stage-sessions';
 
 /* ─────────────────────────────────────────────
-   Section Header — reusable icon + title row
+   Tab definition
    ───────────────────────────────────────────── */
-function SectionHeader({
-  icon: Icon,
-  title,
-  color,
-  colorBg,
-}: {
-  icon: React.ElementType;
-  title: string;
-  color?: string;
-  colorBg?: string;
-}) {
-  return (
-    <div className="flex items-center gap-2.5 mb-4">
-      <div
-        className="w-8 h-8 rounded-lg flex items-center justify-center"
-        style={{ backgroundColor: colorBg || '#F0F0F0' }}
-      >
-        <Icon className="w-4 h-4" style={{ color: color || '#0A0A0A' }} />
-      </div>
-      <h4 className="font-bold text-lm-dark text-base">{title}</h4>
-    </div>
-  );
-}
+type TabId = 'brief' | 'plan' | 'prompts' | 'notes';
+
+const TABS: { id: TabId; label: string; icon: React.ElementType }[] = [
+  { id: 'brief',   label: 'Brief',        icon: BookOpen },
+  { id: 'plan',    label: 'Session Plan', icon: CalendarClock },
+  { id: 'prompts', label: 'Prompts',      icon: MessageSquareQuote },
+  { id: 'notes',   label: 'Notes',        icon: NotebookPen },
+];
 
 /* ─────────────────────────────────────────────
-   WHAT / WHY / HOW — structured coaching block
+   Brief Tab — Coach Role + WHAT / WHY / HOW
    ───────────────────────────────────────────── */
-function CoachingSessionBlock({ session, stageColor }: { session: Session; stageColor: string }) {
+function BriefTab({ session, stageColor }: { session: Session; stageColor: string }) {
   const cs = session.coachingSession;
-  if (!cs) return null;
 
   return (
-    <div className="space-y-6">
-      {/* WHAT */}
-      <div className="rounded-xl border border-border bg-white p-5 relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-1 h-full" style={{ backgroundColor: stageColor }} />
-        <div className="flex items-center gap-2 mb-2">
-          <Badge className="text-[10px] tracking-wider uppercase font-bold px-2 py-0.5" style={{ backgroundColor: stageColor, color: '#fff' }}>
-            What
-          </Badge>
-        </div>
-        <p className="text-lm-dark text-sm font-medium leading-relaxed">{cs.what}</p>
-      </div>
-
-      {/* WHY */}
-      <div className="rounded-xl border border-border bg-white p-5 relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-1 h-full bg-lm-dark" />
-        <div className="flex items-center gap-2 mb-2">
-          <Badge className="text-[10px] tracking-wider uppercase font-bold px-2 py-0.5 bg-lm-dark text-white">
-            Why
-          </Badge>
-        </div>
-        <p className="text-lm-dark text-sm font-medium leading-relaxed">{cs.why}</p>
-      </div>
-
-      {/* HOW */}
-      <div className="rounded-xl border border-border bg-white p-5 relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-1 h-full bg-lm-green" />
-        <div className="flex items-center gap-2 mb-3">
-          <Badge className="text-[10px] tracking-wider uppercase font-bold px-2 py-0.5 bg-lm-green text-lm-dark">
-            How
-          </Badge>
-          <span className="text-xs text-lm-ink-muted">Coach Actions</span>
-        </div>
-        <ul className="space-y-3">
-          {cs.how.map((step, i) => (
-            <li key={i} className="flex gap-3 text-sm text-lm-ink-mid leading-relaxed">
-              <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: stageColor }} />
-              <span>{step}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Coaching Prompts */}
-      {cs.prompts && cs.prompts.length > 0 && (
-        <div>
-          <SectionHeader icon={MessageSquareQuote} title="Questions & Prompts to Use" color={stageColor} colorBg={stageColor + '18'} />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {cs.prompts.map((group) => (
-              <div key={group.label} className="rounded-xl border border-border bg-lm-subtle p-4">
-                <p className="text-xs font-bold text-lm-dark uppercase tracking-wider mb-3">{group.label}</p>
-                <ul className="space-y-2.5">
-                  {group.prompts.map((prompt, i) => (
-                    <li key={i} className="flex gap-2.5 text-sm text-lm-ink-mid leading-relaxed">
-                      <MessageSquareQuote className="w-3.5 h-3.5 flex-shrink-0 mt-0.5 text-lm-ink-muted" />
-                      <span className="italic">"{prompt}"</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+    <div className="space-y-5">
+      {/* Session Goals — context for what this session needs to achieve */}
+      {cs?.goals && cs.goals.length > 0 && (
+        <div className="rounded-xl border border-lm-green/25 bg-lm-green-mid p-5">
+          <div className="flex items-center gap-2 mb-3">
+            <GraduationCap className="w-3.5 h-3.5 text-lm-dark" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-lm-dark">Session Goals</span>
           </div>
-        </div>
-      )}
-
-      {/* Session Goals */}
-      {cs.goals && cs.goals.length > 0 && (
-        <div className="rounded-xl border border-lm-green/20 bg-lm-green-mid p-5">
-          <SectionHeader icon={GraduationCap} title="Session Goals" color="#0A0A0A" colorBg="rgba(0,255,99,0.15)" />
-          <ul className="space-y-2.5">
+          <ul className="space-y-2">
             {cs.goals.map((goal, i) => (
               <li key={i} className="flex gap-2.5 text-sm text-lm-dark leading-relaxed">
-                <Check className="w-4 h-4 flex-shrink-0 mt-0.5 text-lm-dark" />
+                <Check className="w-4 h-4 flex-shrink-0 mt-0.5 text-lm-dark/60" />
                 <span className="font-medium">{goal}</span>
               </li>
             ))}
@@ -123,14 +48,223 @@ function CoachingSessionBlock({ session, stageColor }: { session: Session; stage
         </div>
       )}
 
-      {/* LMQ Alignment */}
-      {cs.lmqAlignment && (
-        <div className="rounded-xl border border-slate-200 bg-slate-50 p-5 flex items-start gap-3">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-200 flex-shrink-0">
-            <Shield className="w-4 h-4 text-slate-700" />
+      {/* Coach Role */}
+      {session.coachRole && (
+        <div className="rounded-xl border border-lm-sunken bg-lm-subtle p-5 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-1 h-full" style={{ backgroundColor: stageColor }} />
+          <div className="flex items-center gap-2 mb-3">
+            <Megaphone className="w-3.5 h-3.5" style={{ color: stageColor }} />
+            <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-lm-ink-muted">Coach Role</span>
           </div>
+          <p className="text-lm-dark font-semibold text-sm leading-relaxed mb-2">{session.coachRole.summary}</p>
+          <p className="text-lm-ink-mid text-sm leading-relaxed mb-4">{session.coachRole.context}</p>
+          <div className="flex items-start gap-2.5 bg-lm-green-mid rounded-lg px-4 py-3 border border-lm-green/10">
+            <Star className="w-3.5 h-3.5 flex-shrink-0 mt-0.5 text-lm-dark" />
+            <p className="text-lm-dark font-semibold text-sm italic">{session.coachRole.principle}</p>
+          </div>
+        </div>
+      )}
+
+      {/* Key Element Focus */}
+      {session.keyElementFocus && (
+        <div>
+          <div className="flex items-center gap-2 mb-3">
+            <Target className="w-3.5 h-3.5 text-lm-ink-muted" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-lm-ink-muted">Key Element Focus</span>
+          </div>
+          <p className="text-lm-ink-mid text-xs mb-3 leading-relaxed">{session.keyElementFocus.title}</p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {session.keyElementFocus.elements.map((el) => (
+              <div key={el.name} className="bg-white rounded-xl border border-border p-4">
+                <p className="font-bold text-lm-dark text-sm mb-1">{el.name}</p>
+                <p className="text-lm-ink-muted text-xs leading-relaxed">{el.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* WHAT / WHY / HOW */}
+      {cs && (
+        <div className="space-y-4">
+          <div className="rounded-xl border border-border bg-white p-5 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-1 h-full" style={{ backgroundColor: stageColor }} />
+            <Badge className="text-[10px] tracking-wider uppercase font-bold px-2 py-0.5 mb-2" style={{ backgroundColor: stageColor, color: '#fff' }}>What</Badge>
+            <p className="text-lm-dark text-sm font-medium leading-relaxed">{cs.what}</p>
+          </div>
+
+          <div className="rounded-xl border border-border bg-white p-5 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-1 h-full bg-lm-dark" />
+            <Badge className="text-[10px] tracking-wider uppercase font-bold px-2 py-0.5 mb-2 bg-lm-dark text-white">Why</Badge>
+            <p className="text-lm-dark text-sm font-medium leading-relaxed">{cs.why}</p>
+          </div>
+
+          <div className="rounded-xl border border-border bg-white p-5 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-1 h-full bg-lm-green" />
+            <div className="flex items-center gap-2 mb-3">
+              <Badge className="text-[10px] tracking-wider uppercase font-bold px-2 py-0.5 bg-lm-green text-lm-dark">How</Badge>
+              <span className="text-xs text-lm-ink-muted">Coach Actions</span>
+            </div>
+            <ul className="space-y-2.5">
+              {cs.how.map((step, i) => (
+                <li key={i} className="flex gap-2.5 text-sm text-lm-ink-mid leading-relaxed">
+                  <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: stageColor }} />
+                  <span>{step}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {cs.lmqAlignment && (
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 flex items-start gap-3">
+              <Shield className="w-4 h-4 text-slate-600 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="font-bold text-lm-dark text-[10px] uppercase tracking-[0.15em] mb-1">LMQ Alignment</p>
+                <p className="text-lm-ink-mid text-sm leading-relaxed">{cs.lmqAlignment}</p>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Fallback coach actions */}
+      {!cs && session.content.map((section, idx) => (
+        <div key={idx} className="border border-border rounded-xl p-5 bg-white relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-1 h-full" style={{ backgroundColor: stageColor }} />
+          <h4 className="font-bold text-lm-dark mb-3 text-sm flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4" style={{ color: stageColor }} />
+            {section.week}
+          </h4>
+          <ul className="space-y-2.5">
+            {section.tasks.map((task, tIdx) => (
+              <li key={tIdx} className="text-lm-ink-mid text-sm flex gap-2 leading-relaxed">
+                <Check className="w-4 h-4 text-lm-ink-muted flex-shrink-0 mt-0.5" />
+                <span>{task}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   Plan Tab — timed session agenda
+   ───────────────────────────────────────────── */
+function PlanTab({ session, stageColor }: { session: Session; stageColor: string }) {
+  const plan = session.sessionPlan;
+
+  if (!plan) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 text-center">
+        <CalendarClock className="w-10 h-10 text-lm-ink-muted/30 mb-3" />
+        <p className="text-lm-ink-muted text-sm font-medium">No session plan yet</p>
+        <p className="text-lm-ink-muted/60 text-xs mt-1">Check back as more sessions are built out.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-5">
+      <div className="flex items-center gap-4 py-1">
+        <div className="flex items-center gap-1.5 text-sm text-lm-ink-mid font-semibold">
+          <Clock className="w-4 h-4 text-lm-ink-muted" />
+          {plan.totalDuration}
+        </div>
+        <div className="w-px h-4 bg-lm-sunken" />
+        <div className="flex items-center gap-1.5 text-sm text-lm-ink-mid">
+          <Users className="w-4 h-4 text-lm-ink-muted" />
+          {plan.format}
+        </div>
+      </div>
+
+      <div className="relative">
+        <div className="absolute left-[19px] top-5 bottom-5 w-[2px] bg-lm-sunken" />
+        <div className="space-y-3">
+          {plan.blocks.map((block, idx) => (
+            <div key={idx} className="flex gap-4">
+              <div
+                className="relative z-10 flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold bg-white border-2"
+                style={{ borderColor: stageColor + '60', color: stageColor }}
+              >
+                {idx + 1}
+              </div>
+              <div className="flex-1 rounded-xl border border-border bg-white p-5 hover:shadow-sm transition-shadow">
+                <div className="flex items-start justify-between gap-3 mb-3">
+                  <p className="font-bold text-lm-dark text-sm">{block.title}</p>
+                  <span className="flex-shrink-0 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-lm-subtle text-lm-ink-mid border border-lm-sunken whitespace-nowrap">
+                    {block.duration}
+                  </span>
+                </div>
+                <ul className="space-y-2">
+                  {block.steps.map((step, i) => (
+                    <li key={i} className="flex gap-2.5 text-sm text-lm-ink-mid leading-relaxed">
+                      <Check className="w-4 h-4 flex-shrink-0 mt-0.5 text-lm-ink-muted" />
+                      <span>{step}</span>
+                    </li>
+                  ))}
+                </ul>
+                {block.tip && (
+                  <div className="mt-3 flex items-start gap-2 rounded-lg bg-amber-50 border border-amber-100 px-3 py-2.5">
+                    <Info className="w-3.5 h-3.5 flex-shrink-0 mt-0.5 text-amber-600" />
+                    <p className="text-xs text-amber-800 leading-relaxed">{block.tip}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   Prompts Tab — coaching questions by group
+   ───────────────────────────────────────────── */
+function PromptsTab({ session, stageColor }: { session: Session; stageColor: string }) {
+  const cs = session.coachingSession;
+
+  if (!cs?.prompts?.length) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 text-center">
+        <MessageSquareQuote className="w-10 h-10 text-lm-ink-muted/30 mb-3" />
+        <p className="text-lm-ink-muted text-sm font-medium">No prompts defined yet</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-5">
+      <p className="text-lm-ink-muted text-sm leading-relaxed">
+        Use these to guide the conversation. Listen more than you speak.
+      </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {cs.prompts.map((group) => (
+          <div key={group.label} className="rounded-xl border border-border bg-white p-5">
+            <p className="text-[10px] font-bold text-lm-dark uppercase tracking-[0.15em] mb-4 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: stageColor }} />
+              {group.label}
+            </p>
+            <ul className="space-y-3">
+              {group.prompts.map((prompt, i) => (
+                <li key={i} className="flex gap-2.5 text-sm text-lm-ink-mid leading-relaxed">
+                  <MessageSquareQuote className="w-3.5 h-3.5 flex-shrink-0 mt-0.5 text-lm-ink-muted" />
+                  <span className="italic">"{prompt}"</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      {cs.lmqAlignment && (
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 flex items-start gap-3">
+          <Shield className="w-4 h-4 text-slate-600 flex-shrink-0 mt-0.5" />
           <div>
-            <p className="font-bold text-lm-dark text-sm mb-1">LMQ Alignment</p>
+            <p className="font-bold text-lm-dark text-[10px] uppercase tracking-[0.15em] mb-1">LMQ Alignment</p>
             <p className="text-lm-ink-mid text-sm leading-relaxed">{cs.lmqAlignment}</p>
           </div>
         </div>
@@ -140,62 +274,29 @@ function CoachingSessionBlock({ session, stageColor }: { session: Session; stage
 }
 
 /* ─────────────────────────────────────────────
-   Session Content — full session renderer
+   Notes Tab — goals (checkable) + notes area
    ───────────────────────────────────────────── */
-function SessionContent({ session, stageColor }: { session: Session; stageColor: string }) {
+function NotesTab({ session, stageColor }: { session: Session; stageColor: string }) {
   const [notes, setNotes] = useState('');
-  const hasCoachingSession = !!session.coachingSession;
 
   return (
-    <div className="space-y-8">
-      {/* Coach Role */}
-      {session.coachRole && (
-        <div className="rounded-xl border border-lm-sunken bg-lm-subtle p-6 relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-1 h-full" style={{ backgroundColor: stageColor }} />
-          <SectionHeader icon={Megaphone} title="Coach Role" color={stageColor} colorBg={stageColor + '18'} />
-          <p className="text-lm-dark font-medium leading-relaxed mb-2">{session.coachRole.summary}</p>
-          <p className="text-lm-ink-mid text-sm leading-relaxed mb-5">{session.coachRole.context}</p>
-          <div className="flex items-center gap-3 bg-lm-green-mid rounded-lg px-4 py-3 border border-lm-green/10">
-            <Star className="w-4 h-4 text-lm-dark flex-shrink-0" />
-            <p className="text-lm-dark font-semibold text-sm italic">{session.coachRole.principle}</p>
-          </div>
-        </div>
-      )}
-
-      {/* Key Element Focus */}
-      {session.keyElementFocus && (
-        <div>
-          <SectionHeader icon={Target} title="Key Element Focus" />
-          <p className="text-lm-ink-mid text-sm mb-4 leading-relaxed">{session.keyElementFocus.title}</p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {session.keyElementFocus.elements.map((el) => (
-              <div key={el.name} className="bg-white rounded-xl border border-border p-4 hover:shadow-md transition-shadow">
-                <p className="font-bold text-lm-dark text-sm mb-1">{el.name}</p>
-                <p className="text-lm-ink-muted text-xs leading-relaxed">{el.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* ── Rich Coaching Session (WHAT / WHY / HOW) ── */}
-      {hasCoachingSession && (
-        <CoachingSessionBlock session={session} stageColor={stageColor} />
-      )}
-
+    <div className="space-y-6">
       {/* Instructor Pre-Work */}
       {session.instructorPreWork && (
         <div>
-          <SectionHeader icon={Eye} title={session.instructorPreWork.title} />
-          <p className="text-lm-ink-mid text-sm mb-5 leading-relaxed">{session.instructorPreWork.description}</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex items-center gap-2 mb-3">
+            <Eye className="w-3.5 h-3.5 text-lm-ink-muted" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-lm-ink-muted">{session.instructorPreWork.title}</span>
+          </div>
+          <p className="text-lm-ink-mid text-sm mb-4 leading-relaxed">{session.instructorPreWork.description}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {session.instructorPreWork.phases.map((phase) => (
-              <div key={phase.name} className="border border-border rounded-xl p-4 bg-white hover:shadow-md transition-shadow">
-                <h5 className="font-bold text-lm-dark text-sm mb-3">{phase.name}</h5>
+              <div key={phase.name} className="border border-border rounded-xl p-4 bg-white">
+                <h5 className="font-bold text-lm-dark text-[10px] uppercase tracking-wider mb-3">{phase.name}</h5>
                 <ul className="space-y-2">
                   {phase.items.map((item, i) => (
-                    <li key={i} className="text-lm-ink-mid text-xs flex gap-2.5 leading-relaxed">
-                      <span className="w-1 h-1 rounded-full mt-1.5 flex-shrink-0" style={{ backgroundColor: stageColor }} />
+                    <li key={i} className="text-lm-ink-mid text-xs flex gap-2 leading-relaxed">
+                      <span className="w-1 h-1 rounded-full mt-1.5 flex-shrink-0 bg-lm-ink-muted/40" />
                       <span>{item}</span>
                     </li>
                   ))}
@@ -210,61 +311,35 @@ function SessionContent({ session, stageColor }: { session: Session; stageColor:
       {session.warning && (
         <Alert variant="destructive" className="bg-red-50 border-red-200 rounded-xl">
           <AlertTriangle className="h-4 w-4 text-red-600" />
-          <AlertTitle className="text-red-900 font-bold">{session.warning.title}</AlertTitle>
-          <AlertDescription className="text-red-800 mt-2 leading-relaxed">{session.warning.description}</AlertDescription>
+          <AlertDescription className="text-red-800 mt-1 leading-relaxed">{session.warning.description}</AlertDescription>
         </Alert>
-      )}
-
-      {/* Coach Actions (fallback for sessions without coachingSession) */}
-      {!hasCoachingSession && (
-        <div>
-          <SectionHeader icon={MessageCircle} title="Your Coach Actions" color={stageColor} colorBg={stageColor + '18'} />
-          <div className="space-y-4">
-            {session.content.map((section, idx) => (
-              <div key={idx} className="border border-border rounded-xl p-5 bg-white relative overflow-hidden hover:shadow-md transition-shadow">
-                <div className="absolute top-0 left-0 w-1 h-full" style={{ backgroundColor: stageColor }} />
-                <h4 className="font-bold text-lm-dark mb-4 flex items-center gap-2.5 text-sm">
-                  <CheckCircle2 className="w-5 h-5 flex-shrink-0" style={{ color: stageColor }} />
-                  {section.week}
-                </h4>
-                <ul className="space-y-3">
-                  {section.tasks.map((task, taskIdx) => (
-                    <li key={taskIdx} className="text-lm-ink-mid text-sm flex gap-2.5 leading-relaxed">
-                      <Check className="w-4 h-4 text-lm-ink-muted flex-shrink-0 mt-0.5" />
-                      <span>{task}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
       )}
 
       {/* Pro Tip */}
       {session.proTip && (
-        <div className="rounded-xl border border-amber-200 bg-amber-50/60 p-5 flex items-start gap-3">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-amber-100 flex-shrink-0">
-            <Info className="w-4 h-4 text-amber-700" />
+        <div className="rounded-xl border border-amber-200 bg-amber-50/60 p-4 flex items-start gap-3">
+          <div className="w-7 h-7 rounded-lg flex items-center justify-center bg-amber-100 flex-shrink-0">
+            <Info className="w-3.5 h-3.5 text-amber-700" />
           </div>
           <div>
-            <p className="font-bold text-amber-900 text-sm">Pro Tip</p>
-            <p className="text-amber-800 text-sm mt-1 leading-relaxed">{session.proTip}</p>
+            <p className="font-bold text-amber-900 text-[10px] uppercase tracking-wider mb-1">Pro Tip</p>
+            <p className="text-amber-800 text-sm leading-relaxed">{session.proTip}</p>
           </div>
         </div>
       )}
 
-      {/* ── Notes / Observations Area ── */}
-      <div className="rounded-xl border border-border bg-lm-subtle p-6">
-        <SectionHeader icon={NotebookPen} title="Your Notes & Observations" />
-        <p className="text-lm-ink-muted text-xs mb-3">
-          Capture what you noticed during this session. These notes stay local to your browser.
-        </p>
+      {/* Notes */}
+      <div className="rounded-xl border border-border bg-lm-subtle p-5">
+        <div className="flex items-center gap-2 mb-1.5">
+          <NotebookPen className="w-3.5 h-3.5 text-lm-ink-muted" />
+          <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-lm-ink-muted">Your Notes</span>
+        </div>
+        <p className="text-lm-ink-muted text-xs mb-3">Capture observations from this session. Stays local to your browser.</p>
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          placeholder="What did you observe? Any strengths, gaps, or follow-up items..."
-          rows={4}
+          placeholder="What did you observe? Strengths, gaps, follow-up items..."
+          rows={5}
           className="w-full rounded-lg border border-border bg-white px-4 py-3 text-sm text-lm-ink-mid placeholder:text-lm-ink-muted/50 focus:outline-none focus:ring-2 focus:ring-lm-green focus:border-transparent resize-y"
         />
       </div>
@@ -273,9 +348,187 @@ function SessionContent({ session, stageColor }: { session: Session; stageColor:
 }
 
 /* ─────────────────────────────────────────────
-   Session Step Indicator
+   Session Workspace — tabbed right panel
    ───────────────────────────────────────────── */
-function SessionNav({
+function SessionWorkspace({
+  session,
+  stageColor,
+  activeTab,
+  onTabChange,
+}: {
+  session: Session;
+  stageColor: string;
+  activeTab: TabId;
+  onTabChange: (tab: TabId) => void;
+}) {
+  const availableTabs = TABS.filter((tab) => {
+    if (tab.id === 'plan')    return !!session.sessionPlan;
+    if (tab.id === 'prompts') return !!session.coachingSession?.prompts?.length;
+    return true;
+  });
+
+  const currentTab = availableTabs.find((t) => t.id === activeTab) ? activeTab : 'brief';
+
+  return (
+    <div>
+      {/* Session header */}
+      <div className="mb-6 pb-6 border-b border-border">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h3 className="text-xl font-display font-bold text-lm-dark leading-tight">{session.title}</h3>
+            {session.sessionPlan && (
+              <div className="flex items-center gap-3 mt-1.5">
+                <span className="flex items-center gap-1 text-xs font-semibold text-lm-ink-mid">
+                  <Clock className="w-3 h-3 text-lm-ink-muted" />
+                  {session.sessionPlan.totalDuration}
+                </span>
+                <span className="text-lm-sunken">·</span>
+                <span className="flex items-center gap-1 text-xs text-lm-ink-muted">
+                  <Users className="w-3 h-3" />
+                  {session.sessionPlan.format}
+                </span>
+              </div>
+            )}
+          </div>
+          <div
+            className="flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-white text-xs font-bold shadow-sm"
+            style={{ backgroundColor: stageColor }}
+          >
+            {session.id.split('-')[0]}
+          </div>
+        </div>
+      </div>
+
+      {/* Tab navigation */}
+      <div className="flex items-center gap-2 mb-7 flex-wrap">
+        {availableTabs.map((tab) => {
+          const Icon = tab.icon;
+          const isActive = currentTab === tab.id;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => onTabChange(tab.id)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all focus:outline-none ${
+                isActive
+                  ? 'bg-lm-dark text-white shadow-sm'
+                  : 'text-lm-ink-muted bg-lm-subtle hover:bg-lm-sunken hover:text-lm-ink-mid'
+              }`}
+            >
+              <Icon className="w-3.5 h-3.5" />
+              {tab.label}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Tab content */}
+      <div>
+        {currentTab === 'brief'   && <BriefTab   session={session} stageColor={stageColor} />}
+        {currentTab === 'plan'    && <PlanTab    session={session} stageColor={stageColor} />}
+        {currentTab === 'prompts' && <PromptsTab session={session} stageColor={stageColor} />}
+        {currentTab === 'notes'   && <NotesTab   session={session} stageColor={stageColor} />}
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   Activities View — KE-organized tools panel
+   ───────────────────────────────────────────── */
+function ActivitiesView({ groups }: { groups: KEActivityGroup[] }) {
+  const [checked, setChecked] = React.useState<Record<string, boolean>>({});
+
+  const toggle = (key: string) => setChecked((prev) => ({ ...prev, [key]: !prev[key] }));
+
+  if (!groups.length) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 text-center">
+        <Zap className="w-10 h-10 text-lm-ink-muted/30 mb-3" />
+        <p className="text-lm-ink-muted text-sm font-medium">No activities yet for this stage</p>
+        <p className="text-lm-ink-muted/60 text-xs mt-1">Activities will be added as sessions are built out.</p>
+      </div>
+    );
+  }
+
+  const totalItems = groups.reduce((sum, g) => sum + g.items.length, 0);
+  const checkedCount = Object.values(checked).filter(Boolean).length;
+
+  return (
+    <div className="space-y-8">
+      {/* Header bar */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h3 className="text-xl font-display font-bold text-lm-dark">Activities & Tools</h3>
+          <p className="text-sm text-lm-ink-muted mt-0.5">Self-development tasks organized by Key Element</p>
+        </div>
+        <div className="text-right">
+          <p className="text-2xl font-display font-bold text-lm-dark">{checkedCount}<span className="text-lm-ink-muted text-base font-normal">/{totalItems}</span></p>
+          <p className="text-[10px] text-lm-ink-muted uppercase tracking-wider">completed</p>
+        </div>
+      </div>
+
+      {/* KE sections */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {groups.map((group) => {
+          const groupChecked = group.items.filter((_, i) => checked[`${group.element}-${i}`]).length;
+          return (
+            <div key={group.element} className="bg-white rounded-2xl border border-border overflow-hidden shadow-sm">
+              {/* KE header */}
+              <div className="px-5 py-4 flex items-center justify-between" style={{ borderBottom: `3px solid ${group.color}` }}>
+                <div className="flex items-center gap-2.5">
+                  <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: group.color }} />
+                  <p className="text-sm font-bold text-lm-dark uppercase tracking-wider">{group.element}</p>
+                </div>
+                <span className="text-[11px] font-semibold text-lm-ink-muted">
+                  {groupChecked}/{group.items.length}
+                </span>
+              </div>
+
+              {/* Activity items */}
+              <div className="divide-y divide-lm-sunken">
+                {group.items.map((item, i) => {
+                  const key = `${group.element}-${i}`;
+                  const isDone = checked[key];
+                  return (
+                    <button
+                      key={key}
+                      onClick={() => toggle(key)}
+                      className="w-full text-left flex items-start gap-3.5 px-5 py-4 hover:bg-lm-subtle/50 transition-colors focus:outline-none group"
+                    >
+                      {/* Checkbox */}
+                      <div className={`flex-shrink-0 mt-0.5 w-4.5 h-4.5 rounded border-2 flex items-center justify-center transition-all ${
+                        isDone ? 'border-transparent' : 'border-lm-sunken group-hover:border-lm-ink-muted/40'
+                      }`}
+                        style={isDone ? { backgroundColor: group.color } : {}}
+                      >
+                        {isDone && <Check className="w-2.5 h-2.5 text-white" />}
+                      </div>
+                      <div className="min-w-0">
+                        <p className={`text-sm font-semibold leading-snug transition-colors ${isDone ? 'text-lm-ink-muted line-through' : 'text-lm-dark'}`}>
+                          {item.title}
+                        </p>
+                        {item.description && (
+                          <p className={`text-xs mt-0.5 leading-snug ${isDone ? 'text-lm-ink-muted/60' : 'text-lm-ink-muted'}`}>
+                            {item.description}
+                          </p>
+                        )}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   Session List — left panel
+   ───────────────────────────────────────────── */
+function SessionList({
   sessions,
   activeId,
   onSelect,
@@ -284,86 +537,37 @@ function SessionNav({
   activeId: string;
   onSelect: (id: string) => void;
 }) {
-  const activeIdx = sessions.findIndex((s) => s.id === activeId);
-  const canPrev = activeIdx > 0;
-  const canNext = activeIdx < sessions.length - 1;
-
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-0">
-        {sessions.map((session, idx) => {
-          const isActive = session.id === activeId;
-          const isPast = idx < activeIdx;
-          return (
-            <React.Fragment key={session.id}>
-              <button
-                onClick={() => onSelect(session.id)}
-                className="flex flex-col items-center gap-2 group relative flex-1 min-w-0"
-              >
-                <div className="relative z-10 flex items-center justify-center">
-                  {/* Glow ring on active */}
-                  {isActive && (
-                    <div className="absolute w-14 h-14 rounded-full bg-lm-green/20 animate-pulse" />
-                  )}
-                  <div
-                    className={`w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-200 relative ${
-                      isActive
-                        ? 'bg-lm-dark text-lm-green ring-2 ring-lm-green ring-offset-2 scale-110 shadow-lg'
-                        : isPast
-                          ? 'bg-lm-green text-lm-dark shadow-md'
-                          : 'bg-lm-sunken text-lm-ink-muted border-2 border-lm-sunken group-hover:border-lm-ink-muted/30'
-                    }`}
-                  >
-                    {isPast ? <Check className="w-4.5 h-4.5" /> : idx + 1}
-                  </div>
-                </div>
-                <div className="text-center px-1">
-                  <p className={`text-xs font-semibold transition-colors leading-tight ${isActive ? 'text-lm-dark' : 'text-lm-ink-muted'}`}>
-                    <span className="hidden sm:inline">{session.title}</span>
-                    <span className="sm:hidden">S{idx + 1}</span>
-                  </p>
-                  <p className="text-[10px] text-lm-ink-muted mt-0.5 hidden md:block">{session.subtitle}</p>
-                </div>
-              </button>
-              {idx < sessions.length - 1 && (
-                <div className="h-[2px] flex-shrink-0 w-6 sm:w-10 -mt-6 z-0">
-                  <div
-                    className={`h-full rounded-full transition-colors ${
-                      idx < activeIdx ? 'bg-lm-green' : 'bg-lm-sunken'
-                    }`}
-                  />
-                </div>
-              )}
-            </React.Fragment>
-          );
-        })}
-      </div>
+    <div className="space-y-1">
+      {sessions.map((session) => {
+        const isActive = session.id === activeId;
+        return (
+          <button
+            key={session.id}
+            onClick={() => onSelect(session.id)}
+            className={`w-full text-left px-3 py-3 rounded-xl transition-all focus:outline-none ${
+              isActive ? 'bg-lm-dark shadow-sm' : 'hover:bg-lm-subtle'
+            }`}
+          >
+            <p className={`text-sm font-semibold leading-tight ${isActive ? 'text-white' : 'text-lm-dark'}`}>
+              {session.title}
+            </p>
+            {session.sessionPlan && (
+              <p className={`text-xs mt-0.5 ${isActive ? 'text-white/40' : 'text-lm-ink-muted'}`}>
+                {session.sessionPlan.totalDuration}
+              </p>
+            )}
+          </button>
+        );
+      })}
 
-      <div className="flex items-center justify-between">
-        <button
-          onClick={() => canPrev && onSelect(sessions[activeIdx - 1].id)}
-          disabled={!canPrev}
-          className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full transition-colors ${
-            canPrev ? 'text-lm-dark hover:bg-lm-subtle' : 'text-lm-ink-muted/40 cursor-not-allowed'
-          }`}
-        >
-          <ChevronLeft className="w-3.5 h-3.5" />
-          Previous
-        </button>
-        <span className="text-xs text-lm-ink-muted font-medium">
-          {activeIdx + 1} of {sessions.length} sessions
+      {/* Add session affordance */}
+      <button className="w-full text-left px-3 py-2.5 rounded-xl border border-dashed border-lm-sunken hover:border-lm-ink-muted/40 hover:bg-lm-subtle/50 transition-all focus:outline-none mt-1 group">
+        <span className="flex items-center gap-1.5 text-xs text-lm-ink-muted/50 group-hover:text-lm-ink-muted transition-colors">
+          <Plus className="w-3.5 h-3.5" />
+          Add session
         </span>
-        <button
-          onClick={() => canNext && onSelect(sessions[activeIdx + 1].id)}
-          disabled={!canNext}
-          className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full transition-colors ${
-            canNext ? 'text-lm-dark hover:bg-lm-subtle' : 'text-lm-ink-muted/40 cursor-not-allowed'
-          }`}
-        >
-          Next
-          <ChevronRight className="w-3.5 h-3.5" />
-        </button>
-      </div>
+      </button>
     </div>
   );
 }
@@ -371,136 +575,205 @@ function SessionNav({
 /* ─────────────────────────────────────────────
    Main Page
    ───────────────────────────────────────────── */
-export default function DevelopmentPathway() {
+export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page: string) => void }) {
   const [activeStage, setActiveStage] = useState(1);
   const [activeSessions, setActiveSessions] = useState<Record<number, string>>({});
+  const [activeTab, setActiveTab] = useState<TabId>('brief');
+  const [viewMode, setViewMode] = useState<'session' | 'activities'>('session');
 
   const currentStageData = stageDetails[activeStage];
-  const currentStageColor = currentStageData?.color || 'hsl(217, 85%, 55%)';
+  const currentStageColor = currentStageData?.color || '#0A0A0A';
 
   const getActiveSessionId = (stageNum: number) => {
     const stage = stageDetails[stageNum];
     return activeSessions[stageNum] || stage?.sessions[0]?.id || '';
   };
 
-  const currentSession = currentStageData?.sessions.find(
-    (s) => s.id === getActiveSessionId(activeStage)
-  ) || currentStageData?.sessions[0];
+  const currentSession =
+    currentStageData?.sessions.find((s) => s.id === getActiveSessionId(activeStage)) ||
+    currentStageData?.sessions[0];
+
+  const handleSessionSelect = (id: string) => {
+    setActiveSessions((prev) => ({ ...prev, [activeStage]: id }));
+    setViewMode('session');
+  };
+
+  const handleStageSelect = (stage: number) => {
+    setActiveStage(stage);
+    setViewMode('session');
+  };
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* ── Hero Header ── */}
-      <div className="lm-hero px-8 pt-10 pb-12">
-        <div className="max-w-6xl mx-auto">
-          <p className="text-lm-green text-xs font-bold tracking-[0.2em] uppercase mb-3">
-            Instructor Development
-          </p>
-          <h1 className="text-white text-3xl md:text-4xl font-display font-bold mb-2">
-            Development Pathway
-          </h1>
-          <p className="text-white/50 text-sm max-w-lg">
-            From Day One to World-Class — a structured journey through five stages of instructor growth.
-          </p>
+    <div className="min-h-screen bg-background -m-6">
+      {/* ── Hero ── */}
+      <div
+        className="relative overflow-hidden px-10 pt-14 pb-16"
+        style={{
+          background: 'linear-gradient(135deg, #0A0A0A 0%, #111111 60%, #0d1a0d 100%)',
+          borderTop: '3px solid #00FF63',
+        }}
+      >
+        {/* Radial glow — right side */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: 'radial-gradient(ellipse 55% 80% at 85% 50%, rgba(0,255,99,0.07) 0%, transparent 70%)',
+          }}
+        />
+        {/* Subtle noise grain */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.03]"
+          style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noise)\'/%3E%3C/svg%3E")', backgroundSize: '200px' }}
+        />
 
-          {/* Stage Selector */}
-          <div className="mt-10 grid grid-cols-5 gap-4">
-            {STAGE_DATA.map((stage) => {
-              const isActive = activeStage === stage.stage;
-              const detail = stageDetails[stage.stage];
-              const sessionCount = detail?.sessions.length || 0;
-              return (
-                <button
-                  key={stage.stage}
-                  onClick={() => setActiveStage(stage.stage)}
-                  className="group text-left"
-                >
-                  <div
-                    className={`rounded-xl p-5 transition-all duration-200 relative overflow-hidden ${
-                      isActive
-                        ? 'bg-white shadow-lg shadow-black/20'
-                        : 'bg-white/[0.06] hover:bg-white/10 border border-white/[0.08]'
-                    }`}
-                  >
-                    {/* Green top accent on active */}
-                    {isActive && (
-                      <div className="absolute top-0 left-0 right-0 h-[3px] bg-lm-green" />
-                    )}
-                    <p className={`text-[11px] font-bold uppercase tracking-[0.15em] mb-3 ${
-                      isActive ? 'text-lm-green' : 'text-lm-green/60'
-                    }`}>
-                      Stage {stage.stage}
-                    </p>
-                    <p className={`text-base font-bold font-display mb-1 transition-colors ${
-                      isActive ? 'text-lm-dark' : 'text-white group-hover:text-white'
-                    }`}>
-                      {stage.name}
-                    </p>
-                    <p className={`text-xs mb-3 ${
-                      isActive ? 'text-lm-ink-mid' : 'text-white/70'
-                    }`}>
-                      {stage.duration}
-                    </p>
-                    <p className={`text-[11px] font-medium ${
-                      isActive ? 'text-lm-ink-muted' : 'text-lm-green/40'
-                    }`}>
-                      {sessionCount} session{sessionCount !== 1 ? 's' : ''}
-                    </p>
-                  </div>
-                </button>
-              );
-            })}
+        {/* Label + headline */}
+        <div className="relative mb-10">
+          <div className="flex items-center gap-3 mb-5">
+            <div className="w-6 h-px bg-lm-green/60" />
+            <span className="text-lm-green/70 text-[10px] font-bold tracking-[0.3em] uppercase">
+              Instructor Development
+            </span>
           </div>
+          <h1 className="font-display font-bold leading-[1.0] mb-4">
+            <span className="block text-white text-5xl md:text-6xl">Every Instructor.</span>
+            <span className="block text-lm-green text-5xl md:text-6xl italic">Every Stage.</span>
+          </h1>
+          <p className="text-white/40 text-sm leading-relaxed max-w-md">
+            A structured coaching framework that takes instructors from their first day through to world-class performance.
+          </p>
+        </div>
+
+        {/* ── Stage Cards ── */}
+        <div className="relative grid grid-cols-5 gap-3">
+          {STAGE_DATA.map((stage) => {
+            const isActive = activeStage === stage.stage;
+            const detail = stageDetails[stage.stage];
+            const sessionCount = detail?.sessions.length || 0;
+            return (
+              <button
+                key={stage.stage}
+                onClick={() => handleStageSelect(stage.stage)}
+                className={`group text-left rounded-2xl p-5 transition-all duration-200 relative overflow-hidden focus:outline-none ${
+                  isActive
+                    ? 'bg-white shadow-xl shadow-black/30'
+                    : 'bg-white/[0.05] border border-white/[0.08] hover:bg-white/10'
+                }`}
+              >
+                {/* Green top accent bar on active */}
+                {isActive && (
+                  <div className="absolute top-0 left-0 right-0 h-[3px] bg-lm-green rounded-t-2xl" />
+                )}
+                <p className={`text-[10px] font-bold uppercase tracking-[0.18em] mb-3 ${
+                  isActive ? 'text-lm-green' : 'text-lm-green/40'
+                }`}>
+                  Stage {stage.stage}
+                </p>
+                <p className={`text-lg font-display font-bold leading-tight mb-1 ${
+                  isActive ? 'text-lm-dark' : 'text-white'
+                }`}>
+                  {stage.name}
+                </p>
+                <p className={`text-[11px] font-medium ${
+                  isActive ? 'text-lm-ink-muted' : 'text-white/35'
+                }`}>
+                  {sessionCount} session{sessionCount !== 1 ? 's' : ''}
+                </p>
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* ── Content Area ── */}
-      <div className="max-w-6xl mx-auto px-8 py-10">
+      {/* ── Main Content ── */}
+      <div className="px-8 py-8">
         {currentStageData && (
-          <div className="space-y-8">
-            {/* Stage title bar */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div
-                  className="w-10 h-10 rounded-xl text-white text-sm font-bold flex items-center justify-center shadow-md"
-                  style={{ backgroundColor: currentStageColor }}
-                >
-                  {activeStage}
+          <div className="flex flex-col lg:flex-row gap-6 items-start">
+            {/* ── Left: Session List + Tools ── */}
+            <div className="w-full lg:w-64 flex-shrink-0 space-y-4 lg:sticky lg:top-6">
+              {/* Sessions */}
+              <div className="bg-white rounded-2xl border border-border p-4 shadow-sm">
+                <div className="px-1 mb-4 pb-3 border-b border-border">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-lm-ink-muted">Sessions</p>
                 </div>
-                <div>
-                  <h2 className="text-xl font-display font-bold text-lm-dark">
-                    Stage {activeStage}: {currentStageData.name}
-                  </h2>
-                  <p className="text-lm-ink-muted text-sm">{currentStageData.subtitle}</p>
+                <SessionList
+                  sessions={currentStageData.sessions}
+                  activeId={getActiveSessionId(activeStage)}
+                  onSelect={handleSessionSelect}
+                />
+              </div>
+
+              {/* Tools & Reference */}
+              <div className="bg-white rounded-2xl border border-border p-4 shadow-sm">
+                <div className="px-1 mb-3 pb-3 border-b border-border">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-lm-ink-muted">Tools & Reference</p>
+                </div>
+                <div className="space-y-1">
+                  {/* Activities & Tools — inline view toggle */}
+                  <button
+                    onClick={() => setViewMode(viewMode === 'activities' ? 'session' : 'activities')}
+                    className={`w-full text-left flex items-start gap-3 px-3 py-3 rounded-xl transition-all group focus:outline-none ${
+                      viewMode === 'activities' ? 'bg-lm-dark' : 'hover:bg-lm-subtle'
+                    }`}
+                  >
+                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${
+                      viewMode === 'activities' ? 'bg-lm-green/20' : 'bg-lm-subtle group-hover:bg-lm-sunken'
+                    }`}>
+                      <Zap className={`w-3.5 h-3.5 ${viewMode === 'activities' ? 'text-lm-green' : 'text-lm-ink-mid'}`} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className={`text-sm font-semibold leading-tight ${viewMode === 'activities' ? 'text-white' : 'text-lm-dark'}`}>
+                        Activities & Tools
+                      </p>
+                      <p className={`text-[11px] mt-0.5 leading-snug ${viewMode === 'activities' ? 'text-white/40' : 'text-lm-ink-muted'}`}>
+                        Drills, exercises & tasks
+                      </p>
+                    </div>
+                  </button>
+
+                  {/* External nav items */}
+                  {[
+                    { icon: FileText, label: 'LMQ Criteria', sub: 'Grades, levels & standards', page: 'lmq-reference' },
+                    { icon: MessageSquareQuote, label: 'Guided Feedback', sub: 'CRC & GROW tools', page: 'feedback' },
+                  ].map(({ icon: Icon, label, sub, page }) => (
+                    <button
+                      key={label}
+                      onClick={() => onNavigate?.(page)}
+                      className="w-full text-left flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-lm-subtle transition-all group focus:outline-none"
+                    >
+                      <div className="w-7 h-7 rounded-lg bg-lm-subtle flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-lm-sunken transition-colors">
+                        <Icon className="w-3.5 h-3.5 text-lm-ink-mid" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center justify-between gap-1">
+                          <p className="text-sm font-semibold text-lm-dark leading-tight">{label}</p>
+                          <ArrowUpRight className="w-3 h-3 text-lm-ink-muted/40 flex-shrink-0 group-hover:text-lm-ink-muted transition-colors" />
+                        </div>
+                        <p className="text-[11px] text-lm-ink-muted mt-0.5 leading-snug">{sub}</p>
+                      </div>
+                    </button>
+                  ))}
                 </div>
               </div>
-              <Badge variant="outline" className="hidden sm:flex gap-1.5">
-                <Clock className="w-3 h-3" />
-                {currentStageData.duration}
-              </Badge>
             </div>
 
-            {/* Session step indicator */}
-            <div className="bg-white rounded-2xl border border-border p-6 shadow-sm">
-              <SessionNav
-                sessions={currentStageData.sessions}
-                activeId={getActiveSessionId(activeStage)}
-                onSelect={(id) => setActiveSessions((prev) => ({ ...prev, [activeStage]: id }))}
-              />
-            </div>
-
-            {/* Active session content */}
-            {currentSession && (
-              <div className="bg-white rounded-2xl border border-border p-8 shadow-sm">
-                <div className="mb-8 pb-6 border-b border-border">
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: currentStageColor }} />
-                    <h3 className="text-lg font-bold text-lm-dark">{currentSession.title}</h3>
-                  </div>
-                  <p className="text-lm-ink-muted text-sm mt-1 ml-5">{currentSession.subtitle}</p>
-                </div>
-                <SessionContent key={currentSession.id} session={currentSession} stageColor={currentStageColor} />
+            {/* ── Right: Session Workspace / Activities ── */}
+            <div className="flex-1 min-w-0">
+              <div className="bg-white rounded-2xl border border-border px-8 py-7 shadow-sm">
+                {viewMode === 'activities' ? (
+                  <ActivitiesView groups={currentStageData.keActivities || []} />
+                ) : currentSession ? (
+                  <SessionWorkspace
+                    key={currentSession.id}
+                    session={currentSession}
+                    stageColor={currentStageColor}
+                    activeTab={activeTab}
+                    onTabChange={setActiveTab}
+                  />
+                ) : (
+                  <p className="text-lm-ink-muted text-sm">Select a session to begin.</p>
+                )}
               </div>
-            )}
+            </div>
           </div>
         )}
       </div>

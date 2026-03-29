@@ -52,7 +52,7 @@ function App() {
       case 'assessments':
         return <AssessmentCenter />;
       case 'development':
-        return <DevelopmentPathway />;
+        return <DevelopmentPathway onNavigate={handleNavigate} />;
       case 'coach-path':
         return <ClubCoachPath />;
       case 'lmq-reference':
