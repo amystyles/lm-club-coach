@@ -85,7 +85,7 @@ export function InstructorProfile({ instructorId, onBack, source }: InstructorPr
   const backLabel = source === 'roster' ? '← Back to Team' : '← Back to Dashboard';
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background -mx-6 -mt-6">
 
       {/* Header banner */}
       <div className="bg-lm-dark text-white px-6 pt-4 pb-8">

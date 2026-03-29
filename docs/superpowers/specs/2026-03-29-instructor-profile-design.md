@@ -195,7 +195,7 @@ Helper: average of present (non-null) grades only.
 | 6 (deliver independently) | stage | S1→1, S2→2, S3→3, S4→4, S5→5 |
 | 7 (mentor others) | avg of present grades from {coaching, connection} + stage check | avg<2→1, avg≥2+stage<4→2, avg≥2+stage≥4→3, avg≥3+stage=5→5 |
 
-**Stage 1-2 cap:** ETAs 0–4 and 7 are capped at Level 2 max for Stage 1-2 instructors (ETAs 5 and 6 use stage directly so no additional cap needed).
+**Stage 1-2 cap:** ETAs 0–4 are capped at Level 2 max for Stage 1-2 instructors; ETA 7 (mentor others) is capped at Level 1 (Observe only) — a Stage 1-2 instructor cannot yet mentor others (ETAs 5 and 6 use stage directly so no additional cap needed).
 
 **Average rounding:** `Math.round(avg)` before applying grade→level rule.
 
