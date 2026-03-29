@@ -11,7 +11,7 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@
 import { Users, TrendingUp, ClipboardList, AlertTriangle } from 'lucide-react';
 
 interface DashboardProps {
-  onViewInstructor: (id: string) => void;
+  onViewInstructor: (id: string, source: 'dashboard' | 'roster') => void;
 }
 
 
@@ -212,7 +212,7 @@ export default function Dashboard({ onViewInstructor }: DashboardProps) {
               <Card
                 key={instructor.id}
                 className="cursor-pointer hover:shadow-md transition-shadow"
-                onClick={() => onViewInstructor(instructor.id)}
+                onClick={() => onViewInstructor(instructor.id, 'dashboard')}
               >
                 <CardContent className="pt-6 space-y-4">
                   <div className="flex items-center gap-3">
@@ -322,7 +322,7 @@ export default function Dashboard({ onViewInstructor }: DashboardProps) {
                           className="text-xs"
                           onClick={(e) => {
                             e.stopPropagation();
-                            if (instructor) onViewInstructor(instructor.id);
+                            if (instructor) onViewInstructor(instructor.id, 'dashboard');
                           }}
                         >
                           View

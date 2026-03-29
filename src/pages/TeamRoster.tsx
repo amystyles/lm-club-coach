@@ -28,7 +28,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Search, ChevronRight, Users, AlertTriangle, TrendingUp } from 'lucide-react';
 
 interface TeamRosterProps {
-  onViewInstructor: (id: string) => void;
+  onViewInstructor: (id: string, source: 'dashboard' | 'roster') => void;
 }
 
 const GRADE_COLORS: Record<number, string> = {
@@ -307,7 +307,7 @@ export default function TeamRoster({ onViewInstructor }: TeamRosterProps) {
                     className={`border-b border-lm-sunken transition-colors cursor-pointer group ${
                       isAtRisk ? 'hover:bg-red-50/50' : 'hover:bg-lm-subtle/60'
                     }`}
-                    onClick={() => onViewInstructor(instructor.id)}
+                    onClick={() => onViewInstructor(instructor.id, 'roster')}
                   >
                     {/* Instructor */}
                     <TableCell className="py-3">

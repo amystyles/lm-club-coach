@@ -10,6 +10,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 interface InstructorProfileProps {
   instructorId: string;
   onBack: () => void;
+  source?: 'dashboard' | 'roster';
 }
 
 const SKILLS_DEMONSTRATED = {

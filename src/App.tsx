@@ -23,14 +23,16 @@ const PAGE_TITLES: Record<string, { title: string; subtitle?: string }> = {
 function App() {
   const [activePage, setActivePage] = useState('dashboard');
   const [selectedInstructorId, setSelectedInstructorId] = useState<string | null>(null);
+  const [previousPage, setPreviousPage] = useState<'dashboard' | 'roster'>('dashboard');
 
-  const handleViewInstructor = (id: string) => {
+  const handleViewInstructor = (id: string, source: 'dashboard' | 'roster' = 'dashboard') => {
     setSelectedInstructorId(id);
+    setPreviousPage(source);
     setActivePage('profile');
   };
 
   const handleBackFromProfile = () => {
-    setActivePage('dashboard');
+    setActivePage(previousPage);
     setSelectedInstructorId(null);
   };
 
@@ -46,9 +48,9 @@ function App() {
   const renderPage = () => {
     switch (activePage) {
       case 'dashboard':
-        return <Dashboard onViewInstructor={handleViewInstructor} />;
+        return <Dashboard onViewInstructor={(id) => handleViewInstructor(id, 'dashboard')} />;
       case 'roster':
-        return <TeamRoster onViewInstructor={handleViewInstructor} />;
+        return <TeamRoster onViewInstructor={(id) => handleViewInstructor(id, 'roster')} />;
       case 'assessments':
         return <AssessmentCenter />;
       case 'development':
@@ -64,12 +66,13 @@ function App() {
           <InstructorProfile
             instructorId={selectedInstructorId}
             onBack={handleBackFromProfile}
+            source={previousPage}
           />
         ) : (
-          <Dashboard onViewInstructor={handleViewInstructor} />
+          <Dashboard onViewInstructor={(id) => handleViewInstructor(id, 'dashboard')} />
         );
       default:
-        return <Dashboard onViewInstructor={handleViewInstructor} />;
+        return <Dashboard onViewInstructor={(id) => handleViewInstructor(id, 'dashboard')} />;
     }
   };
 
