@@ -276,8 +276,8 @@ Card with `border-l-4 border-lm-green bg-lm-subtle/40`. Title "Current Focus", s
 **Intentions map:**
 ```ts
 const INTENTIONS: Record<KeyElement, string> = {
-  connection: "If I start the warm-up track, then I will make eye contact with 3 people in the back row and use their names.",
-  choreography: "If I reach Track 4, then I will face the mirror and use the 3-2-1 countdown before every transition.",
+  connection: "If I'm coaching a working track, then I will scan all four quadrants and use one participant's name before the track ends.",
+  choreography: "If I feel myself falling behind the music in a transition, then I will hold the current move for one extra count, reset my timing, and cue the next exercise cleanly.",
   coaching: "If I see someone struggling with form, then I will move toward them, mirror the correct movement, and give one specific correction.",
   technique: "If I begin the squat track, then I will check my own alignment in the mirror and demonstrate one perfect rep before cueing participants.",
   performance: "If the music peaks, then I will commit fully to the energy — no holding back — and let my expression lead the room.",
