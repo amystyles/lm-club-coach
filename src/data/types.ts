@@ -14,12 +14,17 @@ export interface KeyElementGrade {
 
 export type KeyElement = 'choreography' | 'technique' | 'coaching' | 'connection' | 'performance';
 
+export interface ProgramEntry {
+  name: string;
+  lmqLevel: LMQLevel;
+}
+
 export interface Instructor {
   id: string;
   name: string;
   initials: string;
   avatar?: string;
-  programs: string[];
+  programs: ProgramEntry[];
   stage: Stage;
   lmqLevel: LMQLevel;
   grades: KeyElementGrade[];
