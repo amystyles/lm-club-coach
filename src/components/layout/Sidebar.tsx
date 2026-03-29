@@ -59,7 +59,7 @@ const navItems: NavItem[] = [
     ),
   },
   {
-    id: 'pathway',
+    id: 'coach-path',
     label: 'Club Coach Path',
     icon: (
       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -68,7 +68,7 @@ const navItems: NavItem[] = [
     ),
   },
   {
-    id: 'reference',
+    id: 'lmq-reference',
     label: 'LMQ Reference',
     icon: (
       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
