@@ -689,25 +689,32 @@ function SessionList({
   onSelect: (id: string) => void;
 }) {
   return (
-    <div className="space-y-1">
-      {sessions.map((session) => {
+    <div className="space-y-0.5">
+      {sessions.map((session, idx) => {
         const isActive = session.id === activeId;
         return (
           <button
             key={session.id}
             onClick={() => onSelect(session.id)}
-            className={`w-full text-left px-3 py-3 rounded-xl transition-all focus:outline-none ${
+            className={`w-full text-left px-3 py-4 rounded-xl transition-all focus:outline-none flex items-start gap-3 ${
               isActive ? 'bg-lm-dark shadow-sm' : 'hover:bg-lm-subtle'
             }`}
           >
-            <p className={`text-sm font-semibold leading-tight ${isActive ? 'text-white' : 'text-lm-dark'}`}>
-              {session.title}
-            </p>
-            {session.sessionPlan && (
-              <p className={`text-xs mt-0.5 ${isActive ? 'text-white/40' : 'text-lm-ink-muted'}`}>
-                {session.sessionPlan.totalDuration}
+            <span className={`text-[10px] font-bold tabular-nums mt-0.5 flex-shrink-0 w-4 ${
+              isActive ? 'text-white/30' : 'text-lm-ink-muted/40'
+            }`}>
+              {String(idx + 1).padStart(2, '0')}
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className={`text-sm font-medium leading-snug ${isActive ? 'text-white' : 'text-lm-dark'}`}>
+                {session.title}
               </p>
-            )}
+              {session.sessionPlan && (
+                <p className={`text-xs mt-1 ${isActive ? 'text-white/40' : 'text-lm-ink-muted'}`}>
+                  {session.sessionPlan.totalDuration}
+                </p>
+              )}
+            </div>
           </button>
         );
       })}
@@ -876,7 +883,7 @@ export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page:
             <div className="w-full lg:w-64 flex-shrink-0 space-y-4 lg:sticky lg:top-6">
               {/* Sessions */}
               <div className="bg-white rounded-2xl border border-border p-4 shadow-sm">
-                <div className="px-1 mb-4 pb-3 border-b border-border">
+                <div className="px-1 mb-6 pb-3 border-b border-border">
                   <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-lm-ink-muted">Sessions</p>
                 </div>
                 <SessionList

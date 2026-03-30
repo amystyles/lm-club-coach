@@ -34,8 +34,8 @@ export const GRADE_LABELS = {
 export const STAGE_DATA = [
   { stage: 1, name: 'Onboarding', subtitle: 'Pre-Training', color: '#0A0A0A', duration: '21 Days Before IT' },
   { stage: 2, name: 'IT \u2192 Certification', subtitle: '30 days to cert submission', color: '#333333', duration: '30 Days' },
-  { stage: 3, name: 'Ready to Teach', subtitle: 'Post-cert to first slot', color: '#00CC4F', duration: 'Weeks 1-12' },
-  { stage: 4, name: 'On Timetable', subtitle: 'Nailing the basics', color: '#00FF63', duration: 'Ongoing' },
+  { stage: 3, name: 'Ready to Teach', subtitle: 'Post-cert to first slot', color: '#0EA5E9', duration: 'Weeks 1-12' },
+  { stage: 4, name: 'On Timetable', subtitle: 'Nailing the basics', color: '#F59E0B', duration: 'Ongoing' },
   { stage: 5, name: 'Advanced', subtitle: 'Grade 2 Push & Growing Impact', color: '#5B3A8A', duration: '6–18+ months' },
   { stage: 6, name: 'World-Class', subtitle: 'Mastery & influence', color: '#FF623E', duration: 'Ongoing' },
 ];
