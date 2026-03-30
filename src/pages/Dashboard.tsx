@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { Instructor } from '@/data/types';
 import { instructors, assessments, STAGE_DATA, KEY_ELEMENT_LABELS } from '@/data/mock-data';
 import KeyElementHeatmap from '@/components/KeyElementHeatmap';
@@ -8,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
-import { Users, TrendingUp, ClipboardList, AlertTriangle } from 'lucide-react';
+import { Users, TrendingUp, ClipboardList, AlertTriangle, ChevronRight } from 'lucide-react';
 
 interface DashboardProps {
   onViewInstructor: (id: string, source: 'dashboard' | 'roster') => void;
@@ -72,6 +73,14 @@ function getStageDistribution(): Record<number, number> {
   return dist;
 }
 
+const NEXT_MILESTONE: Record<number, string> = {
+  1: 'Complete IT submission',
+  2: 'Submit full class video for Certification',
+  3: 'Get on club timetable',
+  4: 'Eligible for Grade Review',
+  5: 'Continue development & mentor others',
+};
+
 
 export default function Dashboard({ onViewInstructor }: DashboardProps) {
   const averageLMQ = (
@@ -84,7 +93,16 @@ export default function Dashboard({ onViewInstructor }: DashboardProps) {
   ).length;
 
   const stageDist = getStageDistribution();
-  const maxStageCount = Math.max(...Object.values(stageDist));
+  const [expandedStages, setExpandedStages] = useState<Set<number>>(new Set());
+
+  const toggleStage = (stage: number) => {
+    setExpandedStages(prev => {
+      const next = new Set(prev);
+      if (next.has(stage)) next.delete(stage);
+      else next.add(stage);
+      return next;
+    });
+  };
 
   const scheduledAssessments = assessments.filter((a) => a.status === 'scheduled');
 
@@ -164,27 +182,48 @@ export default function Dashboard({ onViewInstructor }: DashboardProps) {
           <CardHeader className="pb-3">
             <CardTitle>Development Stages</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3">
+          <CardContent className="space-y-1">
             {STAGE_DATA.map((stageInfo) => {
               const count = stageDist[stageInfo.stage] || 0;
-              const percentage = maxStageCount > 0 ? (count / maxStageCount) * 100 : 0;
+              const isExpanded = expandedStages.has(stageInfo.stage);
+              const stageInstructors = instructors.filter(i => i.stage === stageInfo.stage);
               return (
-                <div key={stageInfo.stage} className="flex items-center gap-2">
-                  <div
-                    className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                    style={{ backgroundColor: stageInfo.color }}
+                <div key={stageInfo.stage}>
+                  <button
+                    onClick={() => toggleStage(stageInfo.stage)}
+                    className="w-full flex items-center gap-2 py-2 px-1 rounded hover:bg-slate-50 cursor-pointer transition-colors text-left"
                   >
-                    <span className="text-xs font-bold text-white">{stageInfo.stage}</span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 truncate">{stageInfo.name}</p>
-                    <p className="text-xs text-gray-500">{count} instructor{count !== 1 ? 's' : ''}</p>
-                  </div>
-                  <div className="w-16 h-2 bg-slate-100 rounded overflow-hidden flex-shrink-0">
-                    <div
-                      className="h-full"
-                      style={{ width: `${percentage}%`, backgroundColor: stageInfo.color }}
+                    <ChevronRight
+                      className={`w-3.5 h-3.5 text-muted-foreground flex-shrink-0 transition-transform duration-200 ${isExpanded ? 'rotate-90' : ''}`}
                     />
+                    <div
+                      className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
+                      style={{ backgroundColor: stageInfo.color }}
+                    >
+                      <span className="text-xs font-bold text-white">{stageInfo.stage}</span>
+                    </div>
+                    <span className="flex-1 text-sm font-medium text-foreground truncate">{stageInfo.name}</span>
+                    <span className="text-xs text-muted-foreground flex-shrink-0">({count})</span>
+                  </button>
+
+                  <div className={`overflow-hidden transition-all duration-200 ${isExpanded ? 'max-h-96' : 'max-h-0'}`}>
+                    <div className="pl-10 pb-2 space-y-1.5">
+                      {stageInstructors.map(instructor => {
+                        const riskBg = instructor.riskLevel === 'high'
+                          ? 'bg-red-100 text-red-800'
+                          : 'bg-yellow-100 text-yellow-800';
+                        const riskLabel = instructor.riskLevel === 'high' ? 'High Risk' : 'At Risk';
+                        return (
+                          <div key={instructor.id} className="flex items-center gap-2 flex-wrap">
+                            <span className="text-sm font-medium text-foreground">{instructor.name}</span>
+                            <span className="text-xs text-muted-foreground">— {NEXT_MILESTONE[stageInfo.stage]}</span>
+                            {instructor.riskLevel !== 'low' && (
+                              <Badge className={`text-xs ${riskBg}`} variant="outline">{riskLabel}</Badge>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               );
