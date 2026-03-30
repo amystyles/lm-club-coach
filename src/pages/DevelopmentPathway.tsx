@@ -433,12 +433,147 @@ function SessionWorkspace({
 }
 
 /* ─────────────────────────────────────────────
+   Activity Detail — full panel for one activity
+   ───────────────────────────────────────────── */
+function ActivityDetail({
+  item,
+  elementName,
+  elementColor,
+  isDone,
+  onToggle,
+  onBack,
+}: {
+  item: KEActivityGroup['items'][number];
+  elementName: string;
+  elementColor: string;
+  isDone: boolean;
+  onToggle: () => void;
+  onBack: () => void;
+}) {
+  return (
+    <div className="space-y-6">
+      {/* Back link */}
+      <button
+        onClick={onBack}
+        className="flex items-center gap-1.5 text-sm text-lm-ink-muted hover:text-lm-dark transition-colors focus:outline-none"
+      >
+        <span className="text-base leading-none">←</span>
+        <span>Back to Activities</span>
+      </button>
+
+      {/* Title + meta */}
+      <div>
+        <div className="flex items-center gap-2 mb-3 flex-wrap">
+          <span
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white"
+            style={{ backgroundColor: elementColor }}
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-white/60" />
+            {elementName}
+          </span>
+          <span className="inline-flex items-center gap-1 text-xs font-semibold text-lm-ink-muted bg-lm-subtle border border-lm-sunken px-2.5 py-1 rounded-full">
+            <Clock className="w-3 h-3" />
+            {item.duration}
+          </span>
+          {isDone && (
+            <span className="inline-flex items-center gap-1 text-xs font-semibold text-green-700 bg-green-50 border border-green-200 px-2.5 py-1 rounded-full">
+              <CheckCircle2 className="w-3 h-3" />
+              Completed
+            </span>
+          )}
+        </div>
+        <h3 className={`text-2xl font-display font-bold leading-tight ${isDone ? 'text-lm-ink-muted' : 'text-lm-dark'}`}>
+          {item.title}
+        </h3>
+      </div>
+
+      {/* Description */}
+      <p className="text-lm-ink-mid text-sm leading-relaxed">{item.description}</p>
+
+      {/* Video or self-directed */}
+      {item.video ? (
+        <div className="rounded-xl border border-border bg-lm-subtle overflow-hidden">
+          <div className="aspect-video bg-lm-dark/5 flex flex-col items-center justify-center gap-3">
+            <div className="w-12 h-12 rounded-full bg-lm-dark/10 flex items-center justify-center">
+              <Eye className="w-5 h-5 text-lm-ink-mid" />
+            </div>
+            <p className="text-xs text-lm-ink-muted">Video preview not available</p>
+          </div>
+          <div className="px-4 py-3 border-t border-border flex items-center justify-between">
+            <span className="text-xs text-lm-ink-muted">Masterclass video required</span>
+            <a
+              href="#"
+              data-program={item.video.program}
+              data-video-type="masterclass"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-lm-dark bg-white border border-border px-3 py-1.5 rounded-lg hover:bg-lm-subtle transition-colors"
+            >
+              {item.video.label}
+              <ArrowUpRight className="w-3 h-3" />
+            </a>
+          </div>
+        </div>
+      ) : (
+        <div className="flex items-center gap-2.5 px-4 py-3 rounded-xl bg-lm-subtle border border-lm-sunken">
+          <FileText className="w-4 h-4 text-lm-ink-muted flex-shrink-0" />
+          <p className="text-xs text-lm-ink-muted font-medium">Self-directed activity — no video required</p>
+        </div>
+      )}
+
+      {/* Steps */}
+      <div>
+        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-lm-ink-muted mb-3">Steps</p>
+        <ol className="space-y-3">
+          {item.steps.map((step, i) => (
+            <li key={i} className="flex gap-3">
+              <span
+                className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white mt-0.5"
+                style={{ backgroundColor: elementColor }}
+              >
+                {i + 1}
+              </span>
+              <p className="text-sm text-lm-ink-mid leading-relaxed pt-0.5">{step}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      {/* Mark complete */}
+      <div className="pt-2">
+        <button
+          onClick={onToggle}
+          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all focus:outline-none ${
+            isDone
+              ? 'bg-lm-subtle border border-lm-sunken text-lm-ink-muted hover:border-lm-ink-muted/40'
+              : 'text-white shadow-sm hover:opacity-90'
+          }`}
+          style={isDone ? {} : { backgroundColor: elementColor }}
+        >
+          {isDone ? (
+            <>
+              <Check className="w-4 h-4" />
+              Mark Incomplete
+            </>
+          ) : (
+            <>
+              <CheckCircle2 className="w-4 h-4" />
+              Mark Complete
+            </>
+          )}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
    Activities View — KE-organized tools panel
    ───────────────────────────────────────────── */
 function ActivitiesView({ groups }: { groups: KEActivityGroup[] }) {
   const [checked, setChecked] = React.useState<Record<string, boolean>>({});
+  const [selected, setSelected] = React.useState<{ groupIndex: number; itemIndex: number } | null>(null);
 
-  const toggle = (key: string) => setChecked((prev) => ({ ...prev, [key]: !prev[key] }));
+  const makeKey = (gi: number, ii: number) => `${groups[gi]?.element}-${ii}`;
+  const toggle = (k: string) => setChecked((prev) => ({ ...prev, [k]: !prev[k] }));
 
   if (!groups.length) {
     return (
@@ -447,6 +582,23 @@ function ActivitiesView({ groups }: { groups: KEActivityGroup[] }) {
         <p className="text-lm-ink-muted text-sm font-medium">No activities yet for this stage</p>
         <p className="text-lm-ink-muted/60 text-xs mt-1">Activities will be added as sessions are built out.</p>
       </div>
+    );
+  }
+
+  // Detail view
+  if (selected !== null) {
+    const group = groups[selected.groupIndex];
+    const item = group.items[selected.itemIndex];
+    const k = makeKey(selected.groupIndex, selected.itemIndex);
+    return (
+      <ActivityDetail
+        item={item}
+        elementName={group.element}
+        elementColor={group.color}
+        isDone={!!checked[k]}
+        onToggle={() => toggle(k)}
+        onBack={() => setSelected(null)}
+      />
     );
   }
 
@@ -469,8 +621,8 @@ function ActivitiesView({ groups }: { groups: KEActivityGroup[] }) {
 
       {/* KE sections */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        {groups.map((group) => {
-          const groupChecked = group.items.filter((_, i) => checked[`${group.element}-${i}`]).length;
+        {groups.map((group, gi) => {
+          const groupChecked = group.items.filter((_, ii) => checked[makeKey(gi, ii)]).length;
           return (
             <div key={group.element} className="bg-white rounded-2xl border border-border overflow-hidden shadow-sm">
               {/* KE header */}
@@ -486,33 +638,32 @@ function ActivitiesView({ groups }: { groups: KEActivityGroup[] }) {
 
               {/* Activity items */}
               <div className="divide-y divide-lm-sunken">
-                {group.items.map((item, i) => {
-                  const key = `${group.element}-${i}`;
-                  const isDone = checked[key];
+                {group.items.map((item, ii) => {
+                  const k = makeKey(gi, ii);
+                  const isDone = !!checked[k];
                   return (
                     <button
-                      key={key}
-                      onClick={() => toggle(key)}
+                      key={k}
+                      onClick={() => setSelected({ groupIndex: gi, itemIndex: ii })}
                       className="w-full text-left flex items-start gap-3.5 px-5 py-4 hover:bg-lm-subtle/50 transition-colors focus:outline-none group"
                     >
-                      {/* Checkbox */}
-                      <div className={`flex-shrink-0 mt-0.5 w-4.5 h-4.5 rounded border-2 flex items-center justify-center transition-all ${
-                        isDone ? 'border-transparent' : 'border-lm-sunken group-hover:border-lm-ink-muted/40'
-                      }`}
+                      <div
+                        className={`flex-shrink-0 mt-0.5 w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ${
+                          isDone ? 'border-transparent' : 'border-lm-sunken group-hover:border-lm-ink-muted/40'
+                        }`}
                         style={isDone ? { backgroundColor: group.color } : {}}
                       >
                         {isDone && <Check className="w-2.5 h-2.5 text-white" />}
                       </div>
-                      <div className="min-w-0">
+                      <div className="min-w-0 flex-1">
                         <p className={`text-sm font-semibold leading-snug transition-colors ${isDone ? 'text-lm-ink-muted line-through' : 'text-lm-dark'}`}>
                           {item.title}
                         </p>
-                        {item.description && (
-                          <p className={`text-xs mt-0.5 leading-snug ${isDone ? 'text-lm-ink-muted/60' : 'text-lm-ink-muted'}`}>
-                            {item.description}
-                          </p>
-                        )}
+                        <p className={`text-xs mt-0.5 leading-snug ${isDone ? 'text-lm-ink-muted/60' : 'text-lm-ink-muted'}`}>
+                          {item.duration}{item.video ? ' · Video' : ''}
+                        </p>
                       </div>
+                      <ArrowUpRight className="w-3.5 h-3.5 text-lm-ink-muted/30 flex-shrink-0 mt-0.5 group-hover:text-lm-ink-muted transition-colors rotate-45" />
                     </button>
                   );
                 })}
@@ -702,35 +853,38 @@ export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page:
                 />
               </div>
 
-              {/* Tools & Reference */}
+              {/* Activities & Tools — promoted to own card */}
+              <button
+                onClick={() => setViewMode(viewMode === 'activities' ? 'session' : 'activities')}
+                className={`w-full text-left rounded-2xl border p-4 shadow-sm transition-all focus:outline-none ${
+                  viewMode === 'activities'
+                    ? 'bg-lm-dark border-lm-dark'
+                    : 'bg-white border-border hover:border-lm-ink-muted/30'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors ${
+                    viewMode === 'activities' ? 'bg-lm-green/20' : 'bg-lm-subtle'
+                  }`}>
+                    <Zap className={`w-4 h-4 ${viewMode === 'activities' ? 'text-lm-green' : 'text-lm-ink-mid'}`} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className={`text-sm font-bold leading-tight ${viewMode === 'activities' ? 'text-white' : 'text-lm-dark'}`}>
+                      Activities & Tools
+                    </p>
+                    <p className={`text-[11px] mt-0.5 ${viewMode === 'activities' ? 'text-white/50' : 'text-lm-ink-muted'}`}>
+                      {currentStageData.keActivities?.reduce((s, g) => s + g.items.length, 0) ?? 0} activities
+                    </p>
+                  </div>
+                </div>
+              </button>
+
+              {/* Reference links */}
               <div className="bg-white rounded-2xl border border-border p-4 shadow-sm">
                 <div className="px-1 mb-3 pb-3 border-b border-border">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-lm-ink-muted">Tools & Reference</p>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-lm-ink-muted">Reference</p>
                 </div>
                 <div className="space-y-1">
-                  {/* Activities & Tools — inline view toggle */}
-                  <button
-                    onClick={() => setViewMode(viewMode === 'activities' ? 'session' : 'activities')}
-                    className={`w-full text-left flex items-start gap-3 px-3 py-3 rounded-xl transition-all group focus:outline-none ${
-                      viewMode === 'activities' ? 'bg-lm-dark' : 'hover:bg-lm-subtle'
-                    }`}
-                  >
-                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${
-                      viewMode === 'activities' ? 'bg-lm-green/20' : 'bg-lm-subtle group-hover:bg-lm-sunken'
-                    }`}>
-                      <Zap className={`w-3.5 h-3.5 ${viewMode === 'activities' ? 'text-lm-green' : 'text-lm-ink-mid'}`} />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className={`text-sm font-semibold leading-tight ${viewMode === 'activities' ? 'text-white' : 'text-lm-dark'}`}>
-                        Activities & Tools
-                      </p>
-                      <p className={`text-[11px] mt-0.5 leading-snug ${viewMode === 'activities' ? 'text-white/40' : 'text-lm-ink-muted'}`}>
-                        Drills, exercises & tasks
-                      </p>
-                    </div>
-                  </button>
-
-                  {/* External nav items */}
                   {[
                     { icon: FileText, label: 'LMQ Criteria', sub: 'Grades, levels & standards', page: 'lmq-reference' },
                     { icon: MessageSquareQuote, label: 'Guided Feedback', sub: 'CRC & GROW tools', page: 'feedback' },

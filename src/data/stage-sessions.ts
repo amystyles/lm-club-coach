@@ -71,7 +71,13 @@ export interface Session {
 
 export interface KEActivityItem {
   title: string;
-  description?: string;
+  description: string;
+  duration: string;
+  steps: string[];
+  video?: {
+    label: string;
+    program?: string;
+  };
 }
 
 export interface KEActivityGroup {
@@ -704,55 +710,287 @@ export const stageDetails: Record<number, StageDetail> = {
         element: 'Choreography',
         color: '#6366f1',
         items: [
-          { title: 'Choreography Notes Breakdown', description: 'identify transitions, tempo changes, track focus' },
-          { title: 'Learning Check', description: 'quiz on counts, sequences, compulsory cues' },
-          { title: 'Allocated Track Preparation', description: 'practice alongside Masterclass video' },
-          { title: 'Self-Film & Review', description: 'identify timing and transition gaps' },
-          { title: 'Masterclass Video — Voices Off', description: 'practice with music only' },
+          {
+            title: 'Choreography Notes Breakdown',
+            description: 'Read through the Release Notes for your allocated track and break them down in your own words. Understanding transitions, tempo changes, and track focus is the foundation of clean delivery — you cannot teach what you do not understand.',
+            duration: '15 min',
+            steps: [
+              'Get your Release Notes for the allocated track',
+              'Read through and mark every transition and tempo change',
+              'Identify the focus for each track (e.g. squat depth, range of motion)',
+              'Write out the full exercise sequence in your own words',
+              'Review your notes against the official Notes to check accuracy',
+            ],
+          },
+          {
+            title: 'Learning Check',
+            description: 'Quiz yourself on the choreography without looking at the notes. Testing from memory reveals the gaps that reading over notes hides — if you cannot recall it, you cannot deliver it under pressure.',
+            duration: '15 min',
+            steps: [
+              'Close the Choreography Notes',
+              'Write from memory: the exercises in order for each track',
+              'Write the count for each exercise',
+              'Write the compulsory cues for each track',
+              'Open the Notes and check your answers — note any gaps',
+            ],
+          },
+          {
+            title: 'Allocated Track Preparation',
+            description: 'Practice your allocated track alongside the Masterclass video until the timing is automatic. The goal is to match the music so precisely that you could perform it with your eyes closed — true automaticity frees your attention for coaching.',
+            duration: '30 min',
+            video: { label: 'Watch Masterclass', program: 'allocated-track' },
+            steps: [
+              'Open the Masterclass video for your allocated track',
+              'Practice the track alongside the video, focusing on matching timing exactly',
+              'When you can follow along comfortably, try leading instead of following',
+              'Repeat until you can perform it without watching the video',
+              'Record yourself and check your timing against the music',
+            ],
+          },
+          {
+            title: 'Self-Film & Review',
+            description: 'Film yourself teaching the track and watch it back with fresh eyes. Self-review exposes issues that feel invisible when you are inside the movement — timing drift, hesitations, and transitions that felt smooth but look choppy.',
+            duration: '30 min',
+            steps: [
+              'Set up your phone to record your full body while teaching',
+              'Teach or practice your allocated track on camera',
+              'Watch the recording back: Am I on the beat? Are transitions clean?',
+              'Note each moment of hesitation or late cueing',
+              'Write down 2–3 specific things to fix before your next practice',
+            ],
+          },
+          {
+            title: 'Masterclass Video — Voices Off',
+            description: 'Practice with the Masterclass video but mute the presenter, using only the music as your guide. If you need the voice to stay on track, you are following — not leading. Music-only practice reveals whether the choreography is truly automatic.',
+            duration: '30 min',
+            video: { label: 'Watch Masterclass', program: 'allocated-track' },
+            steps: [
+              'Open the Masterclass video for your allocated track',
+              'Mute the presenter\'s voice (not the music)',
+              'Attempt to lead the track using only the music as your guide',
+              'Note any moments where you lost your place or the timing',
+              'Repeat until you can lead through the full track without the voice',
+            ],
+          },
         ],
       },
       {
         element: 'Technique',
         color: '#f59e0b',
         items: [
-          { title: 'Technique Practice Worksheets', description: 'note Position Setup and Execution Setup' },
-          { title: 'Self-Film & Compare', description: 'film yourself, compare to Masterclass video' },
-          { title: 'Self-Film & Compare', description: 'compare technique to Masterclass video' },
+          {
+            title: 'Technique Practice Worksheets',
+            description: 'Write out the Position Setup and Execution Setup for each exercise using the N.E.T.T. framework. Writing forces precision — you cannot hide vague technique knowledge behind physical habit when you have to put it into words.',
+            duration: '20 min',
+            steps: [
+              'List every exercise in your allocated track',
+              'For each exercise, write the Name and full Execution setup (N.E.T.T.)',
+              'Write the Position Setup — what does correct starting position look like?',
+              'Write the Target Zones — what muscles are working?',
+              'Review against the Technique Reference to check accuracy',
+            ],
+          },
+          {
+            title: 'Self-Film & Compare',
+            description: 'Film yourself performing key exercises and compare them side-by-side with the Masterclass video. Seeing the gap between your execution and the standard is more instructive than any description — it makes the correction concrete.',
+            duration: '30 min',
+            video: { label: 'Watch Masterclass', program: 'allocated-track' },
+            steps: [
+              'Open the Masterclass video and identify key exercises to compare',
+              'Film yourself performing each exercise from the same angle',
+              'Play your video side-by-side with the Masterclass',
+              'Check Set Position: are your starting points aligned?',
+              'Check ROM and Control — note your 2–3 biggest differences',
+            ],
+          },
+          {
+            title: 'Self-Film & Compare (Technique Focus)',
+            description: 'Same as Self-Film & Compare, but targeting specifically the exercises you scored lowest on in your last assessment. Focused repetition on weak points accelerates improvement faster than general practice.',
+            duration: '30 min',
+            video: { label: 'Watch Masterclass', program: 'allocated-track' },
+            steps: [
+              'Review your last assessment notes — which exercises scored lowest?',
+              'Film yourself performing those specific exercises',
+              'Compare to the Masterclass video at the same angles',
+              'Focus on Set Position, ROM, and Control for each',
+              'Write a specific corrective action for each gap you find',
+            ],
+          },
         ],
       },
       {
         element: 'Coaching',
         color: '#0A0A0A',
         items: [
-          { title: 'Coaching & Scripting Worksheets', description: 'script Layer 1, 2, 3 cues' },
-          { title: 'Compulsory Cues identification', description: 'from Choreography Notes' },
-          { title: 'Scripting Worksheet', description: 'write out Layer 1, 2, 3 cues per exercise' },
+          {
+            title: 'Coaching & Scripting Worksheets',
+            description: 'Script out your Layer 1, Layer 2, and Layer 3 cues for each exercise word-for-word, then practice saying them aloud. Writing the cues first builds precision — you cannot accidentally ad-lib your way through safety cues in a real class.',
+            duration: '30 min',
+            steps: [
+              'List every exercise in your allocated track',
+              'For each exercise, script your Layer 1 cue (safety and setup)',
+              'Add a Layer 2 cue (improve execution or correct a common error)',
+              'Add a Layer 3 cue (motivate or educate)',
+              'Practice saying all cues aloud — do they feel natural and timed to the music?',
+            ],
+          },
+          {
+            title: 'Compulsory Cues Identification',
+            description: 'Go through your Choreography Notes and highlight every compulsory cue, then label each by coaching layer. Knowing which cues are non-negotiable — and why — means you deliver them even under pressure.',
+            duration: '15 min',
+            steps: [
+              'Open your Choreography Notes and highlight all compulsory cues',
+              'For each one, label it: Layer 1 (safety/setup), Layer 2 (execution), or Layer 3 (motivate)',
+              'Ask: is this cue about safety, improvement, or motivation?',
+              'Confirm you have at least 4 Layer 1 cues marked per track',
+              'Review: are any compulsory cues missing from your current delivery?',
+            ],
+          },
+          {
+            title: 'Scripting Worksheet',
+            description: 'Write out all three coaching layers for every exercise in your allocated track, aiming for specific minimums. Volume and variety in your scripted cues means you always have something real to say — and the best cues become habit.',
+            duration: '30 min',
+            steps: [
+              'List all exercises in your allocated track',
+              'Write at least 4 Layer 1 cues (safety and setup) per track',
+              'Write at least 2 Layer 2 cues (improve execution) per track',
+              'Write at least 2 Layer 3 cues (motivation and education) per track',
+              'Practice delivering all cues aloud, timed to the music',
+            ],
+          },
         ],
       },
       {
         element: 'Connection',
         color: '#ef4444',
         items: [
-          { title: 'Connection Tools Reflection' },
-          { title: 'Facing Fear Tools', description: 'Empowering Belief and Grounding Technique' },
-          { title: 'C.R.C. (Connect, Recommend, Commend)' },
-          { title: 'Four Quadrants', description: 'divide room into 4 sections' },
-          { title: 'C.R.C.', description: 'pause, look, see, respond, acknowledge' },
-          { title: 'Look, See & Respond', description: 'observe before coaching' },
-          { title: 'Teach One Person', description: 'focus direct coaching on one participant' },
+          {
+            title: 'Connection Tools Reflection',
+            description: 'Review the full Connection Tools list and honestly assess which feel natural and which feel forced. Knowing your starting point lets you build on strengths and target the specific tools that will make the most difference in your next class.',
+            duration: '15 min',
+            steps: [
+              'Review the Connection Tools list (Look, See & Respond; CRC; SMARTSTART; Names; Four Quadrants)',
+              'Mark which tools feel natural and which feel forced',
+              'For each forced tool, ask: what makes it feel unnatural?',
+              'Choose 2–3 tools to commit to using in your next class',
+              'Write down exactly when and how you will use each one',
+            ],
+          },
+          {
+            title: 'Facing Fear Tools',
+            description: 'Work through the Empowering Belief and Grounding Technique exercises to identify and reframe your biggest fear about teaching. Fear is normal — the difference is whether it controls you or you control it.',
+            duration: '20 min',
+            steps: [
+              'Write out the biggest fear you have about teaching (be honest)',
+              'Work through the Empowering Belief exercise: what would you tell a nervous friend?',
+              'Reframe your fear into an empowering belief statement',
+              'Practice the Grounding Technique: breathe, root, and anchor yourself',
+              'Read your reframe statement aloud before your next class',
+            ],
+          },
+          {
+            title: 'C.R.C. Practice (Connect, Recommend, Commend)',
+            description: 'Practice the CRC conversation method with a partner or in front of a mirror, timing yourself to deliver it in under 60 seconds. Speed and specificity are the marks of a genuine CRC — practiced delivery makes it feel natural in class.',
+            duration: '15 min',
+            steps: [
+              'Choose a partner or use a mirror',
+              'Connect: make eye contact, use their name, acknowledge what you see',
+              'Recommend one specific thing: name the movement and name the benefit',
+              'Commend their effort: be specific, not generic ("great work")',
+              'Time yourself — aim to deliver a complete CRC in under 60 seconds',
+            ],
+          },
+          {
+            title: 'Four Quadrants',
+            description: 'In your next class, mentally divide the room into four sections and ensure you reach every quadrant with coaching and eye contact. The Four Quadrants habit ensures no participant feels invisible — and removes the natural tendency to coach only the front row.',
+            duration: '10 min',
+            steps: [
+              'Mentally divide the room into 4 sections: front-left, front-right, back-left, back-right',
+              'At the start of class, identify one person in each quadrant',
+              'During each track, make eye contact and deliver at least one cue to each quadrant',
+              'After class, note: which quadrant did I ignore? What got in the way?',
+              'Repeat each class until coaching all four quadrants feels natural',
+            ],
+          },
+          {
+            title: 'C.R.C. In-Class Practice',
+            description: 'During your next class, deliver at least one genuine CRC moment — connect with someone, recommend something specific, commend their effort. The only way to build this habit is to practise it in the real environment where it matters.',
+            duration: '5 min',
+            steps: [
+              'Before class, choose one participant to deliver a CRC moment to',
+              'During the class, find the right moment — during a track, not at the end',
+              'Connect: use their name and make genuine eye contact',
+              'Recommend: give one specific, actionable tip',
+              'Commend: acknowledge their effort immediately and authentically',
+            ],
+          },
+          {
+            title: 'SMARTSTART Practice',
+            description: 'Write and rehearse your class introduction using the SMARTSTART framework, then film it and review. A well-delivered SMARTSTART sets the tone for the whole class — it signals professionalism and reduces anxiety for new participants.',
+            duration: '10 min',
+            steps: [
+              'Write out your SMARTSTART introduction (30–45 seconds)',
+              'Include the SMARTSTART invitation: options for every level',
+              'Film yourself delivering it — does it feel welcoming?',
+              'Review: is it inclusive? Does it reduce anxiety for beginners?',
+              'Refine until it feels natural, not scripted',
+            ],
+          },
+          {
+            title: 'Name Game',
+            description: 'Before your next class, commit to learning three new participant names and using them during the workout. Using someone\'s name in the moment of effort is one of the most powerful connection tools available — it costs nothing and means everything.',
+            duration: '5 min',
+            steps: [
+              'Arrive 5 minutes early and introduce yourself to participants you don\'t know',
+              'Set a goal: learn 3 new names before class starts',
+              'During the workout, use each name at least once with genuine praise',
+              'After class, write down all 3 names to help them stick',
+              'Aim to add 3 new names each class until you know everyone',
+            ],
+          },
         ],
       },
       {
         element: 'Performance',
         color: '#00a844',
         items: [
-          { title: 'Music, Actions, Voice, Amplify & Commit framework' },
-          { title: 'Musical Mapping', description: 'plan vocal contrast and energy delivery' },
-          { title: 'Empowering Beliefs', description: 'replace limiting beliefs before teaching' },
-          { title: 'Music, Actions, Voice framework', description: 'map energy to music' },
-          { title: 'Amplify & Commit', description: 'be your authentic self, but bigger' },
-          { title: '5 Voices', description: 'Conversational, Build, Athletic, Grit, Praise' },
-          { title: 'Musical Mapping', description: 'plan vocal contrast and energy delivery per track' },
+          {
+            title: 'Program Essence Study',
+            description: 'Watch 2–3 Masterclass videos and study how each presenter embodies the Program Essence. Understanding what authentic performance looks like — versus what feels performed — gives you a concrete target to aim for.',
+            duration: '20 min',
+            video: { label: 'Watch Masterclass', program: 'release' },
+            steps: [
+              'Choose 2–3 Masterclass videos from different releases of your program',
+              'Watch each asking: what makes this presenter embody the Program Essence?',
+              'Note specific moments — a look, a vocal choice, a movement',
+              'Ask: what feels authentic versus performed? How do they use the music?',
+              'Write 3 things you will bring into your own teaching',
+            ],
+          },
+          {
+            title: 'Energy Mapping',
+            description: 'Listen to your release music and map the energy arc across the full class: peaks, troughs, builds, and plateaus. Planning where your vocal and physical energy should rise and fall ensures your performance serves the music — not fights it.',
+            duration: '20 min',
+            steps: [
+              'Listen to your full release music without moving',
+              'Map the energy arc: mark peaks, troughs, builds, and plateaus on paper',
+              'Mark where your vocal energy should rise and fall',
+              'Mark where your physical energy should match — and where it should contrast',
+              'Teach the track using your map as a guide and note how close you got',
+            ],
+          },
+          {
+            title: '5 Voices Practice',
+            description: 'Practice using all 5 Voices across a single track, then record yourself and listen back. Most instructors default to one or two Voices — deliberate practice across all five is what builds genuine variety and emotional range.',
+            duration: '15 min',
+            steps: [
+              'Review the 5 Voices: Command, Motivate, Instruct, Encourage, Connect',
+              'Pick one track and assign a Voice to each major section',
+              'Practice the track using only those assigned Voices',
+              'Record yourself — can you hear distinct Voice changes?',
+              'Listen back and note which Voice felt least natural — that is your practice target',
+            ],
+          },
         ],
       },
     ],
