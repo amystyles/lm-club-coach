@@ -1406,14 +1406,251 @@ export const stageDetails: Record<number, StageDetail> = {
               'Grade update against all 5 Key Elements',
               'Feedback on growth across programming',
               'Goals set for next quarter',
+              'Identify Stage 5 readiness: KEs 1–3 at solid Grade 1, Layer 1 coaching automatic, upward LMQ trend',
             ],
           },
         ],
-        proTip: 'Use LMQ assessments as development conversations, not performance reviews. The goal is growth, not grading.',
+        proTip: 'When KEs 1–3 are consistently Grade 1 and coaching is automatic → Ready for Stage 5 — Advanced: Grade 2 push, Connection & Performance awakening, and growing impact.',
       },
     ],
   },
   5: {
+    name: 'Advanced',
+    subtitle: 'Grade 2 Push & Growing Impact',
+    duration: '6–18+ months',
+    color: '#5B3A8A',
+    sessions: [
+      {
+        id: '5-welcome',
+        title: 'Welcome to Advanced',
+        subtitle: 'The long middle — where real development happens',
+        coachRole: {
+          summary: 'Strategic Developer. KEs 1–3 are no longer the focus — they\'re the foundation.',
+          context: 'This instructor no longer needs to think about choreography or basic technique. That frees you to work on something harder: Grade 2 across every element, real connection with participants, and the first signs of performance. This is where timetable instructors become instructors people choose.',
+          principle: 'The goal is no longer consistency — it\'s impact.',
+        },
+        coachingSession: {
+          goals: [
+            'Coach confirms entry criteria: KEs 1–3 at solid Grade 1, Layer 1 automatic, 3+ months on timetable',
+            'Coach and instructor align on Stage 5 timeline and Grade 2 targets',
+            'Second program pathway discussed if first program is solid',
+          ],
+          what: 'KEs 1–3 are automatic — choreography is clean across every release, technique is consistent, Layer 1 coaching is reliable. Now the real development begins: pushing every Key Element toward Grade 2, starting to develop Connection and Performance intentionally, and building the consistency and class following that separates a timetable instructor from one people choose.',
+          why: 'Most instructors spend 6–18+ months here. This is the long middle — not because it\'s slow, but because Grade 2 is genuinely hard. It requires precision, not just effort. The coaches who develop great instructors are patient and specific here: one element at a time, clear targets, honest assessment.',
+          how: [
+            'Confirm entry criteria before formally moving into Stage 5 — don\'t rush the transition',
+            'Set explicit Grade 2 targets for each KE and a realistic timeline (use the 12-month framework as a guide)',
+            'Establish bi-monthly observation minimum — feedback now shifts from basics to 1% improvements',
+            'Introduce KE 4 and KE 5 concepts during feedback — these are being explored, not yet assessed',
+            'Discuss second program readiness: is the first program solid enough to free up development bandwidth?',
+          ],
+        },
+        content: [],
+      },
+      {
+        id: '5-grade2-push',
+        title: 'Grade 2 Push — KEs 1–3',
+        subtitle: 'Months 1–6: Choreography, Technique, Coaching',
+        coachRole: {
+          summary: 'Precision Coach. The basics are done — now you engineer Grade 2.',
+          context: 'Grade 1 was about reliability. Grade 2 is about mastery. Choreography Grade 2 is the gateway to LMQ Level 2+ — everything else unlocks from here. Don\'t move on until choreo is genuinely Grade 2.',
+          principle: 'Choreography Grade 2 is the gateway. Unlock it first.',
+        },
+        keyElementFocus: {
+          title: 'KEs 1–3: From Grade 1 to Grade 2',
+          elements: [
+            { name: 'Choreography', description: 'In time ALL tracks, ≤1 error. Smooth and automatic. New releases integrated within 2 weeks. No longer thinking about the moves — using them.' },
+            { name: 'Technique', description: '100% competency on all major movements. Maintains form under fatigue. Participants trust their own execution because they\'re watching someone who has it.' },
+            { name: 'Coaching', description: 'Layer 1 fully automatic. Layer 2 consistent — intensity cues, option offers, real praise, meaningful correction. Target: ≥4 Layer 2 cues per track.' },
+          ],
+        },
+        coachingSession: {
+          goals: [
+            'Choreography Grade 2 targeted and timeline set',
+            'Layer 2 coaching cues identified and practised',
+            'Technique Grade 2 targets set per program',
+          ],
+          what: 'Months 1–3 push Choreography and Technique toward Grade 2: all tracks on beat with zero errors, technique inspires correct execution in participants. Months 3–6 shift focus to Coaching depth: Layer 2 becomes consistent — intensity manipulation, meaningful praise, real-time correction delivered with confidence.',
+          why: 'Choreography Grade 2 is the LMQ gateway. Until it\'s solid, everything else is building on sand. The order matters: Choreography first, then Technique, then Coaching — because each one frees up cognitive bandwidth for the next.',
+          how: [
+            'Observe once per month minimum — focus each observation on one KE target',
+            'Film a full class once per quarter — review Layer 2 coaching cues together',
+            'Use scaling questions: "On a scale of 1–10, how automatic does that release feel?"',
+            'Track Layer 2 cue frequency: count them in the observation, set a target for next time',
+            'Celebrate when Choreography Grade 2 is confirmed — this is a real milestone',
+          ],
+          prompts: [
+            {
+              label: 'Grade 2 observation questions',
+              prompts: [
+                'Which track felt most automatic — and which one still requires conscious attention?',
+                'Walk me through your Layer 2 approach in the squat track. What do you do when you see someone going too deep?',
+                'When did you last integrate a new release? How long did it take to feel automatic?',
+              ],
+            },
+          ],
+        },
+        sessionPlan: {
+          totalDuration: '45 min',
+          format: '1:1 post-observation',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Check in',
+              steps: ['How have the last few weeks felt?', 'Any classes that stood out — good or challenging?'],
+            },
+            {
+              duration: '15 min',
+              title: 'Choreography Grade 2 review',
+              steps: [
+                'Review observation notes — which tracks were fully automatic, which had hesitation?',
+                'Watch one filmed track together if available',
+                'Confirm or set Choreography Grade 2 target date',
+              ],
+              tip: 'Be specific: "You were fully on beat in tracks 2, 4, and 6. Track 5 had one timing break at the chorus." Vague feedback doesn\'t create Grade 2.',
+            },
+            {
+              duration: '15 min',
+              title: 'Layer 2 coaching audit',
+              steps: [
+                'Count Layer 2 cues from last observation: how many per track?',
+                'Identify the cue type most missing: intensity, options, praise, or correction',
+                'Build one if–then plan: "If I finish the Layer 1 safety cue, then I will immediately add one intensity cue"',
+              ],
+            },
+            {
+              duration: '10 min',
+              title: 'Next cycle targets',
+              steps: [
+                'Set one Grade 2 target for next observation',
+                'Confirm observation date',
+              ],
+            },
+          ],
+        },
+        content: [],
+      },
+      {
+        id: '5-connection-performance',
+        title: 'Connection & Performance Awakening',
+        subtitle: 'Months 6–12: KEs 4 & 5 — exploration, not mastery',
+        coachRole: {
+          summary: 'Awakener. You\'re introducing a new dimension — don\'t rush the arrival.',
+          context: 'KE 4 and KE 5 are different in kind, not just degree. Connection is about other people. Performance is about identity. Most instructors have never been coached on either. Introduce them with curiosity, not assessment.',
+          principle: 'Grade 2 is now a Stage 5 target — not a Stage 4 exit requirement. These are being explored, not yet graded.',
+        },
+        keyElementFocus: {
+          title: 'KEs 4 & 5: First intentional steps',
+          elements: [
+            { name: 'Connection', description: 'Names used beyond front row. Look-See-Respond 1–2× per class. "We/us" language replacing "you." C.R.C. moments beginning to emerge. Still developing — this is exploration.' },
+            { name: 'Performance', description: 'Understanding the 5 Voices framework. Beginning to use dramatic contrast. Empowering Beliefs starting to show. Music awareness growing — energy matching the track, not just the choreo.' },
+          ],
+        },
+        coachingSession: {
+          goals: [
+            'Instructor can name the 5 Voices and identify their dominant one',
+            'Connection awareness: instructor notices their own LSR patterns',
+            'One if–then plan built for a specific Connection or Performance moment',
+          ],
+          what: 'Months 6–12 introduce KE 4 and KE 5 intentionally. Connection: names used, Look-See-Respond active, C.R.C. emerging. Performance: 5 Voices understood, dramatic contrast beginning, Empowering Beliefs starting to show. These aren\'t mastered — they\'re being awakened.',
+          why: 'The jump from Grade 1 to Grade 2 in KEs 4–5 is not a technical upgrade — it\'s a shift in how the instructor sees their role. Connection requires genuinely caring about the person in the back row. Performance requires committing to an identity, not just executing moves. This takes time and the right coaching conversations.',
+          how: [
+            'Introduce the 5 Voices framework — ask the instructor to self-identify their dominant voice',
+            'Watch one filmed class together specifically for Connection signals: eye contact patterns, name use, LSR moments',
+            'Build a C.R.C. intention: "If I see someone finishing a tough track, then I will [specific acknowledgement]"',
+            'Ask about their class following: are participants starting to request their classes? What do they think is driving it?',
+            'Frame KE 4–5 as exploration — explicitly say "this isn\'t yet being graded, we\'re just building awareness"',
+          ],
+          prompts: [
+            {
+              label: 'Connection questions',
+              prompts: [
+                'How many participants did you use by name in that class — not the front row, the back?',
+                'When did you last notice a participant who looked like they were about to give up? What did you do?',
+                '"We" and "us" — how often are you using those words versus "you"? What\'s the effect?',
+              ],
+            },
+            {
+              label: 'Performance questions',
+              prompts: [
+                'Which of the 5 Voices feels most natural to you? Which one are you avoiding?',
+                'When the music peaks, what do you do physically? Does your body match the track?',
+                'What do you think participants would say about what it feels like to be in your class?',
+              ],
+            },
+          ],
+        },
+        content: [],
+      },
+      {
+        id: '5-mentor-tap',
+        title: 'Club Mentor Role & TAP Checkpoints',
+        subtitle: 'Ongoing — bi-monthly minimum',
+        coachRole: {
+          summary: 'Mentor. Feedback shifts from "basics" to "what\'s the next 1% improvement."',
+          context: 'At Stage 5, the instructor no longer needs you to catch errors. They need you to find the edges — the 1% improvements that compound into Grade 2 across every element. GROW conversations now have the instructor setting more of the agenda. Your role is shifting from Authority toward Facilitator.',
+          principle: 'The best Stage 5 coaching conversations are ones where the instructor teaches themselves.',
+        },
+        coachingSession: {
+          goals: [
+            'Bi-monthly observation rhythm maintained',
+            'GROW conversations have instructor setting more of the agenda',
+            'Second program exploration discussed if first program is solid',
+          ],
+          what: 'Stage 5 mentor role: bi-monthly observations minimum, feedback on 1% improvements, KE 4 and KE 5 introduced intentionally, second program explored if bandwidth exists, GROW conversations shifting toward instructor-led.',
+          why: 'Over-coaching at Stage 5 is as damaging as under-coaching at Stage 1. An instructor who is told what to do at every step never develops the self-awareness to keep improving independently. Your goal is to make yourself less necessary — which is how you know it\'s working.',
+          how: [
+            'Bi-monthly observations minimum — note specifically: what has improved since last time?',
+            'Help the instructor identify their "signature strength" — what do participants love about their class?',
+            'Support second program exploration: is the first program solid enough to free up bandwidth?',
+            'Shift GROW conversations: open with "what do you want to work on today?" before sharing your agenda',
+            'Track: is the instructor\'s self-assessment becoming more accurate over time?',
+          ],
+        },
+        sessionPlan: {
+          totalDuration: '30 min',
+          format: 'TAP Coach review — quarterly',
+          blocks: [
+            {
+              duration: '10 min',
+              title: 'LMQ review with Grade 2 targets',
+              steps: [
+                'Review grades against last quarter — which KEs have moved?',
+                'Confirm Grade 2 targets are explicitly stated for each KE',
+                'Cross-reference: are grades improving in the areas the mentor is coaching?',
+              ],
+              tip: 'If the mentor is coaching Connection but Connection grade hasn\'t moved in 2 quarters, the coaching approach needs to change — not the timeline.',
+            },
+            {
+              duration: '10 min',
+              title: 'Second program & expanding reach',
+              steps: [
+                'Second program readiness assessment: first program Grade 2 in Choreography and Technique?',
+                'Class following review: is attendance growing? Are participants returning specifically for this instructor?',
+                'Identify: is this instructor approaching Stage 6 readiness? (Grade 2 in KEs 1–3, KE 4 emerging)',
+              ],
+            },
+            {
+              duration: '10 min',
+              title: 'Mentor quality review',
+              steps: [
+                'Review mentor\'s feedback quality — is it evolving with the instructor\'s level?',
+                'Is the mentor shifting from Authority toward Facilitator in GROW conversations?',
+                'Set one focus for the next quarter',
+              ],
+            },
+          ],
+        },
+        warning: {
+          title: 'Retention Risk Signals',
+          description: 'Watch for: Plateaued at LMQ Level 2–3 for 3+ consecutive assessments. Stopped integrating new releases — teaching on autopilot. Declining class attendance with no self-awareness. Resistant to KE 4–5 feedback ("I\'m fine, my classes are full"). Second program attempt stalled without clear plan. Mentor conversations becoming routine rather than developmental.',
+        },
+        proTip: 'When Grade 2 is solid across KEs 1–3, Connection is emerging, and the instructor is starting to build influence → Ready for Stage 6 — World-Class: Mastery, Performance, influence, and legacy. The journey from good to extraordinary.',
+        content: [],
+      },
+    ],
+  },
+  6: {
     name: 'World-Class',
     subtitle: 'Mastery & influence',
     duration: 'Ongoing',

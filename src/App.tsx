@@ -56,7 +56,7 @@ function App() {
       case 'development':
         return <DevelopmentPathway onNavigate={handleNavigate} />;
       case 'coach-path':
-        return <ClubCoachPath />;
+        return <ClubCoachPath onNavigate={handleNavigate} />;
       case 'lmq-reference':
         return <LMQReference />;
       case 'feedback':

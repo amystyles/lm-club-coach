@@ -8,8 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Bell, Moon, Sun, Search } from 'lucide-react';
-import { useState } from 'react';
+import { Bell, Search } from 'lucide-react';
 
 interface TopBarProps {
   pageTitle: string;
@@ -17,27 +16,10 @@ interface TopBarProps {
 }
 
 export const TopBar = ({ pageTitle, subtitle }: TopBarProps) => {
-  const [darkMode, setDarkMode] = useState(false);
-
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    if (!darkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  };
-
   return (
     <div className="fixed top-0 left-0 right-0 h-14 bg-card border-b border-border flex items-center justify-between px-6 z-30 ml-64 transition-all duration-300">
-      {/* Left: Page Title & Breadcrumb */}
-      <div className="flex flex-col">
-        <h1 className="text-lg font-semibold text-foreground">{pageTitle}</h1>
-        {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
-      </div>
-
-      {/* Center: Search Input */}
-      <div className="flex-1 max-w-xs mx-8">
+      {/* Left: Search */}
+      <div className="max-w-xs w-full">
         <div className="relative">
           <Search className="absolute left-2 top-2.5 w-4 h-4 text-muted-foreground" />
           <Input
@@ -68,21 +50,6 @@ export const TopBar = ({ pageTitle, subtitle }: TopBarProps) => {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-
-        {/* Dark Mode Toggle */}
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={toggleDarkMode}
-          className="h-9 w-9"
-          title="Toggle dark mode"
-        >
-          {darkMode ? (
-            <Sun className="w-4 h-4" />
-          ) : (
-            <Moon className="w-4 h-4" />
-          )}
-        </Button>
 
         {/* User Avatar & Menu */}
         <DropdownMenu>

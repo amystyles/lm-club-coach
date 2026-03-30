@@ -36,7 +36,8 @@ export const STAGE_DATA = [
   { stage: 2, name: 'IT \u2192 Certification', subtitle: '30 days to cert submission', color: '#333333', duration: '30 Days' },
   { stage: 3, name: 'Ready to Teach', subtitle: 'Post-cert to first slot', color: '#00CC4F', duration: 'Weeks 1-12' },
   { stage: 4, name: 'On Timetable', subtitle: 'Nailing the basics', color: '#00FF63', duration: 'Ongoing' },
-  { stage: 5, name: 'World-Class', subtitle: 'Mastery & influence', color: '#FF623E', duration: 'Ongoing' },
+  { stage: 5, name: 'Advanced', subtitle: 'Grade 2 Push & Growing Impact', color: '#5B3A8A', duration: '6–18+ months' },
+  { stage: 6, name: 'World-Class', subtitle: 'Mastery & influence', color: '#FF623E', duration: 'Ongoing' },
 ];
 
 export const COACH_STAGE_DATA = [
@@ -93,7 +94,7 @@ export const instructors: Instructor[] = [
       { name: 'BODYATTACK', lmqLevel: 5 },
       { name: 'BODYPUMP', lmqLevel: 4 },
     ],
-    stage: 5, lmqLevel: 7, clubId: 'club-1', joinDate: '2021-03-20', lastAssessment: '2026-01-15',
+    stage: 6, lmqLevel: 7, clubId: 'club-1', joinDate: '2021-03-20', lastAssessment: '2026-01-15',
     nextAssessment: '2026-04-15', certDate: '2021-06-01', riskLevel: 'low',
     grades: [
       { element: 'choreography', grade: 2, lastAssessed: '2026-01-15' },
@@ -177,7 +178,7 @@ export const instructors: Instructor[] = [
       { name: 'BODYCOMBAT', lmqLevel: 6 },
       { name: 'BODYATTACK', lmqLevel: 5 },
     ],
-    stage: 5, lmqLevel: 8, clubId: 'club-1', joinDate: '2020-02-01', lastAssessment: '2026-03-01',
+    stage: 6, lmqLevel: 8, clubId: 'club-1', joinDate: '2020-02-01', lastAssessment: '2026-03-01',
     nextAssessment: '2026-06-01', certDate: '2020-05-15', riskLevel: 'low',
     grades: [
       { element: 'choreography', grade: 2, lastAssessed: '2026-03-01' },

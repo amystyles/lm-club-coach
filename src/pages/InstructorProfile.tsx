@@ -88,51 +88,81 @@ export function InstructorProfile({ instructorId, onBack, source }: InstructorPr
     <div className="min-h-screen bg-background -mx-6 -mt-6">
 
       {/* Header banner */}
-      <div className="bg-lm-dark text-white px-6 pt-4 pb-8">
-        <Button
-          onClick={onBack}
-          variant="ghost"
-          className="text-white hover:text-white hover:bg-white/10 mb-4 -ml-2"
-        >
-          {backLabel}
-        </Button>
+      <div
+        className="relative overflow-hidden px-10 pt-10 pb-12"
+        style={{
+          background: 'linear-gradient(135deg, #0A0A0A 0%, #111111 60%, #0d1a0d 100%)',
+          borderTop: '3px solid #00FF63',
+        }}
+      >
+        {/* Radial glow */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: 'radial-gradient(ellipse 55% 80% at 85% 50%, rgba(0,255,99,0.07) 0%, transparent 70%)',
+          }}
+        />
+        {/* Noise grain */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.03]"
+          style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noise)\'/%3E%3C/svg%3E")', backgroundSize: '200px' }}
+        />
 
-        <div className="flex items-start gap-5">
-          <Avatar className="h-16 w-16 flex-shrink-0">
-            <AvatarFallback className="bg-lm-subtle text-lm-dark text-lg font-bold">
-              {instructor.initials}
-            </AvatarFallback>
-          </Avatar>
+        <div className="relative">
+          {/* Back button — label treatment matching DP */}
+          <div className="flex items-center gap-3 mb-10">
+            <Button
+              onClick={onBack}
+              variant="ghost"
+              className="text-white/50 hover:text-white hover:bg-white/10 -ml-2 text-sm p-2 h-auto"
+            >
+              {backLabel}
+            </Button>
+          </div>
 
-          <div className="flex-1 min-w-0">
-            <h1 className="text-white mb-2">{instructor.name}</h1>
+          {/* Label line — mirrors "Instructor Development" label in DP */}
+          <div className="flex items-center gap-3 mb-5">
+            <div className="w-6 h-px bg-lm-green/60" />
+            <span className="text-lm-green/70 text-[10px] font-bold tracking-[0.3em] uppercase">
+              Instructor Profile
+            </span>
+          </div>
 
-            <div className="flex items-center gap-2 mb-3 flex-wrap">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold text-white border border-white/20">
-                <span
-                  className="w-2 h-2 rounded-full flex-shrink-0"
-                  style={{ backgroundColor: stageInfo?.color ?? '#888' }}
-                />
-                {stageInfo?.name ?? `Stage ${instructor.stage}`}
+          {/* Name + avatar row */}
+          <div className="flex items-center gap-5 mb-5">
+            <Avatar className="h-14 w-14 flex-shrink-0">
+              <AvatarFallback className="text-lm-dark text-base font-bold" style={{ backgroundColor: '#00FF63' }}>
+                {instructor.initials}
+              </AvatarFallback>
+            </Avatar>
+            <h1 className="font-display font-bold leading-none text-white text-5xl md:text-6xl">
+              {instructor.name}
+            </h1>
+          </div>
+
+          {/* Stage badge + program pills */}
+          <div className="flex items-center gap-2 flex-wrap pl-[4.75rem]">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold text-white/70 border border-white/15">
+              <span
+                className="w-2 h-2 rounded-full flex-shrink-0"
+                style={{ backgroundColor: stageInfo?.color ?? '#888' }}
+              />
+              {stageInfo?.name ?? `Stage ${instructor.stage}`}
+            </span>
+            {instructor.programs.map(program => (
+              <span
+                key={program.name}
+                className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${pillStyle(program.lmqLevel)}`}
+              >
+                {program.name} L{program.lmqLevel}
               </span>
-            </div>
-
-            <div className="flex flex-wrap gap-1.5">
-              {instructor.programs.map(program => (
-                <span
-                  key={program.name}
-                  className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${pillStyle(program.lmqLevel)}`}
-                >
-                  {program.name} L{program.lmqLevel}
-                </span>
-              ))}
-            </div>
+            ))}
           </div>
         </div>
       </div>
 
       {/* Body */}
-      <div className="max-w-4xl mx-auto p-6 space-y-6">
+      <div className="w-full p-6 space-y-6">
 
         {/* Section 1: Key Element Profile */}
         <Card>

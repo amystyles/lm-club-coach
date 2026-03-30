@@ -17,11 +17,12 @@ interface DashboardProps {
 
 
 const AVATAR_COLORS: Record<number, string> = {
-  1: 'bg-lm-dark',
-  2: 'bg-lm-ink-mid',
-  3: 'bg-amber-500',
-  4: 'bg-purple-500',
-  5: 'bg-rose-500',
+  1: '#0A0A0A',
+  2: '#0A0A0A',
+  3: '#0A0A0A',
+  4: '#0A0A0A',
+  5: '#0A0A0A',
+  6: '#0A0A0A',
 };
 
 const GRADE_COLORS: Record<number, string> = {
@@ -78,7 +79,8 @@ const NEXT_MILESTONE: Record<number, string> = {
   2: 'Submit full class video for Certification',
   3: 'Get on club timetable',
   4: 'Eligible for Grade Review',
-  5: 'Continue development & mentor others',
+  5: 'Deepen mastery across all Key Elements',
+  6: 'Continue development & mentor others',
 };
 
 
@@ -107,14 +109,38 @@ export default function Dashboard({ onViewInstructor }: DashboardProps) {
   const scheduledAssessments = assessments.filter((a) => a.status === 'scheduled');
 
   return (
-    <div className="w-full space-y-6 p-6">
-      <div>
-        <h1 className="mb-2">
-          Team Overview
-        </h1>
-        <p className="text-sm text-gray-600 mt-1">Coach dashboard for managing instructor development</p>
+    <div className="w-full -m-6">
+      {/* ── Compact dark hero ── */}
+      <div
+        className="relative overflow-hidden px-8 pt-10 pb-11"
+        style={{
+          background: 'linear-gradient(140deg, #060606 0%, #0c0c0c 35%, #091409 65%, #080808 100%)',
+          borderTop: '3px solid #00FF63',
+        }}
+      >
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 65% 90% at 92% 70%, rgba(0,255,99,0.10) 0%, transparent 65%)' }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 45% 55% at 55% 0%, rgba(0,255,99,0.05) 0%, transparent 60%)' }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 35% 50% at -8% 30%, rgba(0,180,255,0.04) 0%, transparent 55%)' }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.55) 1px, transparent 1px)', backgroundSize: '28px 28px', opacity: 0.055 }} />
+        <div className="absolute inset-0 pointer-events-none opacity-[0.04]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noise)\'/%3E%3C/svg%3E")', backgroundSize: '200px' }} />
+        {/* Topographic contour rings */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1440 185" preserveAspectRatio="none" aria-hidden="true">
+          {Array.from({ length: 16 }, (_, i) => (
+            <ellipse key={i} cx={1340} cy={160} rx={(i + 1) * 86} ry={(i + 1) * 86 * 0.28} fill="none" stroke="#00FF63" strokeWidth={1} strokeOpacity={0.07} />
+          ))}
+        </svg>
+        <div className="absolute bottom-0 left-0 right-0 h-px pointer-events-none" style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(0,255,99,0.25) 25%, rgba(0,255,99,0.45) 50%, rgba(0,255,99,0.25) 75%, transparent 100%)' }} />
+        <div className="relative">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-5 h-px bg-lm-green/60" />
+            <span className="text-lm-green/70 text-[10px] font-bold tracking-[0.3em] uppercase">Dashboard</span>
+          </div>
+          <h1 className="font-display font-bold text-white text-4xl md:text-5xl leading-tight mb-2">Team Overview</h1>
+          <p className="text-white/40 text-sm">Coach dashboard for managing instructor development</p>
+        </div>
       </div>
 
+      <div className="px-6 py-6 space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="border-t-2 border-t-lm-green">
           <CardContent className="pt-6">
@@ -245,81 +271,97 @@ export default function Dashboard({ onViewInstructor }: DashboardProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
           {instructors.map((instructor) => {
             const stageInfo = STAGE_DATA.find((s) => s.stage === instructor.stage);
-            const riskBg = instructor.riskLevel === 'high' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800';
+            const stageColor = stageInfo?.color || '#999';
+            const isAtRisk = instructor.riskLevel !== 'low';
+            const riskLabel = instructor.riskLevel === 'high' ? 'High Risk' : 'At Risk';
+            const riskStyle = instructor.riskLevel === 'high'
+              ? 'bg-red-50 text-red-700 border-red-200'
+              : 'bg-yellow-50 text-yellow-700 border-yellow-200';
 
             return (
-              <Card
+              <div
                 key={instructor.id}
-                className="cursor-pointer hover:shadow-md transition-shadow"
                 onClick={() => onViewInstructor(instructor.id, 'dashboard')}
+                className="group relative bg-white rounded-2xl border border-border overflow-hidden cursor-pointer hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 shadow-sm"
               >
-                <CardContent className="pt-6 space-y-4">
-                  <div className="flex items-center gap-3">
-                    <Avatar className="h-10 w-10" style={{ backgroundColor: AVATAR_COLORS[instructor.stage] }}>
-                      <AvatarFallback className="text-white font-bold">{instructor.initials}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-gray-900">{instructor.name}</p>
-                      <Badge variant="outline" className="mt-1 text-xs">
-                        LMQ Level {instructor.lmqLevel}
-                      </Badge>
-                    </div>
-                  </div>
+                {/* Brand green top bar */}
+                <div className="h-[3px] w-full bg-lm-green" />
 
-                  <div className="flex flex-wrap gap-1">
-                    {instructor.programs.slice(0, 2).map((program) => (
-                      <Badge key={program.name} variant="secondary" className="text-xs bg-slate-100">
-                        {program.name.length > 12 ? program.name.slice(0, 10) + '...' : program.name}
-                      </Badge>
-                    ))}
-                    {instructor.programs.length > 2 && (
-                      <Badge variant="secondary" className="text-xs bg-slate-100">
-                        +{instructor.programs.length - 2}
-                      </Badge>
+                <div className="p-5">
+                  {/* Header row: avatar + name + LMQ */}
+                  <div className="flex items-center gap-3 mb-4">
+                    <div
+                      className="w-11 h-11 rounded-xl flex items-center justify-center text-sm font-bold text-white flex-shrink-0 shadow-sm"
+                      style={{ backgroundColor: AVATAR_COLORS[instructor.stage] }}
+                    >
+                      {instructor.initials}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-bold text-lm-dark text-base leading-tight">{instructor.name}</p>
+                      <p className="text-xs text-lm-ink-muted mt-0.5 font-medium">LMQ Level {instructor.lmqLevel}</p>
+                    </div>
+                    {isAtRisk && (
+                      <span className={`flex-shrink-0 text-[10px] font-bold px-2 py-0.5 rounded-full border ${riskStyle}`}>
+                        {riskLabel}
+                      </span>
                     )}
                   </div>
 
-                  <div className="flex gap-2 justify-start">
+                  {/* Programs */}
+                  <div className="flex flex-wrap gap-1.5 mb-4">
+                    {instructor.programs.slice(0, 2).map((program) => (
+                      <span key={program.name} className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-lm-subtle text-lm-ink-mid border border-lm-sunken">
+                        {program.name.length > 12 ? program.name.slice(0, 10) + '…' : program.name}
+                      </span>
+                    ))}
+                    {instructor.programs.length > 2 && (
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-lm-subtle text-lm-ink-muted border border-lm-sunken">
+                        +{instructor.programs.length - 2}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* KE grades row */}
+                  <div className="flex gap-1.5 mb-4">
                     {KEY_ELEMENT_ORDER.map((element) => {
                       const grade = getGradeForElement(instructor, element);
+                      const gradeColor = GRADE_COLORS[grade];
                       return (
                         <div
                           key={element}
-                          className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white"
-                          style={{ backgroundColor: GRADE_COLORS[grade] }}
+                          className="flex-1 flex flex-col items-center gap-1"
                           title={`${KEY_ELEMENT_LABELS[element]}: Grade ${grade}`}
                         >
-                          {KEY_ELEMENT_SHORT[element]}
+                          <div
+                            className="w-full h-1.5 rounded-full"
+                            style={{ backgroundColor: gradeColor }}
+                          />
+                          <span className="text-[9px] font-bold text-lm-ink-muted uppercase tracking-wide">
+                            {KEY_ELEMENT_SHORT[element]}
+                          </span>
                         </div>
                       );
                     })}
                   </div>
 
-                  <div className="text-xs text-gray-600">
-                    <span className="text-orange-600 font-medium">↑ Priority: </span>
-                    {KEY_ELEMENT_LABELS[instructor.priorityElement]}
-                  </div>
-
-                  <Separator />
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
+                  {/* Footer: stage + priority */}
+                  <div className="flex items-center justify-between pt-3 border-t border-lm-sunken">
+                    <div className="flex items-center gap-1.5">
                       <div
-                        className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white"
-                        style={{ backgroundColor: stageInfo?.color || '#999' }}
+                        className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white"
+                        style={{ backgroundColor: stageColor }}
                       >
                         {instructor.stage}
                       </div>
-                      <span className="text-sm text-gray-700">{stageInfo?.name}</span>
+                      <span className="text-xs font-medium text-lm-ink-mid">{stageInfo?.name}</span>
                     </div>
-                    {instructor.riskLevel !== 'low' && (
-                      <Badge className={`text-xs ${riskBg}`} variant="outline">
-                        {instructor.riskLevel === 'high' ? 'High Risk' : 'At Risk'}
-                      </Badge>
-                    )}
+                    <span className="text-[11px] text-lm-ink-muted">
+                      <span className="text-orange-500 font-bold">↑ </span>
+                      {KEY_ELEMENT_LABELS[instructor.priorityElement]}
+                    </span>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             );
           })}
         </div>
@@ -375,6 +417,7 @@ export default function Dashboard({ onViewInstructor }: DashboardProps) {
           )}
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 }

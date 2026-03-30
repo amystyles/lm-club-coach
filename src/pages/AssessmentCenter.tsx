@@ -352,25 +352,52 @@ export default function AssessmentCenter() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="w-full">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+    <div className="min-h-screen -m-6">
+      {/* ── Compact dark hero ── */}
+      <div
+        className="relative overflow-hidden px-8 pt-10 pb-11"
+        style={{
+          background: 'linear-gradient(140deg, #060606 0%, #0c0c0c 35%, #091409 65%, #080808 100%)',
+          borderTop: '3px solid #00FF63',
+        }}
+      >
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 65% 90% at 92% 70%, rgba(0,255,99,0.10) 0%, transparent 65%)' }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 45% 55% at 55% 0%, rgba(0,255,99,0.05) 0%, transparent 60%)' }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 35% 50% at -8% 30%, rgba(0,180,255,0.04) 0%, transparent 55%)' }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.55) 1px, transparent 1px)', backgroundSize: '28px 28px', opacity: 0.055 }} />
+        <div className="absolute inset-0 pointer-events-none opacity-[0.04]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noise)\'/%3E%3C/svg%3E")', backgroundSize: '200px' }} />
+        {/* Topographic contour rings */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1440 185" preserveAspectRatio="none" aria-hidden="true">
+          {Array.from({ length: 16 }, (_, i) => (
+            <ellipse key={i} cx={1340} cy={160} rx={(i + 1) * 86} ry={(i + 1) * 86 * 0.28} fill="none" stroke="#00FF63" strokeWidth={1} strokeOpacity={0.07} />
+          ))}
+        </svg>
+        <div className="absolute bottom-0 left-0 right-0 h-px pointer-events-none" style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(0,255,99,0.25) 25%, rgba(0,255,99,0.45) 50%, rgba(0,255,99,0.25) 75%, transparent 100%)' }} />
+        <div className="relative flex items-end justify-between">
           <div>
-            <h1 className="mb-2">Assessment Centre</h1>
-            <p className="text-gray-600 mt-1">Track observations, track growth</p>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-5 h-px bg-lm-green/60" />
+              <span className="text-lm-green/70 text-[10px] font-bold tracking-[0.3em] uppercase">Assessment</span>
+            </div>
+            <h1 className="font-display font-bold text-white text-4xl md:text-5xl leading-tight mb-2">The Growth Lab</h1>
+            <p className="text-white/40 text-sm">Track observations, track growth</p>
           </div>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-lm-dark hover:bg-lm-dark/90 text-white gap-2">
+              <button
+                className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold transition-colors focus:outline-none"
+                style={{ backgroundColor: '#00FF63', color: '#0A0A0A' }}
+              >
                 <Plus className="w-4 h-4" />
                 New Observation
-              </Button>
+              </button>
             </DialogTrigger>
             <NewObservationDialog isOpen={dialogOpen} onOpenChange={setDialogOpen} />
           </Dialog>
         </div>
+      </div>
 
+      <div className="w-full px-8 py-8">
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full max-w-md grid-cols-4 mb-6">
@@ -432,3 +459,4 @@ export default function AssessmentCenter() {
     </div>
   );
 }
+

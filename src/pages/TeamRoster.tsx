@@ -142,20 +142,46 @@ export default function TeamRoster({ onViewInstructor }: TeamRosterProps) {
   const avgLMQ = (instructors.reduce((sum, i) => sum + i.lmqLevel, 0) / instructors.length).toFixed(1);
 
   return (
-    <div className="space-y-6 p-6">
-      {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h1 className="mb-2">Instructor Team</h1>
-          <p className="text-sm text-lm-ink-muted mt-1">
-            {instructors.length} instructors across {STAGE_DATA.length} development stages
-          </p>
+    <div className="-m-6">
+      {/* ── Compact dark hero ── */}
+      <div
+        className="relative overflow-hidden px-8 pt-10 pb-11"
+        style={{
+          background: 'linear-gradient(140deg, #060606 0%, #0c0c0c 35%, #091409 65%, #080808 100%)',
+          borderTop: '3px solid #00FF63',
+        }}
+      >
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 65% 90% at 92% 70%, rgba(0,255,99,0.10) 0%, transparent 65%)' }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 45% 55% at 55% 0%, rgba(0,255,99,0.05) 0%, transparent 60%)' }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 35% 50% at -8% 30%, rgba(0,180,255,0.04) 0%, transparent 55%)' }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.55) 1px, transparent 1px)', backgroundSize: '28px 28px', opacity: 0.055 }} />
+        <div className="absolute inset-0 pointer-events-none opacity-[0.04]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noise)\'/%3E%3C/svg%3E")', backgroundSize: '200px' }} />
+        {/* Topographic contour rings */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1440 185" preserveAspectRatio="none" aria-hidden="true">
+          {Array.from({ length: 16 }, (_, i) => (
+            <ellipse key={i} cx={1340} cy={160} rx={(i + 1) * 86} ry={(i + 1) * 86 * 0.28} fill="none" stroke="#00FF63" strokeWidth={1} strokeOpacity={0.07} />
+          ))}
+        </svg>
+        <div className="absolute bottom-0 left-0 right-0 h-px pointer-events-none" style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(0,255,99,0.25) 25%, rgba(0,255,99,0.45) 50%, rgba(0,255,99,0.25) 75%, transparent 100%)' }} />
+        <div className="relative flex items-end justify-between">
+          <div>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-5 h-px bg-lm-green/60" />
+              <span className="text-lm-green/70 text-[10px] font-bold tracking-[0.3em] uppercase">Instructor Team</span>
+            </div>
+            <h1 className="font-display font-bold text-white text-4xl md:text-5xl leading-tight mb-2">Instructor Team</h1>
+            <p className="text-white/40 text-sm">{instructors.length} instructors across {STAGE_DATA.length} development stages</p>
+          </div>
+          <button
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold transition-colors focus:outline-none"
+            style={{ backgroundColor: '#00FF63', color: '#0A0A0A' }}
+          >
+            + Add Instructor
+          </button>
         </div>
-        <Button variant="dark" size="sm">
-          + Add Instructor
-        </Button>
       </div>
 
+      <div className="px-6 py-6 space-y-6">
       {/* Summary Cards */}
       <div className="grid grid-cols-3 gap-4">
         <Card className="border-t-2 border-t-lm-green">
@@ -435,6 +461,7 @@ export default function TeamRoster({ onViewInstructor }: TeamRosterProps) {
           </span>
         </div>
       </Card>
+      </div>
     </div>
   );
 }

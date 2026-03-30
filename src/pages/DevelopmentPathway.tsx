@@ -760,22 +760,43 @@ export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page:
       <div
         className="relative overflow-hidden px-10 pt-14 pb-16"
         style={{
-          background: 'linear-gradient(135deg, #0A0A0A 0%, #111111 60%, #0d1a0d 100%)',
+          background: 'linear-gradient(140deg, #060606 0%, #0c0c0c 35%, #091409 65%, #080808 100%)',
           borderTop: '3px solid #00FF63',
         }}
       >
-        {/* Radial glow — right side */}
+        {/* Primary green glow — lower right */}
+        <div className="absolute inset-0 pointer-events-none" style={{
+          background: 'radial-gradient(ellipse 65% 90% at 92% 70%, rgba(0,255,99,0.10) 0%, transparent 65%)',
+        }} />
+        {/* Secondary green glow — upper center */}
+        <div className="absolute inset-0 pointer-events-none" style={{
+          background: 'radial-gradient(ellipse 45% 55% at 55% 0%, rgba(0,255,99,0.05) 0%, transparent 60%)',
+        }} />
+        {/* Cool accent glow — far left */}
+        <div className="absolute inset-0 pointer-events-none" style={{
+          background: 'radial-gradient(ellipse 35% 50% at -8% 30%, rgba(0,180,255,0.04) 0%, transparent 55%)',
+        }} />
+        {/* Dot grid texture */}
+        <div className="absolute inset-0 pointer-events-none" style={{
+          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.55) 1px, transparent 1px)',
+          backgroundSize: '28px 28px',
+          opacity: 0.055,
+        }} />
+        {/* Noise grain */}
         <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: 'radial-gradient(ellipse 55% 80% at 85% 50%, rgba(0,255,99,0.07) 0%, transparent 70%)',
-          }}
-        />
-        {/* Subtle noise grain */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-[0.03]"
+          className="absolute inset-0 pointer-events-none opacity-[0.04]"
           style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noise)\'/%3E%3C/svg%3E")', backgroundSize: '200px' }}
         />
+        {/* Topographic contour rings */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1440 420" preserveAspectRatio="none" aria-hidden="true">
+          {Array.from({ length: 18 }, (_, i) => (
+            <ellipse key={i} cx={1340} cy={360} rx={(i + 1) * 86} ry={(i + 1) * 86 * 0.28} fill="none" stroke="#00FF63" strokeWidth={1} strokeOpacity={0.065} />
+          ))}
+        </svg>
+        {/* Bottom glow line */}
+        <div className="absolute bottom-0 left-0 right-0 h-px pointer-events-none" style={{
+          background: 'linear-gradient(90deg, transparent 0%, rgba(0,255,99,0.25) 25%, rgba(0,255,99,0.45) 50%, rgba(0,255,99,0.25) 75%, transparent 100%)',
+        }} />
 
         {/* Label + headline */}
         <div className="relative mb-10">
@@ -795,7 +816,7 @@ export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page:
         </div>
 
         {/* ── Stage Cards ── */}
-        <div className="relative grid grid-cols-5 gap-3">
+        <div className="relative grid grid-cols-6 gap-2.5">
           {STAGE_DATA.map((stage) => {
             const isActive = activeStage === stage.stage;
             const detail = stageDetails[stage.stage];
@@ -804,28 +825,40 @@ export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page:
               <button
                 key={stage.stage}
                 onClick={() => handleStageSelect(stage.stage)}
-                className={`group text-left rounded-2xl p-5 transition-all duration-200 relative overflow-hidden focus:outline-none ${
-                  isActive
-                    ? 'bg-white shadow-xl shadow-black/30'
-                    : 'bg-white/[0.05] border border-white/[0.08] hover:bg-white/10'
-                }`}
+                className="group text-left rounded-xl p-4 transition-all duration-200 relative overflow-hidden focus:outline-none"
+                style={isActive ? {
+                  background: 'rgba(255,255,255,0.97)',
+                  boxShadow: `0 0 0 1px rgba(255,255,255,0.15), 0 8px 32px rgba(0,0,0,0.5), 0 0 24px ${stage.color}30`,
+                } : {
+                  background: 'rgba(255,255,255,0.04)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                }}
               >
-                {/* Green top accent bar on active */}
-                {isActive && (
-                  <div className="absolute top-0 left-0 right-0 h-[3px] bg-lm-green rounded-t-2xl" />
-                )}
-                <p className={`text-[10px] font-bold uppercase tracking-[0.18em] mb-3 ${
+                {/* Stage color top bar */}
+                <div
+                  className="absolute top-0 left-0 right-0 h-[3px] rounded-t-xl transition-all duration-200"
+                  style={{ backgroundColor: stage.color, opacity: isActive ? 1 : 0.4 }}
+                />
+                {/* Ghost stage number background */}
+                <div
+                  className="absolute -right-1 -bottom-2 text-[52px] font-black leading-none select-none pointer-events-none transition-all duration-200"
+                  style={{ color: isActive ? `${stage.color}14` : 'rgba(255,255,255,0.04)', fontFamily: 'inherit' }}
+                >
+                  {stage.stage}
+                </div>
+
+                <p className={`text-[9px] font-bold uppercase tracking-[0.2em] mb-2 relative ${
                   isActive ? 'text-lm-green' : 'text-lm-green/40'
                 }`}>
                   Stage {stage.stage}
                 </p>
-                <p className={`text-lg font-display font-bold leading-tight mb-1 ${
+                <p className={`text-[15px] font-display font-bold leading-tight mb-1.5 relative ${
                   isActive ? 'text-lm-dark' : 'text-white'
                 }`}>
                   {stage.name}
                 </p>
-                <p className={`text-[11px] font-medium ${
-                  isActive ? 'text-lm-ink-muted' : 'text-white/35'
+                <p className={`text-[10px] font-medium relative ${
+                  isActive ? 'text-lm-ink-muted' : 'text-white/30'
                 }`}>
                   {sessionCount} session{sessionCount !== 1 ? 's' : ''}
                 </p>
@@ -886,7 +919,6 @@ export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page:
                 </div>
                 <div className="space-y-1">
                   {[
-                    { icon: FileText, label: 'LMQ Criteria', sub: 'Grades, levels & standards', page: 'lmq-reference' },
                     { icon: MessageSquareQuote, label: 'Guided Feedback', sub: 'CRC & GROW tools', page: 'feedback' },
                   ].map(({ icon: Icon, label, sub, page }) => (
                     <button
