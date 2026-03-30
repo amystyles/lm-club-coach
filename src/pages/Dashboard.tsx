@@ -6,8 +6,6 @@ import ProgramProgress from '@/components/ProgramProgress';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Separator } from '@/components/ui/separator';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 import { Users, TrendingUp, ClipboardList, AlertTriangle, ChevronRight } from 'lucide-react';
 
@@ -50,17 +48,6 @@ const KEY_ELEMENT_SHORT = {
 function getGradeForElement(instructor: Instructor, element: keyof typeof KEY_ELEMENT_LABELS): number {
   const grade = instructor.grades.find((g) => g.element === element);
   return grade?.grade || 1;
-}
-
-function getLMQDistribution(): Record<number, number> {
-  const dist: Record<number, number> = {};
-  for (let i = 1; i <= 10; i++) {
-    dist[i] = 0;
-  }
-  instructors.forEach((inst) => {
-    dist[inst.lmqLevel]++;
-  });
-  return dist;
 }
 
 function getStageDistribution(): Record<number, number> {

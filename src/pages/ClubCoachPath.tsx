@@ -5,7 +5,7 @@ import {
   AlertTriangle, CheckCircle2, Info, Star, Clock,
   Eye, Megaphone, Check, Target,
   GraduationCap, MessageSquareQuote, NotebookPen, Shield,
-  CalendarClock, Users, BookOpen, FileText, ArrowUpRight, Plus,
+  CalendarClock, Users, BookOpen, Plus,
   ChevronRight,
 } from 'lucide-react';
 import { coachPathStages, COACH_STAGE_META } from '@/data/coach-path-data';
@@ -262,7 +262,7 @@ function PromptsTab({ session, stageColor }: { session: Session; stageColor: str
 /* ─────────────────────────────────────────────
    Notes Tab
    ───────────────────────────────────────────── */
-function NotesTab({ session, stageColor }: { session: Session; stageColor: string }) {
+function NotesTab({ session }: { session: Session }) {
   const [notes, setNotes] = useState('');
 
   return (
@@ -380,7 +380,7 @@ function SessionWorkspace({
         {currentTab === 'brief'   && <BriefTab   session={session} stageColor={stageColor} />}
         {currentTab === 'plan'    && <PlanTab    session={session} stageColor={stageColor} />}
         {currentTab === 'prompts' && <PromptsTab session={session} stageColor={stageColor} />}
-        {currentTab === 'notes'   && <NotesTab   session={session} stageColor={stageColor} />}
+        {currentTab === 'notes'   && <NotesTab   session={session} />}
       </div>
     </div>
   );
@@ -752,7 +752,7 @@ function IntentionBuilder() {
    ───────────────────────────────────────────── */
 type ViewMode = 'session' | 'conversation-templates' | 'observation-framework' | 'intention-builder';
 
-export default function ClubCoachPath({ onNavigate }: { onNavigate?: (page: string) => void }) {
+export default function ClubCoachPath(_props: { onNavigate?: (page: string) => void }) {
   const [activeStage, setActiveStage] = useState(1);
   const [activeSessions, setActiveSessions] = useState<Record<number, string>>({});
   const [activeTab, setActiveTab] = useState<TabId>('brief');

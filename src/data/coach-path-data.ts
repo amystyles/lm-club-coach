@@ -1,4 +1,4 @@
-import type { Session, StageDetail } from './stage-sessions';
+import type { StageDetail } from './stage-sessions';
 
 export const COACH_STAGE_META = [
   { stage: 1, name: 'Learn to See',      color: '#2563EB' },

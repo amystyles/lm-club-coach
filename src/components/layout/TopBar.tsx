@@ -15,7 +15,7 @@ interface TopBarProps {
   subtitle?: string;
 }
 
-export const TopBar = ({ pageTitle, subtitle }: TopBarProps) => {
+export const TopBar = (_props: TopBarProps) => {
   return (
     <div className="fixed top-0 left-0 right-0 h-14 bg-card border-b border-border flex items-center justify-between px-6 z-30 ml-64 transition-all duration-300">
       {/* Left: Search */}

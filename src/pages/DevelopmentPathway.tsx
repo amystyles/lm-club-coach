@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import {
   AlertTriangle, CheckCircle2, Info, Star, Clock,
   Eye, Megaphone, Check, Target,
@@ -276,7 +276,7 @@ function PromptsTab({ session, stageColor }: { session: Session; stageColor: str
 /* ─────────────────────────────────────────────
    Notes Tab — goals (checkable) + notes area
    ───────────────────────────────────────────── */
-function NotesTab({ session, stageColor }: { session: Session; stageColor: string }) {
+function NotesTab({ session }: { session: Session }) {
   const [notes, setNotes] = useState('');
 
   return (
@@ -426,7 +426,7 @@ function SessionWorkspace({
         {currentTab === 'brief'   && <BriefTab   session={session} stageColor={stageColor} />}
         {currentTab === 'plan'    && <PlanTab    session={session} stageColor={stageColor} />}
         {currentTab === 'prompts' && <PromptsTab session={session} stageColor={stageColor} />}
-        {currentTab === 'notes'   && <NotesTab   session={session} stageColor={stageColor} />}
+        {currentTab === 'notes'   && <NotesTab   session={session} />}
       </div>
     </div>
   );
