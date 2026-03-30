@@ -45,13 +45,13 @@ export default function KeyElementHeatmap() {
         <table className="w-full text-sm">
           <thead>
             <tr>
-              <th className="text-left pb-2 pr-3 font-medium text-xs text-muted-foreground w-32">
+              <th className="text-left pt-3 pb-2 pr-3 font-medium text-xs text-muted-foreground w-32">
                 Instructor
               </th>
               {ELEMENTS.map(({ key, abbr }) => (
                 <th
                   key={key}
-                  className="text-center pb-2 px-1 text-xs font-bold tracking-wider text-muted-foreground uppercase"
+                  className="text-center pt-3 pb-2 px-1 text-xs font-bold tracking-wider text-muted-foreground uppercase"
                 >
                   {abbr}
                 </th>

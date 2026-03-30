@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Copy, ChevronRight, Check, ArrowLeft, ChevronDown } from 'lucide-react';
+import { Copy, ChevronRight, Check, ArrowLeft, ChevronDown, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -49,7 +49,121 @@ const KE_COLORS: Record<KeyElement, string> = {
   performance:  '#00FF63',
 };
 
-type Framework = 'crc' | 'grow';
+/* ─────────────────────────────────────────────
+   Observation Framework data
+   ───────────────────────────────────────────── */
+const OBS_KE_DATA: Record<KeyElement, { description: string; signals: { g1: string; g2: string; g3: string } }> = {
+  choreography: {
+    description: 'Movement accuracy, timing, transitions, music phrasing',
+    signals: {
+      g1: 'Follows choreography with some errors or hesitation; focuses on getting moves right',
+      g2: 'Executes choreography accurately with good timing; transitions are mostly clean',
+      g3: 'Choreography is second nature; uses phrasing and transitions to serve the class energy',
+    },
+  },
+  technique: {
+    description: 'Position Setups, Execution Setups, form under fatigue',
+    signals: {
+      g1: 'Basic technique present but inconsistencies visible; limited self-monitoring',
+      g2: 'Solid technique most of the time; demonstrates key positions and corrects common faults',
+      g3: 'Excellent technique consistently; proactively prevents common errors across the class',
+    },
+  },
+  coaching: {
+    description: 'Coaching layers 1–3, cue specificity, real-time adjustment',
+    signals: {
+      g1: 'Coaching is scripted or reactive; limited variation in language or delivery',
+      g2: 'Coaching is purposeful; adapts language for different participants; gives specific feedback',
+      g3: 'Coaching feels instinctive; reads the room and shifts approach in real-time',
+    },
+  },
+  connection: {
+    description: 'Eye contact, names, Look-See-Respond, group cohesion',
+    signals: {
+      g1: 'Limited eye contact; instructor-focused; minimal individual acknowledgement',
+      g2: 'Regular scanning; uses names; responds to participant effort and energy',
+      g3: 'Deep two-way connection; every participant feels seen; energy flows between instructor and class',
+    },
+  },
+  performance: {
+    description: 'Energy, authenticity, commitment, Essence expression',
+    signals: {
+      g1: 'Performance is functional but held back; energy is uneven across the class',
+      g2: 'Consistent energy and presence; commits to the music and the room',
+      g3: 'Transformative presence; elevates the room; instructor identity fully expressed',
+    },
+  },
+};
+
+const TRACKS = ['Warm-up', 'Track 2', 'Track 3', 'Track 4', 'Track 5', 'Track 6', 'Cool-down'] as const;
+
+/* ─────────────────────────────────────────────
+   Implementation Intention examples per KE
+   ───────────────────────────────────────────── */
+const INTENTION_EXAMPLES: Record<KeyElement, { if: string; then: string }[]> = {
+  choreography: [
+    { if: 'I start a new release track', then: 'I will count myself in with the music for 4 beats before moving' },
+    { if: 'I feel unsure about the next transition', then: 'I will hold the current move for 4 extra counts rather than rushing' },
+  ],
+  technique: [
+    { if: 'I begin the squat track', then: "I will cue 'sit back, weight in heels' before the first rep" },
+    { if: "I see someone's knees tracking forward", then: 'I will walk toward them and cue the correction by name' },
+  ],
+  coaching: [
+    { if: 'I finish the warm-up track', then: 'I will deliver one specific praise to someone by name before Track 2 starts' },
+    { if: 'I notice energy dropping in the room', then: "I will make eye contact with 3 people and use 'we' language" },
+  ],
+  connection: [
+    { if: 'A new person sets up in the room', then: 'I will introduce myself by name and ask theirs before class starts' },
+    { if: "I'm midway through the class", then: 'I will scan the back row and make eye contact with at least 2 people' },
+  ],
+  performance: [
+    { if: 'The peak track starts', then: 'I will commit 100% to the effort — full range, full energy, full expression' },
+    { if: 'I feel my energy dropping', then: 'I will use the music transition to reset my posture and facial expression' },
+  ],
+};
+
+/* ─────────────────────────────────────────────
+   E-P-E section definitions
+   ───────────────────────────────────────────── */
+const EPE_SECTIONS = [
+  {
+    key: 'epeElicit1' as const,
+    label: 'Elicit — Open',
+    letter: 'E',
+    hint: 'Ask before you share anything. Let the instructor identify what they noticed first.',
+    suggestions: [
+      'How did that class feel for you?',
+      'What did you notice about your [Key Element] today?',
+      'Which moment felt strongest to you — and why?',
+    ],
+    placeholder: "e.g. 'Sarah, how did that feel? What stood out to you from that class?'",
+  },
+  {
+    key: 'epeProvide' as const,
+    label: 'Provide — One Observation',
+    letter: 'P',
+    hint: 'One observation only. Factual, not judgmental. Grounded in what you literally saw.',
+    suggestions: [
+      'I noticed that in [track], [specific factual observation].',
+      'From where I was standing, I could see [observation].',
+    ],
+    placeholder: "e.g. 'I noticed in the squat track your Position Setup was really clear — participants responded to it immediately.'",
+  },
+  {
+    key: 'epeElicit2' as const,
+    label: 'Elicit — Close',
+    letter: 'E',
+    hint: "Close it — let them own the next step. Push for precision, not vague intention.",
+    suggestions: [
+      'Given what you noticed and what I shared — what would you want to try next time?',
+      'What would that look like specifically?',
+    ],
+    placeholder: "e.g. 'What do you want to focus on in your next class based on what we've talked about?'",
+  },
+] as const;
+
+type Framework = 'crc' | 'grow' | 'epe';
 type Step = 'context' | 'framework' | 'build' | 'review';
 
 interface FeedbackState {
@@ -65,6 +179,10 @@ interface FeedbackState {
   reality: string;
   options: string;
   will: string;
+  // E-P-E
+  epeElicit1: string;
+  epeProvide: string;
+  epeElicit2: string;
 }
 
 /* ─────────────────────────────────────────────
@@ -73,9 +191,13 @@ interface FeedbackState {
 function LMQContextPanel({
   state,
   framework,
+  intentionIf,
+  intentionThen,
 }: {
   state: FeedbackState;
   framework: Framework | null;
+  intentionIf: string;
+  intentionThen: string;
 }) {
   const instructor = instructors.find((i) => i.id === state.instructorId);
   const ke = state.keyElement as KeyElement | '';
@@ -83,6 +205,8 @@ function LMQContextPanel({
   const currentGrade = instructor?.grades.find((g) => g.element === ke)?.grade;
   const nextGrade = currentGrade && currentGrade < 3 ? ((currentGrade + 1) as Grade) : null;
   const keColor = ke ? KE_COLORS[ke] : '#0A0A0A';
+
+  const hasEpeContent = state.epeElicit1 || state.epeProvide || state.epeElicit2;
 
   return (
     <div className="space-y-5">
@@ -135,7 +259,7 @@ function LMQContextPanel({
       {framework && (
         <div className="rounded-xl border border-border bg-white p-5">
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-lm-ink-muted mb-3">
-            {framework === 'crc' ? 'CRC Method' : 'GROW Model'}
+            {framework === 'crc' ? 'CRC Method' : framework === 'grow' ? 'GROW Model' : 'E-P-E Method'}
           </p>
           {framework === 'crc' ? (
             <div className="space-y-2.5">
@@ -155,7 +279,7 @@ function LMQContextPanel({
                 </div>
               ))}
             </div>
-          ) : (
+          ) : framework === 'grow' ? (
             <div className="space-y-2.5">
               {[
                 { l: 'G', label: 'Goal', desc: 'Where do they want to be in the LMQ?' },
@@ -174,12 +298,30 @@ function LMQContextPanel({
                 </div>
               ))}
             </div>
+          ) : (
+            <div className="space-y-2.5">
+              {[
+                { l: 'E', label: 'Elicit', desc: 'Ask what they noticed — before you share anything' },
+                { l: 'P', label: 'Provide', desc: 'One factual observation. Grounded in what you saw.' },
+                { l: 'E', label: 'Elicit', desc: 'Let them own the next step. Push for precision.' },
+              ].map(({ l, label, desc }, i) => (
+                <div key={`${label}-${i}`} className="flex gap-2.5">
+                  <div className="w-5 h-5 rounded-full bg-lm-dark text-lm-green flex items-center justify-center text-[9px] font-bold flex-shrink-0 mt-0.5">
+                    {l}
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-lm-dark">{label}</p>
+                    <p className="text-[11px] text-lm-ink-muted leading-snug">{desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           )}
         </div>
       )}
 
       {/* Live preview */}
-      {framework && (state.connect || state.goal) && (
+      {framework && (state.connect || state.goal || hasEpeContent) && (
         <div className="rounded-xl border border-lm-green/20 bg-lm-green-mid p-5">
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-lm-dark mb-3">Feedback Preview</p>
           <div className="space-y-3 text-xs text-lm-dark/80">
@@ -197,6 +339,21 @@ function LMQContextPanel({
                 {state.options  && <div><p className="font-bold mb-0.5">Options</p><p className="leading-relaxed line-clamp-2">{state.options}</p></div>}
                 {state.will     && <div><p className="font-bold mb-0.5">Will</p><p className="leading-relaxed line-clamp-2">{state.will}</p></div>}
               </>
+            )}
+            {framework === 'epe' && (
+              <>
+                {state.epeElicit1 && <div><p className="font-bold mb-0.5">Elicit (Open)</p><p className="leading-relaxed line-clamp-2">{state.epeElicit1}</p></div>}
+                {state.epeProvide && <div><p className="font-bold mb-0.5">Provide</p><p className="leading-relaxed line-clamp-2">{state.epeProvide}</p></div>}
+                {state.epeElicit2 && <div><p className="font-bold mb-0.5">Elicit (Close)</p><p className="leading-relaxed line-clamp-2">{state.epeElicit2}</p></div>}
+              </>
+            )}
+            {(intentionIf || intentionThen) && (
+              <div className="pt-2 border-t border-lm-dark/10">
+                <p className="font-bold mb-0.5">Intention</p>
+                <p className="leading-relaxed line-clamp-2 italic">
+                  {intentionIf && intentionThen ? `IF ${intentionIf} → THEN ${intentionThen}` : intentionIf || intentionThen}
+                </p>
+              </div>
             )}
           </div>
         </div>
@@ -277,12 +434,23 @@ function getSupervisionLevel(grade: number | null, stage: number): string {
 export default function FeedbackBuilder() {
   const [step, setStep] = useState<Step>('context');
   const [coachingGuideOpen, setCoachingGuideOpen] = useState(true);
+  const [obsOpen, setObsOpen] = useState(false);
+  const [obsGradeOpen, setObsGradeOpen] = useState<Partial<Record<KeyElement, boolean>>>({});
+  const [obsTrackOpen, setObsTrackOpen] = useState<Record<string, boolean>>({});
+  const [obsNotesInStep3Open, setObsNotesInStep3Open] = useState(false);
+  const [intentionExamplesOpen, setIntentionExamplesOpen] = useState(false);
+  const [obsNotes, setObsNotes] = useState<Partial<Record<KeyElement, string>>>({});
+  const [trackNotes, setTrackNotes] = useState<Record<string, string>>({});
+  const [intentionIf, setIntentionIf] = useState('');
+  const [intentionThen, setIntentionThen] = useState('');
+
   const [state, setState] = useState<FeedbackState>({
     instructorId: '',
     keyElement: '',
     framework: null,
     connect: '', recommend: '', commend: '',
     goal: '', reality: '', options: '', will: '',
+    epeElicit1: '', epeProvide: '', epeElicit2: '',
   });
 
   const set = (patch: Partial<FeedbackState>) => setState((prev) => ({ ...prev, ...patch }));
@@ -294,19 +462,49 @@ export default function FeedbackBuilder() {
 
   const contextReady = !!state.instructorId && !!state.keyElement;
 
-  const buildComplete = state.framework === 'crc'
-    ? state.connect && state.recommend && state.commend
-    : state.goal && state.reality && state.options && state.will;
+  const buildComplete =
+    state.framework === 'crc' ? !!(state.connect && state.recommend && state.commend) :
+    state.framework === 'grow' ? !!(state.goal && state.reality && state.options && state.will) :
+    state.framework === 'epe' ? !!(state.epeElicit1 && state.epeProvide && state.epeElicit2) :
+    false;
 
   const handleCopy = () => {
-    const text = state.framework === 'crc'
-      ? `CONNECT:\n${state.connect}\n\nRECOMMEND:\n${state.recommend}\n\nCOMMEND:\n${state.commend}`
-      : `GOAL:\n${state.goal}\n\nREALITY:\n${state.reality}\n\nOPTIONS:\n${state.options}\n\nWILL:\n${state.will}`;
+    const instrName = instructor?.name ?? '';
+    const keLabel = ke ? KEY_ELEMENT_LABELS[ke] : '';
+    let text = '';
+
+    if (state.framework === 'crc') {
+      text = `CONNECT:\n${state.connect}\n\nRECOMMEND:\n${state.recommend}\n\nCOMMEND:\n${state.commend}`;
+    } else if (state.framework === 'grow') {
+      text = `GOAL:\n${state.goal}\n\nREALITY:\n${state.reality}\n\nOPTIONS:\n${state.options}\n\nWILL:\n${state.will}`;
+    } else if (state.framework === 'epe') {
+      text = `E-P-E Conversation — ${instrName} — ${keLabel}\n\nElicit (Open):\n${state.epeElicit1}\n\nProvide:\n${state.epeProvide}\n\nElicit (Close):\n${state.epeElicit2}`;
+    }
+
+    const keObsNotes = ke ? obsNotes[ke] : undefined;
+    if (keObsNotes) {
+      text += `\n\n---\nObservation Notes (${keLabel}):\n${keObsNotes}`;
+    }
+
+    if (intentionIf && intentionThen) {
+      text += `\n\nImplementation Intention:\nIF ${intentionIf} → THEN ${intentionThen}`;
+    }
+
     navigator.clipboard.writeText(text);
   };
 
   const reset = () => {
-    setState({ instructorId: '', keyElement: '', framework: null, connect: '', recommend: '', commend: '', goal: '', reality: '', options: '', will: '' });
+    setState({
+      instructorId: '', keyElement: '', framework: null,
+      connect: '', recommend: '', commend: '',
+      goal: '', reality: '', options: '', will: '',
+      epeElicit1: '', epeProvide: '', epeElicit2: '',
+    });
+    setIntentionIf('');
+    setIntentionThen('');
+    setObsNotes({});
+    setTrackNotes({});
+    setObsOpen(false);
     setStep('context');
   };
 
@@ -337,7 +535,7 @@ export default function FeedbackBuilder() {
             <span className="text-lm-green/70 text-[10px] font-bold tracking-[0.3em] uppercase">LMQ-Driven</span>
           </div>
           <h1 className="font-display font-bold text-white text-4xl md:text-5xl leading-tight mb-2">Guided Feedback</h1>
-          <p className="text-white/40 text-sm">Start with the LMQ. Use CRC or GROW to deliver it.</p>
+          <p className="text-white/40 text-sm">Start with the LMQ. Use CRC, GROW, or E-P-E to deliver it.</p>
         </div>
       </div>
 
@@ -369,99 +567,220 @@ export default function FeedbackBuilder() {
 
           {/* ── Step 1: LMQ Context ── */}
           {step === 'context' && (
-            <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden space-y-0">
-              <div className="px-5 py-3 bg-[#0d0d0d] flex items-center gap-3">
-                <div className="w-1 h-8 rounded-full bg-lm-green/80 flex-shrink-0" />
-                <div>
-                  <p className="text-white text-sm font-bold leading-tight">Set the LMQ Context</p>
-                  <p className="text-white/40 text-xs mt-0.5">Choose the instructor and the Key Element this feedback is focused on.</p>
-                </div>
-              </div>
-
-              <div className="p-8 space-y-6">
-                {/* Instructor select */}
-                <div>
-                  <p className="text-xs font-bold text-lm-dark uppercase tracking-wider mb-2">Instructor</p>
-                  <Select value={state.instructorId} onValueChange={(v) => set({ instructorId: v })}>
-                    <SelectTrigger className="max-w-sm">
-                      <SelectValue placeholder="Select instructor" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {instructors.map((inst) => (
-                        <SelectItem key={inst.id} value={inst.id}>
-                          {inst.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Key Element pills */}
-                <div>
-                  <p className="text-xs font-bold text-lm-dark uppercase tracking-wider mb-3">Key Element Focus</p>
-                  <div className="flex flex-wrap gap-2">
-                    {KEY_ELEMENTS.map((element) => {
-                      const isSelected = state.keyElement === element;
-                      const instrGrade = instructor?.grades.find((g) => g.element === element)?.grade;
-                      return (
-                        <button
-                          key={element}
-                          onClick={() => set({ keyElement: element })}
-                          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 transition-all text-sm font-semibold focus:outline-none ${
-                            isSelected ? 'text-white shadow-sm' : 'border-lm-sunken text-lm-ink-mid hover:border-lm-ink-muted/30 bg-white'
-                          }`}
-                          style={isSelected ? { backgroundColor: KE_COLORS[element], borderColor: KE_COLORS[element] } : {}}
-                        >
-                          {KEY_ELEMENT_LABELS[element]}
-                          {instrGrade && (
-                            <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
-                              isSelected ? 'bg-white/20 text-white' : 'bg-lm-subtle text-lm-ink-muted'
-                            }`}>
-                              G{instrGrade}
-                            </span>
-                          )}
-                        </button>
-                      );
-                    })}
+            <div className="space-y-4">
+              <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden space-y-0">
+                <div className="px-5 py-3 bg-[#0d0d0d] flex items-center gap-3">
+                  <div className="w-1 h-8 rounded-full bg-lm-green/80 flex-shrink-0" />
+                  <div>
+                    <p className="text-white text-sm font-bold leading-tight">Set the LMQ Context</p>
+                    <p className="text-white/40 text-xs mt-0.5">Choose the instructor and the Key Element this feedback is focused on.</p>
                   </div>
                 </div>
 
-                {/* Grade context preview */}
-                {instructor && ke && currentGrade && (
-                  <div className="rounded-xl p-5 border-2" style={{ borderColor: keColor + '30', backgroundColor: keColor + '06' }}>
-                    <p className="text-xs font-bold mb-3" style={{ color: keColor }}>
-                      {instructor.name} — {KEY_ELEMENT_LABELS[ke]}
-                    </p>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="bg-white/70 rounded-lg p-3">
-                        <p className="text-[9px] font-bold uppercase tracking-widest text-lm-ink-muted mb-1">Current — Grade {currentGrade}</p>
-                        <p className="text-xs text-lm-ink-mid leading-relaxed">{LMQ_GRADE_DESCRIPTORS[ke][currentGrade].description}</p>
-                      </div>
-                      {currentGrade < 3 && (
-                        <div className="bg-white/70 rounded-lg p-3">
-                          <p className="text-[9px] font-bold uppercase tracking-widest mb-1" style={{ color: keColor }}>
-                            Target — Grade {currentGrade + 1}
-                          </p>
-                          <p className="text-xs text-lm-ink-mid leading-relaxed">
-                            {LMQ_GRADE_DESCRIPTORS[ke][(currentGrade + 1) as Grade].description}
-                          </p>
-                        </div>
-                      )}
+                <div className="p-8 space-y-6">
+                  {/* Instructor select */}
+                  <div>
+                    <p className="text-xs font-bold text-lm-dark uppercase tracking-wider mb-2">Instructor</p>
+                    <Select value={state.instructorId} onValueChange={(v) => set({ instructorId: v })}>
+                      <SelectTrigger className="max-w-sm">
+                        <SelectValue placeholder="Select instructor" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {instructors.map((inst) => (
+                          <SelectItem key={inst.id} value={inst.id}>
+                            {inst.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Key Element pills */}
+                  <div>
+                    <p className="text-xs font-bold text-lm-dark uppercase tracking-wider mb-3">Key Element Focus</p>
+                    <div className="flex flex-wrap gap-2">
+                      {KEY_ELEMENTS.map((element) => {
+                        const isSelected = state.keyElement === element;
+                        const instrGrade = instructor?.grades.find((g) => g.element === element)?.grade;
+                        return (
+                          <button
+                            key={element}
+                            onClick={() => set({ keyElement: element })}
+                            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 transition-all text-sm font-semibold focus:outline-none ${
+                              isSelected ? 'text-white shadow-sm' : 'border-lm-sunken text-lm-ink-mid hover:border-lm-ink-muted/30 bg-white'
+                            }`}
+                            style={isSelected ? { backgroundColor: KE_COLORS[element], borderColor: KE_COLORS[element] } : {}}
+                          >
+                            {KEY_ELEMENT_LABELS[element]}
+                            {instrGrade && (
+                              <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
+                                isSelected ? 'bg-white/20 text-white' : 'bg-lm-subtle text-lm-ink-muted'
+                              }`}>
+                                G{instrGrade}
+                              </span>
+                            )}
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
-                )}
 
-                <div className="flex justify-end pt-2">
-                  <Button
-                    onClick={() => setStep('framework')}
-                    disabled={!contextReady}
-                    className="bg-lm-dark text-white hover:bg-lm-dark/90 rounded-full px-6"
-                  >
-                    Choose Approach
-                    <ChevronRight className="w-4 h-4 ml-1" />
-                  </Button>
+                  {/* Grade context preview */}
+                  {instructor && ke && currentGrade && (
+                    <div className="rounded-xl p-5 border-2" style={{ borderColor: keColor + '30', backgroundColor: keColor + '06' }}>
+                      <p className="text-xs font-bold mb-3" style={{ color: keColor }}>
+                        {instructor.name} — {KEY_ELEMENT_LABELS[ke]}
+                      </p>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="bg-white/70 rounded-lg p-3">
+                          <p className="text-[9px] font-bold uppercase tracking-widest text-lm-ink-muted mb-1">Current — Grade {currentGrade}</p>
+                          <p className="text-xs text-lm-ink-mid leading-relaxed">{LMQ_GRADE_DESCRIPTORS[ke][currentGrade].description}</p>
+                        </div>
+                        {currentGrade < 3 && (
+                          <div className="bg-white/70 rounded-lg p-3">
+                            <p className="text-[9px] font-bold uppercase tracking-widest mb-1" style={{ color: keColor }}>
+                              Target — Grade {currentGrade + 1}
+                            </p>
+                            <p className="text-xs text-lm-ink-mid leading-relaxed">
+                              {LMQ_GRADE_DESCRIPTORS[ke][(currentGrade + 1) as Grade].description}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Observation Notes button */}
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={() => setObsOpen((o) => !o)}
+                      className={`flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-full border transition-all focus:outline-none ${
+                        obsOpen
+                          ? 'bg-lm-dark text-white border-lm-dark'
+                          : 'bg-white text-lm-ink-mid border-lm-sunken hover:border-lm-ink-muted/40'
+                      }`}
+                    >
+                      <Eye className="w-3.5 h-3.5" />
+                      Observation Notes
+                      <ChevronDown className={`w-3.5 h-3.5 transition-transform ${obsOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                    {Object.values(obsNotes).some(Boolean) && (
+                      <span className="text-[10px] font-semibold text-lm-ink-muted">Notes captured</span>
+                    )}
+                  </div>
+
+                  <div className="flex justify-end pt-2">
+                    <Button
+                      onClick={() => setStep('framework')}
+                      disabled={!contextReady}
+                      className="bg-lm-dark text-white hover:bg-lm-dark/90 rounded-full px-6"
+                    >
+                      Choose Approach
+                      <ChevronRight className="w-4 h-4 ml-1" />
+                    </Button>
+                  </div>
                 </div>
               </div>
+
+              {/* ── Observation Framework Panel ── */}
+              {obsOpen && (
+                <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden">
+                  <div className="px-5 py-3 bg-[#0d0d0d] flex items-center gap-3">
+                    <div className="w-1 h-8 rounded-full bg-lm-green/80 flex-shrink-0" />
+                    <div>
+                      <p className="text-white text-sm font-bold leading-tight">Observation Framework</p>
+                      <p className="text-white/40 text-xs mt-0.5">Capture facts first — interpretation second.</p>
+                    </div>
+                  </div>
+
+                  <div className="p-6 space-y-6">
+                    {/* Rule callout */}
+                    <div className="rounded-xl bg-amber-50 border border-amber-200 px-4 py-3">
+                      <p className="text-xs text-amber-800 leading-relaxed">
+                        <span className="font-bold">Write what you SAW, not what you THINK about what you saw.</span>{' '}
+                        "Instructor looked at the back row twice in Track 3" is an observation. "Instructor doesn't connect with the back row" is an interpretation.
+                      </p>
+                    </div>
+
+                    {/* 5 KE sections */}
+                    {KEY_ELEMENTS.map((element) => {
+                      const keData = OBS_KE_DATA[element];
+                      const color = KE_COLORS[element];
+                      const gradeOpen = obsGradeOpen[element];
+                      return (
+                        <div key={element} className="rounded-xl border border-lm-sunken overflow-hidden">
+                          <div className="px-4 py-3 bg-lm-subtle flex items-center justify-between gap-3">
+                            <div>
+                              <span className="text-xs font-bold text-lm-dark">{KEY_ELEMENT_LABELS[element]}</span>
+                              <span className="text-xs text-lm-ink-muted"> — {keData.description}</span>
+                            </div>
+                            <button
+                              onClick={() => setObsGradeOpen((prev) => ({ ...prev, [element]: !prev[element] }))}
+                              className="text-[10px] font-semibold text-lm-ink-muted hover:text-lm-dark transition-colors flex items-center gap-1 flex-shrink-0"
+                            >
+                              Grade signals
+                              <ChevronDown className={`w-3 h-3 transition-transform ${gradeOpen ? 'rotate-180' : ''}`} />
+                            </button>
+                          </div>
+                          {gradeOpen && (
+                            <div className="px-4 py-3 bg-white border-b border-lm-sunken grid grid-cols-3 gap-3">
+                              {(['g1', 'g2', 'g3'] as const).map((g, idx) => (
+                                <div key={g} className="rounded-lg bg-lm-subtle p-2.5">
+                                  <p className="text-[9px] font-bold uppercase tracking-widest mb-1" style={{ color: idx === 2 ? color : undefined }}>
+                                    G{idx + 1} Signals
+                                  </p>
+                                  <p className="text-[11px] text-lm-ink-mid leading-snug">{keData.signals[g]}</p>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                          <div className="p-4 bg-white">
+                            <Textarea
+                              value={obsNotes[element] ?? ''}
+                              onChange={(e) => setObsNotes((prev) => ({ ...prev, [element]: e.target.value }))}
+                              placeholder="What did you literally see and hear?"
+                              rows={2}
+                              className="text-sm resize-y focus:ring-lm-green"
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+
+                    {/* Track-by-Track Notes */}
+                    <div>
+                      <p className="text-xs font-bold text-lm-dark uppercase tracking-wider mb-3">Track-by-Track Notes</p>
+                      <div className="space-y-2">
+                        {TRACKS.map((track) => {
+                          const isOpen = obsTrackOpen[track];
+                          return (
+                            <div key={track} className="rounded-xl border border-lm-sunken overflow-hidden">
+                              <button
+                                onClick={() => setObsTrackOpen((prev) => ({ ...prev, [track]: !prev[track] }))}
+                                className="w-full flex items-center justify-between px-4 py-2.5 bg-lm-subtle hover:bg-lm-sunken transition-colors text-left"
+                              >
+                                <span className="text-xs font-semibold text-lm-dark">{track}</span>
+                                <ChevronDown className={`w-3.5 h-3.5 text-lm-ink-muted transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                              </button>
+                              {isOpen && (
+                                <div className="p-3 bg-white">
+                                  <Textarea
+                                    value={trackNotes[track] ?? ''}
+                                    onChange={(e) => setTrackNotes((prev) => ({ ...prev, [track]: e.target.value }))}
+                                    placeholder="Free-form notes for this track…"
+                                    rows={2}
+                                    className="text-sm resize-y focus:ring-lm-green"
+                                  />
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
@@ -477,7 +796,7 @@ export default function FeedbackBuilder() {
                 <p className="text-sm text-lm-ink-muted mt-1">Choose the framework that fits this conversation.</p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                 {[
                   {
                     id: 'crc' as Framework,
@@ -494,6 +813,14 @@ export default function FeedbackBuilder() {
                     desc: 'A coaching conversation to help them own their development. Coach-led but instructor-driven. Forward-looking.',
                     when: 'Use for: goal-setting, quarterly reviews, breakthrough conversations',
                     steps: ['Goal', 'Reality', 'Options', 'Will'],
+                  },
+                  {
+                    id: 'epe' as Framework,
+                    label: 'Quick Conversation',
+                    sub: 'E-P-E Method',
+                    desc: 'Elicit–Provide–Elicit. The 30-second coaching conversation from Motivational Interviewing. Ask what they noticed, share one observation, ask what they\'ll try next.',
+                    when: 'Use for: post-class hallway conversations, quick check-ins, any moment where you have 2 minutes',
+                    steps: ['Elicit', 'Provide', 'Elicit'],
                   },
                 ].map((opt) => {
                   const isSelected = state.framework === opt.id;
@@ -519,8 +846,8 @@ export default function FeedbackBuilder() {
                       <p className="text-sm text-lm-ink-mid leading-relaxed mb-4">{opt.desc}</p>
                       <p className="text-[11px] text-lm-ink-muted leading-snug mb-4">{opt.when}</p>
                       <div className="flex gap-2 flex-wrap">
-                        {opt.steps.map((s) => (
-                          <span key={s} className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-lm-sunken text-lm-ink-mid">{s}</span>
+                        {opt.steps.map((s, i) => (
+                          <span key={`${s}-${i}`} className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-lm-sunken text-lm-ink-mid">{s}</span>
                         ))}
                       </div>
                     </button>
@@ -557,7 +884,9 @@ export default function FeedbackBuilder() {
                   )}
                 </div>
                 <h2 className="text-xl font-display font-bold text-lm-dark">
-                  {state.framework === 'crc' ? 'Build CRC Feedback' : 'Build GROW Conversation'}
+                  {state.framework === 'crc' ? 'Build CRC Feedback' :
+                   state.framework === 'grow' ? 'Build GROW Conversation' :
+                   'Build E-P-E Conversation'}
                 </h2>
               </div>
 
@@ -602,6 +931,30 @@ export default function FeedbackBuilder() {
                 );
               })()}
 
+              {/* ── Observation notes toggle (if notes exist for this KE) ── */}
+              {ke && obsNotes[ke] && (
+                <div className="rounded-xl border border-lm-sunken overflow-hidden">
+                  <button
+                    onClick={() => setObsNotesInStep3Open((o) => !o)}
+                    className="w-full flex items-center justify-between px-4 py-3 bg-lm-subtle hover:bg-lm-sunken transition-colors text-left"
+                  >
+                    <div className="flex items-center gap-2">
+                      <Eye className="w-3.5 h-3.5 text-lm-ink-muted" />
+                      <span className="text-xs font-semibold text-lm-dark">
+                        Observation notes — {KEY_ELEMENT_LABELS[ke]}
+                      </span>
+                    </div>
+                    <ChevronDown className={`w-4 h-4 text-lm-ink-muted transition-transform ${obsNotesInStep3Open ? 'rotate-180' : ''}`} />
+                  </button>
+                  {obsNotesInStep3Open && (
+                    <div className="px-4 py-3 bg-white">
+                      <p className="text-xs text-lm-ink-mid leading-relaxed whitespace-pre-wrap">{obsNotes[ke]}</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* ── CRC form ── */}
               {state.framework === 'crc' && (
                 <div className="space-y-6">
                   {[
@@ -629,6 +982,7 @@ export default function FeedbackBuilder() {
                 </div>
               )}
 
+              {/* ── GROW form ── */}
               {state.framework === 'grow' && (
                 <div className="space-y-6">
                   {[
@@ -656,6 +1010,130 @@ export default function FeedbackBuilder() {
                   ))}
                 </div>
               )}
+
+              {/* ── E-P-E form ── */}
+              {state.framework === 'epe' && (
+                <div className="space-y-6">
+                  {EPE_SECTIONS.map(({ key, label, letter, hint, suggestions, placeholder }) => (
+                    <div key={key}>
+                      <div className="flex items-center gap-2.5 mb-2">
+                        <div className="w-6 h-6 rounded-full bg-lm-dark flex items-center justify-center text-[10px] font-bold text-lm-green flex-shrink-0">
+                          {letter}
+                        </div>
+                        <p className="font-bold text-lm-dark text-sm uppercase tracking-wider">{label}</p>
+                      </div>
+                      <p className="text-xs text-lm-ink-muted mb-2 leading-relaxed">{hint}</p>
+                      {/* Clickable suggestion chips */}
+                      <div className="flex flex-wrap gap-1.5 mb-3">
+                        {suggestions.map((s) => (
+                          <button
+                            key={s}
+                            onClick={() => {
+                              const current = state[key];
+                              set({ [key]: current ? `${current}\n${s}` : s });
+                            }}
+                            className="text-[10px] text-lm-ink-muted italic px-2.5 py-1 rounded-full bg-lm-subtle hover:bg-lm-sunken border border-lm-sunken transition-colors text-left"
+                          >
+                            {s}
+                          </button>
+                        ))}
+                      </div>
+                      <Textarea
+                        value={state[key]}
+                        onChange={(e) => set({ [key]: e.target.value })}
+                        placeholder={placeholder}
+                        rows={3}
+                        className="text-sm resize-y focus:ring-lm-green"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* ── Implementation Intention ── */}
+              <div className="rounded-xl border border-lm-sunken overflow-hidden">
+                <div className="px-5 py-4 bg-lm-subtle border-b border-lm-sunken">
+                  <p className="text-xs font-bold text-lm-dark uppercase tracking-wider mb-0.5">Implementation Intention</p>
+                  <p className="text-[11px] text-lm-ink-muted leading-snug">
+                    End every conversation with one specific if-then plan. Goals with if-then plans are completed ~3× more often.
+                  </p>
+                </div>
+                <div className="p-5 space-y-4 bg-white">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-lm-ink-muted mb-1.5">IF</p>
+                      <Textarea
+                        value={intentionIf}
+                        onChange={(e) => setIntentionIf(e.target.value)}
+                        placeholder="a specific class moment, e.g. 'I start the squat track in BODYPUMP'"
+                        rows={2}
+                        className="text-sm resize-y focus:ring-lm-green"
+                      />
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-lm-ink-muted mb-1.5">THEN</p>
+                      <Textarea
+                        value={intentionThen}
+                        onChange={(e) => setIntentionThen(e.target.value)}
+                        placeholder="a specific behaviour, e.g. 'I will use the 3-2-1 countdown cue while making eye contact with the back row'"
+                        rows={2}
+                        className="text-sm resize-y focus:ring-lm-green"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Specificity checklist */}
+                  {(intentionIf || intentionThen) && (
+                    <div className="space-y-1.5 pt-1">
+                      {[
+                        'Has a specific trigger — the "if" names a precise moment, not a general situation',
+                        'Has a specific behaviour — the "then" describes exactly what they will do',
+                        'Is observable — someone watching could confirm whether they did it',
+                        'Is in their control — they can execute regardless of how participants respond',
+                      ].map((item) => (
+                        <div key={item} className="flex items-start gap-2">
+                          <span className="text-lm-green font-bold text-[11px] flex-shrink-0 mt-0.5">✓</span>
+                          <p className="text-[11px] text-lm-ink-muted leading-snug">{item}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Examples by KE */}
+                  {ke && INTENTION_EXAMPLES[ke] && (
+                    <div className="rounded-lg border border-lm-sunken overflow-hidden">
+                      <button
+                        onClick={() => setIntentionExamplesOpen((o) => !o)}
+                        className="w-full flex items-center justify-between px-3 py-2.5 bg-lm-subtle hover:bg-lm-sunken transition-colors text-left"
+                      >
+                        <span className="text-[10px] font-semibold text-lm-dark">
+                          Examples — {KEY_ELEMENT_LABELS[ke]}
+                        </span>
+                        <ChevronDown className={`w-3.5 h-3.5 text-lm-ink-muted transition-transform ${intentionExamplesOpen ? 'rotate-180' : ''}`} />
+                      </button>
+                      {intentionExamplesOpen && (
+                        <div className="px-3 py-3 space-y-2.5 bg-white">
+                          {INTENTION_EXAMPLES[ke].map((ex, i) => (
+                            <button
+                              key={i}
+                              onClick={() => { setIntentionIf(ex.if); setIntentionThen(ex.then); }}
+                              className="w-full text-left rounded-lg bg-lm-subtle hover:bg-lm-sunken border border-lm-sunken p-2.5 transition-colors"
+                            >
+                              <p className="text-[11px] text-lm-dark leading-snug">
+                                <span className="font-bold">IF</span> {ex.if} <span className="text-lm-ink-muted mx-1">→</span> <span className="font-bold">THEN</span> {ex.then}
+                              </p>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {!intentionIf && !intentionThen && (
+                    <p className="text-[11px] text-lm-ink-muted/70 italic">Every great coaching conversation ends with a plan. What will they try next?</p>
+                  )}
+                </div>
+              </div>
 
               <div className="flex justify-end pt-2">
                 <Button
@@ -711,6 +1189,42 @@ export default function FeedbackBuilder() {
                     <p className="text-sm text-lm-dark leading-relaxed whitespace-pre-wrap">{value}</p>
                   </div>
                 ) : null)}
+
+                {state.framework === 'epe' && [
+                  { label: 'Elicit (Open)', value: state.epeElicit1 },
+                  { label: 'Provide', value: state.epeProvide },
+                  { label: 'Elicit (Close)', value: state.epeElicit2 },
+                ].map(({ label, value }) => value ? (
+                  <div key={label} className="rounded-xl border border-border p-5">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-lm-ink-muted mb-2">{label}</p>
+                    <p className="text-sm text-lm-dark leading-relaxed whitespace-pre-wrap">{value}</p>
+                  </div>
+                ) : null)}
+
+                {/* Observation notes in review */}
+                {ke && obsNotes[ke] && (
+                  <div className="rounded-xl border border-lm-sunken p-5">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-lm-ink-muted mb-2">
+                      Observation Notes — {KEY_ELEMENT_LABELS[ke]}
+                    </p>
+                    <p className="text-sm text-lm-ink-mid leading-relaxed whitespace-pre-wrap">{obsNotes[ke]}</p>
+                  </div>
+                )}
+
+                {/* Implementation Intention in review */}
+                {(intentionIf || intentionThen) && (
+                  <div className="rounded-xl border border-lm-green/30 bg-lm-green/5 p-5">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-lm-ink-muted mb-2">Implementation Intention</p>
+                    <p className="text-sm text-lm-dark leading-relaxed">
+                      {intentionIf && intentionThen
+                        ? <><span className="font-bold">IF</span> {intentionIf} <span className="text-lm-ink-muted mx-1">→</span> <span className="font-bold">THEN</span> {intentionThen}</>
+                        : intentionIf
+                        ? <><span className="font-bold">IF</span> {intentionIf}</>
+                        : <><span className="font-bold">THEN</span> {intentionThen}</>
+                      }
+                    </p>
+                  </div>
+                )}
               </div>
 
               <Separator />
@@ -735,7 +1249,12 @@ export default function FeedbackBuilder() {
 
         {/* ── Sidebar ── */}
         <div className="w-full lg:w-72 flex-shrink-0 lg:sticky lg:top-6">
-          <LMQContextPanel state={state} framework={state.framework} />
+          <LMQContextPanel
+            state={state}
+            framework={state.framework}
+            intentionIf={intentionIf}
+            intentionThen={intentionThen}
+          />
         </div>
       </div>
     </div>

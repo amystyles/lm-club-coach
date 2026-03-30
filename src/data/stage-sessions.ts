@@ -1262,155 +1262,472 @@ export const stageDetails: Record<number, StageDetail> = {
   },
   3: {
     name: 'Ready to Teach',
-    subtitle: 'Post-cert to first slot',
+    subtitle: 'Post-Certification to Timetable',
     duration: 'Weeks 1-12',
     color: '#00CC4F',
     sessions: [
       {
-        id: '3-celebrate',
-        title: 'Cert Celebration',
-        subtitle: 'Week 1',
+        id: '3-cert-debrief',
+        title: 'Certification Debrief',
+        subtitle: '30 min — 1:1 in-person or video call',
         coachRole: {
-          summary: 'Celebrate the achievement and transition the instructor from training mode into teaching mode.',
-          context: 'The shift from "learner" to "teacher" is significant. Your role is to build their identity as a Les Mills instructor.',
-          principle: 'Recognition fuels confidence.',
+          summary: 'Bridge Builder. Certification is done — now you\'re helping this instructor cross from \'certified\' to \'teaching.\' The energy from passing is real. Your job is to channel it into a plan before it fades.',
+          context: 'This instructor has just passed Certification. They have grades across all 5 Key Elements and specific feedback from the Certification assessor. Unlike the IT Debrief (Stage 2), which focused on getting to the Certification video, this debrief focuses on what comes NEXT — getting on the club timetable. The Certification feedback tells you exactly where they are. The 30–90 day plan tells them exactly where they\'re going. Some instructors will be ready to team teach almost immediately. Others need significant practice time first. Read the feedback, read the instructor, and plan accordingly.',
+          principle: 'Certification proves they can do it. This plan proves they will.',
         },
-        content: [
-          {
-            week: 'Week 1: Cert Celebration',
-            tasks: ['Celebrate the achievement', 'Recognize effort and growth'],
-          },
-        ],
+        keyElementFocus: {
+          title: 'All 5 Key Elements — identify which 2–3 to prioritise from Certification feedback',
+          elements: [
+            { name: 'Choreography', description: 'Were they clean across all tracks? Any timing drift? New releases integrated? Certification feedback will flag specific tracks or patterns. At this stage, choreography should be solid but may still require conscious effort — the goal is to move toward automatic execution.' },
+            { name: 'Technique', description: 'Position and Execution Setups should be safe and competent. Look at Certification feedback for any form issues under fatigue or in complex movements. Technique at this stage is about consistency — doing it right every time, not just when they\'re fresh.' },
+            { name: 'Coaching', description: 'All 3 coaching layers should be present. Certification feedback will show whether Layer 1 (form/safety) is fluent and whether Layers 2–3 (intensity, motivation) are emerging. The goal for this stage is Layer 1 becoming automatic so bandwidth opens up for Layers 2–3.' },
+            { name: 'Connection', description: 'Did they connect with participants during Certification? Names, eye contact, Look-See-Respond? This is often the KE that\'s least developed at Certification — and that\'s normal. Note the starting point from the feedback — it sets the baseline for growth.' },
+            { name: 'Performance', description: 'Was their energy authentic? Did they show genuine enjoyment of the program? Certification feedback on Performance shows whether they\'re still "performing" or starting to genuinely express themselves. Note what was working — build on it.' },
+          ],
+        },
+        coachingSession: {
+          goals: [
+            '2–3 specific skills identified from Certification feedback as first priorities',
+            '30–90 day plan activated with practice schedule, check-in rhythm, and video self-review',
+            'Club Mentor or TAP Coach role confirmed and aligned',
+            'Instructor leaves energised and clear on the path to securing a class on the timetable',
+          ],
+          what: 'Review the Certification Development Form together within the first week post-certification. Celebrate the pass first, then shift to development. Identify 2–3 specific skills from Certification feedback as the first priorities — these become the focus for the Practice & Refine sessions ahead. Build a 30–90 day plan: when will they practice (small groups), how often will they film and self-review, what\'s the check-in rhythm (weekly minimum — even a 10-minute call keeps momentum alive), and when is the target for getting on the timetable. Confirm who is leading the hands-on development: Club Mentor (in-club) or TAP Coach (remote/regional). This person needs to be aligned and active, not just named.',
+          why: 'The gap between Certification and timetable is where instructors either accelerate or drift. Without a plan, the excitement of passing fades, practice becomes sporadic, and the instructor loses confidence. The Certification feedback is the most specific, actionable data the coach has — using it immediately creates a development plan grounded in evidence, not assumptions. The 30–90 day window (vs the 30-day IT window) recognises that different instructors move at different speeds post-cert, and that\'s fine — what matters is that the plan exists and the rhythm is active.',
+          how: [
+            'Celebrate the Certification pass — "You did it. Let\'s make sure you\'re teaching as soon as you\'re ready."',
+            'Review the Certification Development Form together — lead with what went well across all 5 KEs',
+            'Identify 2–3 specific priority skills from the assessor\'s feedback — these drive the Practice & Refine sessions',
+            'Build the 30–90 day plan together: practice schedule (minimum 3 small group sessions), self-filming cadence (minimum 5 self-reviews), check-in rhythm (weekly — non-negotiable), target timetable date',
+            'Confirm the Club Mentor or TAP Coach who will observe, review videos, and provide feedback',
+            'Ask: "What are you most excited about? What are you most nervous about?" — address both',
+            'Set the first Practice & Refine session date before you leave the room',
+          ],
+          prompts: [
+            {
+              label: 'Opening',
+              prompts: [
+                'How are you feeling about Certification — what are you most proud of?',
+                'Looking at your feedback across all 5 Key Elements, what jumped out at you?',
+              ],
+            },
+            {
+              label: 'Planning',
+              prompts: [
+                'If you had to pick the 2 things that would make the biggest difference to your teaching right now, what would they be?',
+                'When can you realistically get in front of a small group this week to start practicing?',
+                'Who do you want in the room when you practice — and who will give you honest feedback?',
+              ],
+            },
+            {
+              label: 'Momentum',
+              prompts: [
+                'What does "ready for the timetable" look like to you? Let\'s define it so you know when you\'re there.',
+                'How do you want me to check in with you — and how often? Let\'s lock that in now.',
+              ],
+            },
+          ],
+        },
+        content: [],
+      },
+      {
+        id: '3-practice-refine',
+        title: 'Practice & Refine',
+        subtitle: 'Ongoing — small group teaching + observation + video self-review',
+        coachRole: {
+          summary: 'Practice Partner. You\'re not here to watch them fail — you\'re here to create a safe space where repetition builds confidence and skill simultaneously.',
+          context: 'This is where the real development happens. The instructor teaches to small groups (friends, family, other instructors, willing participants), films themselves, watches back, and gets coached. The Club Mentor or TAP Coach observes at least one session live and reviews the self-filmed videos. This is NOT a test — it\'s a development space. The coach\'s job is to keep the feedback focused on the 2–3 priorities from the Certification Debrief, keep the check-in rhythm alive, and help the instructor see their own progress. Some instructors will fly through this in 2–3 weeks. Others will need 6–8 weeks. Both are fine — readiness matters more than speed.',
+          principle: 'You can\'t coach what they haven\'t practiced. Get them reps.',
+        },
+        keyElementFocus: {
+          title: 'Priority skills from Certification Debrief — all 5 KEs in play, 2–3 prioritised',
+          elements: [
+            { name: 'Choreography', description: 'Is it becoming automatic? Can they teach a full class without thinking about what comes next? Watch for tracks where they still hesitate or lose timing. New releases should be integrated. Errors should be rare and recovered quickly.' },
+            { name: 'Technique', description: 'Consistency under fatigue is the test. Early tracks are usually fine — watch the later tracks. Are Position and Execution Setups still clean when they\'re tired? Are they maintaining form while also trying to coach?' },
+            { name: 'Coaching', description: 'Layer 1 should be getting fluent — form cues, safety reminders, option offers delivered without breaking flow. Layer 2 (intensity cues, meaningful praise) should be emerging. Watch for the bandwidth shift: as choreography becomes automatic, coaching bandwidth opens up.' },
+            { name: 'Connection', description: 'In small group sessions, connection is easier — use this as a training ground. Are they using names? Making eye contact beyond the front? Starting to read the room? This is exploration territory, not mastery.' },
+            { name: 'Performance', description: 'Is their energy growing? Are they starting to show genuine enjoyment rather than nervous energy? Self-filmed review is powerful here — the instructor can SEE when they look confident vs when they look uncertain.' },
+          ],
+        },
+        coachingSession: {
+          goals: [
+            'Minimum 3 small group teaching sessions completed',
+            'Club Mentor or TAP Coach has observed at least one session live and reviewed self-filmed videos and provided feedback',
+            'Self-filmed review completed at least 5 times — instructor can see their own growth',
+            'Priority skills showing clear improvement based on LMQ-aligned feedback',
+            'Instructor feels confident and ready',
+            'Weekly check-in rhythm maintained — even a 10-minute call keeps momentum alive',
+          ],
+          what: 'The instructor teaches to small groups minimum 3 times, films themselves minimum 5 times, and reviews the footage — ideally with the Club Mentor or TAP Coach watching alongside for at least one session live. Feedback stays focused on the 2–3 priority skills from the Certification Debrief. The weekly check-in rhythm is maintained — even 10 minutes keeps momentum alive and prevents drift. The coach monitors progress against LMQ-aligned criteria and helps the instructor see their own improvement across all 5 KEs. When priority skills show clear improvement and the instructor feels confident, they\'re ready for Team Teach.',
+          why: 'Repetition builds skill. Filming builds self-awareness. Coaching builds confidence. Without structured practice between Certification and timetable, instructors either over-prepare (perfectionism paralysis) or under-prepare (teaching before they\'re ready, damaging confidence with a bad first class). The Practice & Refine structure ensures they get enough reps to feel confident, enough feedback to keep improving, and enough video self-review to develop self-coaching habits that will serve them for their entire career.',
+          how: [
+            'Help the instructor schedule their first small group session within the first week',
+            'Be present for at least one session — observe and debrief using E-P-E (Elicit what they noticed, Provide your observation, Elicit what they want to try next)',
+            'Review at least 2 self-filmed videos with the instructor — ask "What do you see?" before sharing your observations',
+            'Keep feedback focused on the 2–3 priority skills — don\'t overload with new targets until the priorities are improving',
+            'Maintain the weekly check-in — even 10 minutes. Ask: "What did you practice? What did you notice? What\'s your focus for next time?"',
+            'Track progress against LMQ criteria for all 5 KEs — share the progress with the instructor so they can see growth',
+            'When the instructor is showing clear improvement in priority skills and feels confident: move to Team Teach',
+            'If the instructor\'s skills show they\'re already ready (strong Certification results, experienced background): Team Teach can begin sooner — 1–2 tracks max',
+          ],
+          prompts: [
+            {
+              label: 'After Observation',
+              prompts: [
+                'What did you feel went well in that session?',
+                'If you could go back and change one thing, what would it be?',
+                'Watch this section back — what do you notice about your [priority skill]?',
+              ],
+            },
+            {
+              label: 'Video Review',
+              prompts: [
+                'Before we watch it together — what do you think you\'ll see?',
+                'Compare this to your first filming — what\'s different?',
+                'Where in the class do you feel most confident? Where does the confidence drop?',
+              ],
+            },
+            {
+              label: 'Check-in',
+              prompts: [
+                'What did you practice this week? How did it go?',
+                'On a scale of 1–10, how ready do you feel for a real class? What would move you one number higher?',
+                'Is there anything you need from me that you\'re not getting?',
+              ],
+            },
+          ],
+        },
+        content: [],
       },
       {
         id: '3-team-teach',
         title: 'Team Teach',
-        subtitle: 'Weeks 2-4',
-        content: [
-          {
-            week: 'Week 2-4: Team Teach',
-            tasks: [
-              'Co-teach 2-4 live classes with experienced mentor',
-              'Learn club rhythm and participant patterns',
-              'Build confidence in live environment',
-            ],
-          },
-        ],
-        proTip: 'Pair them with instructors who model great energy AND technique — they\'ll absorb both.',
+        subtitle: '45 min — co-teaching with experienced instructor + debrief',
+        coachRole: {
+          summary: 'Safety Net. Team Teach is a bridge between practice and solo teaching. The experienced instructor carries the class — your new instructor gets to feel what a real class is like without carrying the full weight.',
+          context: 'Team Teach is not a test. It\'s an exposure — the instructor teaches 1–2 tracks within a real class, with an experienced instructor handling the rest. This gives them the experience of a live class (real participants, real energy, real nerves) in a supported environment. The Club Coach should be present to observe — or arrange for the Club Mentor to observe and debrief. All 5 KEs are observed, but the focus stays on the priority skills from Practice & Refine. The key question afterward: "How did that feel compared to your small group sessions?"',
+          principle: 'The first time in front of a real class should feel like a step, not a leap.',
+        },
+        keyElementFocus: {
+          title: 'All 5 KEs observed in live class context — priority skills from Practice & Refine remain the focus',
+          elements: [
+            { name: 'Choreography', description: 'Does it hold up under the pressure of a real class? Nerves can disrupt timing and memory. Watch for tracks where they\'d been solid in practice but wobble in the live environment. If choreography holds, everything else has bandwidth to emerge.' },
+            { name: 'Technique', description: 'Are they maintaining form standards with real participants watching? Can they demonstrate and coach simultaneously? Watch for form breakdown when attention splits between their own execution and the room.' },
+            { name: 'Coaching', description: 'Layer 1 coaching in a live class is different from small group practice — there are more people, more variables, more noise. Can they deliver form cues while managing a real class? Is Layer 2 starting to appear naturally?' },
+            { name: 'Connection', description: 'This is often the first time the instructor connects with people they don\'t know. Watch for eye contact, name use (if they can), "we/us" language, and any Look-See-Respond moments. Even one genuine connection moment is a win at this stage.' },
+            { name: 'Performance', description: 'Live class energy is contagious — does the instructor tap into it or retreat? Watch for moments where their authentic self comes through. The experienced instructor\'s energy can lift them or intimidate them — debrief which it was.' },
+          ],
+        },
+        coachingSession: {
+          goals: [
+            'Instructor has co-taught 1–2 tracks in a live class alongside an experienced instructor',
+            'All 5 KEs observed in a real class environment with real participants',
+            'Coach has debriefed the experience — what worked, what to refine',
+            'Instructor\'s confidence is building for solo teaching',
+          ],
+          what: 'Arrange for the instructor to co-teach 1–2 tracks within a real class, partnered with an experienced instructor on the team. The experienced instructor leads the class and handles the majority of tracks — the new instructor teaches their assigned tracks and observes the rest. The coach or Club Mentor observes and debriefs afterward. The debrief focuses on all 5 KEs in the live environment, with emphasis on how the priority skills translated from practice to the real thing. If the instructor already showed strong readiness in Practice & Refine, Team Teach may be brief — 1 session, 1–2 tracks. If they need more exposure, schedule additional Team Teach sessions before solo.',
+          why: 'The jump from small group practice to solo teaching is too big for most new instructors. Team Teach provides the middle step — real participants, real class format, real environment — but with a safety net. The experienced instructor handles the class pressure, leaving the new instructor free to focus on their tracks. This builds confidence because the instructor proves to themselves that they CAN do it in a live setting. Without Team Teach, the first solo class carries all the pressure of "first time ever" — which can be destructive if it goes badly.',
+          how: [
+            'Select an experienced instructor who is supportive and encouraging — not competitive or critical',
+            'Brief the experienced instructor: "Your job is to make them feel safe. Carry the class energy. Let them shine in their tracks."',
+            'Assign 1–2 tracks where the instructor is most confident (from Practice & Refine feedback)',
+            'Observe the full class — take notes on all 5 KEs during the instructor\'s tracks',
+            'Debrief within 24 hours using E-P-E: "What did you feel? Here\'s what I saw. What do you want to work on?"',
+            'Ask the key question: "How did that feel compared to your practice sessions? What was different?"',
+            'Decide together: ready for solo, or one more Team Teach session first?',
+          ],
+          prompts: [
+            {
+              label: 'Pre-Class',
+              prompts: [
+                'Which tracks do you feel most confident with? Let\'s start there.',
+                'What\'s your one focus for this session — the thing you most want to nail?',
+              ],
+            },
+            {
+              label: 'Post-Class',
+              prompts: [
+                'How did that feel? What surprised you about teaching a real class?',
+                'What was different from your practice sessions — better or harder?',
+                'When in your tracks did you feel most like yourself?',
+                'If you did this again next week, what would you do differently?',
+              ],
+            },
+            {
+              label: 'Readiness Check',
+              prompts: [
+                'On a scale of 1–10, how ready do you feel to lead a full class on your own?',
+                'What would need to happen for that number to go up?',
+              ],
+            },
+          ],
+        },
+        content: [],
       },
       {
-        id: '3-solo',
-        title: 'First Solo Classes',
-        subtitle: 'Weeks 5-8',
-        content: [
-          {
-            week: 'Week 5-8: First Solo Classes',
-            tasks: [
-              'Mentor present in studio for first solo teaches',
-              'Feedback immediately after each class',
-              'Gradual reduction of mentor presence',
-            ],
-          },
-        ],
-      },
-      {
-        id: '3-timetable',
-        title: 'Timetable Slot',
-        subtitle: 'Weeks 8-12',
-        content: [
-          {
-            week: 'Week 8-12: Timetable Slot',
-            tasks: [
-              'Regular slot secured on class timetable',
-              'Quarterly LMQ assessment scheduled',
-              'Begins ongoing development journey',
-            ],
-          },
-        ],
-        proTip: 'The first timetable slot is a career milestone. Treat it like one — announce it, support it, protect it.',
+        id: '3-timetable-ready',
+        title: 'Timetable Ready',
+        subtitle: '30 min — 1:1 conversation',
+        coachRole: {
+          summary: 'Launcher. This is the \'go\' conversation. Everything has been building to this — practice, filming, team teach. Now you\'re confirming they\'re ready and setting them up for a strong start on the timetable.',
+          context: 'This is a checkpoint, not a gate. The instructor has been practicing, filming, getting feedback, and team teaching. They\'ve shown improvement in their Certification priority skills. They feel confident. The coach\'s job is to confirm readiness, agree on the first timetable slot, and set up the coaching rhythm for Stage 4. If the instructor isn\'t ready yet, this conversation redirects back to Practice & Refine with a clear plan — no shame, no pressure, just "here\'s what we need to work on and how."',
+          principle: 'Ready doesn\'t mean perfect. It means confident, improving, and committed.',
+        },
+        keyElementFocus: {
+          title: 'All 5 KEs — readiness check across the board',
+          elements: [
+            { name: 'Choreography', description: 'Should be approaching automatic for the current release. Minimal errors, quick recovery. New releases can be integrated within a reasonable timeframe. This is the gateway — if choreography isn\'t solid, nothing else can develop freely on the timetable.' },
+            { name: 'Technique', description: 'Consistent and safe across all tracks, including under fatigue. The instructor demonstrates correct form and can maintain it while coaching. No safety concerns.' },
+            { name: 'Coaching', description: 'Layer 1 should be fluent — form cues, safety reminders, options delivered naturally. Layer 2 should be emerging — intensity cues, genuine praise, real-time adjustments. The instructor doesn\'t need to be a master coach — they need to be a safe, competent one.' },
+            { name: 'Connection', description: 'The instructor makes eye contact, uses names where possible, and creates a sense of shared experience. Doesn\'t need to be exceptional — needs to be present and genuine. Team Teach feedback should show growth here.' },
+            { name: 'Performance', description: 'Energy is authentic, not forced. The instructor shows genuine enjoyment of their program. They can sustain energy across a full class. Participants would want to come back.' },
+          ],
+        },
+        coachingSession: {
+          goals: [
+            'Coach and instructor review progress against Certification priorities — clear improvement demonstrated',
+            'All 5 KE grades reviewed — instructor understands where they are',
+            'Instructor demonstrates confidence and consistency across their teaching',
+            'Plan for first solo timetable slot agreed — day, time, program, and start date',
+            'Transition to Stage 4 (On Timetable) coaching rhythm discussed',
+          ],
+          what: 'A final 1:1 conversation reviewing the instructor\'s development since Certification. Review progress against the 2–3 priority skills from the Debrief. Look at all 5 KE grades — are they where they need to be? Review Practice & Refine feedback and Team Teach observations. If the instructor is ready: agree on the first solo timetable slot (day, time, program, start date). Discuss what Stage 4 coaching looks like — observation rhythm, feedback cadence, the shift from "getting ready" to "getting better." If the instructor isn\'t ready: identify what\'s missing, plan additional Practice & Refine or Team Teach sessions, and set a new target date. Keep it positive and forward-looking.',
+          why: 'Putting an instructor on the timetable before they\'re ready damages their confidence and potentially their retention. Holding an instructor back when they\'re ready damages their motivation. This conversation gets the timing right by reviewing evidence (feedback, observations, self-assessments) rather than relying on gut feel. It also sets up the transition to Stage 4 so the instructor knows that getting on the timetable is the START of their development journey, not the end.',
+          how: [
+            'Review the Certification Development Form side by side with current observations — show them the progress',
+            'Walk through all 5 KEs: "Here\'s where you were at Certification. Here\'s where you are now."',
+            'Ask: "Do YOU feel ready? What would make you more confident?"',
+            'If ready: agree on the timetable slot together — day, time, program. Make it real.',
+            'Set the Stage 4 coaching rhythm: observations, check-ins, first Grade Review timeline',
+            'If not ready: be honest but constructive — "Here\'s what I\'d love to see improve. Here\'s the plan to get there."',
+            'Either way, celebrate how far they\'ve come from Certification',
+          ],
+        },
+        content: [],
       },
     ],
   },
   4: {
     name: 'On Timetable',
-    subtitle: 'Nailing the basics',
+    subtitle: 'Nailing the Basics & Building Habits',
     duration: 'Ongoing',
     color: '#00FF63',
     sessions: [
       {
-        id: '4-choreo',
+        id: '4-choreo-lockin',
         title: 'Choreo Lock-In',
-        subtitle: 'First 4 Weeks',
+        subtitle: '45 min — observation + debrief',
         coachRole: {
-          summary: 'Ensure the instructor locks in choreography execution so it becomes automatic and reliable.',
-          context: 'Choreography accuracy is the foundation everything else is built on. If it\'s shaky, technique and coaching will suffer.',
-          principle: 'You can\'t coach what you can\'t execute.',
+          summary: 'Foundation Setter. Choreography is the platform everything else is built on. If it\'s shaky, technique suffers, coaching bandwidth disappears, and the instructor can\'t connect. Your job is to make sure the foundation is rock solid.',
+          context: 'The instructor is on the timetable. They\'re teaching real classes to real participants on a regular schedule. The excitement of getting here is real — but so is the reality that they now need to execute consistently, week after week. Choreography is the first domino. When it\'s automatic, the instructor has bandwidth for technique, coaching, connection, and performance. When it\'s not, everything else suffers. This session establishes the choreography standard: every track on beat, zero significant errors, smooth and automatic execution. New releases are integrated promptly — not weeks later.',
+          principle: 'You can\'t coach what you can\'t execute. Lock in the choreography first.',
         },
         keyElementFocus: {
-          title: 'Focus on embedding choreography so deeply it becomes second nature',
+          title: 'All 5 KEs — with Choreography as the primary focus',
           elements: [
-            { name: 'Choreography', description: 'Every track on beat, zero significant errors' },
-            { name: 'Technique', description: 'Safe demonstration every class' },
-            { name: 'Coaching', description: 'Layer 1 (form/safety) coaching fluent' },
+            { name: 'Choreography', description: 'Every track on beat. Zero significant errors. Automatic execution — the instructor isn\'t thinking about what comes next, they\'re thinking about the people in front of them. New releases integrated within 2 weeks. Recovery from any minor mistakes is smooth and doesn\'t disrupt the class. This is the gateway to everything else — if choreography isn\'t automatic, the instructor has no bandwidth for the other 4 KEs.' },
+            { name: 'Technique', description: 'Safe demonstration across all tracks. Position and Execution Setups clean and consistent. Watch for form deterioration in later tracks when fatigue kicks in. Technique should be solid enough that participants can follow safely.' },
+            { name: 'Coaching', description: 'Layer 1 (form/safety) should be fluent — delivered without breaking choreography flow. Watch for the bandwidth indicator: when choreography is automatic, coaching emerges naturally. When choreography is consuming attention, coaching disappears.' },
+            { name: 'Connection', description: 'Now that they\'re teaching regular classes, are they starting to know their participants? Names, preferences, regular spots in the room? Connection builds through consistency — same time, same day, same instructor.' },
+            { name: 'Performance', description: 'Is their energy sustainable across a full class on a weekly basis? Early enthusiasm can mask unsustainable effort. Watch for energy management — can they be high when needed and recover when the music allows?' },
           ],
         },
-        content: [
-          {
-            week: 'First 4 Weeks: Choreo Lock-In',
-            tasks: [
-              'Every track on beat, zero significant errors',
-              'Automatic execution across all choreography',
-              'Consistent professional performance',
-            ],
-          },
-        ],
+        coachingSession: {
+          goals: [
+            'Coach has observed a full class and assessed choreography execution across all tracks',
+            'Choreography is approaching automatic — in time, minimal errors, smooth transitions',
+            'Any tracks with timing drift, errors, or hesitation are identified and a practice plan is set',
+            'New release integration rhythm is established',
+          ],
+          what: 'Observe a full class with choreography as the primary lens. Note every track: timing accuracy, errors, transitions, automatic execution vs conscious effort. After the class, debrief using E-P-E. Identify any tracks that need work and set a specific practice plan. Establish the new release integration rhythm — when new releases drop, how quickly does the instructor learn and integrate them? Check all 5 KEs during the observation but anchor the conversation on choreography as the foundation.',
+          why: 'The first few months on the timetable are where choreography either becomes automatic or stays a source of stress. An instructor who is still thinking about choreography mid-class cannot develop their coaching, connection, or performance. Locking in choreography early creates the bandwidth for all other development. It also builds confidence — when the instructor knows they can execute flawlessly, they relax, and relaxation unlocks authenticity.',
+          how: [
+            'Observe a full class — take track-by-track notes on choreography (timing, errors, transitions, confidence level)',
+            'Note where choreography is automatic vs where the instructor is still "thinking about it"',
+            'In the debrief, ask first: "How did that feel? Which tracks did you feel most solid in?"',
+            'Share your track-by-track observations — lead with what\'s working',
+            'For any problem tracks: set a specific practice plan (which tracks, how often, by when)',
+            'Establish the new release rhythm: "When the next release drops, what\'s your plan for learning it?"',
+            'Check in on the other 4 KEs: "Now that you\'re teaching regularly, what are you noticing about your coaching/connection/performance?"',
+            'Set the next observation date — maintain the rhythm',
+          ],
+          prompts: [
+            {
+              label: 'Post-Observation',
+              prompts: [
+                'Which tracks felt most automatic today? Which ones still need your attention?',
+                'When you\'re mid-class and the choreography is flowing, what are you thinking about instead?',
+                'How quickly are you integrating new releases? What\'s your process?',
+              ],
+            },
+            {
+              label: 'Development',
+              prompts: [
+                'If choreography was completely automatic across every track, what would you work on next?',
+                'What\'s the difference between a good class and a great class for you right now?',
+              ],
+            },
+          ],
+        },
+        content: [],
       },
       {
-        id: '4-technique',
+        id: '4-technique-consistency',
         title: 'Technique Consistency',
-        subtitle: 'Weeks 4-12',
-        content: [
-          {
-            week: 'Weeks 4-12: Technique Consistency',
-            tasks: [
-              'Safe demonstration every class',
-              'Layer 1 (form/safety) coaching fluent and automatic',
-              'Participants know they can trust your technique',
-            ],
-          },
-        ],
+        subtitle: '45 min — observation + debrief',
+        coachRole: {
+          summary: 'Quality Controller. Technique is about trust. When participants see safe, confident demonstrations every single class, they trust the instructor. When technique wobbles, so does trust.',
+          context: 'Now that choreography is locking in, technique can get the attention it deserves. The standard at this stage is consistency — not perfection, but reliability. Every class, every track, every movement: safe, clean, and confident. The real test is the second half of the class — technique under fatigue. An instructor whose Setups are perfect in Track 1 but sloppy in Track 8 has a technique problem. An instructor who stops coaching when they focus on their own form has a bandwidth problem (which often means choreography isn\'t automatic enough yet). Watch for both.',
+          principle: 'Track 1 technique is easy. Track 8 technique is the truth.',
+        },
+        keyElementFocus: {
+          title: 'All 5 KEs — with Technique as the primary focus',
+          elements: [
+            { name: 'Choreography', description: 'Should be automatic enough that it doesn\'t interfere with technique focus. If the instructor is still thinking about choreography, technique will be inconsistent. Check this first.' },
+            { name: 'Technique', description: 'Position Setups: are they consistently explaining and demonstrating the starting position correctly? Execution Setups: is the movement execution safe and effective? Under fatigue: does form hold in later tracks? Simultaneous: can they maintain their own technique while coaching participants? Program-specific: are the technique standards right for their program (e.g., power emphasis in BODYCOMBAT, precision in BODYPUMP)?' },
+            { name: 'Coaching', description: 'Technique and coaching are deeply linked. When the instructor spots a participant with poor form, do they coach it? Can they correct technique while maintaining their own demonstration? Layer 1 coaching should be technique-driven at this stage.' },
+            { name: 'Connection', description: 'Technique coaching IS connection — when an instructor corrects someone\'s form with care and specificity, that\'s a connection moment. Watch for instructors who coach technique generically ("watch your form") vs specifically ("keep your knees behind your toes, Sarah — that\'s it, perfect").' },
+            { name: 'Performance', description: 'Technique confidence shows. An instructor who trusts their own form demonstrates with authority. An instructor who\'s unsure demonstrates tentatively. Watch for the confidence signal in their movement quality.' },
+          ],
+        },
+        coachingSession: {
+          goals: [
+            'Coach has observed technique across a full class with focus on consistency under fatigue',
+            'Position and Execution Setups are clean and safe in every track — not just the early ones',
+            'The instructor can demonstrate AND coach technique simultaneously',
+            'Any form issues are identified with specific correction plans',
+          ],
+          what: 'Observe a full class with technique as the primary lens. Focus on the second half of the class where fatigue is a factor. Watch Position and Execution Setups in every track — are they consistent? Can the instructor maintain form while coaching? Are they correcting participant technique with specificity? After the class, debrief with specific observations per track. If technique is inconsistent under fatigue, explore whether the root cause is technique or whether choreography is still consuming bandwidth.',
+          why: 'Technique consistency builds participant trust and prevents injury. An instructor who demonstrates beautifully in the warm-up but deteriorates by the peak tracks is teaching participants to accept poor form when it matters most. Consistent technique also frees up mental bandwidth — when the instructor trusts their own form, they can focus outward on participants. And participants who feel safe in a class come back. Technique consistency is a retention driver.',
+          how: [
+            'Observe a full class — note technique quality per track, especially in the second half',
+            'Watch for form deterioration under fatigue: do Setups get shorter? Does execution get sloppy?',
+            'Note whether technique coaching happens: does the instructor correct participant form? How specific is it?',
+            'In the debrief, ask: "How did your body feel in the later tracks? Were you aware of your form changing?"',
+            'If technique holds: celebrate it and shift focus — "Your technique is solid. Let\'s talk about what that frees up."',
+            'If technique wobbles: identify the root cause — fatigue, choreography distraction, or genuine form gaps',
+            'Set specific targets: "Next class, I want you to pay extra attention to your Setups in Tracks 7–9. Film yourself."',
+            'Connect technique to coaching: "When your form is perfect, your participants\' form gets better too."',
+          ],
+          prompts: [
+            {
+              label: 'Post-Observation',
+              prompts: [
+                'How did your body feel in the second half of the class? Were you aware of your technique?',
+                'Which movements are you most confident with? Which ones do you have to think about?',
+                'When you\'re coaching a participant on their form, what happens to YOUR form?',
+              ],
+            },
+            {
+              label: 'Development',
+              prompts: [
+                'If a new instructor watched your class to learn technique, what would they pick up?',
+                'What does "safe" look like to you? What does "confident" look like?',
+              ],
+            },
+          ],
+        },
+        content: [],
       },
       {
-        id: '4-coaching',
+        id: '4-coaching-layers',
         title: 'Coaching Layers',
-        subtitle: 'Month 3+',
-        content: [
-          {
-            week: 'Month 3+: Coaching Layers',
-            tasks: [
-              'Layer 2 coaching introduced and developed',
-              'Balanced mix of safety, motivation, and inspiration',
-              'More personalized feedback to participants',
-            ],
-          },
-        ],
+        subtitle: '45 min — observation + debrief',
+        coachRole: {
+          summary: 'Coaching Activator. Choreography and technique are the foundation. Coaching is what turns a workout into a development experience for participants. Your job is to help this instructor find their coaching voice.',
+          context: 'This is the session where the instructor\'s development shifts from "can I execute?" to "can I coach while I execute?" Layer 1 coaching (form cues, safety reminders, option offers) should be flowing naturally by now — if it\'s not, check whether choreography is truly automatic. Layer 2 coaching is the growth edge: intensity manipulation ("give me 10% more"), meaningful praise ("great depth, Marcus — that\'s exactly right"), real-time correction delivered with warmth. The goal is not a coaching masterclass — it\'s consistent, genuine coaching that participants feel. Watch for whether they coach the room generically or coach individuals specifically.',
+          principle: 'A workout without coaching is just exercise. Coaching is what makes it development.',
+        },
+        keyElementFocus: {
+          title: 'All 5 KEs — with Coaching as the primary focus',
+          elements: [
+            { name: 'Choreography', description: 'Must be automatic to free coaching bandwidth. If coaching disappears during complex choreography sections, the root cause is usually choreography — not coaching skill.' },
+            { name: 'Technique', description: 'Technique coaching (Layer 1) is the bridge between technique knowledge and coaching skill. Can the instructor see AND correct participant technique in real time?' },
+            { name: 'Coaching', description: 'Layer 1: Form cues, safety reminders, option offers — should be fluent and delivered naturally. Count: minimum 3–4 Layer 1 cues per track. Layer 2: Intensity cues ("push for 10 more seconds"), meaningful praise (specific, not generic — "great depth" not "good job"), real-time correction. Count: emerging — 1–2 Layer 2 moments per track is a good starting point. Layer 3: Motivational coaching, storytelling, challenge — this is future development, not a target yet.' },
+            { name: 'Connection', description: 'Coaching specific individuals BY NAME is where coaching and connection intersect. "Great work, team" is generic. "Sarah, that range is beautiful" is coaching AND connection. Watch for this crossover.' },
+            { name: 'Performance', description: 'Coaching delivery is part of the instructor\'s performance. The energy behind the cue matters as much as the words. An intensity cue delivered with flat energy doesn\'t motivate. Watch for congruence between what they say and how they say it.' },
+          ],
+        },
+        coachingSession: {
+          goals: [
+            'Layer 1 coaching (form/safety/options) is fluent and automatic',
+            'Layer 2 coaching (intensity, meaningful praise, real-time correction) is emerging consistently',
+            'Coaching is delivered without disrupting choreography or technique',
+            'The instructor coaches specific individuals, not just the room',
+          ],
+          what: 'Observe a full class with coaching as the primary lens. Count Layer 1 and Layer 2 coaching moments per track. Note who they coach — the room generically, or specific individuals? Note when coaching disappears — what\'s happening with choreography in those moments? After the class, debrief with specific examples: "In Track 4, you said [specific cue] — that\'s exactly what Layer 2 looks like" and "In Track 7, coaching dropped off — what was happening for you?" Help the instructor understand the bandwidth relationship between choreography and coaching.',
+          why: 'Coaching is what separates a Les Mills class from a generic group fitness class. Participants who are coached get better results, feel more supported, and come back. Layer 1 coaching (form/safety) is the minimum standard — it keeps people safe. Layer 2 coaching (intensity, praise, correction) is what drives results and builds the instructor\'s reputation. An instructor who can coach well while executing flawlessly is the one participants choose. And coaching develops over time — the earlier the foundation is set, the faster it grows.',
+          how: [
+            'Observe a full class — count coaching moments per track: how many Layer 1? How many Layer 2?',
+            'Note WHO they coach: the room ("everyone, watch your knees") or individuals ("Marcus, knees behind toes — that\'s it")',
+            'Note WHEN coaching drops off: which tracks, which movements? Cross-reference with choreography complexity.',
+            'In the debrief: play back specific coaching moments — "In Track 4, you said [X]. That landed. Here\'s why…"',
+            'Identify the bandwidth pattern: "When choreography gets complex, your coaching disappears. That\'s normal — here\'s how to build past it."',
+            'Set a specific target for next class: "Aim for 2 Layer 2 moments per track — meaningful praise or intensity cues"',
+            'Ask: "Who in your class needs different coaching? Who needs pushing? Who needs encouragement?"',
+            'Connect coaching to connection: "When you coach someone by name, that\'s connection AND coaching in one moment"',
+          ],
+          prompts: [
+            {
+              label: 'Post-Observation',
+              prompts: [
+                'When in the class did you feel most like a coach? When did you feel most like a performer?',
+                'Who in your class today needed the most coaching? Did they get it?',
+                'What\'s the difference between your coaching in the early tracks vs the later tracks?',
+              ],
+            },
+            {
+              label: 'Development',
+              prompts: [
+                'If you could only say one coaching cue per track, what would it be?',
+                'Think about the best instructor you\'ve ever experienced — what did their coaching feel like?',
+                'What\'s one coaching habit you want to build over the next month?',
+              ],
+            },
+          ],
+        },
+        content: [],
       },
       {
-        id: '4-lmq',
-        title: 'LMQ Assessment',
-        subtitle: 'Quarterly',
-        content: [
-          {
-            week: 'Quarterly: LMQ Assessment',
-            tasks: [
-              'Grade update against all 5 Key Elements',
-              'Feedback on growth across programming',
-              'Goals set for next quarter',
-              'Identify Stage 5 readiness: KEs 1–3 at solid Grade 1, Layer 1 coaching automatic, upward LMQ trend',
-            ],
-          },
-        ],
-        proTip: 'When KEs 1–3 are consistently Grade 1 and coaching is automatic → Ready for Stage 5 — Advanced: Grade 2 push, Connection & Performance awakening, and growing impact.',
+        id: '4-first-grade-review',
+        title: 'First Grade Review',
+        subtitle: '30 min — 1:1 conversation (pre and post Grade Review)',
+        coachRole: {
+          summary: 'Development Anchor. The Grade Review is a snapshot, not a verdict. Your job is to help the instructor see it as evidence of growth and a map for what comes next — not a pass/fail moment.',
+          context: 'The first Grade Review on the timetable is a significant moment. It\'s the instructor\'s first formal assessment since Certification — and it measures all 5 Key Elements with proper grade criteria. Some instructors dread it. Others are eager. Either way, the coach\'s job is to frame it correctly: it\'s a development tool, not an exam. Before the Grade Review, walk through what to expect and set realistic expectations. After the Grade Review, review the results together and update the development plan. KEs 1–3 should be solid Grade 1 by now. KEs 4–5 should be showing growth. The Grade Review data feeds directly into the ongoing coaching focus.',
+          principle: 'A Grade Review tells you where you are. Your coach tells you where you\'re going.',
+        },
+        keyElementFocus: {
+          title: 'All 5 KEs — formal assessment with grade criteria',
+          elements: [
+            { name: 'Choreography', description: 'Grade 1 should be solid: in time, accurate, minimal errors. Approaching Grade 2: automatic execution, smooth transitions, new releases integrated promptly. The Grade Review will confirm where on this spectrum the instructor sits.' },
+            { name: 'Technique', description: 'Grade 1 should be solid: safe, consistent Position and Execution Setups. Any Grade 2 signals: technique inspires correct execution in participants, maintained under fatigue, program-specific precision.' },
+            { name: 'Coaching', description: 'Grade 1 should be solid: Layer 1 fluent, options offered, safety addressed. Grade 2 signals: Layer 2 consistent, meaningful praise, intensity manipulation, coaching specific individuals.' },
+            { name: 'Connection', description: 'Grade 1: present and genuine — eye contact, room awareness, inclusive language. Approaching Grade 2: names used, Look-See-Respond emerging, shared experience language ("we/us"), C.R.C. moments beginning.' },
+            { name: 'Performance', description: 'Grade 1: authentic energy, genuine enjoyment visible, sustainable across the class. Approaching Grade 2: program Essence emerging, dramatic contrast beginning, voice variety developing.' },
+          ],
+        },
+        coachingSession: {
+          goals: [
+            'Instructor understands what a Grade Review is and how it works',
+            'Coach and instructor have reviewed current KE levels across all 5 elements and set realistic expectations',
+            'Grade Review completed (or scheduled) — results reviewed together',
+            'Development plan for Stage 4 continuation or Stage 5 readiness discussed',
+          ],
+          what: 'Two conversations — one before and one after the Grade Review. Before: explain the Grade Review process, review all 5 KE criteria at the relevant grade levels, set realistic expectations based on what you\'ve observed. Discuss any nerves. After: review the results together. Lead with growth since Certification. Identify what\'s strong, what\'s developing, and what needs focus. Update the development plan for continued Stage 4 work. If KEs 1–3 are solid Grade 1 with coaching automatic and LMQ trending upward: discuss Stage 5 readiness timeline.',
+          why: 'A Grade Review without coaching context is just a number. The instructor needs to understand what the grades mean, how they connect to their daily teaching, and what the path forward looks like. Without the pre-conversation, the Grade Review creates anxiety. Without the post-conversation, the results sit in a drawer and change nothing. The coach makes the Grade Review meaningful by connecting it to the development journey.',
+          how: [
+            'Before: walk through what the Grade Review involves and what the assessor is looking for across all 5 KEs',
+            'Before: set realistic expectations — "Based on what I\'ve seen, here\'s where I think you\'ll land and here\'s why that\'s great"',
+            'Before: normalise the experience — "This is a snapshot. It shows where you are right now. It\'s not a judgment."',
+            'After: review results together — lead with strengths and growth since Certification',
+            'After: for each KE, discuss: "Here\'s where you are. Here\'s what the next grade looks like. Here\'s what we\'ll work on."',
+            'After: update the development plan — what\'s the coaching focus for the next 3 months?',
+            'After: if KEs 1–3 are solid Grade 1, Layer 1 coaching automatic, LMQ trending upward — discuss Stage 5 timeline',
+            'After: if any KE needs attention — set a specific plan with the same Practice & Refine approach that got them here',
+          ],
+        },
+        content: [],
       },
     ],
   },
