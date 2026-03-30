@@ -528,7 +528,7 @@ export const coachPathStages: Record<number, StageDetail> = {
             "Coach can identify Dreyfus stage signals in a live observation",
             "Coach adjusts their approach per skill domain for at least one instructor on their team",
           ],
-          what: "The Dreyfus model maps skill acquisition from Novice through to Expert. Novices need rules, competent performers need frameworks, experts need space. The key insight: an instructor can be at different stages for different Key Elements simultaneously.",
+          what: "The Dreyfus model maps skill acquisition from Novice through to Expert. Novices need rules, competent performers need frameworks, experts need space. The key insight: an instructor can be at different stages for different Key Elements simultaneously. The Dreyfus stages connect directly to three practical tools in the app: the Coaching Approach label (how to coach this skill), the Supervision Level (how much oversight this instructor needs for this task), and the Feedback Builder guidance (what register to write feedback in). When you understand Dreyfus, you unlock all three.",
           why: "Coaching based on a global assessment misses the nuance. An instructor who is Grade 3 in Choreography but Grade 1 in Connection needs very different coaching approaches for each element in the same session. Dreyfus gives you the per-skill lens to do this accurately.",
           how: [
             "Review the Dreyfus stage descriptors for each stage: Novice, Advanced Beginner, Competent, Proficient, Expert",
@@ -536,6 +536,34 @@ export const coachPathStages: Record<number, StageDetail> = {
             "Describe what coaching approach each stage calls for: rules and checklists (Novice) → frameworks (Competent) → space and reflection (Expert)",
             "Plan your next coaching conversation with that instructor using per-element Dreyfus guidance",
             "Share your analysis with your TAP Coach and discuss where your read might be off",
+            "Connect the Dreyfus stages to the Coaching Approach labels you see in the Instructor Profile: Novice = Tell, Advanced Beginner = Guide, Competent = Facilitate, Proficient = Consult, Expert = Challenge",
+            "When you open an instructor's profile, the Dreyfus card shows you exactly how to coach each KE — use it before every observation and feedback conversation",
+          ],
+        },
+        content: [],
+      },
+      {
+        id: 'S3-2b',
+        title: 'Supervision & Entrustment',
+        subtitle: 'Knowing when to step in, step back, or step away',
+        coachRole: {
+          summary: "Trust Calibrator. Learn to match your oversight to their readiness — not your comfort.",
+          context: "Most coaches default to one mode: either hovering over everyone or leaving everyone alone. Supervision levels give you a per-instructor, per-task framework for deciding how much oversight is right.",
+          principle: "Supervision is about the task, not the person. The same instructor might need Direct supervision for mentoring and be Unsupervised for class delivery.",
+        },
+        coachingSession: {
+          goals: [
+            "Coach understands the three supervision levels and what each means for their behaviour",
+            "Coach can identify the correct supervision level for at least two instructors on their team across different tasks",
+          ],
+          what: "Supervision levels — Direct, Indirect, and Unsupervised — tell you how much oversight an instructor needs for a specific task. Direct means you're present: observing, correcting, guiding in real time. Indirect means you're checking in regularly but not in the room — periodic observations, scheduled feedback conversations. Unsupervised means the instructor is self-directed: you trust their judgment and your role shifts to stretching and challenging rather than monitoring. The levels are derived from the instructor's Dreyfus stage and demonstrated reliability. They appear in the Trust Map on each instructor's profile. The key insight: supervision is task-specific. An instructor who is Unsupervised for teaching their primary program might need Direct supervision for mentoring a new instructor or coaching a program they're less experienced in.",
+          why: "Without a supervision framework, coaches either over-supervise (creating dependency and resentment in experienced instructors) or under-supervise (leaving developing instructors without the support they need). Both erode trust. The supervision levels remove guesswork: when you open an instructor's profile, the Trust Map tells you exactly how much oversight to provide for each area. This is especially important as your team grows — you can't be everywhere, so you need to know where your presence matters most.",
+          how: [
+            "Open the Trust Map for two instructors on your team — compare their supervision levels across different competencies",
+            "Identify one instructor where you might be over-supervising (your presence isn't adding value) and one where you might be under-supervising (they need more support than they're getting)",
+            "For the over-supervised instructor: plan one concrete way to step back this week (e.g., skip an observation you'd normally attend, let them self-assess first)",
+            "For the under-supervised instructor: plan one concrete way to step in (e.g., schedule an observation, ask to review their class plan together)",
+            "Discuss with your TAP Coach: where is your default — do you tend to hover or tend to leave alone? What drives that?",
           ],
         },
         content: [],

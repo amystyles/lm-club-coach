@@ -32,9 +32,14 @@ export default function KeyElementHeatmap() {
 
   return (
     <Card>
-      <CardHeader className="pb-3">
-        <CardTitle>Key Element Overview</CardTitle>
-        <p className="text-xs text-muted-foreground">Team grades at a glance</p>
+      <CardHeader className="p-0">
+        <div className="px-5 py-3 bg-[#0d0d0d] rounded-t-lg border-b border-white/8 flex items-center gap-3">
+          <div className="w-1 h-8 rounded-full bg-lm-green/80 flex-shrink-0" />
+          <div>
+            <CardTitle className="text-white text-sm leading-tight">Key Element Overview</CardTitle>
+            <p className="text-white/40 text-xs mt-0.5">Team grades at a glance</p>
+          </div>
+        </div>
       </CardHeader>
       <CardContent className="overflow-x-auto">
         <table className="w-full text-sm">

@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import type { KeyElement, Stage, Instructor } from '@/data/types';
 import { instructors, assessments, coaches, STAGE_DATA, KEY_ELEMENT_LABELS } from '@/data/mock-data';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Info } from 'lucide-react';
 import TrustMap from '@/components/profile/TrustMap';
 
 interface InstructorProfileProps {
@@ -66,6 +68,7 @@ const INTENTIONS: Record<KeyElement, string> = {
 };
 
 export function InstructorProfile({ instructorId, onBack, source }: InstructorProfileProps) {
+  const [dreyfusInfoOpen, setDreyfusInfoOpen] = useState(false);
   const instructor = instructors.find(i => i.id === instructorId);
 
   if (!instructor) {
@@ -95,18 +98,25 @@ export function InstructorProfile({ instructorId, onBack, source }: InstructorPr
           borderTop: '3px solid #00FF63',
         }}
       >
-        {/* Radial glow */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: 'radial-gradient(ellipse 55% 80% at 85% 50%, rgba(0,255,99,0.07) 0%, transparent 70%)',
-          }}
-        />
+        {/* Radial glows */}
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 65% 90% at 92% 70%, rgba(0,255,99,0.10) 0%, transparent 65%)' }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 45% 55% at 55% 0%, rgba(0,255,99,0.05) 0%, transparent 60%)' }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 35% 50% at -8% 30%, rgba(0,180,255,0.04) 0%, transparent 55%)' }} />
+        {/* Dot grid */}
+        <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.55) 1px, transparent 1px)', backgroundSize: '28px 28px', opacity: 0.055 }} />
         {/* Noise grain */}
         <div
-          className="absolute inset-0 pointer-events-none opacity-[0.03]"
+          className="absolute inset-0 pointer-events-none opacity-[0.04]"
           style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noise)\'/%3E%3C/svg%3E")', backgroundSize: '200px' }}
         />
+        {/* Topographic contour ellipses */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1440 185" preserveAspectRatio="none" aria-hidden="true">
+          {Array.from({ length: 16 }, (_, i) => (
+            <ellipse key={i} cx={1340} cy={160} rx={(i + 1) * 86} ry={(i + 1) * 86 * 0.28} fill="none" stroke="#00FF63" strokeWidth={1} strokeOpacity={0.07} />
+          ))}
+        </svg>
+        {/* Bottom border glow */}
+        <div className="absolute bottom-0 left-0 right-0 h-px pointer-events-none" style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(0,255,99,0.25) 25%, rgba(0,255,99,0.45) 50%, rgba(0,255,99,0.25) 75%, transparent 100%)' }} />
 
         <div className="relative">
           {/* Back button — label treatment matching DP */}
@@ -166,10 +176,15 @@ export function InstructorProfile({ instructorId, onBack, source }: InstructorPr
 
         {/* Section 1: Key Element Profile */}
         <Card>
-          <CardHeader className="pb-3">
-            <CardTitle>Key Element Profile</CardTitle>
+          <CardHeader className="p-0">
+            <div className="px-5 py-3 bg-[#0d0d0d] rounded-t-lg border-b border-white/8 flex items-center gap-3">
+              <div className="w-1 h-8 rounded-full bg-lm-green/80 flex-shrink-0" />
+              <div>
+                <CardTitle className="text-white text-sm leading-tight">Key Element Profile</CardTitle>
+              </div>
+            </div>
           </CardHeader>
-          <CardContent className="space-y-3">
+          <CardContent className="space-y-3 pt-5">
             {KEY_ELEMENTS.map(element => {
               const grade = getGrade(instructor, element);
               const isChoreography = element === 'choreography';
@@ -222,11 +237,50 @@ export function InstructorProfile({ instructorId, onBack, source }: InstructorPr
 
         {/* Section 3: Dreyfus Stage by Domain */}
         <Card>
-          <CardHeader className="pb-3">
-            <CardTitle>Dreyfus Stage by Domain</CardTitle>
-            <p className="text-xs text-muted-foreground">Coaching should be different for each skill</p>
+          <CardHeader className="p-0">
+            <div className="px-5 py-3 bg-[#0d0d0d] rounded-t-lg border-b border-white/8 flex items-center gap-3">
+              <div className="w-1 h-8 rounded-full bg-lm-green/80 flex-shrink-0" />
+              <div className="flex-1">
+                <CardTitle className="text-white text-sm leading-tight">Dreyfus Stage by Domain</CardTitle>
+                <p className="text-white/40 text-xs mt-0.5">Coaching should be different for each skill</p>
+              </div>
+              <button
+                onClick={() => setDreyfusInfoOpen(o => !o)}
+                className="flex-shrink-0 text-white/40 hover:text-lm-green transition-colors"
+                aria-label="About the Dreyfus model"
+              >
+                <Info className="w-4 h-4" />
+              </button>
+            </div>
+            {dreyfusInfoOpen && (
+              <div className="px-5 py-4 bg-[#111] border-b border-white/8 space-y-4">
+                <div>
+                  <p className="text-white text-xs font-bold mb-1">What is the Dreyfus Model?</p>
+                  <p className="text-white/60 text-xs leading-relaxed">
+                    The Dreyfus model maps how instructors develop skill — from following rules to intuitive mastery. The key insight: an instructor can be at different stages for different Key Elements. Someone who is Proficient in Choreography might be a Novice in Connection. Each stage tells you <span className="text-white/80 font-semibold">how</span> to coach that specific skill.
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  {([
+                    { stage: 'Novice', desc: 'Needs clear rules and step-by-step instruction.', approach: 'Tell them exactly what to do.' },
+                    { stage: 'Advanced Beginner', desc: 'Starting to recognise patterns.', approach: 'Guide — demonstrate and explain why.' },
+                    { stage: 'Competent', desc: 'Can problem-solve with support.', approach: 'Facilitate — ask questions, let them work through it.' },
+                    { stage: 'Proficient', desc: 'Strong intuition, mostly self-directed.', approach: 'Consult — prompt reflection, they lead.' },
+                    { stage: 'Expert', desc: 'Intuitive mastery.', approach: 'Challenge — stretch their thinking.' },
+                  ] as const).map(({ stage, desc, approach }) => (
+                    <div key={stage} className="flex gap-2.5 text-xs">
+                      <span className="text-white/50 font-semibold w-32 flex-shrink-0">{stage}</span>
+                      <span className="text-white/40">{desc} <span className="text-lm-green/80 italic">{approach}</span></span>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-white/40 text-[11px] leading-relaxed border-t border-white/8 pt-3">
+                  The <span className="text-white/60 italic">italicised text</span> next to each stage below is your coaching approach — it tells you how to coach this instructor for that specific skill. The supervision levels in the Trust Map above are derived from these stages.
+                </p>
+              </div>
+            )}
           </CardHeader>
-          <CardContent className="space-y-3">
+          <CardContent className="space-y-3 pt-5">
             {KEY_ELEMENTS.map(element => {
               const grade = getGrade(instructor, element);
               const dreyfus = getDreyfusStage(grade, element, instructor.stage);
@@ -251,10 +305,15 @@ export function InstructorProfile({ instructorId, onBack, source }: InstructorPr
 
         {/* Section 4: Assessment History */}
         <Card>
-          <CardHeader className="pb-3">
-            <CardTitle>Assessment History</CardTitle>
+          <CardHeader className="p-0">
+            <div className="px-5 py-3 bg-[#0d0d0d] rounded-t-lg border-b border-white/8 flex items-center gap-3">
+              <div className="w-1 h-8 rounded-full bg-lm-green/80 flex-shrink-0" />
+              <div>
+                <CardTitle className="text-white text-sm leading-tight">Assessment History</CardTitle>
+              </div>
+            </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-5">
             {completedAssessments.length === 0 ? (
               <p className="text-sm text-muted-foreground">No completed assessments yet.</p>
             ) : (
@@ -289,11 +348,16 @@ export function InstructorProfile({ instructorId, onBack, source }: InstructorPr
 
         {/* Section 5: Current Focus */}
         <Card className="border-l-4 border-lm-green bg-lm-subtle/40">
-          <CardHeader className="pb-2">
-            <CardTitle>Current Focus</CardTitle>
-            <p className="text-xs text-muted-foreground">Implementation Intention</p>
+          <CardHeader className="p-0">
+            <div className="px-5 py-3 bg-[#0d0d0d] rounded-t-lg border-b border-white/8 flex items-center gap-3">
+              <div className="w-1 h-8 rounded-full bg-lm-green/80 flex-shrink-0" />
+              <div>
+                <CardTitle className="text-white text-sm leading-tight">Current Focus</CardTitle>
+                <p className="text-white/40 text-xs mt-0.5">Implementation Intention</p>
+              </div>
+            </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-5">
             <p className="text-sm italic text-foreground">
               {INTENTIONS[instructor.priorityElement]}
             </p>

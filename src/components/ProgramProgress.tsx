@@ -12,9 +12,14 @@ export default function ProgramProgress() {
 
   return (
     <Card>
-      <CardHeader className="pb-3">
-        <CardTitle>Program Development</CardTitle>
-        <p className="text-xs text-muted-foreground">LMQ level per program per instructor</p>
+      <CardHeader className="p-0">
+        <div className="px-5 py-3 bg-[#0d0d0d] rounded-t-lg border-b border-white/8 flex items-center gap-3">
+          <div className="w-1 h-8 rounded-full bg-lm-green/80 flex-shrink-0" />
+          <div>
+            <CardTitle className="text-white text-sm leading-tight">Program Development</CardTitle>
+            <p className="text-white/40 text-xs mt-0.5">LMQ level per program per instructor</p>
+          </div>
+        </div>
       </CardHeader>
       <CardContent>
         <table className="w-full text-sm">

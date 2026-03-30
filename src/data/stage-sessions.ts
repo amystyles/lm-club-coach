@@ -1416,114 +1416,129 @@ export const stageDetails: Record<number, StageDetail> = {
   },
   5: {
     name: 'Advanced',
-    subtitle: 'Grade 2 Push & Growing Impact',
+    subtitle: 'Advanced Training — Leadership, Essence & Experience',
     duration: '6–18+ months',
     color: '#5B3A8A',
     sessions: [
       {
         id: '5-welcome',
         title: 'Welcome to Advanced',
-        subtitle: 'The long middle — where real development happens',
+        subtitle: '30 min — 1:1 in-person or video call',
         coachRole: {
-          summary: 'Strategic Developer. KEs 1–3 are no longer the focus — they\'re the foundation.',
-          context: 'This instructor no longer needs to think about choreography or basic technique. That frees you to work on something harder: Grade 2 across every element, real connection with participants, and the first signs of performance. This is where timetable instructors become instructors people choose.',
-          principle: 'The goal is no longer consistency — it\'s impact.',
+          summary: 'Supporter. Advanced Training changes the game — your job is to know what they learned and help them apply it.',
+          context: 'This instructor has moved beyond technical basics. Advanced Training introduced them to a deeper layer of development: finding their Why, understanding their Values and Beliefs (Limiting vs Empowering), discovering their program\'s Essence, and learning to Enhance the Experience for participants. Your role is not to re-teach AT content — it\'s to reinforce it in the club context. If the instructor hasn\'t attended AT yet, this session is about preparing them for what\'s coming and ensuring they\'re ready.',
+          principle: 'Advanced Training is where instructors stop teaching a workout and start leading an experience.',
         },
         coachingSession: {
           goals: [
-            'Coach confirms entry criteria: KEs 1–3 at solid Grade 1, Layer 1 automatic, 3+ months on timetable',
-            'Coach and instructor align on Stage 5 timeline and Grade 2 targets',
-            'Second program pathway discussed if first program is solid',
+            'Coach confirms the instructor has attended (or is scheduled for) Advanced Training',
+            'Coach understands what AT covers — Leadership, Essence, Enhance the Experience',
+            'Coach and instructor align on how AT learning connects to their club teaching',
           ],
-          what: 'KEs 1–3 are automatic — choreography is clean across every release, technique is consistent, Layer 1 coaching is reliable. Now the real development begins: pushing every Key Element toward Grade 2, starting to develop Connection and Performance intentionally, and building the consistency and class following that separates a timetable instructor from one people choose.',
-          why: 'Most instructors spend 6–18+ months here. This is the long middle — not because it\'s slow, but because Grade 2 is genuinely hard. It requires precision, not just effort. The coaches who develop great instructors are patient and specific here: one element at a time, clear targets, honest assessment.',
+          what: 'Advanced Training is a 2-day coaching-led program that shifts instructors from workout delivery to fitness leadership. It covers three pillars: Leadership (personal Why, Values, Empowering and Limiting Beliefs), Essence (the personality of their specific program — State of Mind, Show, What You Say, How You Say It), and Enhance the Experience (Connect, Motivate, Educate, Show Enjoyment). The instructor completes a Personal Journal, watches program-specific pre-work videos, and delivers 3 coached track presentations. Entry criteria: the instructor should have attended or be scheduled for Advanced Training in their primary program.',
+          why: 'Before AT, the coach\'s focus was on KE grades and technical skills. After AT, the instructor has been introduced to identity-level development — who they are as a fitness leader, what they believe, how their program\'s Essence should feel. If the Club Coach doesn\'t know this has happened, they\'ll keep coaching at the surface level and miss what the instructor is now ready for. This session closes that gap.',
           how: [
-            'Confirm entry criteria before formally moving into Stage 5 — don\'t rush the transition',
-            'Set explicit Grade 2 targets for each KE and a realistic timeline (use the 12-month framework as a guide)',
-            'Establish bi-monthly observation minimum — feedback now shifts from basics to 1% improvements',
-            'Introduce KE 4 and KE 5 concepts during feedback — these are being explored, not yet assessed',
-            'Discuss second program readiness: is the first program solid enough to free up development bandwidth?',
+            'Confirm the instructor has attended (or is booked for) Advanced Training — if not, discuss readiness and timing',
+            'Ask the instructor: "What was your biggest takeaway from AT?" — listen for Leadership, Essence, or Experience themes',
+            'Review their Personal Journal together if they\'re willing to share — look for their Why statement and identified Beliefs',
+            'Understand which program they attended AT for — the Essence content is program-specific',
+            'Set the frame: your coaching conversations from here will reference their AT learning, not just KE grades',
           ],
         },
         content: [],
       },
       {
-        id: '5-grade2-push',
-        title: 'Grade 2 Push — KEs 1–3',
-        subtitle: 'Months 1–6: Choreography, Technique, Coaching',
+        id: '5-leadership-beliefs',
+        title: 'Leadership & Beliefs',
+        subtitle: '45 min — observation + conversation',
         coachRole: {
-          summary: 'Precision Coach. The basics are done — now you engineer Grade 2.',
-          context: 'Grade 1 was about reliability. Grade 2 is about mastery. Choreography Grade 2 is the gateway to LMQ Level 2+ — everything else unlocks from here. Don\'t move on until choreo is genuinely Grade 2.',
-          principle: 'Choreography Grade 2 is the gateway. Unlock it first.',
+          summary: 'Belief Spotter. Advanced Training introduced Leadership, Why, Values, and Beliefs. Your job is to see these playing out — or not — on the gym floor.',
+          context: 'In AT, the instructor explored their personal Why (the reason they teach), their Values, and the difference between Limiting Beliefs (which hold them back) and Empowering Beliefs (which drive growth). They learned three ways people handle Limiting Beliefs: Dominate (it controls everything), Avoidance (deny it exists), or Embrace (let it have space without letting it push you around). Your role is to notice when beliefs show up in their teaching. An instructor who avoids eye contact may have a Limiting Belief about connection. An instructor who plays it safe with energy may not be expressing their Why. Use coaching conversations (GROW) to explore this — but remember: you are a coach, not a therapist. If emotions become intense, acknowledge and validate, but know the boundary.',
+          principle: 'Limiting Beliefs show themselves through actions. Watch the teaching — the story is right there.',
         },
         keyElementFocus: {
-          title: 'KEs 1–3: From Grade 1 to Grade 2',
+          title: 'KEs 4 & 5: Where beliefs are most visible',
           elements: [
-            { name: 'Choreography', description: 'In time ALL tracks, ≤1 error. Smooth and automatic. New releases integrated within 2 weeks. No longer thinking about the moves — using them.' },
-            { name: 'Technique', description: '100% competency on all major movements. Maintains form under fatigue. Participants trust their own execution because they\'re watching someone who has it.' },
-            { name: 'Coaching', description: 'Layer 1 fully automatic. Layer 2 consistent — intensity cues, option offers, real praise, meaningful correction. Target: ≥4 Layer 2 cues per track.' },
+            { name: 'Connection', description: 'Does the instructor connect authentically? Are they using names beyond the front row? Is there Look, See & Respond happening? Or do they teach as if no one is there? Limiting Beliefs around connection often show up as avoidance — staying on the stage, avoiding eye contact, defaulting to generic cues.' },
+            { name: 'Performance', description: 'Is the instructor\'s Why coming through in their energy? Are they showing genuine enjoyment of their program, or going through the motions? Empowering Beliefs fuel authentic performance. Limiting Beliefs create a version of teaching that feels held back.' },
           ],
         },
         coachingSession: {
           goals: [
-            'Choreography Grade 2 targeted and timeline set',
-            'Layer 2 coaching cues identified and practised',
-            'Technique Grade 2 targets set per program',
+            'Coach can identify when Limiting Beliefs are showing up in the instructor\'s teaching',
+            'Instructor\'s Why is connected to their on-floor actions',
+            'One Empowering Belief identified and reinforced',
           ],
-          what: 'Months 1–3 push Choreography and Technique toward Grade 2: all tracks on beat with zero errors, technique inspires correct execution in participants. Months 3–6 shift focus to Coaching depth: Layer 2 becomes consistent — intensity manipulation, meaningful praise, real-time correction delivered with confidence.',
-          why: 'Choreography Grade 2 is the LMQ gateway. Until it\'s solid, everything else is building on sand. The order matters: Choreography first, then Technique, then Coaching — because each one frees up cognitive bandwidth for the next.',
+          what: 'Observe a class specifically looking for Leadership signals — is the instructor\'s Why visible in how they show up? Do their Values come through in how they treat participants? Are there moments where a Limiting Belief seems to hold them back (avoiding challenge, playing it safe, disconnecting)? After the class, use a GROW conversation to explore what you saw. Start with their self-assessment: "How did that feel compared to what you explored in AT?"',
+          why: 'Leadership is the foundation of the AT model — it sits at the center of the wheel. Everything else (Essence, Experience) is built on top of it. If the instructor\'s Why isn\'t anchored, Essence becomes performance rather than authenticity, and Enhancing the Experience becomes technique rather than genuine connection. The Club Coach who can spot belief patterns accelerates development far beyond grade targets.',
           how: [
-            'Observe once per month minimum — focus each observation on one KE target',
-            'Film a full class once per quarter — review Layer 2 coaching cues together',
-            'Use scaling questions: "On a scale of 1–10, how automatic does that release feel?"',
-            'Track Layer 2 cue frequency: count them in the observation, set a target for next time',
-            'Celebrate when Choreography Grade 2 is confirmed — this is a real milestone',
+            'Observe a full class — note 2–3 specific moments where you see Leadership (or its absence)',
+            'In your coaching conversation, start with: "In AT you explored your Why and Beliefs — how are you seeing those show up in your teaching?"',
+            'If you see a Limiting Belief pattern, name it gently: "I noticed you [specific behavior] — does that connect to anything you identified in your journal?"',
+            'Identify one Empowering Belief to reinforce — something you saw working: "When you did [specific moment], that felt like your Why in action"',
+            'Remember: coaching, not therapy. If emotions run high, acknowledge ("I can see this matters to you"), validate ("that takes courage to explore"), and redirect to actions within teaching',
           ],
           prompts: [
             {
-              label: 'Grade 2 observation questions',
+              label: 'Opening',
               prompts: [
-                'Which track felt most automatic — and which one still requires conscious attention?',
-                'Walk me through your Layer 2 approach in the squat track. What do you do when you see someone going too deep?',
-                'When did you last integrate a new release? How long did it take to feel automatic?',
+                'What stood out to you from your AT experience — what\'s stayed with you?',
+                'How would you describe your Why to someone who\'s never done AT?',
+              ],
+            },
+            {
+              label: 'Exploring Beliefs',
+              prompts: [
+                'When you think about teaching, what\'s the voice in your head that holds you back?',
+                'When are you at your absolute best in class? What belief is driving that?',
+                'In AT you looked at Limiting vs Empowering Beliefs — which one showed up most in today\'s class?',
+              ],
+            },
+            {
+              label: 'Connecting to Action',
+              prompts: [
+                'If your Empowering Belief was fully in charge during class, what would be different?',
+                'What\'s one thing you could do next class to let your Why come through more?',
               ],
             },
           ],
         },
         sessionPlan: {
           totalDuration: '45 min',
-          format: '1:1 post-observation',
+          format: '1:1 — observation + conversation',
           blocks: [
             {
               duration: '5 min',
               title: 'Check in',
-              steps: ['How have the last few weeks felt?', 'Any classes that stood out — good or challenging?'],
-            },
-            {
-              duration: '15 min',
-              title: 'Choreography Grade 2 review',
               steps: [
-                'Review observation notes — which tracks were fully automatic, which had hesitation?',
-                'Watch one filmed track together if available',
-                'Confirm or set Choreography Grade 2 target date',
-              ],
-              tip: 'Be specific: "You were fully on beat in tracks 2, 4, and 6. Track 5 had one timing break at the chorus." Vague feedback doesn\'t create Grade 2.',
-            },
-            {
-              duration: '15 min',
-              title: 'Layer 2 coaching audit',
-              steps: [
-                'Count Layer 2 cues from last observation: how many per track?',
-                'Identify the cue type most missing: intensity, options, praise, or correction',
-                'Build one if–then plan: "If I finish the Layer 1 safety cue, then I will immediately add one intensity cue"',
+                'How have things been since AT?',
+                'Any moments in recent classes where you felt your AT learning showing up?',
               ],
             },
             {
-              duration: '10 min',
-              title: 'Next cycle targets',
+              duration: '20 min',
+              title: 'Observation debrief — Leadership lens',
               steps: [
-                'Set one Grade 2 target for next observation',
-                'Confirm observation date',
+                'Share 1–2 specific moments where you saw their Why in action',
+                'Ask: "Where did you feel most like yourself in that class?"',
+                'If a Limiting Belief pattern was visible, name it gently and link it to the AT journal',
+              ],
+              tip: 'Don\'t evaluate — explore. "I noticed X" is more powerful than "you need to fix X" at this stage.',
+            },
+            {
+              duration: '15 min',
+              title: 'Empowering Belief reinforcement',
+              steps: [
+                'Identify one specific moment where an Empowering Belief was visible',
+                'Build an if–then plan: "Next time I feel [Limiting Belief trigger], I will [Empowering Belief action]"',
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Set focus for next observation',
+              steps: [
+                'Agree on one Leadership signal to watch for next class',
+                'Confirm next observation date',
               ],
             },
           ],
@@ -1531,51 +1546,98 @@ export const stageDetails: Record<number, StageDetail> = {
         content: [],
       },
       {
-        id: '5-connection-performance',
-        title: 'Connection & Performance Awakening',
-        subtitle: 'Months 6–12: KEs 4 & 5 — exploration, not mastery',
+        id: '5-essence-experience',
+        title: 'Essence & Enhance the Experience',
+        subtitle: '45 min — observation + conversation',
         coachRole: {
-          summary: 'Awakener. You\'re introducing a new dimension — don\'t rush the arrival.',
-          context: 'KE 4 and KE 5 are different in kind, not just degree. Connection is about other people. Performance is about identity. Most instructors have never been coached on either. Introduce them with curiosity, not assessment.',
-          principle: 'Grade 2 is now a Stage 5 target — not a Stage 4 exit requirement. These are being explored, not yet graded.',
+          summary: 'Essence Activator. The instructor learned their program\'s personality in AT. Your job is to see whether the class FEELS like the program — not just follows the moves.',
+          context: 'Every Les Mills program has its own Essence — a distinct personality that determines how the class should feel for participants. BODYCOMBAT is "Empowered and In Control." BODYPUMP is about bringing the passion and challenging people to believe in their strength. BODYBALANCE is "Long, Strong, Calm." RPM is about the emotional journey on the bike. In AT, the instructor learned their program\'s Essence through four lenses: State of Mind (how you feel), Show (what participants see), What You Say (the words), and How You Say It (the delivery — the program\'s Voices). They also learned to Enhance the Experience through Connect, Motivate, Educate, and Show Enjoyment. Your role: observe whether the Essence is coming through and whether the Experience goes beyond correct execution.',
+          principle: 'A class with Essence feels like the program. A class without it just feels like exercise.',
         },
         keyElementFocus: {
-          title: 'KEs 4 & 5: First intentional steps',
+          title: 'All 5 KEs through the Essence lens',
           elements: [
-            { name: 'Connection', description: 'Names used beyond front row. Look-See-Respond 1–2× per class. "We/us" language replacing "you." C.R.C. moments beginning to emerge. Still developing — this is exploration.' },
-            { name: 'Performance', description: 'Understanding the 5 Voices framework. Beginning to use dramatic contrast. Empowering Beliefs starting to show. Music awareness growing — energy matching the track, not just the choreo.' },
+            { name: 'Essence', description: 'State of Mind — is the instructor in the right headspace for their program? Show — does their physicality match the program (power for BODYCOMBAT, precision for BODYPUMP, calm for BODYBALANCE)? What You Say — are the words program-authentic, not generic? How You Say It — are they using the right Voices for their program?' },
+            { name: 'Enhance the Experience', description: 'Connect — are they building real relationship with participants? Motivate — are they driving effort and belief? Educate — are they teaching participants to understand what they\'re doing and why? Show Enjoyment — is their love for the program authentic and visible? Show Enjoyment is contagious — when the instructor loves it, participants feel it.' },
           ],
         },
         coachingSession: {
           goals: [
-            'Instructor can name the 5 Voices and identify their dominant one',
-            'Connection awareness: instructor notices their own LSR patterns',
-            'One if–then plan built for a specific Connection or Performance moment',
+            'Coach can describe their instructor\'s program Essence (State of Mind, Show, What You Say, How You Say It)',
+            'Instructor is applying Essence in class — not just executing choreography',
+            'At least one Enhance the Experience element (Connect, Motivate, Educate, Show Enjoyment) is actively developing',
           ],
-          what: 'Months 6–12 introduce KE 4 and KE 5 intentionally. Connection: names used, Look-See-Respond active, C.R.C. emerging. Performance: 5 Voices understood, dramatic contrast beginning, Empowering Beliefs starting to show. These aren\'t mastered — they\'re being awakened.',
-          why: 'The jump from Grade 1 to Grade 2 in KEs 4–5 is not a technical upgrade — it\'s a shift in how the instructor sees their role. Connection requires genuinely caring about the person in the back row. Performance requires committing to an identity, not just executing moves. This takes time and the right coaching conversations.',
+          what: 'Observe a class with Essence as the lens — not just KE grades. Ask: does this class FEEL like the program? Is the instructor\'s State of Mind right? Are they Showing the program\'s personality? Are the words and delivery authentic to the program? After class, use coaching to explore where Essence was strong and where it faded. Connect back to their AT learning and journal notes on Essence.',
+          why: 'Essence is what separates a good class from a program-authentic class. It\'s why participants choose BODYCOMBAT over a generic boxing class, or BODYBALANCE over a generic yoga class. When Essence is strong, participant retention goes up, class numbers grow, and instructors feel more connected to their teaching. The Club Coach who can spot and develop Essence is coaching at the level that Advanced Training intended.',
           how: [
-            'Introduce the 5 Voices framework — ask the instructor to self-identify their dominant voice',
-            'Watch one filmed class together specifically for Connection signals: eye contact patterns, name use, LSR moments',
-            'Build a C.R.C. intention: "If I see someone finishing a tough track, then I will [specific acknowledgement]"',
-            'Ask about their class following: are participants starting to request their classes? What do they think is driving it?',
-            'Frame KE 4–5 as exploration — explicitly say "this isn\'t yet being graded, we\'re just building awareness"',
+            'Before the observation, review the program\'s Essence description (available in program cards) — know what you\'re looking for',
+            'Observe with four questions: State of Mind? Show? What did they Say? How did they Say It?',
+            'Also note which Enhance the Experience elements are present: Connect, Motivate, Educate, Show Enjoyment',
+            'In the coaching conversation: "AT introduced you to [program] Essence — the four parts. Which one felt strongest today? Which one do you want to develop?"',
+            'Ask: "When did you feel most like yourself in that class? That\'s probably where your Essence is most natural."',
           ],
           prompts: [
             {
-              label: 'Connection questions',
+              label: 'Opening',
               prompts: [
-                'How many participants did you use by name in that class — not the front row, the back?',
-                'When did you last notice a participant who looked like they were about to give up? What did you do?',
-                '"We" and "us" — how often are you using those words versus "you"? What\'s the effect?',
+                'If you had to describe what your program should FEEL like for participants, what would you say?',
+                'In AT you explored Essence through State of Mind, Show, What You Say, and How You Say It — which one do you feel most confident with?',
               ],
             },
             {
-              label: 'Performance questions',
+              label: 'Essence Deep-Dive',
               prompts: [
-                'Which of the 5 Voices feels most natural to you? Which one are you avoiding?',
-                'When the music peaks, what do you do physically? Does your body match the track?',
-                'What do you think participants would say about what it feels like to be in your class?',
+                'I noticed a moment in a track where the energy shifted — what was happening for you?',
+                'Your delivery felt really strong in that section — what were you thinking about?',
+                'If a new instructor watched your class, would they know what program this is without seeing the moves? What would tell them?',
+              ],
+            },
+            {
+              label: 'Enhance the Experience',
+              prompts: [
+                'Where in the class did you feel most connected to participants? What made that moment work?',
+                'Show Enjoyment is about being authentic, not performing — when in the class do you naturally love what you\'re doing?',
+                'How are you Educating participants — helping them understand the why of what they\'re doing?',
+              ],
+            },
+          ],
+        },
+        sessionPlan: {
+          totalDuration: '45 min',
+          format: '1:1 — observation + conversation',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Check in',
+              steps: [
+                'How are you feeling about the program at the moment?',
+                'Anything you were consciously working on in today\'s class?',
+              ],
+            },
+            {
+              duration: '20 min',
+              title: 'Essence debrief',
+              steps: [
+                'Share what you observed through each Essence lens: State of Mind, Show, What You Said, How You Said It',
+                'Ask: "Where did the program feel most alive in that class?"',
+                'Identify one Essence element to develop — make it specific to a track or moment',
+              ],
+              tip: 'Use program-specific language from the AT materials. Don\'t say "you seemed disconnected" — say "the State of Mind for BODYCOMBAT is Empowered and In Control — I saw that in tracks 3 and 7, but it faded in track 5."',
+            },
+            {
+              duration: '15 min',
+              title: 'Enhance the Experience focus',
+              steps: [
+                'Identify which of the four elements (Connect, Motivate, Educate, Show Enjoyment) is strongest — and which to develop next',
+                'Build one specific intention: "In the next class, I will [specific Enhance action] in [specific track]"',
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Set focus for next observation',
+              steps: [
+                'Agree on one Essence or Experience element to watch for next class',
+                'Confirm next observation date',
               ],
             },
           ],
@@ -1583,146 +1645,599 @@ export const stageDetails: Record<number, StageDetail> = {
         content: [],
       },
       {
-        id: '5-mentor-tap',
-        title: 'Club Mentor Role & TAP Checkpoints',
-        subtitle: 'Ongoing — bi-monthly minimum',
+        id: '5-coaching-conversations',
+        title: 'Coaching Conversations & Ongoing Development',
+        subtitle: '30 min — 1:1 conversation',
         coachRole: {
-          summary: 'Mentor. Feedback shifts from "basics" to "what\'s the next 1% improvement."',
-          context: 'At Stage 5, the instructor no longer needs you to catch errors. They need you to find the edges — the 1% improvements that compound into Grade 2 across every element. GROW conversations now have the instructor setting more of the agenda. Your role is shifting from Authority toward Facilitator.',
-          principle: 'The best Stage 5 coaching conversations are ones where the instructor teaches themselves.',
+          summary: 'Development Partner. The instructor now has AT tools and language. Your role shifts — meet them where they are, not where they were.',
+          context: 'In AT, the instructor experienced a coaching model: Rapport (Instant Connection + Frame), Explore (Invite to Explore + W+H+W questioning), and Advance (Summarize + Create a Plan). They also learned about C/C Glasses — assessing Confidence and Competence to decide when to coach vs when to direct or re-teach. They practiced Coaching Fundamentals: Trust, Curiosity, Silence & Listening, Positive Language & Praise, Storytelling & Metaphors. Your GROW conversations should now reflect this — the instructor has been coached at a deeper level and expects more than surface-level feedback. Shift from "here\'s what to fix" to "what did you notice, and what do you want to work on?"',
+          principle: 'After AT, the best coaching conversations are the ones where the instructor coaches themselves.',
         },
         coachingSession: {
           goals: [
-            'Bi-monthly observation rhythm maintained',
-            'GROW conversations have instructor setting more of the agenda',
-            'Second program exploration discussed if first program is solid',
+            'Coach understands the AT coaching model (Rapport → Explore → Advance) and how it connects to their own GROW conversations',
+            'C/C Glasses concept is understood — when to coach vs when to direct',
+            'Second program AT pathway discussed if first program is solid',
+            'Ongoing observation rhythm set',
           ],
-          what: 'Stage 5 mentor role: bi-monthly observations minimum, feedback on 1% improvements, KE 4 and KE 5 introduced intentionally, second program explored if bandwidth exists, GROW conversations shifting toward instructor-led.',
-          why: 'Over-coaching at Stage 5 is as damaging as under-coaching at Stage 1. An instructor who is told what to do at every step never develops the self-awareness to keep improving independently. Your goal is to make yourself less necessary — which is how you know it\'s working.',
+          what: 'This session is about evolving the ongoing coaching relationship. The instructor has new tools and language from AT. Your conversations should reference their AT learning: their Why, their Beliefs, their Essence. When you give feedback, connect it to these frameworks — not just KE grades. Discuss second program AT: if their first program is solid, is there bandwidth for AT in another program? Set the ongoing observation rhythm — bi-monthly minimum at this stage, with feedback focused on Essence and Experience, not just technical KE targets.',
+          why: 'The biggest risk after AT is that the instructor returns to the club and nothing changes. The excitement fades, the journal goes in a drawer, and teaching reverts to autopilot. The Club Coach is the bridge between the AT experience and sustained transformation. Without intentional follow-through, AT becomes a nice weekend instead of a career-changing moment. Your ongoing coaching keeps the AT learning alive.',
           how: [
-            'Bi-monthly observations minimum — note specifically: what has improved since last time?',
-            'Help the instructor identify their "signature strength" — what do participants love about their class?',
-            'Support second program exploration: is the first program solid enough to free up bandwidth?',
-            'Shift GROW conversations: open with "what do you want to work on today?" before sharing your agenda',
-            'Track: is the instructor\'s self-assessment becoming more accurate over time?',
+            'Ask: "Since AT, what\'s changed in how you approach your classes?"',
+            'Reference their AT language in your coaching — use "Essence," "Beliefs," "Enhance the Experience" rather than just KE numbers',
+            'Apply C/C Glasses thinking: this instructor likely has high competence now — if confidence matches, coach don\'t teach. If confidence is lower than competence, build it through recognition and evidence.',
+            'Discuss second program AT: "Your first program is strong — is it time to explore AT for your next program?"',
+            'Set bi-monthly observation rhythm — feedback shifts from "basics" to "1% improvements" and Essence development',
+            'Track: is the instructor\'s self-assessment becoming more accurate over time? That\'s a sign of real growth.',
           ],
         },
         sessionPlan: {
           totalDuration: '30 min',
-          format: 'TAP Coach review — quarterly',
+          format: '1:1 — conversation',
           blocks: [
             {
               duration: '10 min',
-              title: 'LMQ review with Grade 2 targets',
+              title: 'AT integration check',
               steps: [
-                'Review grades against last quarter — which KEs have moved?',
-                'Confirm Grade 2 targets are explicitly stated for each KE',
-                'Cross-reference: are grades improving in the areas the mentor is coaching?',
+                'Ask: "Since AT, what\'s changed in how you approach your classes?"',
+                'Listen for Leadership, Essence, or Experience language — are they using their AT vocabulary?',
+                'If not: "What was the biggest thing you took away from AT? Is it showing up in your teaching?"',
               ],
-              tip: 'If the mentor is coaching Connection but Connection grade hasn\'t moved in 2 quarters, the coaching approach needs to change — not the timeline.',
+              tip: 'If the journal has gone in a drawer, this is the moment to bring it out. Ask them to share one thing from their Why statement or Beliefs page.',
             },
             {
               duration: '10 min',
-              title: 'Second program & expanding reach',
+              title: 'C/C Glasses — coaching vs directing',
               steps: [
-                'Second program readiness assessment: first program Grade 2 in Choreography and Technique?',
-                'Class following review: is attendance growing? Are participants returning specifically for this instructor?',
-                'Identify: is this instructor approaching Stage 6 readiness? (Grade 2 in KEs 1–3, KE 4 emerging)',
+                'Assess current Confidence and Competence — are they aligned?',
+                'If high competence, lower confidence: build through recognition ("I saw your Essence clearly in that class — here\'s the evidence")',
+                'If confidence is matching competence: coach don\'t teach — open GROW with "what do you want to work on today?"',
               ],
             },
             {
               duration: '10 min',
-              title: 'Mentor quality review',
+              title: 'Next program & ongoing rhythm',
               steps: [
-                'Review mentor\'s feedback quality — is it evolving with the instructor\'s level?',
-                'Is the mentor shifting from Authority toward Facilitator in GROW conversations?',
-                'Set one focus for the next quarter',
+                'Second program AT discussion: is first program solid enough to explore AT for a second program?',
+                'Set bi-monthly observation schedule — confirm next two dates',
+                'Agree on the focus lens for next observation: Leadership, Essence, or Enhance the Experience',
               ],
             },
           ],
-        },
-        warning: {
-          title: 'Retention Risk Signals',
-          description: 'Watch for: Plateaued at LMQ Level 2–3 for 3+ consecutive assessments. Stopped integrating new releases — teaching on autopilot. Declining class attendance with no self-awareness. Resistant to KE 4–5 feedback ("I\'m fine, my classes are full"). Second program attempt stalled without clear plan. Mentor conversations becoming routine rather than developmental.',
         },
         proTip: 'When Grade 2 is solid across KEs 1–3, Connection is emerging, and the instructor is starting to build influence → Ready for Stage 6 — World-Class: Mastery, Performance, influence, and legacy. The journey from good to extraordinary.',
         content: [],
       },
     ],
+    keActivities: [
+      {
+        element: 'Personal Journal',
+        color: '#5B3A8A',
+        items: [
+          {
+            title: 'Review the AT Personal Journal Together',
+            description: 'The instructor completed a Personal Journal during Advanced Training — it contains their Why statement, Values, identified Limiting and Empowering Beliefs, and Essence reflections. Reviewing it together connects the AT experience to your ongoing coaching conversations.',
+            duration: '20 min',
+            steps: [
+              'Ask the instructor to bring their AT Personal Journal to your next session',
+              'Ask them to share their Why statement — and reflect on whether it\'s showing up in their teaching',
+              'Look at their Beliefs page together: which Limiting Belief do they want to work on? Which Empowering Belief do they want to amplify?',
+              'Note 1–2 entries that you\'ll reference in your next observation debrief',
+              'Keep the journal visible — suggest they put a sticky note from it somewhere they see before class',
+            ],
+          },
+        ],
+      },
+      {
+        element: 'Pre-Work Videos',
+        color: '#5B3A8A',
+        items: [
+          {
+            title: 'Program-Specific Pre-Work',
+            description: 'Before attending Advanced Training, instructors watch a set of program-specific videos covering Technique, Coaching, Essence, and Scripting for their program. If the instructor is preparing for AT, reviewing these together helps them arrive ready. If they\'ve already attended, revisiting them reinforces the learning.',
+            duration: '30 min',
+            video: { label: 'Watch Pre-Work Videos', program: 'at-pre-work' },
+            steps: [
+              'Identify which program the instructor is attending AT for',
+              'Locate the pre-work videos for that program (Technique, Coaching, Essence, Scripting)',
+              'Watch the Essence pre-work video together — discuss: what does the program\'s personality mean in practice?',
+              'Ask: "After watching that, what\'s one thing you want to be more intentional about in your next class?"',
+            ],
+          },
+        ],
+      },
+      {
+        element: 'Program Essence Reference',
+        color: '#5B3A8A',
+        items: [
+          {
+            title: 'Essence Quick Reference — State of Mind, Show, What You Say, How You Say It',
+            description: 'Each Les Mills program has a defined Essence — a personality the instructor embodies. This reference helps the Club Coach know what to look for in each program observation, and gives both coach and instructor a shared vocabulary for Essence feedback.',
+            duration: '10 min',
+            steps: [
+              'Identify the instructor\'s program and look up its Essence description',
+              'Review the four Essence lenses: State of Mind, Show, What You Say, How You Say It',
+              'Before your next observation, write one question for each lens that you\'ll reflect on while watching',
+              'After the observation, use these four lenses to structure your feedback — be specific to moments in the class',
+            ],
+          },
+        ],
+      },
+      {
+        element: 'Coaching vs Therapy Guide',
+        color: '#5B3A8A',
+        items: [
+          {
+            title: 'When Coaching Conversations Get Emotional',
+            description: 'Advanced Training explores identity-level content — Why, Values, Beliefs. This can surface genuine emotion in coaching conversations. The Club Coach needs to know the boundary between coaching and therapy, and have a clear process for managing distress.',
+            duration: '15 min',
+            steps: [
+              'Understand the boundary: coaching explores what\'s possible; therapy explores what happened. You are a coach.',
+              'If a conversation becomes emotionally intense: Observe (notice the shift), Pause (slow down), Acknowledge ("I can see this matters to you"), Validate ("that takes courage to explore"), Ask ("are you okay to keep going?"), Options ("we can stay here, or shift to something more practical")',
+              'Use the Challenge Dial: turn intensity up when the instructor is ready, down when they need safety',
+              'If a participant discloses something beyond your scope: refer to appropriate support, document it, and follow your club\'s duty of care process',
+              'Debrief yourself after intense coaching conversations — your own wellbeing matters too',
+            ],
+          },
+        ],
+      },
+      {
+        element: 'Coaching Conversations Model',
+        color: '#5B3A8A',
+        items: [
+          {
+            title: 'The AT Coaching Framework — Rapport, Explore, Advance',
+            description: 'Advanced Training teaches instructors a coaching model they can use with participants. As their Club Coach, understanding this model helps you align your own GROW conversations with the language and approach they\'ve learned. It also helps you coach them to use it.',
+            duration: '15 min',
+            steps: [
+              'Rapport phase: Instant Connection (genuine interest, not small talk) + Frame (set the purpose of the conversation)',
+              'Explore phase: Invite to Explore ("tell me about...") + W+H+W questioning (What happened? How did it feel? What would you do differently?)',
+              'Advance phase: Summarize (reflect back what you heard) + Create a Plan (one specific action)',
+              'C/C Glasses: assess Confidence and Competence separately. High competence + low confidence = build belief. Low competence = direct and teach.',
+              'Coaching Fundamentals: Trust (be consistent), Curiosity (ask before telling), Silence & Listening (resist filling the gap), Positive Language (frame toward growth), Storytelling & Metaphors (make abstract concrete)',
+            ],
+          },
+        ],
+      },
+      {
+        element: 'Guided Feedback',
+        color: '#00FF63',
+        items: [
+          {
+            title: 'CRC & GROW Feedback Tools',
+            description: 'The core feedback tools for Club Coaches — Connect/Recommend/Commend (CRC) for structured post-class feedback, and GROW (Goal, Reality, Options, Will) for coaching conversations. Both tools are built into the Guided Feedback section of this app.',
+            duration: '30 min',
+            steps: [
+              'Open the Guided Feedback section from the main navigation',
+              'Select the instructor and the program observed',
+              'Use LMQ context to frame the feedback — what stage are they at, what are the active targets?',
+              'Choose CRC for direct post-class feedback, or GROW for a development conversation',
+              'Copy your feedback and share it with the instructor directly',
+            ],
+          },
+        ],
+      },
+    ],
   },
   6: {
     name: 'World-Class',
-    subtitle: 'Mastery & influence',
+    subtitle: 'Presenter Framework — 3 Dimensions & Levels 7–10',
     duration: 'Ongoing',
     color: '#FF623E',
     sessions: [
       {
-        id: '5-connection',
-        title: 'Connection Mastery',
-        subtitle: 'KE 4',
+        id: '6-presenter-intro',
+        title: 'Welcome to World-Class',
+        subtitle: '30 min — 1:1 conversation',
         coachRole: {
-          summary: 'Guide the instructor into the advanced Key Elements — Connection and Performance — where great instructors become world-class.',
-          context: 'By this stage, Choreography, Technique, and Coaching should be solid. Now it\'s about creating experiences that keep participants coming back.',
-          principle: 'World-class is a choice, not a talent.',
+          summary: 'Elevation Partner. This instructor doesn\'t need fixing. Your role shifts from developing skills to elevating artistry.',
+          context: 'This instructor has arrived. Choreography, Technique, and Coaching are solid. Advanced Training learning (Leadership, Essence, Enhance the Experience) is embedded. They\'re at or approaching Level 7 — the point where development stops being about what\'s missing and starts being about what\'s possible. The Presenter Framework introduces the 3 Dimensions: Connect, Motivate, Educate — not as separate skills but as a continuous blend that defines world-class instruction. Your coaching register changes here: thought-provoking questions, not direct instruction. The Big Picture is about elevation, not correction.',
+          principle: 'The shift from great to world-class is not about doing more — it\'s about everything working as one.',
         },
-        content: [
+        coachingSession: {
+          goals: [
+            'Coach understands the Presenter Framework and what Levels 7–10 represent',
+            'Coach and instructor align on the shift from correction to elevation',
+            'The 3 Dimensions (Connect, Motivate, Educate) are introduced as the operating framework',
+          ],
+          what: 'Introduce the instructor to the Presenter Framework. Explain what Levels 7–10 represent: Level 7 is TAP Presenter eligibility (the performance standard, not automatic status). Level 8 is LM Filming/Presenting standard. Levels 9–10 are elite, world-class — where HIGHER or LOWER levels may be awarded at Grade Review (the Level 6.5 protection rule no longer applies). Introduce the 3 Dimensions: Connect (authentic relationship with audience), Motivate (sustained genuine energy that drives effort), Educate (knowledge delivered naturally, enriching without interrupting). At presenter level these three blend continuously — they don\'t operate in sequence. The coach\'s role shifts: start from the assumption of mastery. Use the process of elimination to identify development focus. Feedback becomes coaching-led — thought-provoking questions that prompt self-directed growth.',
+          why: 'Without this framing, the Club Coach will keep coaching at the same level as Stage 5 — looking for things to fix. At presenter level, the instructor knows the program deeply. They don\'t need to be told what to do. They need a thinking partner who can see what they can\'t: the single shift that elevates from great to world-class. If the coach doesn\'t understand the Presenter Framework, they\'ll either under-coach (assuming there\'s nothing left to develop) or over-coach (giving instruction that feels patronising to an elite instructor). This session calibrates the relationship.',
+          how: [
+            'Explain the Level 7–10 framework: what each level represents, what changes (higher or lower levels, no 6.5 protection)',
+            'Introduce the 3 Dimensions — Connect, Motivate, Educate — as the lens for all future observations',
+            'Name the coaching register shift: "From here, my feedback will be questions more than statements. You know this program — I\'m here to help you see what you can\'t see yourself."',
+            'Ask: "What does world-class mean to you in [their program]? What would it look and feel like?"',
+            'Discuss the assessor mindset they\'ll face at Grade Review: start from mastery, process of elimination',
+          ],
+        },
+        content: [],
+      },
+      {
+        id: '6-three-dimensions',
+        title: 'The 3 Dimensions in Action',
+        subtitle: '45 min — observation + conversation',
+        coachRole: {
+          summary: 'Dimension Spotter. Watch for the blend — when Connect, Motivate, and Educate flow as one continuous delivery, that\'s presenter level.',
+          context: 'At standard Grade 3, an instructor might Connect well in one moment, then Motivate, then Educate — as distinct actions. At presenter level, these three dimensions operate simultaneously. The coaching cue that educates also motivates. The eye contact that connects also drives effort. The knowledge that educates is delivered with energy that motivates. Your job is to observe whether these dimensions are blending or still operating as separate skills. When they blend, you\'ll feel it — the class has a continuous synergy between the music, moves and movers. When they don\'t blend, you\'ll see transitions between modes — a shift from "connecting mode" to "coaching mode" to "performing mode."',
+          principle: 'At presenter level, Connect, Motivate, and Educate are not three things. They\'re one thing expressed three ways.',
+        },
+        keyElementFocus: {
+          title: 'KEs 4 & 5 through the 3 Dimensions lens',
+          elements: [
+            { name: 'Connection', description: 'At presenter level, connection is not one-to-one but room-wide. The atmosphere itself is a product of the presenter\'s presence. Every participant feels simultaneously seen and part of something larger. Look, See and Respond must work with a live audience AND (at Level 8+) direct-to-camera — the camera is treated as a participant. Creates an atmosphere of authentic care and community.' },
+            { name: 'Performance', description: 'Claiming the stage is the Performance descriptor that most distinguishes a presenter from a great instructor. It is not confidence alone — it is ownership of the space that makes the audience feel secure and energised simultaneously. Enjoyment is not performed — it is genuine and visible in the body, not just the face. Voice contrast is used to energise, motivate and educate.' },
+          ],
+        },
+        coachingSession: {
+          goals: [
+            'Coach can identify how Connect, Motivate, and Educate show up (or don\'t) during a class',
+            'Coach can spot when the 3 Dimensions are blending vs operating separately',
+            'One specific elevation opportunity identified',
+          ],
+          what: 'Observe a full class with the 3 Dimensions as your lens. For each track, note: where do you see Connect? Where Motivate? Where Educate? More importantly: where do they blend into one seamless delivery? And where do they feel like separate actions? After class, use coaching-led questions to explore what you observed. Start from what was strong — elevation, not correction.',
+          why: 'The 3 Dimensions are the framework that distinguishes Levels 7–10 from everything below. A coach who can see these dimensions — and who can articulate when they\'re blending vs when they\'re separate — gives the instructor feedback no one else can give. Most people can tell a great class from a good one. A Club Coach at this level can explain WHY it was great and what would make it extraordinary.',
+          how: [
+            'Observe a full class — note specific moments where the 3 Dimensions blend (track number, what happened)',
+            'Also note moments where dimensions felt separate (shifted from connecting to coaching to performing)',
+            'In your conversation, start with: "There were moments in that class where everything was flowing as one — tell me about Track [X]"',
+            'Ask: "When in the class do you feel most in flow — where connecting, motivating and educating all happen at once?"',
+            'Identify one specific moment where a small shift would elevate the blend: "What if in Track [X], instead of pausing to educate, the education came through the motivation?"',
+          ],
+          prompts: [
+            {
+              label: 'Opening',
+              prompts: [
+                'If someone watched your class for the first time, what would they feel? Not learn — feel.',
+                'Where in the class do you feel everything is flowing — where you\'re not thinking about separate skills?',
+              ],
+            },
+            {
+              label: '3 Dimensions',
+              prompts: [
+                'In Track [X] I saw you connect beautifully with a specific moment. At the same time, was there motivation happening? Education?',
+                'When you\'re at your absolute best, do Connect, Motivate and Educate feel like three things or one thing?',
+                'What would it look like if the education happened inside the motivation — not as a separate cue?',
+              ],
+            },
+            {
+              label: 'Elevation',
+              prompts: [
+                'If I told you this class was 90% of world-class, what do you think the last 10% is?',
+                'What single shift would make the biggest difference to how this class FEELS for participants?',
+              ],
+            },
+          ],
+        },
+        sessionPlan: {
+          totalDuration: '45 min',
+          format: '1:1 — observation + conversation',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Check in',
+              steps: [
+                'How are you feeling about your program at the moment?',
+                'Anything you were consciously experimenting with in today\'s class?',
+              ],
+            },
+            {
+              duration: '20 min',
+              title: '3 Dimensions debrief',
+              steps: [
+                'Share 1–2 moments where you saw Connect, Motivate, Educate blending simultaneously',
+                'Ask: "When in the class did everything feel like one thing — not three separate skills?"',
+                'If dimensions felt separate at any point, name the moment: "In Track [X] I noticed a shift — from connecting to coaching. What was happening for you there?"',
+              ],
+              tip: 'Start with what was working — at this level, elevation is built from strength, not gap-filling.',
+            },
+            {
+              duration: '15 min',
+              title: 'Single elevation focus',
+              steps: [
+                'Identify one specific moment where the 3 Dimensions blend could have been deeper',
+                'Build one intention: "In Track [X], what if [specific shift]?"',
+                'Ask the instructor to articulate the intention in their own words — ownership matters at this level',
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Set observation focus',
+              steps: [
+                'Agree on one 3 Dimensions question to carry into the next class',
+                'Confirm next observation date',
+              ],
+            },
+          ],
+        },
+        content: [],
+      },
+      {
+        id: '6-presenter-criteria',
+        title: 'Presenter Criteria & Grade Review Readiness',
+        subtitle: '45 min — observation + conversation',
+        coachRole: {
+          summary: 'Criteria Translator. The presenter criteria are specific and observable. Your job is to know what they look like in practice and help the instructor see the gap between Grade 3 and presenter-level Grade 3.',
+          context: 'The Section 12 Presenter cards define specific criteria per Key Element that are additions to the standard grades. These are not gates — if the standard Grade 3 is met, Grade 3 is awarded. The presenter additions are what distinguishes this tier and provides the development pathway toward Levels 8, 9, 10. Each program has its own nuances (RPM\'s bike constraint, BODYCOMBAT\'s martial arts mastery, BODYPUMP\'s weight-as-story), but the framework is consistent. The coach needs to know these criteria so they can observe with precision and give feedback that is specific enough to drive elevation.',
+          principle: 'Presenter criteria are not gates — they\'re what taking it to the next level looks like.',
+        },
+        keyElementFocus: {
+          title: 'All 5 KEs at presenter level',
+          elements: [
+            { name: 'Choreography', description: 'At presenter level, Choreography G2 moves beyond automaticity to seamless flow. Transitions between exercises and tracks are effortless and visually polished, reflecting the presenting environment. Choreography is no longer a development target — it\'s the invisible foundation.' },
+            { name: 'Technique', description: 'Physicality and role modelling is visually and emotionally compelling, evoking a powerful, motivating response that inspires engagement. Program-specific: BODYPUMP = weight selection as visual story; BODYCOMBAT = masterful speed, control, placement and intensity; RPM = effortless riding quality up to 140rpm under Climbing Resistance.' },
+            { name: 'Coaching', description: 'Ability to seamlessly blend coaching so it feels natural and not box-ticking. Layer 1, 2, and 3 are not distinct steps — they flow as a single integrated delivery. The join between a Setup cue and a Layer 3 Educate cue is invisible. An assessor should not be able to identify where one layer ends and the next begins.' },
+            { name: 'Connection', description: 'Creates atmosphere of authentic care and community. Look, See and Respond works with live audience AND direct-to-camera. Blends the 3 Dimensions creating continuous synergy between music, moves and movers.' },
+            { name: 'Performance', description: 'Claims the stage — ownership of the space. Voice contrast to energise, motivate and educate. Enjoyment is palpable and contagious, projecting through body language, physical and emotional expression.' },
+          ],
+        },
+        coachingSession: {
+          goals: [
+            'Coach understands the presenter-specific criteria for each KE (the additions to standard Grade 3)',
+            'Coach can identify which presenter criteria are already present and which are developing',
+            'Grade Review readiness assessed against Level 7/8 grade patterns',
+          ],
+          what: 'Observe a class with the presenter criteria in mind. For each KE, ask: is the standard Grade 3 met? Then: are the presenter additions visible? Note which presenter criteria are already present, which are emerging, and which are not yet evident. After class, walk through the criteria together — help the instructor understand what the assessor will be looking for at their next Grade Review. Assess readiness against the grade pattern for their target level (Level 7: Choreo G2 + min 1 KE G2 + 2 KEs G3; Level 8: Choreo G2 + 2 KEs G2 + 2 KEs G3).',
+          why: 'Grade Review at Levels 7–10 is different. Higher or lower levels can be awarded. The assessor starts from mastery and uses process of elimination. If the instructor doesn\'t know what the presenter criteria are, they can\'t self-direct their development toward them. If the coach doesn\'t know them, they can\'t give feedback that prepares the instructor. This session makes the invisible visible — translating the presenter criteria from a form into observable, coachable moments.',
+          how: [
+            'Before the observation, review the presenter criteria for the instructor\'s program (from the Section 12 program card)',
+            'Observe with the criteria in mind — for each KE, note: standard G3 met? Presenter additions visible?',
+            'In the conversation, frame aspirationally: "The shift toward presenter level in [KE] looks like..."',
+            'Walk through the grade pattern for their target level — which KEs are at G3, which are at G2, what\'s the path?',
+            'Ask: "If an assessor watched that class starting from the assumption of mastery, what would they still be looking for?"',
+            'Remember: presenter additions are observations, not gates. Frame as development opportunities, not failures.',
+          ],
+          prompts: [
+            {
+              label: 'Opening',
+              prompts: [
+                'At your next Grade Review, the assessor starts from the assumption that you\'ve mastered this. What do you think they\'ll be looking for beyond that?',
+                'If you could choose one KE where you want to be at absolute presenter standard, which would it be?',
+              ],
+            },
+            {
+              label: 'Criteria exploration',
+              prompts: [
+                'Coaching at presenter level means the layers are invisible — the assessor can\'t tell where Setup ends and Educate begins. How close do you feel to that?',
+                'Claiming the stage is different from being confident on stage. What does "owning the space" mean to you?',
+                'At presenter level, connection is room-wide — every participant feels seen AND part of something larger. Where in the class did that happen today?',
+              ],
+            },
+            {
+              label: 'Grade Review readiness',
+              prompts: [
+                'For your target level, you need a specific grade pattern across your KEs. Looking at where you are today, what\'s the development focus?',
+                'At Levels 7–10, higher or lower levels can be awarded. How does that change how you prepare?',
+              ],
+            },
+          ],
+        },
+        sessionPlan: {
+          totalDuration: '45 min',
+          format: '1:1 — observation + conversation',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Check in',
+              steps: [
+                'Where are you in your Grade Review preparation?',
+                'Any KE you\'ve been focusing on intentionally since last time?',
+              ],
+            },
+            {
+              duration: '20 min',
+              title: 'Presenter criteria walkthrough',
+              steps: [
+                'For each KE: share whether standard Grade 3 is met, and whether presenter additions are visible',
+                'Name one presenter criterion that was clearly present — be specific to a moment in the class',
+                'Name one presenter criterion that is developing — frame aspirationally, not as a gap',
+              ],
+              tip: 'Use program-specific language. Don\'t say "your technique was good" — say "the weight selection in the squat track was telling a visual story for participants in the back row."',
+            },
+            {
+              duration: '15 min',
+              title: 'Grade Review readiness assessment',
+              steps: [
+                'Map current KE grades against the target level grade pattern',
+                'Identify: which KEs need to move, and what does "moving" look like in practice?',
+                'Ask: "If the Grade Review was next month, what would you want to have worked on between now and then?"',
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Development focus',
+              steps: [
+                'Agree on one presenter criterion to develop before next observation',
+                'Confirm next observation date',
+              ],
+            },
+          ],
+        },
+        content: [],
+      },
+      {
+        id: '6-elevation-legacy',
+        title: 'Ongoing Elevation & Legacy',
+        subtitle: '30 min — 1:1 conversation',
+        coachRole: {
+          summary: 'Thinking Partner. At this level, the best thing you can do is ask the question they haven\'t asked themselves.',
+          context: 'The instructor at Stage 6 is self-aware, deeply competent, and likely coaching others informally already. Your role is no longer to develop them in the traditional sense — it\'s to be the person who sees what they can\'t see. A thinking partner who asks the question that unlocks the next 1%. The ongoing rhythm at this level is different: observations are less about checking progress and more about capturing moments of brilliance (and moments where brilliance could go further). Feedback is sparse and precise. You might watch an entire class and have one thing to say — but that one thing changes everything.',
+          principle: 'At presenter level, one observation can change more than ten sessions of coaching ever did.',
+        },
+        coachingSession: {
+          goals: [
+            'Ongoing observation rhythm set for presenter-level development',
+            'Second/third program presenter pathway discussed',
+            'Mentoring and legacy role explored — how this instructor gives back',
+          ],
+          what: 'Set the ongoing development rhythm. At presenter level, observation frequency can reduce but observation quality must increase. Each observation is focused on the 3 Dimensions blend and specific presenter criteria for their developing KE. Discuss second or third program development: if their primary program is at Level 7+, is there appetite to bring another program to the same standard? Explore the legacy question: how is this instructor contributing to the club\'s instructor culture? Are they mentoring newer instructors? Are they visible role models? The instructor at this level has influence — help them use it intentionally.',
+          why: 'The biggest risk at Stage 6 is stagnation through comfort. The instructor is excellent. Classes are full. Feedback is rare. Without intentional elevation, they plateau — still great, but no longer growing. The Club Coach prevents this by maintaining a relationship where growth is always on the table. The second risk is isolation: elite instructors can feel alone in their development. The coach keeps them connected to a development framework that still challenges them. The legacy conversation matters because world-class instructors shape the culture of the entire club team.',
+          how: [
+            'Set observation rhythm: quarterly minimum at this level, with each observation laser-focused on one elevation question',
+            'After each observation, give one piece of precise feedback — not a list, one thing',
+            'Ask: "What are you working on right now that no one else knows about?" — elite instructors often have private development goals',
+            'Discuss second/third program: "Your primary program is at presenter level — what would it take to bring your next program there?"',
+            'Explore legacy: "Who on the team looks up to you? What are you teaching them — intentionally or not?"',
+            'Track: is the instructor\'s self-assessment becoming more precise? At this level, they should be able to articulate their own 3 Dimensions blend with accuracy',
+          ],
+        },
+        sessionPlan: {
+          totalDuration: '30 min',
+          format: '1:1 — conversation',
+          blocks: [
+            {
+              duration: '10 min',
+              title: 'Elevation check-in',
+              steps: [
+                'Ask: "What are you working on right now that no one else knows about?"',
+                'Listen for self-directed development goals — this is a sign of genuine presenter-level maturity',
+                'Share one observation from the last class: one thing, precisely stated',
+              ],
+              tip: 'Resist the urge to give a list. One precise observation, delivered as a question, is worth more than five bullet points of feedback.',
+            },
+            {
+              duration: '10 min',
+              title: 'Second program & influence',
+              steps: [
+                'Second program discussion: is there appetite to bring another program to presenter standard?',
+                'Legacy question: "Who on the team looks up to you? What are you teaching them intentionally?"',
+                'Club culture question: "What would this club look like if every instructor was where you are now?"',
+              ],
+            },
+            {
+              duration: '10 min',
+              title: 'Next quarter focus',
+              steps: [
+                'Set one elevation focus for the next quarter — connected to the 3 Dimensions or a specific presenter criterion',
+                'Confirm next observation date',
+                'Ask: "What do you want me to watch for specifically?"',
+              ],
+            },
+          ],
+        },
+        proTip: 'The instructor at Stage 6 will teach you things too. Stay curious, stay humble, and let them lead more of the conversation over time.',
+        content: [],
+      },
+    ],
+    keActivities: [
+      {
+        element: 'Presenter Framework',
+        color: '#FF623E',
+        items: [
           {
-            week: 'KE 4 Connection Mastery',
-            tasks: [
-              'Learn and use participant names authentically',
-              'Look, See & Respond (LSR) 2-3x per class',
-              'Connect/Recommend/Commend (CRC) ≥4x per class',
-              'Four Quadrant scanning and engagement',
+            title: 'The 3 Dimensions — Connect, Motivate, Educate',
+            description: 'The operating framework for Levels 7–10. At presenter level, the 3 Dimensions blend continuously — they don\'t operate as separate skills. This guide explains what each dimension looks like in practice, how to observe them, and what "blending" means for specific programs.',
+            duration: '15 min',
+            steps: [
+              'Connect: authentic relationship with the audience — room-wide, not one-to-one. Every participant feels seen and part of something larger.',
+              'Motivate: sustained genuine energy that drives effort. Not performance — authentic belief in what the program can do for participants.',
+              'Educate: knowledge delivered naturally, enriching the experience without interrupting the flow. The instructor knows WHY, and it shows.',
+              'Blending: observe whether dimensions flow simultaneously or switch sequentially. Sequential = developing. Simultaneous = presenter level.',
+              'Use the 3 Dimensions Observation Sheet during classes to track where blending happens and where dimensions separate.',
+            ],
+          },
+          {
+            title: 'Level Definitions — Levels 7–10',
+            description: 'What each level represents in the Les Mills assessment framework, and what changes at presenter level compared to Levels 1–6.',
+            duration: '10 min',
+            steps: [
+              'Level 7 = LMUS TAP Presenter Level — the performance standard required for eligibility to be considered for the TAP team. Not automatic.',
+              'Level 8 = LM Filming/Presenting Standard — the quality required to appear on Masterclass videos. Not automatic.',
+              'Levels 9–10 = Elite/World-class — HIGHER OR LOWER levels may be awarded. The Level 6.5 protection rule does NOT apply.',
+              'Assessor mindset at Levels 7–10: start from the assumption of mastery, use process of elimination to identify what\'s still developing.',
+              'Coaching register: thought-provoking questions, not direct instruction. Big Picture KE = the single shift from great to world-class.',
             ],
           },
         ],
       },
       {
-        id: '5-performance',
-        title: 'Performance Mastery',
-        subtitle: 'KE 5',
-        content: [
+        element: 'Section 12 Presenter Criteria',
+        color: '#FF623E',
+        items: [
           {
-            week: 'KE 5 Performance Mastery',
-            tasks: [
-              'Master the 5 Voices (Mentor, Warrior, Wise, Dreamer, Leader)',
-              'Dramatic contrast between sections',
-              'Empowering Beliefs communicated consistently',
+            title: 'Presenter-Specific Criteria by KE',
+            description: 'The additions to standard Grade 2/3 criteria that apply only at Levels 7–10. These appear in red in the Grade Review Development Form (Presenter 2026). Not gates — Grade 3 is awarded if standard criteria are met. The presenter additions define the development pathway toward Levels 8, 9, 10.',
+            duration: '20 min',
+            steps: [
+              'Choreography: seamless flow and visual polish beyond automaticity. Transitions between tracks are invisible. Choreography is the foundation, not the focus.',
+              'Technique: physicality is visually and emotionally compelling — inspires engagement, not just correct execution. Program-specific nuances apply (BODYPUMP weight story, BODYCOMBAT martial arts mastery, RPM effortless riding to 140rpm).',
+              'Coaching: layers blend invisibly. The join between Setup and Layer 3 Educate is undetectable. An assessor cannot identify where one layer ends and the next begins.',
+              'Connection: room-wide atmosphere of authentic care and community. Look, See and Respond works with live audience AND direct-to-camera. 3 Dimensions blend continuously.',
+              'Performance: claims the stage — ownership of the space. Voice contrast is purposeful (energise, motivate, educate). Enjoyment is palpable through body language and emotional expression.',
             ],
           },
         ],
       },
       {
-        id: '5-grade3',
-        title: 'Grade 3 Emerging',
-        subtitle: 'LMQ 7+',
-        content: [
+        element: 'Grade Pattern Reference',
+        color: '#FF623E',
+        items: [
           {
-            week: 'LMQ 7+ Grade 3 Emerging',
-            tasks: [
-              'Grade 3 Technique: Inspirational execution',
-              'Grade 3 Coaching: Powerful imagery and targeted correction',
-              'Grade 3 Connection or Performance: Masterful level',
+            title: 'Level 7–10 Grade Patterns',
+            description: 'The KE grade patterns required at each presenter level. Use this to assess Grade Review readiness and identify the development focus.',
+            duration: '10 min',
+            steps: [
+              'Level 7: Choreography G2 + minimum 1 other KE G2 + 2 KEs G3',
+              'Level 8: Choreography G2 + 2 KEs G2 + 2 KEs G3',
+              'Level 9: Choreography G2 + 1 KE G2 + 3 KEs G3',
+              'Level 10: Choreography G2 + ALL other KEs G3',
+              'Remember: at Levels 7–10, higher or lower levels can be awarded. Grade patterns are thresholds, not guarantees.',
             ],
           },
         ],
       },
       {
-        id: '5-influence',
-        title: 'Expanding Influence',
-        subtitle: 'Beyond',
-        content: [
+        element: '3 Dimensions Observation Sheet',
+        color: '#FF623E',
+        items: [
           {
-            week: 'Beyond: Expanding Influence',
-            tasks: [
-              'Club Mentor: Develop new instructors',
-              '2nd Program Mastery: Expand repertoire',
-              'Presenter Pathway: Share expertise at conferences',
-              'TAP Coach Candidate: Train assessment partners',
+            title: 'Observation Template — Connect, Motivate, Educate per Track',
+            description: 'A structured observation approach for tracking the 3 Dimensions during a class. Note where dimensions blend and where they operate separately. One completed sheet per observation.',
+            duration: '45 min (during class)',
+            steps: [
+              'Before the class: write the program name, track list, and target level at the top',
+              'During each track: note which dimensions are present — C (Connect), M (Motivate), E (Educate)',
+              'Mark blend moments (all three simultaneous) with a star — note the specific moment',
+              'Mark separation moments with a flag — note where one dimension paused for another to operate',
+              'After class: identify the track with the strongest blend and the track with the clearest separation — these are your two conversation anchors',
             ],
           },
         ],
-        proTip: 'This is where you help them see what\'s possible beyond their own class. Plant the seed for mentoring, presenting, and leadership.',
+      },
+      {
+        element: 'Coaching Register Guide',
+        color: '#FF623E',
+        items: [
+          {
+            title: 'How Feedback Changes at Levels 7–10',
+            description: 'At presenter level, the coaching register shifts fundamentally. Direct instruction is replaced by thought-provoking questions. Correction is replaced by elevation. The Big Picture KE focuses on the single shift from great to world-class.',
+            duration: '15 min',
+            steps: [
+              'Coaching-led questions: "What did you notice about [specific moment]?" rather than "You should have [done X]."',
+              'Elevation, not correction: "There was a moment in Track 5 where everything came together — what were you thinking about?" rather than "Track 5 needed more energy."',
+              'Big Picture KE: one question per observation — "What single shift would take this from excellent to world-class?"',
+              'Silence is a tool: ask the question, then wait. Elite instructors have the answers — they need space to surface them.',
+              'Example questions per KE: Choreography ("When did the choreography disappear and the experience took over?"), Technique ("What were participants seeing in your body that made them push harder?"), Coaching ("Where was the coaching so natural it stopped being coaching?"), Connection ("When did the whole room feel connected — not just the front row?"), Performance ("What moment felt most like YOU owning that space?")',
+            ],
+          },
+        ],
+      },
+      {
+        element: 'Guided Feedback',
+        color: '#00FF63',
+        items: [
+          {
+            title: 'CRC & GROW Feedback Tools',
+            description: 'The core feedback tools for Club Coaches — Connect/Recommend/Commend (CRC) for structured post-class feedback, and GROW (Goal, Reality, Options, Will) for coaching conversations. At presenter level, GROW conversations shift toward instructor-led — the coach opens the Goal question and follows the instructor\'s agenda.',
+            duration: '30 min',
+            steps: [
+              'Open the Guided Feedback section from the main navigation',
+              'Select the instructor and the program observed',
+              'Use LMQ context to frame the feedback — at Levels 7–10, note the presenter-level focus',
+              'At presenter level: GROW conversations open with "What do you want to work on today?" — not the coach\'s agenda',
+              'Copy your feedback and share it with the instructor directly',
+            ],
+          },
+        ],
       },
     ],
   },

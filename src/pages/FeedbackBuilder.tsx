@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Copy, ChevronRight, Check, ArrowLeft } from 'lucide-react';
+import { Copy, ChevronRight, Check, ArrowLeft, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -206,10 +206,77 @@ function LMQContextPanel({
 }
 
 /* ─────────────────────────────────────────────
+   Dreyfus / Coaching Approach derivation
+   ───────────────────────────────────────────── */
+type DreyfusStage = 'Not yet assessed' | 'Novice' | 'Advanced Beginner' | 'Competent' | 'Proficient' | 'Expert';
+
+function getDreyfusStage(grade: number | null, element: KeyElement, stage: number): DreyfusStage {
+  if (grade === null) return 'Not yet assessed';
+  if (grade === 1) return stage <= 2 ? 'Novice' : 'Advanced Beginner';
+  if (grade === 2) return (element === 'choreography' || stage === 5) ? 'Proficient' : 'Competent';
+  return 'Expert';
+}
+
+const DREYFUS_COACHING_GUIDANCE: Record<DreyfusStage, {
+  register: string;
+  avoid: string;
+  example: string;
+  badge: string;
+}> = {
+  'Not yet assessed': {
+    register: 'No grade data yet — use your observation to calibrate the approach.',
+    avoid: 'Assuming a level before you\'ve seen them teach this element.',
+    example: 'Watch one class and note what\'s present before giving specific feedback.',
+    badge: 'bg-slate-100 text-slate-500',
+  },
+  'Novice': {
+    register: 'Direct and specific. Use clear language — "Do this, then this."',
+    avoid: 'Open-ended questions — they don\'t yet have the framework to answer them.',
+    example: '"In the squat track, set up with feet hip-width, then cue depth before adding load."',
+    badge: 'bg-slate-100 text-slate-600',
+  },
+  'Advanced Beginner': {
+    register: 'Demonstrate and explain why. Show them what good looks like.',
+    avoid: 'Assuming they can self-diagnose — they see patterns but can\'t yet prioritise.',
+    example: '"Watch how the timing changes when you start the cue before the transition — here\'s why that works."',
+    badge: 'bg-blue-50 text-blue-700',
+  },
+  'Competent': {
+    register: 'Ask questions, let them problem-solve. Use E-P-E (Elicit–Provide–Elicit).',
+    avoid: 'Telling them the answer when they can find it themselves.',
+    example: '"What did you notice about participant engagement in Track 3? What would you try differently?"',
+    badge: 'bg-amber-50 text-amber-700',
+  },
+  'Proficient': {
+    register: 'Prompt reflection, they lead. Use coaching-led questions.',
+    avoid: 'Over-directing — they\'ll disengage if you treat them like a beginner.',
+    example: '"You mentioned wanting to work on Connection — what did you see today that tells you where you are?"',
+    badge: 'bg-green-50 text-green-700',
+  },
+  'Expert': {
+    register: 'Stretch and challenge. Thought-provoking questions. One precise observation.',
+    avoid: 'Volume of feedback — at this level, less is more.',
+    example: '"If that class was 90% of world-class, what do you think the last 10% is?"',
+    badge: 'bg-lm-dark text-white',
+  },
+};
+
+const SUPERVISION_LABELS = ['Observe only', 'Direct supervision', 'Indirect supervision', 'Unsupervised', 'Can supervise others'] as const;
+
+function getSupervisionLevel(grade: number | null, stage: number): string {
+  if (grade === null) return SUPERVISION_LABELS[0];
+  if (grade === 1 && stage <= 2) return SUPERVISION_LABELS[1];
+  if (grade === 1) return SUPERVISION_LABELS[2];
+  if (grade === 2) return SUPERVISION_LABELS[3];
+  return SUPERVISION_LABELS[4];
+}
+
+/* ─────────────────────────────────────────────
    Main Page
    ───────────────────────────────────────────── */
 export default function FeedbackBuilder() {
   const [step, setStep] = useState<Step>('context');
+  const [coachingGuideOpen, setCoachingGuideOpen] = useState(true);
   const [state, setState] = useState<FeedbackState>({
     instructorId: '',
     keyElement: '',
@@ -302,14 +369,16 @@ export default function FeedbackBuilder() {
 
           {/* ── Step 1: LMQ Context ── */}
           {step === 'context' && (
-            <div className="bg-white rounded-2xl border border-border p-8 shadow-sm space-y-8">
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-lm-ink-muted mb-1">Step 1</p>
-                <h2 className="text-xl font-display font-bold text-lm-dark">Set the LMQ Context</h2>
-                <p className="text-sm text-lm-ink-muted mt-1">Choose the instructor and the Key Element this feedback is focused on.</p>
+            <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden space-y-0">
+              <div className="px-5 py-3 bg-[#0d0d0d] flex items-center gap-3">
+                <div className="w-1 h-8 rounded-full bg-lm-green/80 flex-shrink-0" />
+                <div>
+                  <p className="text-white text-sm font-bold leading-tight">Set the LMQ Context</p>
+                  <p className="text-white/40 text-xs mt-0.5">Choose the instructor and the Key Element this feedback is focused on.</p>
+                </div>
               </div>
 
-              <div className="space-y-6">
+              <div className="p-8 space-y-6">
                 {/* Instructor select */}
                 <div>
                   <p className="text-xs font-bold text-lm-dark uppercase tracking-wider mb-2">Instructor</p>
@@ -381,17 +450,17 @@ export default function FeedbackBuilder() {
                     </div>
                   </div>
                 )}
-              </div>
 
-              <div className="flex justify-end pt-2">
-                <Button
-                  onClick={() => setStep('framework')}
-                  disabled={!contextReady}
-                  className="bg-lm-dark text-white hover:bg-lm-dark/90 rounded-full px-6"
-                >
-                  Choose Approach
-                  <ChevronRight className="w-4 h-4 ml-1" />
-                </Button>
+                <div className="flex justify-end pt-2">
+                  <Button
+                    onClick={() => setStep('framework')}
+                    disabled={!contextReady}
+                    className="bg-lm-dark text-white hover:bg-lm-dark/90 rounded-full px-6"
+                  >
+                    Choose Approach
+                    <ChevronRight className="w-4 h-4 ml-1" />
+                  </Button>
+                </div>
               </div>
             </div>
           )}
@@ -491,6 +560,47 @@ export default function FeedbackBuilder() {
                   {state.framework === 'crc' ? 'Build CRC Feedback' : 'Build GROW Conversation'}
                 </h2>
               </div>
+
+              {/* ── Coaching Approach guidance ── */}
+              {instructor && ke && (() => {
+                const grade = instructor.grades.find(g => g.element === ke)?.grade ?? null;
+                const dreyfus = getDreyfusStage(grade, ke, instructor.stage);
+                const guidance = DREYFUS_COACHING_GUIDANCE[dreyfus];
+                const supervision = getSupervisionLevel(grade, instructor.stage);
+                return (
+                  <div className="rounded-xl border border-lm-sunken overflow-hidden">
+                    <button
+                      onClick={() => setCoachingGuideOpen(o => !o)}
+                      className="w-full flex items-center justify-between px-4 py-3 bg-lm-subtle hover:bg-lm-sunken transition-colors text-left"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${guidance.badge}`}>{dreyfus}</span>
+                        <span className="text-xs font-semibold text-lm-dark">Coaching Approach</span>
+                        <span className="text-[10px] text-lm-ink-muted border border-lm-sunken px-2 py-0.5 rounded-full">{supervision}</span>
+                      </div>
+                      <ChevronDown className={`w-4 h-4 text-lm-ink-muted transition-transform ${coachingGuideOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                    {coachingGuideOpen && (
+                      <div className="px-4 py-4 space-y-3 bg-white">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                          <div className="rounded-lg bg-lm-subtle p-3">
+                            <p className="text-[9px] font-bold uppercase tracking-widest text-lm-ink-muted mb-1">Register</p>
+                            <p className="text-xs text-lm-ink-mid leading-relaxed">{guidance.register}</p>
+                          </div>
+                          <div className="rounded-lg bg-lm-subtle p-3">
+                            <p className="text-[9px] font-bold uppercase tracking-widest text-lm-ink-muted mb-1">Avoid</p>
+                            <p className="text-xs text-lm-ink-mid leading-relaxed">{guidance.avoid}</p>
+                          </div>
+                          <div className="rounded-lg bg-lm-subtle p-3">
+                            <p className="text-[9px] font-bold uppercase tracking-widest text-lm-ink-muted mb-1">Example framing</p>
+                            <p className="text-xs text-lm-ink-mid leading-relaxed italic">{guidance.example}</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
 
               {state.framework === 'crc' && (
                 <div className="space-y-6">

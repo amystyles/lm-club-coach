@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import type { Instructor, KeyElement } from '@/data/types';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Info } from 'lucide-react';
 
 interface TrustMapProps {
   instructor: Instructor;
@@ -119,13 +121,54 @@ function getEntrustmentLevel(instructor: Instructor, etaIndex: number): 1 | 2 | 
 }
 
 export default function TrustMap({ instructor }: TrustMapProps) {
+  const [supervisionInfoOpen, setSupervisionInfoOpen] = useState(false);
+
   return (
     <Card>
-      <CardHeader className="pb-3">
-        <CardTitle>Teaching Trust Map</CardTitle>
-        <p className="text-xs text-muted-foreground">What can this instructor be trusted to do?</p>
+      <CardHeader className="p-0">
+        <div className="px-5 py-3 bg-[#0d0d0d] rounded-t-lg border-b border-white/8 flex items-center gap-3">
+          <div className="w-1 h-8 rounded-full bg-lm-green/80 flex-shrink-0" />
+          <div className="flex-1">
+            <CardTitle className="text-white text-sm leading-tight">Teaching Trust Map</CardTitle>
+            <p className="text-white/40 text-xs mt-0.5">What can this instructor be trusted to do?</p>
+          </div>
+          <button
+            onClick={() => setSupervisionInfoOpen(o => !o)}
+            className="flex-shrink-0 text-white/40 hover:text-lm-green transition-colors"
+            aria-label="About supervision levels"
+          >
+            <Info className="w-4 h-4" />
+          </button>
+        </div>
+        {supervisionInfoOpen && (
+          <div className="px-5 py-4 bg-[#111] border-b border-white/8 space-y-4">
+            <div>
+              <p className="text-white text-xs font-bold mb-1">What are Supervision Levels?</p>
+              <p className="text-white/60 text-xs leading-relaxed">
+                Supervision levels tell you how much oversight an instructor needs for each competency. They're derived from the Dreyfus stages and the instructor's demonstrated reliability.
+              </p>
+            </div>
+            <div className="space-y-3">
+              {([
+                { level: 'Observe only', desc: 'Not yet ready to perform this task. The instructor is still learning the foundations.' },
+                { level: 'Direct supervision', desc: 'You need to be present. The instructor is still developing this skill and needs real-time guidance and correction.' },
+                { level: 'Indirect supervision', desc: 'You don\'t need to be in the room, but check in regularly. The instructor is competent but benefits from periodic observation.' },
+                { level: 'Unsupervised', desc: 'The instructor is self-directed here. Your role is to stretch and challenge, not monitor.' },
+                { level: 'Can supervise others', desc: 'This instructor is ready to support and develop others in this area.' },
+              ] as const).map(({ level, desc }) => (
+                <div key={level} className="flex gap-2.5 text-xs">
+                  <span className="text-lm-green/80 font-semibold w-36 flex-shrink-0">{level}</span>
+                  <span className="text-white/40">{desc}</span>
+                </div>
+              ))}
+            </div>
+            <p className="text-white/40 text-[11px] leading-relaxed border-t border-white/8 pt-3">
+              Supervision is about the task, not the person. An instructor can be <span className="text-white/60">Unsupervised</span> for class delivery and still need <span className="text-white/60">Direct supervision</span> when mentoring a new instructor.
+            </p>
+          </div>
+        )}
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 pt-5">
         {ETAs.map((eta, i) => {
           const level = getEntrustmentLevel(instructor, i);
           return (

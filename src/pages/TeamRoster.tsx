@@ -288,7 +288,14 @@ export default function TeamRoster({ onViewInstructor }: TeamRosterProps) {
       </Card>
 
       {/* Table */}
-      <Card className="border-t-2 border-t-lm-green overflow-hidden">
+      <Card className="overflow-hidden">
+        <div className="px-5 py-3 bg-[#0d0d0d] flex items-center gap-3">
+          <div className="w-1 h-8 rounded-full bg-lm-green/80 flex-shrink-0" />
+          <div>
+            <p className="text-white text-sm font-bold leading-tight">Instructor Team</p>
+            <p className="text-white/40 text-xs mt-0.5">{filteredAndSortedInstructors.length} instructor{filteredAndSortedInstructors.length !== 1 ? 's' : ''} shown</p>
+          </div>
+        </div>
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>

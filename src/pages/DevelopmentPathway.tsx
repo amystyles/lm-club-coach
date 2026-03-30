@@ -185,8 +185,8 @@ function PlanTab({ session, stageColor }: { session: Session; stageColor: string
           {plan.blocks.map((block, idx) => (
             <div key={idx} className="flex gap-4">
               <div
-                className="relative z-10 flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold bg-white border-2"
-                style={{ borderColor: stageColor + '60', color: stageColor }}
+                className="relative z-10 flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold text-white"
+                style={{ backgroundColor: stageColor }}
               >
                 {idx + 1}
               </div>
