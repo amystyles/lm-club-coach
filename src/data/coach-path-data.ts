@@ -167,6 +167,40 @@ export const coachPathStages: Record<number, StageDetail> = {
             "Identify one strength and one growth area for each of the 5 Key Elements",
           ],
         },
+        sessionPlan: {
+          totalDuration: '60 min',
+          format: 'In-class observation (solo)',
+          blocks: [
+            {
+              duration: '10 min',
+              title: 'Pre-Class Prep',
+              steps: [
+                "Download and print the Observation Framework before arriving",
+                "Choose your position: somewhere you can see both the instructor and participants",
+                "Set your intention: facts only — no feedback, no judgement",
+              ],
+            },
+            {
+              duration: '45 min',
+              title: 'Observation',
+              steps: [
+                "Track each class segment — movements, cues, timing, instructor positioning",
+                "For each Key Element, write what you see happening — not what you think about it",
+                "Note any moments that stand out: what exactly happened, when, and what the room did in response",
+              ],
+              tip: "If you find yourself writing 'good' or 'needs work' — stop. Replace it with a factual description of what you observed. 'Good connection' is an opinion. 'Made eye contact with three participants in the back row during track 4' is a fact.",
+            },
+            {
+              duration: '5 min',
+              title: 'Post-Class Sort',
+              steps: [
+                "Review your notes immediately after the class",
+                "Mark each note: F (fact) or I (interpretation)",
+                "Rewrite any interpretations as factual observations before your debrief session",
+              ],
+            },
+          ],
+        },
         content: [],
       },
       {
@@ -207,6 +241,40 @@ export const coachPathStages: Record<number, StageDetail> = {
                 "What did I miss that was visible from where you were standing?",
                 "Where does my experience as an instructor create observation bias?",
                 "What's the most useful thing a coach can see that an instructor can't see about themselves?",
+              ],
+            },
+          ],
+        },
+        sessionPlan: {
+          totalDuration: '30 min',
+          format: '1:1 with TAP Coach',
+          blocks: [
+            {
+              duration: '10 min',
+              title: 'Walk Through Your Notes',
+              steps: [
+                "Share your observation notes — talk through what you wrote, section by section",
+                "TAP Coach listens for moments of precise observation vs interpretation",
+                "No grading the instructor yet — this session is about your seeing",
+              ],
+            },
+            {
+              duration: '15 min',
+              title: 'Observation vs Interpretation',
+              steps: [
+                "TAP Coach highlights two or three things you observed accurately and precisely — name what made them good observations",
+                "TAP Coach identifies one or two places where you interpreted rather than observed",
+                "For each interpretation: practise restating it as a factual observation together",
+                "Discuss: which Key Elements are hardest for you to observe without opinion creeping in, and why?",
+              ],
+              tip: "The most common interpretation masquerading as observation is energy: 'The class had good energy.' That tells us nothing. What did you see that makes you say that?",
+            },
+            {
+              duration: '5 min',
+              title: 'Sharpen One Skill',
+              steps: [
+                "Name the one observation skill you want to develop before your next class",
+                "Agree on what 'improved' looks like — what would you write differently?",
               ],
             },
           ],
@@ -346,6 +414,40 @@ export const coachPathStages: Record<number, StageDetail> = {
             },
           ],
         },
+        sessionPlan: {
+          totalDuration: '30 min',
+          format: '1:1 with TAP Coach',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Open Questions Check-in',
+              steps: [
+                "TAP Coach asks: how did it feel to ask more and tell less this week?",
+                "What resistance — from the instructor, or from yourself — did you notice?",
+              ],
+            },
+            {
+              duration: '15 min',
+              title: 'The Righting Reflex',
+              steps: [
+                "TAP Coach introduces the concept: what is the righting reflex, and why does it feel like caring?",
+                "Roleplay exercise: TAP Coach plays an instructor making an obvious mistake — coach practises sitting with the urge to fix before responding",
+                "Debrief the roleplay: what did it feel like to pause? What question emerged instead?",
+                "Key paradox: the more you push, the more they resist — discuss a real example from your experience",
+              ],
+              tip: "The righting reflex isn't a flaw. It comes from genuinely wanting to help. The goal isn't to suppress it — it's to use it as a cue to ask a question instead.",
+            },
+            {
+              duration: '10 min',
+              title: 'Build the Habit',
+              steps: [
+                "Agree on a trigger phrase you'll use internally when you feel the reflex: e.g., 'Ask first'",
+                "Plan: spend the next week noticing — but not acting on — righting reflex moments",
+                "What will you look for? Name two specific situations where you expect it to show up",
+              ],
+            },
+          ],
+        },
         content: [],
       },
       {
@@ -393,6 +495,41 @@ export const coachPathStages: Record<number, StageDetail> = {
                 "When does [the challenge] not happen — what's different about those classes?",
                 "Tell me about a time when that Key Element was really clicking for you.",
                 "What were you doing differently in your best class this month?",
+              ],
+            },
+          ],
+        },
+        sessionPlan: {
+          totalDuration: '30 min',
+          format: '1:1 with TAP Coach',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Righting Reflex Debrief',
+              steps: [
+                "What did you notice this week? When did the urge to fix show up?",
+                "Did you manage to pause and ask instead — what happened?",
+              ],
+            },
+            {
+              duration: '15 min',
+              title: 'Question Types',
+              steps: [
+                "TAP Coach walks through the three question types: closed, leading, genuinely open",
+                "Work through examples of each — classify them together",
+                "Practise converting a closed or leading question into a genuinely open version",
+                "Try scaling questions live: TAP Coach plays the instructor, coach asks 'On a scale of 1–10…' and follows up",
+                "Try exception-finding: 'When does this challenge not happen — what's different about those classes?'",
+              ],
+              tip: "A genuinely open question surprises you too. If you already know the answer you're hoping for, the question is probably leading.",
+            },
+            {
+              duration: '10 min',
+              title: 'Build Your Go-To List',
+              steps: [
+                "Write your 5 go-to questions — ones you can use in any post-class conversation",
+                "Test each one: is it open? Does it hand control to the instructor?",
+                "Agree to use at least two of these in your next coaching conversation and report back",
               ],
             },
           ],
@@ -512,6 +649,47 @@ export const coachPathStages: Record<number, StageDetail> = {
             "Identify your default coaching role — and where it serves you well and where it doesn't",
           ],
         },
+        sessionPlan: {
+          totalDuration: '30 min',
+          format: '1:1 with TAP Coach',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Stage 2 Reflection',
+              steps: [
+                "What did you take from Stage 2 — E-P-E, questioning, practice conversation?",
+                "Which coaching habit has already changed how you show up after class?",
+              ],
+            },
+            {
+              duration: '10 min',
+              title: 'The Grow Model',
+              steps: [
+                "TAP Coach walks through the 4 coaching roles: Authority → Motivator → Facilitator → Consultant",
+                "For each role, discuss: when does this serve an instructor well, and when does it frustrate them?",
+                "Name your default role — the one you reach for instinctively",
+              ],
+              tip: "The mismatch problem is subtle. Coaches who love facilitating can leave new instructors completely lost. Coaches who love directing create resentment in experienced ones.",
+            },
+            {
+              duration: '10 min',
+              title: 'Map Your Team',
+              steps: [
+                "Pick two instructors: your most experienced and your newest",
+                "For each, identify their Grow stage using their LMQ profile and your observation notes",
+                "Name the role each one needs from you — and compare it to the role you've been giving",
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Commit',
+              steps: [
+                "Identify the one mismatch on your team you'll address first",
+                "Agree how you'll deliberately shift your role before next session",
+              ],
+            },
+          ],
+        },
         content: [],
       },
       {
@@ -540,6 +718,48 @@ export const coachPathStages: Record<number, StageDetail> = {
             "When you open an instructor's profile, the Dreyfus card shows you exactly how to coach each KE — use it before every observation and feedback conversation",
           ],
         },
+        sessionPlan: {
+          totalDuration: '30 min',
+          format: '1:1 with TAP Coach',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Grow Model Check-in',
+              steps: [
+                "What did you notice when you tried shifting your coaching role?",
+                "Did any instructor respond differently than you expected?",
+              ],
+            },
+            {
+              duration: '10 min',
+              title: 'Dreyfus Framework',
+              steps: [
+                "TAP Coach walks through the 5 stages: Novice → Advanced Beginner → Competent → Proficient → Expert",
+                "For each stage: what does this instructor look like in a live class? What do they need from a coach?",
+                "Connect to the Coaching Approach labels in the app: Tell / Guide / Facilitate / Consult / Challenge",
+              ],
+              tip: "The critical insight is per-skill, not per-person. An instructor can be Proficient in Choreography and Novice in Connection simultaneously.",
+            },
+            {
+              duration: '10 min',
+              title: 'Per-Skill Mapping',
+              steps: [
+                "Pick one instructor you've observed recently",
+                "Together, assign a Dreyfus stage to each of their 5 Key Elements",
+                "For each element: what does your stage assignment mean for how you coach it — specifically?",
+                "Open their profile in the app and compare your assessment to the Dreyfus card shown",
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Plan Your Next Observation',
+              steps: [
+                "Name the instructor you'll observe next",
+                "Agree: you'll use the per-element Dreyfus lens and bring your notes to the next session",
+              ],
+            },
+          ],
+        },
         content: [],
       },
       {
@@ -566,6 +786,48 @@ export const coachPathStages: Record<number, StageDetail> = {
             "Discuss with your TAP Coach: where is your default — do you tend to hover or tend to leave alone? What drives that?",
           ],
         },
+        sessionPlan: {
+          totalDuration: '30 min',
+          format: '1:1 with TAP Coach',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Dreyfus Debrief',
+              steps: [
+                "What did you notice when you used per-skill Dreyfus lens in your last observation?",
+                "Was any element harder to place than the others — why?",
+              ],
+            },
+            {
+              duration: '10 min',
+              title: 'Supervision Levels',
+              steps: [
+                "TAP Coach explains Direct, Indirect, and Unsupervised — what each looks like in practice",
+                "Key point: supervision is task-specific, not person-specific",
+                "Open one instructor's Trust Map in the app together — discuss what each level means for your behaviour",
+              ],
+              tip: "The most common mistake is thinking 'this instructor is experienced so I don't need to supervise them.' An experienced instructor teaching a new program is back to Direct supervision for that task.",
+            },
+            {
+              duration: '10 min',
+              title: 'Calibration Exercise',
+              steps: [
+                "Open Trust Maps for two instructors side by side",
+                "For each, identify one area where you might be over-supervising and one where you might be under-supervising",
+                "For each mismatch: what would the right level of oversight look like this week?",
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Commit',
+              steps: [
+                "Name one concrete step to step back with an over-supervised instructor",
+                "Name one concrete step to step in with an under-supervised instructor",
+                "Agree you'll report back on both at next session",
+              ],
+            },
+          ],
+        },
         content: [],
       },
       {
@@ -590,6 +852,47 @@ export const coachPathStages: Record<number, StageDetail> = {
             "Plan how to introduce the concept — not as a correction, but as a reframe",
             "Practise normalising language: 'This is the hard bit — and it means you're close to something'",
             "Agree with your TAP Coach on how you'll manage your own discomfort when an instructor is struggling",
+          ],
+        },
+        sessionPlan: {
+          totalDuration: '30 min',
+          format: '1:1 with TAP Coach',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Supervision Check-in',
+              steps: [
+                "Did you step back or step in as planned last week?",
+                "What happened — how did the instructor respond?",
+              ],
+            },
+            {
+              duration: '10 min',
+              title: 'Understanding Liminal Space',
+              steps: [
+                "TAP Coach introduces threshold concepts — ideas that permanently change how an instructor sees their practice",
+                "Discuss examples from group fitness: 'the class is about them, not me' / 'connection before choreography'",
+                "Talk through what an instructor in liminal space looks like: working harder, feeling stuck, temporarily less fluent",
+              ],
+              tip: "Share a personal example from your own development — a moment when you felt worse before you felt better. It makes this concept real.",
+            },
+            {
+              duration: '10 min',
+              title: 'Identify and Plan',
+              steps: [
+                "Think of one instructor on your team who seems to be working harder without getting better",
+                "Together, identify the threshold concept they might be crossing",
+                "Plan how to introduce it as a reframe, not a correction: 'This confusion you're feeling — that's the hard bit. It means you're close to something.'",
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Commit',
+              steps: [
+                "Practise the normalising phrase out loud — make it yours, not a script",
+                "Agree: you'll hold the space rather than rescue this instructor before next session",
+              ],
+            },
           ],
         },
         content: [],
@@ -629,6 +932,49 @@ export const coachPathStages: Record<number, StageDetail> = {
             },
           ],
         },
+        sessionPlan: {
+          totalDuration: '30 min',
+          format: '1:1 with TAP Coach',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Threshold Debrief',
+              steps: [
+                "Did you spot any liminal space moments with your instructors this week?",
+                "Were you able to hold the space rather than rescue?",
+              ],
+            },
+            {
+              duration: '10 min',
+              title: 'The If–Then Structure',
+              steps: [
+                "TAP Coach introduces the evidence base: implementation intentions are ~3× more effective than general goals",
+                "Walk through the anatomy: 'If [specific class moment], then I will [specific behaviour]'",
+                "Test two examples together — one vague goal vs one implementation intention — and feel the difference",
+              ],
+              tip: "The test for a good if-then plan: can you picture exactly where you are, what just happened, and what you do next? If not, it's not specific enough.",
+            },
+            {
+              duration: '10 min',
+              title: 'Roleplay',
+              steps: [
+                "TAP Coach plays an instructor at the end of a coaching conversation",
+                "You close the conversation by building an if-then plan together",
+                "TAP Coach gives feedback: was the 'if' specific enough? Was the 'then' concrete enough?",
+                "Repeat with a different scenario — practise until it feels natural",
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Stage 3 Close',
+              steps: [
+                "Commit: every coaching conversation this week ends with one if-then plan",
+                "TAP Coach acknowledges your completion of Stage 3 — learn to adapt",
+                "Agree on timing for Stage 4",
+              ],
+            },
+          ],
+        },
         content: [],
       },
     ],
@@ -664,6 +1010,47 @@ export const coachPathStages: Record<number, StageDetail> = {
             "Debrief with your TAP Coach: how did the instructor respond to focused constraint?",
           ],
         },
+        sessionPlan: {
+          totalDuration: '30 min',
+          format: '1:1 with TAP Coach',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Stage 3 Reflection',
+              steps: [
+                "What's the biggest shift in how you coach since Stage 3?",
+                "Which of the tools — Grow, Dreyfus, supervision levels, if-then plans — has had the most impact?",
+              ],
+            },
+            {
+              duration: '10 min',
+              title: 'Marginal Gains Strategy',
+              steps: [
+                "TAP Coach introduces the 1% principle: focus compounds, scatter doesn't",
+                "Open Key Element profiles for 2-3 instructors on your team",
+                "For each, discuss: which element is both underdeveloped and highest leverage? Where would a small improvement unlock the most progress?",
+              ],
+              tip: "The highest-leverage element is often not the lowest-scoring one. Look for the element that gates everything else — for many instructors, Connection unlocks Coaching and Performance simultaneously.",
+            },
+            {
+              duration: '10 min',
+              title: 'Build the Plan',
+              steps: [
+                "Choose one instructor for your first 1% conversation",
+                "Agree the element: 'This week, we focus only on [element]. Everything else stays the same.'",
+                "Build the coaching plan: what will you observe, what will you ask, what if-then plan will you co-create?",
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Commit',
+              steps: [
+                "Name the instructor, the element, and the date of the 1% conversation",
+                "Confirm you'll bring the outcome to the next session",
+              ],
+            },
+          ],
+        },
         content: [],
       },
       {
@@ -688,6 +1075,47 @@ export const coachPathStages: Record<number, StageDetail> = {
             "For autonomy: give one instructor a genuine choice this week — let them select their own focus area",
             "For competence: show one instructor their own progress using before/after data",
             "For relatedness: connect two instructors working on similar goals — even briefly",
+          ],
+        },
+        sessionPlan: {
+          totalDuration: '30 min',
+          format: '1:1 with TAP Coach',
+          blocks: [
+            {
+              duration: '5 min',
+              title: '1% Conversation Debrief',
+              steps: [
+                "How did your first 1% conversation go?",
+                "How did the instructor respond to focused constraint — relief, frustration, or engagement?",
+              ],
+            },
+            {
+              duration: '10 min',
+              title: 'SDT Framework',
+              steps: [
+                "TAP Coach introduces the three needs: Autonomy (choice), Competence (visible progress), Relatedness (connection to peers)",
+                "For each need: what does it look like when it's supported, and what does it look like when it's frustrated?",
+                "Discuss the core risk: coaches who direct too much create compliance, not commitment",
+              ],
+              tip: "SDT is not about giving instructors total freedom. Autonomy means they feel genuine choice within structure — not absence of direction.",
+            },
+            {
+              duration: '10 min',
+              title: 'Audit Your Coaching',
+              steps: [
+                "Review your last three coaching conversations against the triad",
+                "Identify one instructor whose motivation feels low — which need is most frustrated for them?",
+                "For that instructor, plan one concrete change: a genuine choice, a progress reflection, or a peer connection",
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Commit',
+              steps: [
+                "Name the instructor, the need you'll address, and the action you'll take this week",
+                "Agree to report back on what shifted",
+              ],
+            },
           ],
         },
         content: [],
@@ -727,6 +1155,49 @@ export const coachPathStages: Record<number, StageDetail> = {
             },
           ],
         },
+        sessionPlan: {
+          totalDuration: '30 min',
+          format: '1:1 with TAP Coach',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'SDT Check-in',
+              steps: [
+                "What did you try to address the frustrated need you identified last session?",
+                "Did you notice any shift in the instructor's engagement?",
+              ],
+            },
+            {
+              duration: '10 min',
+              title: 'Identity vs Behaviour',
+              steps: [
+                "TAP Coach explains the levels of change: environment → behaviour → habit → identity",
+                "Key point: identity change is self-sustaining; behaviour change requires constant willpower",
+                "Listen for examples of limiting identity language: 'I'm not a performer,' 'I'm not really a connection coach'",
+                "Discuss how identity language in your instructors shows up — and what it closes down",
+              ],
+              tip: "The shift from 'I'm trying to connect more' to 'I'm someone who connects' is not cosmetic — it changes how the instructor relates to every class they teach.",
+            },
+            {
+              duration: '10 min',
+              title: 'Practice',
+              steps: [
+                "TAP Coach plays an instructor who uses limiting identity language",
+                "You introduce a gentle reframe and ask one identity-anchoring question",
+                "Debrief: did the question open up the conversation or close it down?",
+                "Practise until the question feels natural, not scripted",
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Commit',
+              steps: [
+                "One identity-anchoring question in every coaching conversation this week",
+                "Note any language shifts you hear — bring examples to the next session",
+              ],
+            },
+          ],
+        },
         content: [],
       },
       {
@@ -751,6 +1222,49 @@ export const coachPathStages: Record<number, StageDetail> = {
             "Keep it minimal: a single question message, not a full conversation",
             "Review the nudge rhythm with your TAP Coach — is it sustainable for you and the instructor?",
             "After two weeks, debrief: has the frequency changed anything about the quality of your in-depth sessions?",
+          ],
+        },
+        sessionPlan: {
+          totalDuration: '30 min',
+          format: '1:1 with TAP Coach',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Identity Work Debrief',
+              steps: [
+                "Did you hear any limiting identity language this week?",
+                "How did the identity-anchoring question land when you used it?",
+              ],
+            },
+            {
+              duration: '10 min',
+              title: 'The Between-Session Gap',
+              steps: [
+                "TAP Coach introduces the research: frequency of feedback matters more than format or depth",
+                "Map the current rhythm for your team: how often are you actually in contact with each instructor between formal conversations?",
+                "Identify the instructors with the longest gap — these are the ones losing momentum",
+              ],
+              tip: "A 60-second voice message asking 'How did the connection track go today?' counts as feedback. You're not aiming for depth — you're aiming for continuity.",
+            },
+            {
+              duration: '10 min',
+              title: 'Design the Nudge Rhythm',
+              steps: [
+                "Choose one instructor for your first nudge rhythm experiment",
+                "Together, design it: one pre-class message and one post-class question per week",
+                "Keep it minimal — draft the messages now so you're not creating them on the fly",
+                "Sustainability check: is this realistic given your schedule and theirs?",
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Stage 4 Close',
+              steps: [
+                "Start the nudge rhythm this week — even one message counts",
+                "TAP Coach acknowledges your completion of Stage 4 — learn to develop",
+                "Agree on timing for Stage 5",
+              ],
+            },
           ],
         },
         content: [],
@@ -788,6 +1302,50 @@ export const coachPathStages: Record<number, StageDetail> = {
             "Share your selection and plan with your TAP Coach for feedback",
           ],
         },
+        sessionPlan: {
+          totalDuration: '45 min',
+          format: '1:1 with TAP Coach',
+          blocks: [
+            {
+              duration: '10 min',
+              title: 'Stage 4 Reflection',
+              steps: [
+                "TAP Coach asks: what's the biggest thing that's changed in how you coach since Stage 1?",
+                "Which of your instructors has grown most noticeably — what did you do that made the difference?",
+                "What does the coaching culture in your club feel like right now?",
+              ],
+            },
+            {
+              duration: '15 min',
+              title: 'The Multiplier Shift',
+              steps: [
+                "TAP Coach introduces the Stage 5 shift: from coaching instructors to developing coaches",
+                "Discuss the ceiling problem: one coach can only personally reach so many instructors",
+                "Review your team together: who shows natural coaching instincts — curiosity about others, unsolicited but constructive feedback, genuine interest in people's development?",
+                "Identify one candidate — they don't need to be the best instructor, just the right one",
+              ],
+              tip: "The best coaching candidate is often not the highest-graded instructor. Look for whoever is most curious about other people's growth.",
+            },
+            {
+              duration: '15 min',
+              title: 'Build the Development Plan',
+              steps: [
+                "For your candidate: what Club Coach stages are most relevant to where they are now?",
+                "Map out a lightweight version of the Club Coach journey for them",
+                "Plan the first conversation: 'Have you ever thought about developing other instructors?'",
+                "Agree how you'll use the same frameworks — E-P-E, Dreyfus, if-then plans — in your coaching of them",
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Commit',
+              steps: [
+                "Name the candidate and the date of the first conversation",
+                "Share your plan with your TAP Coach and invite their honest feedback",
+              ],
+            },
+          ],
+        },
         content: [],
       },
       {
@@ -812,6 +1370,49 @@ export const coachPathStages: Record<number, StageDetail> = {
             "Identify the most significant trust gap on your team — who is most ready to move forward?",
             "Make one entrustment decision and communicate it: 'You're ready to teach this class unsupervised'",
             "Debrief the decision with your TAP Coach — what was your evidence, what was your hesitation?",
+          ],
+        },
+        sessionPlan: {
+          totalDuration: '45 min',
+          format: '1:1 with TAP Coach',
+          blocks: [
+            {
+              duration: '10 min',
+              title: 'Candidate Conversation Debrief',
+              steps: [
+                "How did the conversation with your coaching candidate go?",
+                "What surprised you about their response?",
+                "What do you now know about their readiness that you didn't before?",
+              ],
+            },
+            {
+              duration: '15 min',
+              title: 'Trust Map Review',
+              steps: [
+                "Open the Trust Map for each instructor on your team",
+                "For each instructor, work through the ETAs together — where is your assessment confident, and where are you less certain?",
+                "Identify the most significant trust gap on the team: who is most ready to move forward but hasn't been formally entrusted yet?",
+              ],
+              tip: "Hesitation is information. If you're reluctant to make an entrustment decision, ask yourself: is this about their readiness, or about your comfort with letting go?",
+            },
+            {
+              duration: '15 min',
+              title: 'Make the Decision',
+              steps: [
+                "Choose one entrustment decision you will communicate this week",
+                "Name your evidence: what have you observed that supports this?",
+                "Plan how you'll communicate it — a clear, affirming statement: 'You're ready to teach this unsupervised'",
+                "TAP Coach challenges any hesitation: what's the worst case, and what would you do?",
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Commit',
+              steps: [
+                "Name the instructor, the ETA, and the date you'll communicate the decision",
+                "Agree to debrief the outcome at the next session",
+              ],
+            },
           ],
         },
         content: [],
@@ -847,6 +1448,48 @@ export const coachPathStages: Record<number, StageDetail> = {
                 "Where did I default to the righting reflex when I should have asked first?",
                 "What pattern am I seeing across my team that I haven't named yet?",
                 "What's one thing I'll try differently next week based on what I noticed?",
+              ],
+            },
+          ],
+        },
+        sessionPlan: {
+          totalDuration: '30 min',
+          format: '1:1 with TAP Coach',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Entrustment Debrief',
+              steps: [
+                "Did you communicate the entrustment decision?",
+                "How did the instructor respond — what did their reaction tell you about how they see themselves?",
+              ],
+            },
+            {
+              duration: '10 min',
+              title: 'The Reflection Loop',
+              steps: [
+                "TAP Coach walks through Kolb's cycle: Experience → Reflect → Conceptualise → Experiment",
+                "Key distinction: Schön's reflection-in-action (adjusting in the moment) vs reflection-on-action (reviewing afterward)",
+                "Discuss honestly: do you currently have a reflection practice, or does development happen by accident?",
+              ],
+              tip: "Coaches who don't reflect stop improving — and their instructors notice. The habit you build here models the exact behaviour you're trying to develop in them.",
+            },
+            {
+              duration: '10 min',
+              title: 'Design Your Ritual',
+              steps: [
+                "Choose a fixed time each week: when, where, how long (10 minutes is enough)",
+                "Agree on three standing questions: What went well? What would I do differently? What pattern am I seeing?",
+                "Pick one more advanced instructor you'll introduce the same reflection habit to",
+                "TAP Coach shares their own reflection practice — what it looks like, what it's unlocked",
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Commit',
+              steps: [
+                "Name your reflection time slot — protect it in your calendar now",
+                "Agree to share your first written reflection with your TAP Coach before Session 5-4",
               ],
             },
           ],
