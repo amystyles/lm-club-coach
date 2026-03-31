@@ -1068,6 +1068,51 @@ export const stageDetails: Record<number, StageDetail> = {
             'Instructor leaves energised and clear on the path to certification',
           ],
         },
+        sessionPlan: {
+          totalDuration: '30 min',
+          format: '1:1 — in-person or video call',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Celebrate IT completion',
+              steps: [
+                '"You\'ve completed Initial Training — that\'s a massive achievement."',
+                'Ask: "What moment are you most proud of from IT?"',
+                'Listen fully before moving on — let the energy land',
+              ],
+              tip: 'Don\'t rush past the celebration. The momentum from IT is fuel for the 30 days ahead.',
+            },
+            {
+              duration: '15 min',
+              title: 'Review Development Form + identify priorities',
+              steps: [
+                'Open the IT & Certification Development Form together — lead with strengths',
+                'Walk through Trainer feedback: "What jumped out at you?"',
+                'Identify 2–3 specific skills to target first — anchor them clearly: "These are our focus"',
+                'Explore CONNECTION and PERFORMANCE breakthroughs from IT — anchor what clicked',
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Activate the 30-day plan',
+              steps: [
+                'Walk through the timeline: Days 1–7 (plan), Days 7–25 (practice & refine), Day 30 (submit)',
+                'Set the practice schedule: teach to small group minimum 3 times',
+                'Confirm whether a Club Mentor or TAP Coach will lead the hands-on development',
+                'Set the certification video filming date and work backward',
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Lock in the check-in rhythm',
+              steps: [
+                'Agree on the weekly check-in day and format — this is non-negotiable',
+                'Book the first check-in before leaving the session',
+                'Close with energy: "You\'ve got this. Let\'s get you certified."',
+              ],
+            },
+          ],
+        },
         content: [
           {
             week: 'Celebrate & Review',
@@ -1159,6 +1204,49 @@ export const stageDetails: Record<number, StageDetail> = {
           title: 'The Danger Zone: Days 7\u201320',
           description: 'The 30-day window is tight. Most instructors who miss the deadline don\'t stall at the end \u2014 they stall in the middle. The IMT excitement fades around day 7, the choreography still feels hard, and without someone actively checking in, instructors quietly disengage. Whether that person is a Club Mentor following the TAP plan or a TAP Coach on-site, a weekly 10-minute check-in during this window is the single most important action for getting instructors to day-30 submission.',
         },
+        sessionPlan: {
+          totalDuration: '30 min',
+          format: '1:1 — check-in + video review or live observation',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Check in',
+              steps: [
+                'How is the practice schedule going? Have you taught your small group this week?',
+                'How are you feeling about the 2–3 priority skills we identified?',
+              ],
+              tip: 'A 10-minute call counts. The rhythm matters more than the length.',
+            },
+            {
+              duration: '15 min',
+              title: 'Observe or review self-filmed video',
+              steps: [
+                'If observing live: watch with the 5 Key Element framework in mind, note the 2–3 priorities',
+                'If reviewing self-filmed video: ask "What do you see?" before sharing your observations',
+                'Celebrate improvements since the last session — make progress visible',
+                'Deliver LMQ-aligned feedback on the priority skills — specific, not generic',
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Refine focus',
+              steps: [
+                'Confirm the 1–2 things to work on before the next session',
+                'Ask: "What\'s your one focus for your next practice?"',
+                'Watch for signs of stalling — intervene early with encouragement if energy is dropping',
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Momentum check + next steps',
+              steps: [
+                'Ask: "On a scale of 1–10, how ready do you feel for certification?"',
+                'Confirm next practice session and next check-in',
+                'As Day 25 approaches: start preparing them mentally for filming',
+              ],
+            },
+          ],
+        },
         content: [
           {
             week: 'Small Group Practice',
@@ -1179,6 +1267,373 @@ export const stageDetails: Record<number, StageDetail> = {
           },
         ],
         proTip: 'The instructors who certify aren\'t the most talented \u2014 they\'re the most consistent. Your weekly check-in is the accountability that keeps them practising. Don\'t skip it.',
+      },
+      /* ─── Session 3: Week 1 — Foundation ─── */
+      {
+        id: '2-week1-foundation',
+        title: 'Week 1: Foundation',
+        subtitle: 'Days 1–7',
+        coachRole: {
+          summary: 'Launcher. Week 1 is about getting momentum before it fades. The instructor needs to be teaching within days of the Debrief — your job is to make sure the first small group session happens and they leave feeling capable, not overwhelmed.',
+          context: 'The first week sets the pace for the entire 30 days. Instructors who teach in Week 1 certify. Instructors who wait until they feel "ready" often don\'t. Get them in front of people — even friends and family — as fast as possible.',
+          principle: 'Movement beats perfection. One imperfect practice session is worth ten perfect plans.',
+        },
+        coachingSession: {
+          what: 'Support the instructor through their first small group teaching sessions. Focus on getting reps in — preparing 3 tracks, practising Say and Do, finding a mentor if possible, and building self-review habits. The goal isn\'t perfection; it\'s momentum.',
+          why: 'The first week is the most vulnerable. IMT energy fades fast, choreography still feels hard, and without early reps the instructor loses confidence before they\'ve even started. Week 1 is about breaking inertia — getting them teaching, moving, and reviewing before doubt can take hold.',
+          how: [
+            'Confirm the first small group session is booked — if not, book it now together',
+            'Assign Post-work videos: Connection, Performance, Refining Choreography, Refining Technique, Refining Coaching',
+            'Help them prepare and script 3 tracks — allocated track plus 2 others',
+            'Introduce Say and Do practice: speaking coaching cues while performing the movement simultaneously',
+            'Encourage self-filming: set up a camera and review the footage after the session',
+            'Check in on energy and confidence — week 1 wobbles are normal, name that',
+          ],
+          prompts: [
+            {
+              label: 'Getting Started',
+              prompts: [
+                'When is your first small group session this week — and who\'s coming?',
+                'Which 3 tracks are you starting with? Which one feels most solid right now?',
+                'Have you watched the Post-work videos yet? Which one are you starting with?',
+              ],
+            },
+            {
+              label: 'Say and Do',
+              prompts: [
+                'When you practise Say and Do, where do you go quiet? What\'s happening at that moment?',
+                'What\'s the difference between teaching to the mirror vs teaching to people?',
+              ],
+            },
+            {
+              label: 'Reflection',
+              prompts: [
+                'After your first session — what did you feel most proud of?',
+                'What\'s your one focus before we check in next week?',
+              ],
+            },
+          ],
+          goals: [
+            'First small group teaching session completed',
+            'Post-work videos watched or assigned',
+            '3 tracks prepared and scripted',
+            'Say and Do practice started',
+            'Self-filming habit initiated',
+          ],
+        },
+        sessionPlan: {
+          totalDuration: '20 min',
+          format: '1:1 — in-person or video call',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Check in',
+              steps: [
+                'Has the first small group session happened? If not — book it now.',
+                'How is the energy? Name that week 1 wobbles are completely normal.',
+              ],
+              tip: 'If they haven\'t taught yet, this is the most important 5 minutes of the whole 30 days. Get the session in the diary before you finish.',
+            },
+            {
+              duration: '10 min',
+              title: 'Foundation focus',
+              steps: [
+                'Which 3 tracks are they working on this week?',
+                'Assign Post-work videos: Connection, Performance, Refining Choreography, Refining Technique, Refining Coaching',
+                'Check in on Say and Do: "Where do you go quiet when you\'re moving and speaking at the same time?"',
+                'Have they found a mentor or set up a team-teach yet?',
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Set focus for Week 2',
+              steps: [
+                'Agree on one specific thing to work on before the next check-in',
+                'Confirm self-filming is happening — when is their next practice session?',
+                '"One session done. That\'s how certification happens."',
+              ],
+            },
+          ],
+        },
+        content: [],
+      },
+      /* ─── Session 4: Week 2 — Build & Blend ─── */
+      {
+        id: '2-week2-build-blend',
+        title: 'Week 2: Build & Blend',
+        subtitle: 'Days 8–14',
+        coachRole: {
+          summary: 'Developer. Week 2 is about expanding beyond the first 3 tracks and bringing all 5 Key Elements together — blended, not separate. Your job is to broaden their repertoire and deepen their self-awareness.',
+          context: 'The danger zone starts here. IMT energy has faded, choreography on new tracks still feels uncertain, and the 30-day deadline starts to feel real. The weekly check-in is the single most important action during this window.',
+          principle: 'You can\'t blend what you haven\'t prepared. Get the remaining tracks ready first.',
+        },
+        coachingSession: {
+          what: 'Support the instructor in preparing the remaining tracks, continuing team-teaching and self-review, and beginning to blend all 5 Key Elements into each practice session. Get mentor feedback in the room — or arrange a video review together.',
+          why: 'Week 2 is where scope expands from "my track" to "the full class." Instructors who only practise their allocated track arrive at certification underprepared for the others. Blend is where KEs stop being separate skills and start becoming one integrated delivery — the earlier that shift starts, the stronger the certification video.',
+          how: [
+            'Review which tracks are now solid and which still need work — triage together',
+            'Help them prepare the remaining tracks: listen, note, script, practise',
+            'Continue team-teaching — if possible, arrange a second session this week',
+            'Review a self-filmed video together: ask "What do you see?" before sharing your observations',
+            'Introduce blend focus: in each session, all 5 KEs simultaneously — not one at a time',
+            'Watch for stall signals: missed sessions, low energy, "I\'m not ready yet" language',
+          ],
+          prompts: [
+            {
+              label: 'Track Progress',
+              prompts: [
+                'Which tracks are feeling solid now? Which ones still need the most work?',
+                'When you teach the remaining tracks, what\'s the hardest part — choreography, coaching, or energy?',
+              ],
+            },
+            {
+              label: 'Blend Check',
+              prompts: [
+                'In your last session — which Key Elements were you thinking about most? Which ones disappeared?',
+                'What does it feel like when everything is blending well vs when it\'s falling apart?',
+              ],
+            },
+            {
+              label: 'Momentum',
+              prompts: [
+                'How are you feeling compared to Week 1? Better, worse, or just different?',
+                'What\'s getting in the way of your practice schedule — if anything?',
+              ],
+            },
+          ],
+          goals: [
+            'All remaining tracks prepared and scripted',
+            'At least one team-teach or small group session completed',
+            'Self-filmed video reviewed — instructor can articulate what they see',
+            'All 5 Key Elements being blended in practice sessions',
+          ],
+        },
+        sessionPlan: {
+          totalDuration: '20 min',
+          format: '1:1 — in-person or video call',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Check in',
+              steps: [
+                'How many sessions have happened since we last spoke?',
+                'How is the energy — are they in the danger zone or building momentum?',
+              ],
+              tip: '"I haven\'t had time" or "I\'m not ready yet" are stall signals. Address them directly and with energy.',
+            },
+            {
+              duration: '10 min',
+              title: 'Track progress + blend review',
+              steps: [
+                'Which tracks are solid? Which still need work? Triage together.',
+                'Are they preparing the remaining tracks or still only working on their allocated one?',
+                'Review a self-filmed video if available: "What do you see?"',
+                'Blend check: are all 5 KEs showing up together, or are they still working through them one at a time?',
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Set focus for Week 3',
+              steps: [
+                'Agree on which tracks to prioritise before the next session',
+                'Confirm at least one more team-teach or small group session is scheduled',
+                '"You\'re at the halfway point. The work you put in this week shows up in the video."',
+              ],
+            },
+          ],
+        },
+        content: [],
+      },
+      /* ─── Session 5: Week 3 — Final Prep ─── */
+      {
+        id: '2-week3-final-prep',
+        title: 'Week 3: Final Prep',
+        subtitle: 'Days 15–22',
+        coachRole: {
+          summary: 'Sharpener. All tracks should be in play by now. Week 3 is about quality over quantity — refining what\'s working, fixing what isn\'t, and getting mentor sign-off across all 5 Key Elements before filming.',
+          context: 'This is the last full practice week before filming. The instructor should be teaching all certification tracks. If there are still significant gaps, they need to know now so they can address them before Day 30. This is the week for honest, direct feedback.',
+          principle: 'Track 1 technique is easy. Track 8 technique is the truth. Practise under fatigue.',
+        },
+        coachingSession: {
+          what: 'Observe or review a full practice session across all certification tracks. Deliver specific, LMQ-aligned feedback. Get mentor checks across all 5 Key Elements. Practise class endings and mirror work — things that often get skipped but matter on camera.',
+          why: 'Week 3 is the last chance for substantive improvement before the certification video. Instructors who use this week well arrive at filming day confident and prepared. Instructors who coast arrive hoping the camera won\'t notice gaps. It will. This is the week to be direct.',
+          how: [
+            'Observe a full practice session — or review a self-filmed video of all certification tracks',
+            'Deliver LMQ-aligned feedback across all 5 KEs — specific, not generic',
+            'Prioritise the 2–3 focus skills from the Debrief — have they improved?',
+            'Practise class endings: how the instructor closes each track matters on camera',
+            'Introduce mirror work: can they teach facing a mirror without losing timing or coaching?',
+            'Arrange two team-teach sessions if possible — real class energy is a crucial stress test',
+            'Be direct: if a track or KE is not yet at certification standard, name it and set a fix plan',
+          ],
+          prompts: [
+            {
+              label: 'Honest Review',
+              prompts: [
+                'If you filmed your certification video today — which tracks would you be proud of? Which ones worry you?',
+                'Which Key Element feels least solid right now? What specifically is the gap?',
+              ],
+            },
+            {
+              label: 'Refinement',
+              prompts: [
+                'When you watch yourself back — what\'s the one thing you keep noticing that needs to change?',
+                'How do your class endings feel? Does the energy land at the right moment?',
+              ],
+            },
+            {
+              label: 'Readiness',
+              prompts: [
+                'On a scale of 1–10, how ready are you for filming? What would move you to a 9?',
+                'What do you need from me this week to feel as prepared as possible?',
+              ],
+            },
+          ],
+          goals: [
+            'All certification tracks practised at full delivery standard',
+            'At least two team-teach or small group sessions completed',
+            'Mentor has observed and checked across all 5 Key Elements',
+            'Class endings and mirror work practised',
+            'Clear picture of readiness for Day 30 — any remaining gaps named and addressed',
+          ],
+        },
+        sessionPlan: {
+          totalDuration: '45 min',
+          format: '1:1 — observation + debrief',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Pre-session readiness check',
+              steps: [
+                '"If you filmed today — which tracks would you be proud of? Which ones are you most nervous about?"',
+                'Identify any remaining gaps before observing',
+              ],
+              tip: 'This week, be honest. Kind but direct. They need to know before Day 30, not after.',
+            },
+            {
+              duration: '20 min',
+              title: 'Observe full practice — all certification tracks',
+              steps: [
+                'Watch all certification tracks — not just the allocated one',
+                'Note all 5 KEs per track: timing, Setups, coaching layers, connection moments, energy',
+                'Pay attention to class endings and mirror work',
+                'Note where fatigue affects delivery in the later tracks',
+              ],
+            },
+            {
+              duration: '15 min',
+              title: 'LMQ-aligned feedback',
+              steps: [
+                'Lead with strengths — name what\'s working specifically',
+                'For the 2–3 priority skills: what\'s improved? What still needs sharpening?',
+                'If any track or KE is not yet at certification standard: name it directly and set a fix plan',
+                '"Here\'s what you need to do before Day 30. Here\'s when you\'re doing it."',
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Set filming readiness plan',
+              steps: [
+                'Confirm filming date, location, and logistics are locked in',
+                'Agree on any final practice sessions before Day 30',
+                '"One more week. You know exactly what to do."',
+              ],
+            },
+          ],
+        },
+        content: [],
+      },
+      /* ─── Session 6: Week 4 — Filming Readiness ─── */
+      {
+        id: '2-week4-filming-readiness',
+        title: 'Week 4: Filming Readiness',
+        subtitle: 'Days 23–30',
+        coachRole: {
+          summary: 'Confidence Builder. The work is done. Week 4 is not about adding new skills — it\'s about arriving at filming day feeling prepared, rested, and believed in. Reinforce what\'s ready, don\'t highlight what isn\'t.',
+          context: 'Last-minute panic is real and counterproductive. Instructors who over-prepare in Week 4 often perform worse on film — tired, over-rehearsed, second-guessing themselves. Calm, consolidate, confirm. Review, visualise, sort logistics, send them in with confidence.',
+          principle: 'They\'ve done the work. Now help them trust it.',
+        },
+        coachingSession: {
+          what: 'A final check-in before filming day. Review the most recent self-filmed video, confirm logistics, run the final script and checklist, and send the instructor into filming day prepared and confident. Rest, fuel, visualisation, and a backup plan matter more this week than new practice.',
+          why: 'The certification video is not a test of what the instructor can do under perfect conditions — it\'s a test of what they can do under pressure, on a specific day. The coach\'s job in Week 4 is to reduce pressure, not add to it. Confidence is a performance multiplier — an instructor who believes they\'re ready performs better even if skills are identical.',
+          how: [
+            'Review the most recent self-filmed video: focus on what\'s working, not what\'s missing',
+            'Run the Get Ready checklist: handbook, Releases App, Choreography Notes, masterclass video, music device, filming device',
+            'Confirm filming logistics: location, camera setup, lighting, sound, participants, clothing',
+            'Introduce visualisation: "Walk me through filming day in your head — from when you arrive to pressing stop"',
+            'Discuss rest and fuelling — treat this like physical performance',
+            'Plan a backup: what if something goes wrong technically? Have a plan B',
+            'Celebrate the journey: "Look at where you started. Look at where you are now."',
+          ],
+          prompts: [
+            {
+              label: 'Readiness',
+              prompts: [
+                'What are you most confident about going into filming day?',
+                'When you visualise filming day — what does it look and feel like?',
+                'What\'s the one thing you\'re still worried about? Let\'s address it now.',
+              ],
+            },
+            {
+              label: 'Logistics',
+              prompts: [
+                'Walk me through your filming day plan — from when you arrive to pressing stop.',
+                'Who\'s coming to support you? Who\'s doing the filming?',
+                'What\'s your backup if something goes wrong technically?',
+              ],
+            },
+            {
+              label: 'Final Belief',
+              prompts: [
+                'Think back to Day 1 of this 30-day window. What\'s different about you now?',
+                'What do you want participants to feel when they watch your video?',
+              ],
+            },
+          ],
+          goals: [
+            'Most recent self-filmed video reviewed — instructor is clear on their strengths',
+            'Filming logistics confirmed: location, camera, music, participants, clothing',
+            'Final script and Get Ready checklist completed',
+            'Visualisation practised — instructor has walked through filming day',
+            'Rest and fuelling plan in place',
+            'Backup plan confirmed',
+            'Instructor leaves feeling believed in and ready',
+          ],
+        },
+        sessionPlan: {
+          totalDuration: '20 min',
+          format: '1:1 — in-person or video call',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Check in',
+              steps: [
+                '"How are you feeling about filming day?"',
+                '"What are you most confident about? What\'s the one thing still on your mind?"',
+              ],
+              tip: 'Your energy matters here. Calm, confident, and specific. If you believe they\'re ready, say it — with evidence.',
+            },
+            {
+              duration: '10 min',
+              title: 'Final review + logistics',
+              steps: [
+                'Review the most recent self-filmed video: "What do you see that\'s working?"',
+                'Run the Get Ready checklist: handbook, Releases App, Choreography Notes, music device, filming device, clothing',
+                'Confirm filming location, camera setup, participants, and backup plan',
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Visualise + send off',
+              steps: [
+                '"Walk me through filming day in your head — from when you arrive to pressing stop."',
+                'Discuss rest and fuelling before filming day',
+                '"Think back to Day 1. Look at the instructor you\'ve become. Now go show that."',
+              ],
+            },
+          ],
+        },
+        content: [],
       },
       /* \u2500\u2500 Session 3: Cert Video Submission \u2500\u2500 */
       {
@@ -1235,6 +1690,50 @@ export const stageDetails: Record<number, StageDetail> = {
             'Instructor feels proud of what they\'ve achieved \u2014 not just relieved it\'s over',
             'Expectations set for TAP review process and feedback sharing',
             'The journey from pre-work to certification is celebrated as a team achievement',
+          ],
+        },
+        sessionPlan: {
+          totalDuration: '30 min',
+          format: '1:1 — in-person (film day support)',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Readiness check',
+              steps: [
+                'Ask: "How are you feeling about filming today?"',
+                '"What are you most confident about in your delivery?"',
+                '"Is there anything you want to run through one more time?"',
+              ],
+              tip: 'Your energy sets the tone. If you\'re calm and confident, they\'ll be too.',
+            },
+            {
+              duration: '10 min',
+              title: 'Final review + logistics',
+              steps: [
+                'Review their most recent self-filmed video together — confirm they\'re ready',
+                'Confirm filming logistics: location, camera setup, music, clothing',
+                'Encourage a warm-up run before the real take — shake off nerves',
+              ],
+            },
+            {
+              duration: '10 min',
+              title: 'Film, watch back + submit',
+              steps: [
+                'Support the warm-up run — keep it low pressure',
+                'Film the certification video',
+                'Watch it back together — celebrate what they see',
+                'Submit the certification video with confidence',
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Celebrate + set expectations',
+              steps: [
+                '"You did it. From Day 1 to right now — look at the instructor you\'ve become."',
+                'Set expectations: TAP reviews against all 5 KEs, LMQ level awarded, feedback shared with both mentor and instructor',
+                'Confirm next touchpoint for when feedback arrives',
+              ],
+            },
           ],
         },
         content: [
@@ -1556,6 +2055,49 @@ export const stageDetails: Record<number, StageDetail> = {
             },
           ],
         },
+        sessionPlan: {
+          totalDuration: '30 min',
+          format: '1:1 — in-person or video call',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Celebrate the certification pass',
+              steps: [
+                '"You passed. Let\'s take a moment to recognise what that means."',
+                'Ask: "How are you feeling about Certification — what are you most proud of?"',
+                'Listen fully before moving on',
+              ],
+              tip: 'Lead with celebration, not planning. They\'ve earned it.',
+            },
+            {
+              duration: '10 min',
+              title: 'Review Certification Development Form',
+              steps: [
+                'Open the Certification Development Form together — lead with what went well across all 5 KEs',
+                'Walk through the assessor\'s feedback: "What jumped out at you?"',
+                'Identify 2–3 specific priority skills from the feedback — these drive the Practice & Refine sessions',
+              ],
+            },
+            {
+              duration: '10 min',
+              title: 'Build the 30–90 day plan',
+              steps: [
+                'Build the plan together: practice schedule (min 3 small group sessions), self-filming cadence (min 5 reviews), check-in rhythm (weekly)',
+                'Ask: "What are you most excited about? What are you most nervous about?" — address both',
+                'Set a realistic target date for getting on the timetable',
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Confirm support + set next session',
+              steps: [
+                'Confirm the Club Mentor or TAP Coach who will observe, review videos, and provide feedback',
+                'Set the first Practice & Refine session date before you finish',
+                'Close with belief: "You\'re ready to start. Let\'s build on this."',
+              ],
+            },
+          ],
+        },
         content: [],
       },
       {
@@ -1625,6 +2167,49 @@ export const stageDetails: Record<number, StageDetail> = {
             },
           ],
         },
+        sessionPlan: {
+          totalDuration: '45 min',
+          format: '1:1 — observation + debrief',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Check in',
+              steps: [
+                'How has the practice schedule been going since the Certification Debrief?',
+                'What have you noticed about your priority skills — any shifts?',
+              ],
+              tip: 'Keep the weekly check-in alive even if it\'s just 10 minutes. Momentum is everything here.',
+            },
+            {
+              duration: '20 min',
+              title: 'Observe or review self-filmed video',
+              steps: [
+                'If observing live: watch with the priority skills from the Certification Debrief as your lens',
+                'If reviewing self-filmed video: ask "What do you see?" before sharing your observations',
+                'Use E-P-E: Elicit what they noticed, Provide your observation, Elicit what they want to try next',
+                'Track progress against LMQ criteria for all 5 KEs — share it so they can see growth',
+              ],
+            },
+            {
+              duration: '15 min',
+              title: 'Focused feedback on priority skills',
+              steps: [
+                'Keep feedback to the 2–3 priorities — don\'t overload with new targets',
+                'Celebrate visible improvement: "Compare where you are now to your first filming — look at that"',
+                'If the instructor is showing clear improvement and feels confident: discuss Team Teach readiness',
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Set focus for next session',
+              steps: [
+                'Agree on one specific thing to practise before the next session',
+                'Confirm next check-in date and format',
+                'Ask: "On a scale of 1–10, how ready do you feel? What would move you one number higher?"',
+              ],
+            },
+          ],
+        },
         content: [],
       },
       {
@@ -1690,6 +2275,42 @@ export const stageDetails: Record<number, StageDetail> = {
             },
           ],
         },
+        sessionPlan: {
+          totalDuration: '45 min',
+          format: '1:1 — pre-class brief + live observation + debrief',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Pre-class brief',
+              steps: [
+                'Brief the experienced instructor: "Your job is to carry the class energy — let them shine in their tracks"',
+                'Assign 1–2 tracks where the instructor is most confident',
+                'Ask the instructor: "What\'s your one focus for this session?"',
+              ],
+              tip: 'Select an experienced instructor who is supportive, not competitive. The environment has to feel safe.',
+            },
+            {
+              duration: '25 min',
+              title: 'Observe the co-teaching',
+              steps: [
+                'Observe the full class — take notes on all 5 KEs during the instructor\'s tracks',
+                'Watch for how live class energy affects their delivery vs small group practice',
+                'Note moments of genuine connection, confidence, or strong technique',
+                'Note any priority skills from Practice & Refine: how do they translate to a live class?',
+              ],
+            },
+            {
+              duration: '15 min',
+              title: 'Post-class debrief',
+              steps: [
+                'Ask first: "How did that feel? What surprised you about teaching a real class?"',
+                'Share what you observed — lead with what landed',
+                'Ask the key question: "What was different from your practice sessions — better or harder?"',
+                'Decide together: ready for solo, or one more Team Teach session first?',
+              ],
+            },
+          ],
+        },
         content: [],
       },
       {
@@ -1729,6 +2350,49 @@ export const stageDetails: Record<number, StageDetail> = {
             'Set the Stage 4 coaching rhythm: observations, check-ins, first Grade Review timeline',
             'If not ready: be honest but constructive — "Here\'s what I\'d love to see improve. Here\'s the plan to get there."',
             'Either way, celebrate how far they\'ve come from Certification',
+          ],
+        },
+        sessionPlan: {
+          totalDuration: '30 min',
+          format: '1:1 — in-person or video call',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Review progress since Certification',
+              steps: [
+                'Pull up the Certification Development Form alongside your current observations',
+                '"Look at where you were at Certification. Look at where you are now."',
+                'Celebrate the growth — make it tangible and specific',
+              ],
+              tip: 'This conversation is evidence-based. You\'ve seen them teach. You have data. Use it.',
+            },
+            {
+              duration: '15 min',
+              title: 'Walk through all 5 KEs',
+              steps: [
+                'For each KE: "Here\'s where you were at Certification. Here\'s where you are now."',
+                'Ask: "Do YOU feel ready? What would make you more confident?"',
+                'If ready: agree on the timetable slot together — day, time, program, start date',
+                'If not ready: be honest but constructive — name what to improve and set a clear plan',
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Set up Stage 4 coaching rhythm',
+              steps: [
+                'Introduce Stage 4: "Getting on the timetable is the start of the journey, not the end"',
+                'Set the observation rhythm, check-in cadence, and first Grade Review timeline',
+                'Confirm the first timetable date (or next Practice & Refine session if not ready)',
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Celebrate',
+              steps: [
+                'Acknowledge the full journey: pre-work, IT, certification, practice, Team Teach',
+                '"Ready doesn\'t mean perfect. It means confident, improving, and committed — and that\'s you."',
+              ],
+            },
           ],
         },
         content: [],
@@ -1797,6 +2461,50 @@ export const stageDetails: Record<number, StageDetail> = {
             },
           ],
         },
+        sessionPlan: {
+          totalDuration: '45 min',
+          format: '1:1 — observation + debrief',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Pre-class check in',
+              steps: [
+                'How are you feeling about your choreography right now?',
+                'Which tracks feel most automatic? Which ones still need your attention?',
+              ],
+              tip: 'Know what you\'re watching for before the class starts — it sharpens your observation.',
+            },
+            {
+              duration: '20 min',
+              title: 'Observe full class — choreography lens',
+              steps: [
+                'Take track-by-track notes: timing accuracy, errors, transitions, automatic vs conscious effort',
+                'Note where choreography is flowing vs where the instructor is still thinking about it',
+                'Check the other 4 KEs, but keep choreography as the primary focus',
+                'Note how quickly they recover from any minor mistakes',
+              ],
+            },
+            {
+              duration: '15 min',
+              title: 'E-P-E debrief',
+              steps: [
+                'Elicit: "How did that feel? Which tracks did you feel most solid in?"',
+                'Provide: share your track-by-track observations — lead with what\'s working',
+                'Elicit: "If choreography was completely automatic in every track, what would you work on next?"',
+                'For any problem tracks: set a specific practice plan (which tracks, how often, by when)',
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Set practice plan + next observation',
+              steps: [
+                'Establish the new release rhythm: "When the next release drops, what\'s your plan?"',
+                'Agree on specific tracks to drill before the next session',
+                'Confirm next observation date',
+              ],
+            },
+          ],
+        },
         content: [],
       },
       {
@@ -1851,6 +2559,50 @@ export const stageDetails: Record<number, StageDetail> = {
               prompts: [
                 'If a new instructor watched your class to learn technique, what would they pick up?',
                 'What does "safe" look like to you? What does "confident" look like?',
+              ],
+            },
+          ],
+        },
+        sessionPlan: {
+          totalDuration: '45 min',
+          format: '1:1 — observation + debrief',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Pre-class check in',
+              steps: [
+                'How has your technique been feeling across a full class?',
+                'Are there specific tracks where you notice your form changing under fatigue?',
+              ],
+              tip: 'Watch the second half of the class — technique under fatigue is where the truth is.',
+            },
+            {
+              duration: '20 min',
+              title: 'Observe full class — technique lens',
+              steps: [
+                'Note Position and Execution Setups per track — are they consistent?',
+                'Focus on the second half of the class where fatigue is a factor',
+                'Watch for simultaneous technique: can they maintain their own form while coaching?',
+                'Note whether technique coaching happens: does the instructor correct participant form? How specific?',
+              ],
+            },
+            {
+              duration: '15 min',
+              title: 'E-P-E debrief',
+              steps: [
+                'Elicit: "How did your body feel in the later tracks? Were you aware of your form changing?"',
+                'Provide: specific observations per track — lead with consistency that\'s working',
+                'If technique holds: "Your technique is solid. Let\'s talk about what that frees up."',
+                'If technique wobbles: identify the root cause — fatigue, choreography distraction, or genuine form gaps',
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Specific targets + next steps',
+              steps: [
+                'Set a specific focus: "Next class, pay extra attention to your Setups in Tracks 7–9. Film yourself."',
+                'Connect technique to coaching: "When your form is perfect, your participants\' form gets better too."',
+                'Confirm next observation date',
               ],
             },
           ],
@@ -1914,6 +2666,51 @@ export const stageDetails: Record<number, StageDetail> = {
             },
           ],
         },
+        sessionPlan: {
+          totalDuration: '45 min',
+          format: '1:1 — observation + debrief',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Pre-class check in',
+              steps: [
+                'When in the class do you feel most like a coach? When do you feel most like a performer?',
+                'What coaching habits are you trying to build right now?',
+              ],
+              tip: 'Count coaching moments per track during the observation — data makes the debrief concrete.',
+            },
+            {
+              duration: '20 min',
+              title: 'Observe full class — coaching lens',
+              steps: [
+                'Count Layer 1 coaching moments per track: form cues, safety reminders, options',
+                'Count Layer 2 coaching moments per track: intensity cues, meaningful praise, real-time correction',
+                'Note WHO they coach: the room generically, or specific individuals by name?',
+                'Note WHEN coaching drops off — cross-reference with choreography complexity',
+              ],
+            },
+            {
+              duration: '15 min',
+              title: 'Debrief with specific examples',
+              steps: [
+                'Elicit: "When in the class did you feel most like a coach?"',
+                'Provide: play back specific coaching moments — "In Track 4, you said [X]. That landed. Here\'s why."',
+                'Identify the bandwidth pattern: "When choreography gets complex, your coaching disappears — here\'s how to build past it."',
+                'Set a specific target: "Aim for 2 Layer 2 moments per track next class"',
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Set coaching target for next class',
+              steps: [
+                'Agree on one specific coaching habit to build over the next month',
+                'Ask: "Who in your class needs different coaching? Who needs pushing? Who needs encouragement?"',
+                'Connect coaching to connection: "When you coach someone by name, that\'s connection AND coaching in one moment"',
+                'Confirm next observation date',
+              ],
+            },
+          ],
+        },
         content: [],
       },
       {
@@ -1953,6 +2750,43 @@ export const stageDetails: Record<number, StageDetail> = {
             'After: update the development plan — what\'s the coaching focus for the next 3 months?',
             'After: if KEs 1–3 are solid Grade 1, Layer 1 coaching automatic, LMQ trending upward — discuss Stage 5 timeline',
             'After: if any KE needs attention — set a specific plan with the same Practice & Refine approach that got them here',
+          ],
+        },
+        sessionPlan: {
+          totalDuration: '30 min',
+          format: '1:1 — in-person or video call (pre and post Grade Review)',
+          blocks: [
+            {
+              duration: '10 min',
+              title: 'Pre Grade Review — set expectations',
+              steps: [
+                'Walk through what the Grade Review involves and what the assessor looks for across all 5 KEs',
+                'Set realistic expectations: "Based on what I\'ve seen, here\'s where I think you\'ll land — and here\'s why that\'s great"',
+                'Normalise the experience: "This is a snapshot, not a judgment. It shows where you are right now."',
+                'Address any nerves — acknowledge them and redirect to what the instructor knows they can do',
+              ],
+              tip: 'A well-framed Grade Review reduces anxiety. A poorly framed one creates it. Set the tone early.',
+            },
+            {
+              duration: '15 min',
+              title: 'Post Grade Review — review results together',
+              steps: [
+                'Lead with growth since Certification — make progress visible across all 5 KEs',
+                'For each KE: "Here\'s where you are. Here\'s what the next grade looks like. Here\'s what we\'ll work on."',
+                'Update the development plan: what\'s the coaching focus for the next 3 months?',
+                'If KEs 1–3 are solid Grade 1 and Layer 1 coaching is automatic: discuss Stage 5 timeline',
+                'If any KE needs attention: set a specific plan using the same Practice & Refine approach',
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Set next focus + celebrate',
+              steps: [
+                'Agree on the 1–2 KEs to focus on in the next phase of coaching',
+                'Confirm next observation date and check-in rhythm',
+                '"A Grade Review tells you where you are. What we do next is where you\'re going."',
+              ],
+            },
           ],
         },
         content: [],
