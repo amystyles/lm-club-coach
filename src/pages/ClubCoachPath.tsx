@@ -1006,7 +1006,7 @@ function SSDLTool() {
 /* ─────────────────────────────────────────────
    Main Page
    ───────────────────────────────────────────── */
-type ViewMode = 'session' | 'conversation-templates' | 'observation-framework' | 'intention-builder';
+type ViewMode = 'session' | 'conversation-templates' | 'observation-framework' | 'intention-builder' | 'dreyfus-model' | 'etas' | 'ssdl';
 
 export default function ClubCoachPath(_props: { onNavigate?: (page: string) => void }) {
   const [activeStage, setActiveStage] = useState(1);
@@ -1184,6 +1184,9 @@ export default function ClubCoachPath(_props: { onNavigate?: (page: string) => v
                     { icon: MessageSquareQuote, label: 'Conversation Templates', sub: 'E-P-E scripts & question banks', tool: 'conversation-templates' as ViewMode },
                     { icon: Eye, label: 'Observation Framework', sub: 'Structured class observation template', tool: 'observation-framework' as ViewMode },
                     { icon: Target, label: 'Intention Builder', sub: 'If–then planning template', tool: 'intention-builder' as ViewMode },
+                    { icon: Brain, label: 'Dreyfus Model', sub: 'Skill stages & coaching approach per domain', tool: 'dreyfus-model' as ViewMode },
+                    { icon: ShieldCheck, label: 'ETAs', sub: 'Trust-based activities & the Teaching Trust Map', tool: 'etas' as ViewMode },
+                    { icon: Layers, label: 'SSDL', sub: "Matching your coaching role to the instructor's stage", tool: 'ssdl' as ViewMode },
                   ]).map(({ icon: Icon, label, sub, tool }) => {
                     const isActive = viewMode === tool;
                     return (
@@ -1219,6 +1222,12 @@ export default function ClubCoachPath(_props: { onNavigate?: (page: string) => v
                   <ObservationFramework />
                 ) : viewMode === 'intention-builder' ? (
                   <IntentionBuilder />
+                ) : viewMode === 'dreyfus-model' ? (
+                  <DreyfusModelTool />
+                ) : viewMode === 'etas' ? (
+                  <ETAsTool />
+                ) : viewMode === 'ssdl' ? (
+                  <SSDLTool />
                 ) : currentSession ? (
                   <SessionWorkspace
                     key={currentSession.id}
