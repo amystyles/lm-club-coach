@@ -85,6 +85,124 @@ export const coachPathStages: Record<number, StageDetail> = {
       },
       {
         id: 'S1-2',
+        title: 'The Frameworks Behind Club Coach',
+        subtitle: 'Understanding the system you are about to use',
+        coachRole: {
+          summary: "Guide. You're not teaching theory — you're showing a new Club Coach the tools they're about to use and why they exist.",
+          context: "This session gives new Club Coaches the philosophical foundation before they start using the system. Understanding why Club Coach works the way it does makes every subsequent session more coherent. Don't lecture — use the tools in the reference panel as you walk through each framework.",
+          principle: "When you understand the why behind a tool, you use it better.",
+        },
+        coachingSession: {
+          goals: [
+            "Coach understands that LMQ is the standard everything in Club Coach is built around",
+            "Coach can name each model and explain in one sentence why Club Coach uses it",
+            "Coach sees how the models connect as a system, not as separate frameworks",
+          ],
+          what: "Understand the research behind Club Coach — the five frameworks that explain why the system works the way it does. This is not theory for its own sake: each model maps directly to something you'll use every time you coach an instructor.",
+          why: "The world's most effective development systems — medical residencies, elite sports, military training — share a common insight: growth is non-linear and must be coached differently at every stage. Club Coach is built on that insight. Understanding the why behind each tool means you'll use it with intention, not just habit.",
+          how: [
+            "Open the LMQ Reference and establish it as the north star — the standard Club Coach is built to drive alignment with",
+            "Open the Dreyfus Model tool: walk through the five stages of skill acquisition, each requiring qualitatively different coaching",
+            "Open the ETAs tool: walk through graduated trust levels that replace pass/fail with a real picture of what an instructor can do unsupervised",
+            "Open the SSDL tool: walk through the four coaching roles that adapt to where the instructor sits on the self-direction spectrum",
+            "Connect the models as a system: Dreyfus tells you where they are, SSDL tells you how to coach them, ETAs tell you when to trust them, E-P-E is the conversation, Implementation Intentions make change stick",
+          ],
+          prompts: [
+            {
+              label: 'Dreyfus',
+              prompts: [
+                "Think of an instructor you know well. Where do you think they sit for Choreography vs Connection — are they at the same stage for both?",
+                "If someone is a Novice in one Key Element and Proficient in another — how should your coaching change between those two conversations?",
+              ],
+            },
+            {
+              label: 'ETAs',
+              prompts: [
+                "For that same instructor — what would you need to see before you'd trust them to deliver a class completely unsupervised?",
+                "Where on the Trust Map do you think most instructors in your club sit right now for 'Deliver a complete class independently'?",
+              ],
+            },
+            {
+              label: 'SSDL',
+              prompts: [
+                "How do you currently adjust the way you talk to instructors at different experience levels? What changes — and what stays the same?",
+                "Think of a time when you gave an experienced instructor detailed step-by-step instructions. How did that land?",
+              ],
+            },
+            {
+              label: 'Implementation Intentions',
+              prompts: [
+                "Think of a piece of feedback you've given an instructor that didn't stick. What if-then plan would have made it more likely to land?",
+                "What is the difference between 'work on your connection' and 'If I start the squat track, I will scan all four quadrants before the first rep'?",
+              ],
+            },
+            {
+              label: 'E-P-E',
+              prompts: [
+                "What is your instinct when you see an instructor do something wrong — to tell them, or to ask them what they noticed first?",
+                "Why does asking first change what happens next?",
+              ],
+            },
+          ],
+        },
+        sessionPlan: {
+          totalDuration: '45 min',
+          format: '1:1 with TAP Coach',
+          blocks: [
+            {
+              duration: '5 min',
+              title: 'Check-In',
+              steps: [
+                "Brief recap from Session 1 — any questions about Club Coach or the pathway",
+                "Frame the session: today is about understanding why Club Coach works the way it does before you start using it",
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'LMQ as the North Star',
+              steps: [
+                "Open the LMQ Reference together",
+                "Establish: the LMQ is the standard. Everything in Club Coach traces back to it. Your job as a Club Coach is to drive alignment between each instructor and that standard.",
+                "Ask: which of the 5 Key Elements do you feel least confident assessing right now?",
+              ],
+              tip: "Don't go deep into the LMQ here — that's Session 3. Just establish it as the foundation everything else is built on.",
+            },
+            {
+              duration: '25 min',
+              title: 'The Five Frameworks',
+              steps: [
+                "Dreyfus (5 min): Open the Dreyfus Model tool. Walk through the five stages. Ask: 'Think of an instructor you know — where are they for Choreography vs Connection? Same stage?'",
+                "ETAs (5 min): Open the ETAs tool. Walk through the trust levels and the 8 activities. Ask: 'What would you need to see before you'd trust someone to teach completely unsupervised?'",
+                "SSDL (5 min): Open the SSDL tool. Walk through the four coaching roles. Ask: 'Have you ever coached someone with the wrong approach for their stage? What happened?'",
+                "Implementation Intentions (5 min): Explain the if-then format. Open the Intention Builder. Ask: 'What's the difference between \"work on your connection\" and a specific if-then plan?'",
+                "E-P-E (5 min): Explain Elicit–Provide–Elicit. Open Conversation Templates. Ask: 'What happens when you lead with your observation instead of asking first?'",
+              ],
+              tip: "Keep each to 5 minutes. The depth comes in later sessions — this session is about the map, not the territory.",
+            },
+            {
+              duration: '5 min',
+              title: 'How They Connect',
+              steps: [
+                "Dreyfus tells you where the instructor is. SSDL tells you how to coach them. ETAs tell you when to trust them.",
+                "E-P-E is how you have the conversation. Implementation Intentions make the change stick.",
+                "LMQ is the standard all of this is in service of.",
+              ],
+            },
+            {
+              duration: '5 min',
+              title: 'Close & Commit',
+              steps: [
+                "Ask: which model stands out as most immediately useful to you — and why?",
+                "Form one implementation intention together: 'If [specific coaching moment this week], then I will [apply one model specifically].'",
+                "Confirm the next session time.",
+              ],
+            },
+          ],
+        },
+        content: [],
+      },
+      {
+        id: 'S1-3',
         title: 'Understanding the LMQ',
         subtitle: 'Learning the language of instructor development',
         coachRole: {
@@ -143,7 +261,7 @@ export const coachPathStages: Record<number, StageDetail> = {
         content: [],
       },
       {
-        id: 'S1-3',
+        id: 'S1-4',
         title: 'Your First Observation',
         subtitle: 'Seeing without judging',
         coachRole: {
@@ -204,7 +322,7 @@ export const coachPathStages: Record<number, StageDetail> = {
         content: [],
       },
       {
-        id: 'S1-4',
+        id: 'S1-5',
         title: 'Observation Debrief',
         subtitle: 'What you saw, what you missed, what it means',
         coachRole: {
