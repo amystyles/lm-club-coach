@@ -146,7 +146,7 @@ export const coachPathStages: Record<number, StageDetail> = {
           ],
         },
         sessionPlan: {
-          totalDuration: '40 min',
+          totalDuration: '45 min',
           format: '1:1 with TAP Coach',
           blocks: [
             {
