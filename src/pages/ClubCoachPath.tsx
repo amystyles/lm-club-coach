@@ -6,7 +6,7 @@ import {
   Eye, Megaphone, Check, Target,
   GraduationCap, MessageSquareQuote, NotebookPen, Shield,
   CalendarClock, Users, BookOpen, Plus,
-  ChevronRight, Brain, ShieldCheck, Layers,
+  ChevronRight, Brain, ShieldCheck, Layers, Lightbulb,
 } from 'lucide-react';
 import { coachPathStages, COACH_STAGE_META } from '@/data/coach-path-data';
 import type { Session } from '@/data/stage-sessions';
@@ -748,6 +748,83 @@ function IntentionBuilder() {
 }
 
 /* ─────────────────────────────────────────────
+   Frameworks Overview Tool
+   ───────────────────────────────────────────── */
+function FrameworksOverviewTool() {
+  const frameworks = [
+    {
+      question: "How do I know what stage an instructor is at — for each skill?",
+      model: 'Dreyfus Model',
+      answer: 'Five stages from Novice to Expert. Each stage requires qualitatively different coaching — not just more of the same.',
+    },
+    {
+      question: "When can I step back and trust them to work unsupervised?",
+      model: 'ETAs',
+      answer: 'Eight real teaching activities, each assessed on a five-level trust scale — not pass/fail.',
+    },
+    {
+      question: "How do I make sure my approach fits this person right now?",
+      model: 'SSDL',
+      answer: 'Four coaching roles that shift based on how self-directed the instructor is for each skill domain.',
+    },
+    {
+      question: "How do I have a conversation that creates change, not resistance?",
+      model: 'E-P-E',
+      answer: 'Elicit–Provide–Elicit from Motivational Interviewing. Ask first — always. Supported by 200+ meta-analyses.',
+    },
+    {
+      question: "How do I make sure feedback actually changes behaviour?",
+      model: 'Implementation Intentions',
+      answer: 'If-then plans that turn vague goals into automatic behaviour. A meta-analysis of 94 studies found a medium-to-large effect size.',
+    },
+  ];
+
+  return (
+    <div className="space-y-8">
+      <div>
+        <h3 className="text-xl font-display font-bold text-lm-dark">The Frameworks Behind Club Coach</h3>
+        <p className="text-sm text-lm-ink-muted mt-1">Why the system works the way it does.</p>
+      </div>
+
+      <div className="rounded-xl border border-lm-green/20 bg-lm-green-mid p-5">
+        <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-lm-dark mb-2">The Standard</p>
+        <p className="text-sm font-semibold text-lm-dark leading-relaxed">
+          Everything in Club Coach traces back to the LMQ — the standard that defines instructor excellence. The frameworks below are the research-backed reasons why Club Coach drives LMQ alignment the way it does.
+        </p>
+      </div>
+
+      <div>
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-2 h-2 rounded-full bg-lm-dark flex-shrink-0" />
+          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-lm-dark">Five Frameworks, Five Questions Answered</p>
+        </div>
+        <div className="space-y-3">
+          {frameworks.map((f) => (
+            <div key={f.model} className="rounded-xl border border-border bg-white p-4">
+              <p className="text-xs text-lm-ink-muted italic mb-1.5">{f.question}</p>
+              <p className="text-sm font-bold text-lm-dark mb-1">{f.model}</p>
+              <p className="text-sm text-lm-ink-mid leading-relaxed">{f.answer}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-border bg-lm-subtle p-5">
+        <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-lm-ink-muted mb-3">How They Work as a System</p>
+        <div className="space-y-2 text-sm text-lm-ink-mid leading-relaxed">
+          <p><span className="font-semibold text-lm-dark">Dreyfus</span> tells you where the instructor is for each skill.</p>
+          <p><span className="font-semibold text-lm-dark">SSDL</span> tells you how to coach them at that stage.</p>
+          <p><span className="font-semibold text-lm-dark">ETAs</span> tell you when to trust them to work unsupervised.</p>
+          <p><span className="font-semibold text-lm-dark">E-P-E</span> is how you structure every conversation.</p>
+          <p><span className="font-semibold text-lm-dark">Implementation Intentions</span> make the change stick between sessions.</p>
+          <p className="mt-2 pt-2 border-t border-lm-sunken text-lm-ink-muted">The LMQ is the standard all of this is in service of.</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
    Dreyfus Model Tool
    ───────────────────────────────────────────── */
 function DreyfusModelTool() {
@@ -1006,7 +1083,7 @@ function SSDLTool() {
 /* ─────────────────────────────────────────────
    Main Page
    ───────────────────────────────────────────── */
-type ViewMode = 'session' | 'conversation-templates' | 'observation-framework' | 'intention-builder' | 'dreyfus-model' | 'etas' | 'ssdl';
+type ViewMode = 'session' | 'conversation-templates' | 'observation-framework' | 'intention-builder' | 'frameworks-overview' | 'dreyfus-model' | 'etas' | 'ssdl';
 
 export default function ClubCoachPath(_props: { onNavigate?: (page: string) => void }) {
   const [activeStage, setActiveStage] = useState(1);
@@ -1184,6 +1261,7 @@ export default function ClubCoachPath(_props: { onNavigate?: (page: string) => v
                     { icon: MessageSquareQuote, label: 'Conversation Templates', sub: 'E-P-E scripts & question banks', tool: 'conversation-templates' as ViewMode },
                     { icon: Eye, label: 'Observation Framework', sub: 'Structured class observation template', tool: 'observation-framework' as ViewMode },
                     { icon: Target, label: 'Intention Builder', sub: 'If–then planning template', tool: 'intention-builder' as ViewMode },
+                    { icon: Lightbulb, label: 'Frameworks Overview', sub: 'Why Club Coach works the way it does', tool: 'frameworks-overview' as ViewMode },
                     { icon: Brain, label: 'Dreyfus Model', sub: 'Skill stages & coaching approach per domain', tool: 'dreyfus-model' as ViewMode },
                     { icon: ShieldCheck, label: 'ETAs', sub: 'Trust-based activities & the Teaching Trust Map', tool: 'etas' as ViewMode },
                     { icon: Layers, label: 'SSDL', sub: "Matching your coaching role to the instructor's stage", tool: 'ssdl' as ViewMode },
@@ -1222,6 +1300,8 @@ export default function ClubCoachPath(_props: { onNavigate?: (page: string) => v
                   <ObservationFramework />
                 ) : viewMode === 'intention-builder' ? (
                   <IntentionBuilder />
+                ) : viewMode === 'frameworks-overview' ? (
+                  <FrameworksOverviewTool />
                 ) : viewMode === 'dreyfus-model' ? (
                   <DreyfusModelTool />
                 ) : viewMode === 'etas' ? (
