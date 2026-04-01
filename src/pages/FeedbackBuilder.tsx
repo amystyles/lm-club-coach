@@ -282,7 +282,7 @@ function LMQContextPanel({
           ) : framework === 'grow' ? (
             <div className="space-y-2.5">
               {[
-                { l: 'G', label: 'Goal', desc: 'Where do they want to be in the LMQ?' },
+                { l: 'G', label: 'Goal', desc: 'Where do they want to be in LMQ?' },
                 { l: 'R', label: 'Reality', desc: 'Where are they right now? What does the evidence show?' },
                 { l: 'O', label: 'Options', desc: 'What could they try? What does the Masterclass show?' },
                 { l: 'W', label: 'Will', desc: 'What will they commit to — specifically, before next session?' },
@@ -535,7 +535,7 @@ export default function FeedbackBuilder() {
             <span className="text-lm-green/70 text-[10px] font-bold tracking-[0.3em] uppercase">LMQ-Driven</span>
           </div>
           <h1 className="font-display font-bold text-white text-4xl md:text-5xl leading-tight mb-2">Guided Feedback</h1>
-          <p className="text-white/40 text-sm">Start with the LMQ. Use CRC, GROW, or E-P-E to deliver it.</p>
+          <p className="text-white/40 text-sm">Start with LMQ. Use CRC, GROW, or E-P-E to deliver it.</p>
         </div>
       </div>
 
@@ -572,7 +572,7 @@ export default function FeedbackBuilder() {
                 <div className="px-5 py-3 bg-[#0d0d0d] flex items-center gap-3">
                   <div className="w-1 h-8 rounded-full bg-lm-green/80 flex-shrink-0" />
                   <div>
-                    <p className="text-white text-sm font-bold leading-tight">Set the LMQ Context</p>
+                    <p className="text-white text-sm font-bold leading-tight">Set LMQ Context</p>
                     <p className="text-white/40 text-xs mt-0.5">Choose the instructor and the Key Element this feedback is focused on.</p>
                   </div>
                 </div>

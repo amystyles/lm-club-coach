@@ -8,8 +8,8 @@ interface TrustMapProps {
 }
 
 const ETAs = [
-  'Lead a safe warm-up & cool-down',
   'Execute choreography with accuracy & timing',
+  'Can lead 2–3 tracks safely and effectively in a team taught class',
   'Coach technique corrections in real-time',
   'Adapt intensity for mixed-ability participants',
   'Build connection with every participant',

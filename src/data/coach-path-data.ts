@@ -101,7 +101,7 @@ export const coachPathStages: Record<number, StageDetail> = {
           what: "Understand the research behind Club Coach — the five frameworks that explain why the system works the way it does. This is not theory for its own sake: each model maps directly to something you'll use every time you coach an instructor.",
           why: "The world's most effective development systems — medical residencies, elite sports, military training — share a common insight: growth is non-linear and must be coached differently at every stage. Club Coach is built on that insight. Understanding the why behind each tool means you'll use it with intention, not just habit.",
           how: [
-            "Open the LMQ Reference and establish it as the north star — the standard Club Coach is built to drive alignment with",
+            "Open LMQ Reference and establish it as the north star — the standard Club Coach is built to drive alignment with",
             "Open the Dreyfus Model tool: walk through the five stages of skill acquisition, each requiring qualitatively different coaching",
             "Open the ETAs tool: walk through graduated trust levels that replace pass/fail with a real picture of what an instructor can do unsupervised",
             "Open the SSDL tool: walk through the four coaching roles that adapt to where the instructor sits on the self-direction spectrum",
@@ -161,11 +161,11 @@ export const coachPathStages: Record<number, StageDetail> = {
               duration: '5 min',
               title: 'LMQ as the North Star',
               steps: [
-                "Open the LMQ Reference together",
-                "Establish: the LMQ is the standard. Everything in Club Coach traces back to it. Your job as a Club Coach is to drive alignment between each instructor and that standard.",
+                "Open LMQ Reference together",
+                "Establish: LMQ is the standard. Everything in Club Coach traces back to it. Your job as a Club Coach is to drive alignment between each instructor and that standard.",
                 "Ask: which of the 5 Key Elements do you feel least confident assessing right now?",
               ],
-              tip: "Don't go deep into the LMQ here — that's Session 3. Just establish it as the foundation everything else is built on.",
+              tip: "Don't go deep into LMQ here — that's Session 3. Just establish it as the foundation everything else is built on.",
             },
             {
               duration: '25 min',
@@ -199,7 +199,70 @@ export const coachPathStages: Record<number, StageDetail> = {
             },
           ],
         },
-        content: [],
+        content: [
+          {
+            week: `Dreyfus Model — Where Is the Instructor?`,
+            tasks: [
+              `WHAT: The Dreyfus model maps how instructors develop any skill — from following rules to intuitive mastery. Five stages: Novice → Advanced Beginner → Competent → Proficient → Expert. The key insight: an instructor can be at different stages for different Key Elements at the same time. Someone Proficient in Choreography might be a Novice in Connection.`,
+              `THE FIVE STAGES: Novice — follows rules and checklists, needs explicit instruction. Advanced Beginner — recognises patterns, needs guided practice with explanation. Competent — plans and prioritises, ask questions and let them problem-solve. Proficient — strong intuition, sees the whole picture, prompt reflection. Expert — fully self-directed, challenge them with open-ended questions.`,
+              `HOW YOU USE IT: Every instructor profile shows their Dreyfus stage per Key Element. The italicised label next to each stage is your coaching approach: Tell (Novice), Guide (Advanced Beginner), Facilitate (Competent), Consult (Proficient), Challenge (Expert). Your approach must shift per Key Element — don't coach Choreography the same way you coach Connection if they're at different stages.`,
+              `EXAMPLE: An instructor is Competent in Technique but Novice in Coaching. For Technique, you ask "What did you notice about your squat depth cues?" (facilitate). For Coaching, you say "In the next track, I want you to deliver one Layer 2 cue per song — here's what that sounds like" (tell). Same instructor, same session, two different approaches.`,
+              `COMMON MISTAKE: Coaching someone at one stage globally. "She's a great instructor" is not a Dreyfus assessment. "She's Proficient in Choreography, Competent in Technique, and Advanced Beginner in Connection" is. The difference changes everything about how you coach her.`
+            ]
+          },
+          {
+            week: `SSDL — How Should You Coach Them?`,
+            tasks: [
+              `WHAT: Gerald Grow's Staged Self-Directed Learning model describes four coaching roles that shift based on how self-directed the instructor is. Dreyfus describes what an instructor can do. SSDL describes what they need from you.`,
+              `THE FOUR ROLES: Authority — the instructor is dependent, needs explicit direction and structure. You direct. Motivator — the instructor is interested, responds to inspiration and reasoning. You explain the "why" behind feedback. Facilitator — the instructor is involved, capable of designing solutions. You ask questions and support. Consultant — the instructor is self-directed, sets own goals. You stretch and challenge, not monitor.`,
+              `HOW YOU USE IT: When you see an instructor's Dreyfus stage, SSDL tells you which role to play. A Novice needs an Authority. A Proficient performer needs a Consultant. The mismatch is the most common coaching failure — directing a self-directed instructor feels patronising. Going hands-off with a dependent learner feels abandoning.`,
+              `EXAMPLE: You're coaching a Novice in Connection. SSDL says: Authority role. So you don't ask "What do you think you could do to connect better?" — they don't know yet. You say: "In the next track, I want you to make eye contact with three people in the back row. That's your only focus." Direct instruction, clear structure.`,
+              `THE MISMATCH PROBLEM: Think of a time you gave an experienced instructor detailed step-by-step instructions. They probably pushed back or disengaged — that's Authority mode on a Consultant-stage learner. Now think of a time you asked a new instructor "What do you think?" and got a blank stare — that's Consultant mode on a Dependent-stage learner. SSDL prevents both.`
+            ]
+          },
+          {
+            week: `ETAs & Supervision Levels — When to Trust Them`,
+            tasks: [
+              `WHAT: Supervision levels — Direct, Indirect, and Unsupervised — tell you how much oversight an instructor needs for a specific task. The ETA (Entrustable Trust Activities) framework defines the real teaching activities you assess trust against. This replaces pass/fail with a graduated picture of what an instructor can do independently.`,
+              `THE THREE LEVELS: Direct — you are present, observing, correcting, guiding in real time. For new instructors, new programs, new tasks. Indirect — you check in regularly but aren't in the room. Periodic observations, scheduled conversations. For competent instructors who benefit from structured check-ins. Unsupervised — you trust their judgement. Your role shifts to stretching and challenging. For experienced instructors who are self-directed for this specific task.`,
+              `HOW YOU USE IT: The Trust Map on each instructor profile shows supervision levels per competency area. Supervision is task-specific, not person-specific. An experienced instructor teaching a brand new program goes back to Direct for that program — even if they're Unsupervised for everything else.`,
+              `EXAMPLE: An instructor has been teaching BODYPUMP for two years (Unsupervised). They just trained in BODYCOMBAT (Direct). You don't treat them like a beginner across the board — you trust their class delivery in BODYPUMP while providing hands-on support for BODYCOMBAT. Same person, different trust levels per task.`,
+              `KEY PRINCIPLE: Most coaches default to one mode — either hovering over everyone or leaving everyone alone. Without supervision levels, you either over-supervise (creating dependency in experienced instructors) or under-supervise (leaving developing instructors without support). The Trust Map removes the guesswork.`
+            ]
+          },
+          {
+            week: `E-P-E — How to Have the Conversation`,
+            tasks: [
+              `WHAT: E-P-E is Elicit–Provide–Elicit, a three-step conversational method from Motivational Interviewing (Miller & Rollnick). Elicit: ask what the instructor noticed. Provide: share your specific observation. Elicit: ask what they want to try next. Supported by 200+ meta-analyses across health, sport, and education.`,
+              `WHY IT WORKS: Asking first activates the instructor's own insight, making change far more likely than if you'd just told them what to fix. Leading with your observation triggers the "righting reflex" — the instinct to defend rather than reflect. When you ask first, they own the insight. When you tell first, they resist it.`,
+              `HOW YOU USE IT: After every class observation, every feedback conversation, every check-in. "What did you feel? Here's what I saw. What do you want to work on?" It works in 90 seconds or 30 minutes — the structure scales.`,
+              `EXAMPLE: You observed an instructor whose Layer 2 cues dropped off in the peak tracks. DON'T say: "Your cueing dropped off in tracks 5–7." DO say: "How did the peak section feel to you?" (Elicit). They say "I think I lost focus." You say: "I noticed your Layer 2 cues were strong in tracks 1–4 but went quiet in 5–7" (Provide). Then: "What would you want to experiment with next class?" (Elicit).`,
+              `THE RULE: Ask first — always. Even when you know exactly what the problem is. Even when it's obvious. Especially when it's obvious. The coach who asks first gets further than the coach who tells first.`
+            ]
+          },
+          {
+            week: `Implementation Intentions — Making Change Stick`,
+            tasks: [
+              `WHAT: An implementation intention is a specific if–then plan: "If [specific class moment], then I will [specific behaviour]." A meta-analysis of 94 studies found an effect size of d = 0.65 — goals with if–then plans are completed approximately 3× more often than goals without them.`,
+              `WHY IT WORKS: Vague intentions don't change behaviour. "I'll work on my cueing" doesn't change anything. "If I start the squat track, then I will use the 3-2-1 countdown while making eye contact with the back row" does. The "if" creates a mental link to a specific trigger in class, making the behaviour semi-automatic.`,
+              `HOW YOU USE IT: End every feedback conversation — whether CRC or GROW — with one implementation intention. Coach the instructor to build it themselves: "What moment in class will you use as your trigger?" Follow up next session: "How did your if–then plan go?"`,
+              `EXAMPLE: After an E-P-E conversation about Connection, the instructor wants to work on acknowledging participants. DON'T leave it at: "Work on your connection." DO build: "If I finish the warm-up track, then I will call three people by name before the next track starts." One trigger, one action, one specific moment.`,
+              `THIS IS THE SINGLE HIGHEST-IMPACT COACHING HABIT YOU CAN BUILD. E-P-E is the conversation. Implementation Intentions make the change stick between sessions. Without them, feedback evaporates by the next class.`
+            ]
+          },
+          {
+            week: `How the Frameworks Connect — The System`,
+            tasks: [
+              `These five frameworks are not separate tools you pick from a menu. They form a connected system that guides every coaching interaction:`,
+              `DREYFUS tells you WHERE the instructor is — per Key Element, not globally. It answers: what stage of development are they at for this specific skill?`,
+              `SSDL tells you HOW to coach them — which role to play for their level of self-direction. It answers: what does this person need from me right now?`,
+              `ETAs tell you WHEN to trust them — how much oversight to provide for each task. It answers: can I step back, or do I need to be present?`,
+              `E-P-E is how you HAVE THE CONVERSATION — elicit first, provide your observation, elicit what they want to try. It answers: how do I give feedback that lands?`,
+              `IMPLEMENTATION INTENTIONS make the CHANGE STICK — every conversation ends with one specific if–then plan. It answers: how do I make sure this feedback actually changes behaviour?`,
+              `IN PRACTICE: You check the instructor's profile (Dreyfus stage per KE, Supervision level), choose your coaching role (SSDL), observe the class (Observation Framework), have the conversation (E-P-E within CRC or GROW), and close with one if–then plan (Implementation Intention). LMQ is the standard at every step — every Grade progression, every Level achieved, is the result of this system working.`
+            ]
+          }
+        ],
       },
       {
         id: 'S1-3',
@@ -207,8 +270,8 @@ export const coachPathStages: Record<number, StageDetail> = {
         subtitle: 'Learning the language of instructor development',
         coachRole: {
           summary: "Student of the framework. Study it before you use it.",
-          context: "The LMQ is the shared language you'll use with every instructor you coach. You need to understand it deeply — not just the labels, but what each Key Element actually looks like in a live class, at each grade level.",
-          principle: "The LMQ isn't a scorecard — it's a language for describing growth.",
+          context: "LMQ is the shared language you'll use with every instructor you coach. You need to understand it deeply — not just the labels, but what each Key Element actually looks like in a live class, at each grade level.",
+          principle: "LMQ isn't a scorecard — it's a language for describing growth.",
         },
         coachingSession: {
           goals: [
@@ -216,14 +279,14 @@ export const coachPathStages: Record<number, StageDetail> = {
             "Coach understands that LMQ levels are per-program",
             "Coach can distinguish Grade 1 from Grade 2 from Grade 3 in at least one program",
           ],
-          what: "Learn the LMQ framework — what it measures, how levels work, what the 5 Key Elements actually look like in a live class. Each program has unique skills and criteria per element. A Grade 2 in Choreography looks different in BODYPUMP vs BODYCOMBAT.",
-          why: "You cannot coach what you cannot see, and you cannot see what you haven't defined. The LMQ gives you a shared vocabulary to have precise conversations about instructor growth. Without it, feedback stays vague and progress stays accidental.",
+          what: "Learn LMQ framework — what it measures, how levels work, what the 5 Key Elements actually look like in a live class. Each program has unique skills and criteria per element. A Grade 2 in Choreography looks different in BODYPUMP vs BODYCOMBAT.",
+          why: "You cannot coach what you cannot see, and you cannot see what you haven't defined. LMQ gives you a shared vocabulary to have precise conversations about instructor growth. Without it, feedback stays vague and progress stays accidental.",
           how: [
-            "Study the LMQ Reference — all 5 Key Elements and their grade descriptors",
+            "Study LMQ Reference — all 5 Key Elements and their grade descriptors",
             "Pick one program you know well and read its criteria for each element at each grade",
             "Ask your TAP Coach to describe a real example of Grade 1 vs Grade 3 Choreography in that program",
             "Identify which Key Element you find hardest to distinguish by grade — this is where to focus",
-            "Summarise the LMQ in your own words: what does it measure, and why does it matter?",
+            "Summarise LMQ in your own words: what does it measure, and why does it matter?",
           ],
         },
         sessionPlan: {
@@ -241,7 +304,7 @@ export const coachPathStages: Record<number, StageDetail> = {
               duration: '15 min',
               title: 'LMQ Deep Dive',
               steps: [
-                "Walk through the 5 Key Elements together with the LMQ Reference open",
+                "Walk through the 5 Key Elements together with LMQ Reference open",
                 "For each element, ask: what does Grade 1 look like in a class you know?",
                 "Identify one element where the grade differences feel genuinely clear to you",
               ],
@@ -252,7 +315,7 @@ export const coachPathStages: Record<number, StageDetail> = {
               title: 'Apply It',
               steps: [
                 "TAP Coach describes two real instructors they've worked with — different levels",
-                "You try to place each one on the LMQ using what you've just learned",
+                "You try to place each one on LMQ using what you've just learned",
                 "TAP Coach gives feedback on your reasoning",
               ],
             },
@@ -744,7 +807,7 @@ export const coachPathStages: Record<number, StageDetail> = {
     sessions: [
       {
         id: 'S3-1',
-        title: 'The Grow Model — Coaching Roles',
+        title: 'SSDL — Matching Your Coaching Role',
         subtitle: "Four roles, four situations",
         coachRole: {
           summary: "Adapter-in-training. Start identifying which role you default to.",
@@ -753,15 +816,15 @@ export const coachPathStages: Record<number, StageDetail> = {
         },
         coachingSession: {
           goals: [
-            "Coach can identify which Grow stage an instructor is at",
+            "Coach can identify which SSDL stage an instructor is at",
             "Coach understands the 4 roles: Authority → Motivator → Facilitator → Consultant",
             "Coach recognises the 'mismatch problem' and its consequences",
           ],
           what: "Learn Gerald Grow's Staged Self-Directed Learning model. Every instructor sits at a different stage of self-direction, and the coach's role must match. Telling an experienced instructor what to do is as harmful as leaving a new instructor to figure it out alone.",
-          why: "Mismatched coaching style is the most common cause of instructor frustration. Too much direction for a competent instructor creates resentment. Too much autonomy for a new instructor creates anxiety. The Grow model gives you a diagnostic tool to read where an instructor is and choose your role accordingly.",
+          why: "Mismatched coaching style is the most common cause of instructor frustration. Too much direction for a competent instructor creates resentment. Too much autonomy for a new instructor creates anxiety. SSDL gives you a diagnostic tool to read where an instructor is and choose your role accordingly.",
           how: [
-            "Read the Grow model overview and the 4 coaching roles",
-            "Map each instructor on your team to a Grow stage — use their LMQ profile and your observation notes",
+            "Read the SSDL overview and the 4 coaching roles",
+            "Map each instructor on your team to a SSDL stage — use their LMQ profile and your observation notes",
             "For your most experienced instructor: what role do they need from you vs what role do you naturally give them?",
             "For your newest instructor: same question",
             "Identify your default coaching role — and where it serves you well and where it doesn't",
@@ -781,7 +844,7 @@ export const coachPathStages: Record<number, StageDetail> = {
             },
             {
               duration: '10 min',
-              title: 'The Grow Model',
+              title: 'SSDL',
               steps: [
                 "TAP Coach walks through the 4 coaching roles: Authority → Motivator → Facilitator → Consultant",
                 "For each role, discuss: when does this serve an instructor well, and when does it frustrate them?",
@@ -794,7 +857,7 @@ export const coachPathStages: Record<number, StageDetail> = {
               title: 'Map Your Team',
               steps: [
                 "Pick two instructors: your most experienced and your newest",
-                "For each, identify their Grow stage using their LMQ profile and your observation notes",
+                "For each, identify their SSDL stage using their LMQ profile and your observation notes",
                 "Name the role each one needs from you — and compare it to the role you've been giving",
               ],
             },
@@ -842,7 +905,7 @@ export const coachPathStages: Record<number, StageDetail> = {
           blocks: [
             {
               duration: '5 min',
-              title: 'Grow Model Check-in',
+              title: 'SSDL Check-in',
               steps: [
                 "What did you notice when you tried shifting your coaching role?",
                 "Did any instructor respond differently than you expected?",
@@ -1137,7 +1200,7 @@ export const coachPathStages: Record<number, StageDetail> = {
               title: 'Stage 3 Reflection',
               steps: [
                 "What's the biggest shift in how you coach since Stage 3?",
-                "Which of the tools — Grow, Dreyfus, supervision levels, if-then plans — has had the most impact?",
+                "Which of the tools — SSDL, Dreyfus, supervision levels, if-then plans — has had the most impact?",
               ],
             },
             {
@@ -1410,7 +1473,7 @@ export const coachPathStages: Record<number, StageDetail> = {
             "Coach identifies one instructor who could become a peer coach",
             "Coach creates a development plan for that person using Club Coach principles",
           ],
-          what: "The shift from coaching instructors to coaching coaches. Use everything you've learned — E-P-E, SDT, Grow's model — but now applied to emerging coaches in your club. Your job is to make yourself replaceable.",
+          what: "The shift from coaching instructors to coaching coaches. Use everything you've learned — E-P-E, SDT, SSDL — but now applied to emerging coaches in your club. Your job is to make yourself replaceable.",
           why: "The ceiling of a single coach's impact is the number of instructors they can personally coach. A coach who develops other coaches multiplies their impact exponentially. This is how club cultures shift — not through one great coach, but through many coaches who share a common language and approach.",
           how: [
             "Review your instructor team: who shows natural curiosity about others, who gives unsolicited but constructive feedback?",
@@ -1483,7 +1546,7 @@ export const coachPathStages: Record<number, StageDetail> = {
           what: "Apply the Entrustable Teaching Activities framework to your team. Map each instructor's trust levels across the ETAs. Make real decisions: who can teach unsupervised? Who needs you present? Who is ready to mentor others?",
           why: "The ETA framework turns observation into action. Most coaches observe but don't decide — they wait for someone else to make the call about readiness. At Stage 5, you make those calls. You're responsible for the development and safety of the instructors in your club. Entrustment decisions make that responsibility explicit.",
           how: [
-            "Review the 8 ETAs from the LMQ Reference",
+            "Review the 8 ETAs from LMQ Reference",
             "For each instructor, assign an entrustment level (1–5) for each ETA based on your observations",
             "Identify the most significant trust gap on your team — who is most ready to move forward?",
             "Make one entrustment decision and communicate it: 'You're ready to teach this class unsupervised'",

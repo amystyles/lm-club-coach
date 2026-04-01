@@ -550,7 +550,7 @@ export const stageDetails: Record<number, StageDetail> = {
         subtitle: 'Week 3\u20134',
         coachRole: {
           summary: 'Watch the instructor\'s self-filmed track delivery and coach them on strengths and areas to develop before IT.',
-          context: 'Self-review is a core skill in the LMQ framework. The instructor needs to be able to critically assess their own teaching. This session models how coaching and feedback work.',
+          context: 'Self-review is a core skill in LMQ framework. The instructor needs to be able to critically assess their own teaching. This session models how coaching and feedback work.',
           principle: 'Self-review builds the self-awareness that separates good instructors from great ones.',
         },
         keyElementFocus: {
@@ -563,7 +563,7 @@ export const stageDetails: Record<number, StageDetail> = {
         },
         coachingSession: {
           what: 'Watch the instructor\'s self-filmed track delivery and coach them on strengths and areas to develop before IT.',
-          why: 'Self-review is a core skill in the LMQ framework. The instructor needs to be able to critically assess their own teaching. This session models how coaching and feedback work. LMQ alignment \u2014 practicing the blend of Choreography, Technique, and Coaching.',
+          why: 'Self-review is a core skill in LMQ framework. The instructor needs to be able to critically assess their own teaching. This session models how coaching and feedback work. LMQ alignment \u2014 practicing the blend of Choreography, Technique, and Coaching.',
           how: [
             'Ask the instructor to film themselves teaching their allocated track and share it before this session.',
             'Review the video using the 3 Key Element lens: Choreography (timing, beat, order, reps), Technique (Setup demonstration), Coaching (Compulsory Cues, Layer 1 clarity).',
@@ -712,7 +712,7 @@ export const stageDetails: Record<number, StageDetail> = {
         items: [
           {
             title: 'Choreography Notes Breakdown',
-            description: 'Read through the Release Notes for your allocated track and break them down in your own words. Understanding transitions, tempo changes, and track focus is the foundation of clean delivery — you cannot teach what you do not understand.',
+            description: 'The instructor reads through the Release Notes for their allocated track and breaks them down in their own words. Your role: check their breakdown — do they understand the transitions, tempo changes, and track focus, or are they just restating the notes?',
             duration: '15 min',
             steps: [
               'Get your Release Notes for the allocated track',
@@ -724,7 +724,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'Learning Check',
-            description: 'Quiz yourself on the choreography without looking at the notes. Testing from memory reveals the gaps that reading over notes hides — if you cannot recall it, you cannot deliver it under pressure.',
+            description: 'The instructor quizzes themselves on the choreography from memory. Your role: ask them to recite key sequences or cues without notes — what they can\'t recall, they can\'t deliver under pressure.',
             duration: '15 min',
             steps: [
               'Close the Choreography Notes',
@@ -736,7 +736,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'Allocated Track Preparation',
-            description: 'Practice your allocated track alongside the Masterclass video until the timing is automatic. The goal is to match the music so precisely that you could perform it with your eyes closed — true automaticity frees your attention for coaching.',
+            description: 'The instructor practices their allocated track with the Masterclass video until timing is automatic. Your role: check timing is automatic, not just familiar — they should lead the music, not follow it.',
             duration: '30 min',
             video: { label: 'Watch Masterclass', program: 'allocated-track' },
             steps: [
@@ -749,7 +749,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'Self-Film & Review',
-            description: 'Film yourself teaching the track and watch it back with fresh eyes. Self-review exposes issues that feel invisible when you are inside the movement — timing drift, hesitations, and transitions that felt smooth but look choppy.',
+            description: 'The instructor films themselves teaching the track and watches it back. Your role: review together using E-P-E — ask what they see before sharing your observations. Look for timing drift, hesitations, and transitions that felt smooth but look choppy.',
             duration: '30 min',
             steps: [
               'Set up your phone to record your full body while teaching',
@@ -761,7 +761,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'Masterclass Video — Voices Off',
-            description: 'Practice with the Masterclass video but mute the presenter, using only the music as your guide. If you need the voice to stay on track, you are following — not leading. Music-only practice reveals whether the choreography is truly automatic.',
+            description: 'The instructor practices with the Masterclass video, presenter muted, using only the music as their guide. Your role: if they need the voice to stay on track, they\'re following — not leading. Use this to test real automaticity.',
             duration: '30 min',
             video: { label: 'Watch Masterclass', program: 'allocated-track' },
             steps: [
@@ -780,7 +780,7 @@ export const stageDetails: Record<number, StageDetail> = {
         items: [
           {
             title: 'Technique Practice Worksheets',
-            description: 'Write out the Position Setup and Execution Setup for each exercise using the N.E.T.T. framework. Writing forces precision — you cannot hide vague technique knowledge behind physical habit when you have to put it into words.',
+            description: 'The instructor writes out the Position Setup and Execution Setup for each exercise using the N.E.T.T. framework. Your role: review their written descriptions — vague language reveals knowledge gaps that physical habit can hide.',
             duration: '20 min',
             steps: [
               'List every exercise in your allocated track',
@@ -792,7 +792,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'Self-Film & Compare',
-            description: 'Film yourself performing key exercises and compare them side-by-side with the Masterclass video. Seeing the gap between your execution and the standard is more instructive than any description — it makes the correction concrete.',
+            description: 'The instructor films themselves performing key exercises and compares them to the Masterclass video. Your role: review the comparison together — seeing the gap makes corrections concrete in a way description alone cannot.',
             duration: '30 min',
             video: { label: 'Watch Masterclass', program: 'allocated-track' },
             steps: [
@@ -805,7 +805,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'Self-Film & Compare (Technique Focus)',
-            description: 'Same as Self-Film & Compare, but targeting specifically the exercises you scored lowest on in your last assessment. Focused repetition on weak points accelerates improvement faster than general practice.',
+            description: 'The instructor films the exercises they scored lowest on in their last assessment. Your role: focus the review on those specific gaps — targeted repetition accelerates improvement more than general practice.',
             duration: '30 min',
             video: { label: 'Watch Masterclass', program: 'allocated-track' },
             steps: [
@@ -824,7 +824,7 @@ export const stageDetails: Record<number, StageDetail> = {
         items: [
           {
             title: 'Coaching & Scripting Worksheets',
-            description: 'Script out your Layer 1, Layer 2, and Layer 3 cues for each exercise word-for-word, then practice saying them aloud. Writing the cues first builds precision — you cannot accidentally ad-lib your way through safety cues in a real class.',
+            description: 'The instructor scripts their Layer 1, Layer 2, and Layer 3 cues for each exercise word-for-word and practices them aloud. Your role: check for precision — ad-libbed safety cues are a red flag. All Layer 1 cues should be specific and consistent.',
             duration: '30 min',
             steps: [
               'List every exercise in your allocated track',
@@ -836,7 +836,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'Compulsory Cues Identification',
-            description: 'Go through your Choreography Notes and highlight every compulsory cue, then label each by coaching layer. Knowing which cues are non-negotiable — and why — means you deliver them even under pressure.',
+            description: 'The instructor highlights every compulsory cue in their Choreography Notes and labels each by coaching layer. Your role: verify they know which cues are non-negotiable — and why. The "why" matters as much as the "what".',
             duration: '15 min',
             steps: [
               'Open your Choreography Notes and highlight all compulsory cues',
@@ -848,7 +848,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'Scripting Worksheet',
-            description: 'Write out all three coaching layers for every exercise in your allocated track, aiming for specific minimums. Volume and variety in your scripted cues means you always have something real to say — and the best cues become habit.',
+            description: 'The instructor writes all three coaching layers for every exercise in their allocated track. Your role: review for volume and variety — insufficient cues in scripting means silence in class.',
             duration: '30 min',
             steps: [
               'List all exercises in your allocated track',
@@ -866,7 +866,7 @@ export const stageDetails: Record<number, StageDetail> = {
         items: [
           {
             title: 'Connection Tools Reflection',
-            description: 'Review the full Connection Tools list and honestly assess which feel natural and which feel forced. Knowing your starting point lets you build on strengths and target the specific tools that will make the most difference in your next class.',
+            description: 'The instructor reviews the Connection Tools list and assesses which feel natural and which feel forced. Your role: help them identify 2–3 tools to commit to for their next class — build on strengths, target what\'s missing.',
             duration: '15 min',
             steps: [
               'Review the Connection Tools list (Look, See & Respond; CRC; SMARTSTART; Names; Four Quadrants)',
@@ -878,7 +878,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'Facing Fear Tools',
-            description: 'Work through the Empowering Belief and Grounding Technique exercises to identify and reframe your biggest fear about teaching. Fear is normal — the difference is whether it controls you or you control it.',
+            description: 'The instructor works through the Empowering Belief and Grounding Technique exercises to reframe their biggest fear. Your role: create space for this — fear is normal, but coaching them through the reframe is what makes it useful.',
             duration: '20 min',
             steps: [
               'Write out the biggest fear you have about teaching (be honest)',
@@ -890,7 +890,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'C.R.C. Practice (Connect, Recommend, Commend)',
-            description: 'Practice the CRC conversation method with a partner or in front of a mirror, timing yourself to deliver it in under 60 seconds. Speed and specificity are the marks of a genuine CRC — practiced delivery makes it feel natural in class.',
+            description: 'The instructor practices the CRC method with a partner or mirror, timing themselves to deliver it in under 60 seconds. Your role: observe and give feedback — a genuine CRC is specific and under 60 seconds. Generic praise doesn\'t count.',
             duration: '15 min',
             steps: [
               'Choose a partner or use a mirror',
@@ -902,7 +902,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'Four Quadrants',
-            description: 'In your next class, mentally divide the room into four sections and ensure you reach every quadrant with coaching and eye contact. The Four Quadrants habit ensures no participant feels invisible — and removes the natural tendency to coach only the front row.',
+            description: 'Set the challenge: the instructor mentally divides the room into four sections in their next class, reaching every quadrant with coaching and eye contact. Your role: follow up — which quadrant did they neglect? What got in the way?',
             duration: '10 min',
             steps: [
               'Mentally divide the room into 4 sections: front-left, front-right, back-left, back-right',
@@ -914,7 +914,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'C.R.C. In-Class Practice',
-            description: 'During your next class, deliver at least one genuine CRC moment — connect with someone, recommend something specific, commend their effort. The only way to build this habit is to practise it in the real environment where it matters.',
+            description: 'Set the challenge: the instructor delivers at least one genuine CRC moment in their next class. Your role: follow up on what happened — was it specific? Did it happen during the class, or just at the end?',
             duration: '5 min',
             steps: [
               'Before class, choose one participant to deliver a CRC moment to',
@@ -926,7 +926,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'SMARTSTART Practice',
-            description: 'Write and rehearse your class introduction using the SMARTSTART framework, then film it and review. A well-delivered SMARTSTART sets the tone for the whole class — it signals professionalism and reduces anxiety for new participants.',
+            description: 'The instructor writes, rehearses, and films their class introduction using the SMARTSTART framework. Your role: review the film with them — does it feel welcoming? Does it reduce anxiety for beginners, or add to it?',
             duration: '10 min',
             steps: [
               'Write out your SMARTSTART introduction (30–45 seconds)',
@@ -938,7 +938,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'Name Game',
-            description: 'Before your next class, commit to learning three new participant names and using them during the workout. Using someone\'s name in the moment of effort is one of the most powerful connection tools available — it costs nothing and means everything.',
+            description: 'Set the challenge: the instructor learns three new participant names before their next class and uses them during the workout. Your role: follow up — using names in the moment of effort is one of the most powerful Connection tools.',
             duration: '5 min',
             steps: [
               'Arrive 5 minutes early and introduce yourself to participants you don\'t know',
@@ -956,7 +956,7 @@ export const stageDetails: Record<number, StageDetail> = {
         items: [
           {
             title: 'Program Essence Study',
-            description: 'Watch 2–3 Masterclass videos and study how each presenter embodies the Program Essence. Understanding what authentic performance looks like — versus what feels performed — gives you a concrete target to aim for.',
+            description: 'The instructor watches 2–3 Masterclass videos and studies how each presenter embodies the Program Essence. Your role: discuss what they noticed — authentic performance versus what feels performed. Help them name a concrete target.',
             duration: '20 min',
             video: { label: 'Watch Masterclass', program: 'release' },
             steps: [
@@ -969,7 +969,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'Energy Mapping',
-            description: 'Listen to your release music and map the energy arc across the full class: peaks, troughs, builds, and plateaus. Planning where your vocal and physical energy should rise and fall ensures your performance serves the music — not fights it.',
+            description: 'The instructor maps the energy arc of their release music: peaks, troughs, builds, and plateaus. Your role: review their map together — does their planned energy serve the music, or fight it?',
             duration: '20 min',
             steps: [
               'Listen to your full release music without moving',
@@ -981,7 +981,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: '5 Voices Practice',
-            description: 'Practice using all 5 Voices across a single track, then record yourself and listen back. Most instructors default to one or two Voices — deliberate practice across all five is what builds genuine variety and emotional range.',
+            description: 'The instructor practices using all 5 Voices across a single track, then records and listens back. Your role: listen with them — most instructors default to one or two Voices. Identify which Voice feels least natural and make it the practice target.',
             duration: '15 min',
             steps: [
               'Review the 5 Voices: Command, Motivate, Instruct, Encourage, Connect',
@@ -1765,7 +1765,7 @@ export const stageDetails: Record<number, StageDetail> = {
         items: [
           {
             title: 'Full-Release Preparation',
-            description: 'Listen to every track in the release and identify the feel, focus, music changes, and transitions for each one. You can only teach what you deeply understand — and Certification assesses all tracks, not just your allocated one.',
+            description: 'The instructor listens to every track in the release and identifies the feel, focus, music changes, and transitions for each. Your role: test their understanding — Certification assesses all tracks, not just their allocated one.',
             duration: '30 min',
             steps: [
               'Listen to the full release from start to finish with the notes open',
@@ -1777,7 +1777,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'Self-Review Using the 5 KE Checklist',
-            description: 'Film yourself teaching your strongest track and evaluate it against all 5 Key Elements. Self-review builds the self-coaching muscle you\'ll need on timetable — and it reveals the gaps that feel invisible from the inside.',
+            description: 'The instructor films their strongest track and evaluates it against all 5 Key Elements. Your role: review together — what gaps do they spot themselves before you point them out? Self-coaching is the skill they\'ll need on timetable.',
             duration: '30 min',
             steps: [
               'Set up your phone to record your full body while teaching',
@@ -1790,7 +1790,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'Voices-Off Masterclass Practice',
-            description: 'Practice with the Masterclass video but mute the presenter, using only the music as your guide. If you need the voice to stay on track, you are following — not leading. Music-only practice reveals whether the choreography is truly automatic.',
+            description: 'The instructor practices with the Masterclass video, presenter muted, using only the music as their guide. Your role: if they need the voice to stay on track, choreography isn\'t truly automatic. This is the test.',
             duration: '30 min',
             steps: [
               'Open the Masterclass video for your allocated track',
@@ -1802,7 +1802,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'Week-by-Week Choreography Focus',
-            description: 'Use this phased approach across the 30 days. Each week builds on the last — prepare, blend, refine, then film.',
+            description: 'Guide the instructor through this phased 30-day approach. Each week builds on the last — prepare, blend, refine, then film. Your role: check in weekly to track progress against the plan.',
             duration: 'Ongoing',
             steps: [
               'Week 1 (Foundation): Prepare and script 3 tracks — allocated track plus 2 others. Practice Say and Do (speaking while moving). Team-teach if possible.',
@@ -1819,7 +1819,7 @@ export const stageDetails: Record<number, StageDetail> = {
         items: [
           {
             title: 'Position Setup & Execution Setup',
-            description: 'Write out the full Position Setup and Execution Setup for every key exercise in your allocated track. Writing forces precision — you can\'t hide vague technique knowledge behind physical habit when you have to put it into words.',
+            description: 'The instructor writes out the full Position Setup and Execution Setup for every key exercise in their allocated track. Your role: review their descriptions — vague language reveals knowledge gaps that physical habit can hide.',
             duration: '20 min',
             steps: [
               'List every exercise in your allocated track',
@@ -1832,7 +1832,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'Alignment & Stability Check',
-            description: 'Film yourself performing the key exercises in your allocated track and review for alignment and stability. What feels right often looks different — the camera tells the truth.',
+            description: 'The instructor films themselves performing the key exercises and reviews for alignment and stability. Your role: watch together — what feels right often looks different. The camera tells the truth.',
             duration: '20 min',
             steps: [
               'Set up your camera from the side and front — you need both angles',
@@ -1844,7 +1844,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'Technique Worksheets',
-            description: 'Complete the program-specific Technique Worksheets before your certification film day. These worksheets define the LMQ standard — knowing them means you can both demonstrate and coach technique correctly.',
+            description: 'The instructor completes the program-specific Technique Worksheets before their certification film day. Your role: review their answers — these worksheets define LMQ standard for demonstration and coaching technique.',
             duration: '30 min',
             steps: [
               'Download or access the program Technique Worksheets from the Certification Toolbox',
@@ -1862,7 +1862,7 @@ export const stageDetails: Record<number, StageDetail> = {
         items: [
           {
             title: 'Review & Refine Your Coaching Scripts',
-            description: 'Write out your coaching script for your allocated track and ensure all 3 layers are present. A written script forces you to commit to specific language — it\'s much harder to avoid Layer 2 and 3 cues when you\'ve written them down.',
+            description: 'The instructor writes out their full coaching script for their allocated track, ensuring all 3 layers are present. Your role: review the script — a written cue is a committed cue. Missing Layer 2 and 3 cues on paper means missing them in class.',
             duration: '20 min',
             steps: [
               'Write your coaching script for your allocated track — every cue you plan to deliver',
@@ -1875,7 +1875,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'Cue Delivery Practice — Timing & Purpose',
-            description: 'Practice delivering your coaching cues while performing the movements, to the music. Every cue in Certification needs to land at the right moment — too early, too late, or too generic won\'t score.',
+            description: 'The instructor practices delivering coaching cues while performing the movements, to the music. Your role: listen for timing and purpose — every cue needs to land just before the movement. Too early, too late, or too generic won\'t score at Certification.',
             duration: '20 min',
             steps: [
               'Put on the track and practice teaching with your full coaching script',
@@ -1887,7 +1887,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'Say and Do Practice',
-            description: 'Practice speaking while moving — delivering cues while executing the choreography simultaneously. This is one of the hardest skills in group fitness, and the most important. Certification assesses whether your coaching happens alongside the movement, not after it.',
+            description: 'The instructor practices speaking while moving — delivering cues while executing choreography simultaneously. Your role: listen for silence. When they go quiet, that\'s where coaching is failing. Certification assesses coaching alongside movement, not after it.',
             duration: '20 min',
             steps: [
               'Start with your easiest, most automatic track',
@@ -1918,7 +1918,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'Analyse Masterclass Footage for Connection',
-            description: 'Watch the Masterclass with Connection as your sole focus. Count every moment the presenter makes a genuine connection with the room — name use, eye contact, Look-See-Respond, "we/us" language. You can\'t copy what you haven\'t noticed.',
+            description: 'The instructor watches the Masterclass with Connection as their sole focus, counting every genuine connection moment. Your role: discuss what they noticed — you can\'t coach what you haven\'t seen, and they can\'t copy what they haven\'t noticed.',
             duration: '20 min',
             steps: [
               'Open the Masterclass video for your program',
@@ -1930,7 +1930,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'Identify Connection Barriers & Strategies',
-            description: 'Most new instructors know they should connect — but don\'t do it consistently under pressure. Naming the barriers before filming day means you have a plan when they show up.',
+            description: 'The instructor names their Connection barriers and writes a strategy for each. Your role: help them be specific — "I get nervous" is not a barrier. "I forget names when choreography gets hard" is a barrier you can plan around.',
             duration: '15 min',
             steps: [
               'Write down your biggest Connection barrier: What stops you from connecting in the moment? (Choreography? Nerves? Forgetting names?)',
@@ -1961,7 +1961,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'Masterclass Footage Study — Music, Voice & Actions',
-            description: 'Watch the Masterclass with a Performance lens. The presenter\'s use of music, voice, and physical commitment is the benchmark. Studying it gives you a concrete target — not a style to copy, but a standard to reach.',
+            description: 'The instructor watches the Masterclass with a Performance lens, studying music, voice, and physical commitment. Your role: discuss the benchmark together — the goal is their version of the standard, not a copy of the presenter.',
             duration: '20 min',
             steps: [
               'Open the Masterclass for your program',
@@ -1973,7 +1973,7 @@ export const stageDetails: Record<number, StageDetail> = {
           },
           {
             title: 'Select & Apply 3 Performance Tools',
-            description: 'Choose 3 specific Performance tools from your post-work learning and commit to using them in your next 3 practice sessions. Selecting in advance means you\'ll use them — leaving it to chance in the moment means you won\'t.',
+            description: 'The instructor selects 3 specific Performance tools from their post-work learning and commits to using them in their next 3 practice sessions. Your role: hold them to it — selecting in advance means they\'ll use them. Leaving it to chance means they won\'t.',
             duration: '15 min',
             steps: [
               'Review your post-work notes and select 3 Performance tools to apply',

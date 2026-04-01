@@ -789,7 +789,7 @@ function FrameworksOverviewTool() {
       <div className="rounded-xl border border-lm-green/20 bg-lm-green-mid p-5">
         <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-lm-dark mb-2">The Standard</p>
         <p className="text-sm font-semibold text-lm-dark leading-relaxed">
-          The LMQ defines what instructor excellence looks like. Club Coach exists to help coaches develop that excellence in their instructors — and these frameworks are the research-backed tools that make that coaching effective.
+          LMQ defines what instructor excellence looks like. Club Coach exists to help coaches develop that excellence in their instructors — and these frameworks are the research-backed tools that make that coaching effective.
         </p>
       </div>
 
@@ -817,7 +817,7 @@ function FrameworksOverviewTool() {
           <p><span className="font-semibold text-lm-dark">ETAs</span> tell you when to trust them to work unsupervised.</p>
           <p><span className="font-semibold text-lm-dark">E-P-E</span> is how you structure every conversation.</p>
           <p><span className="font-semibold text-lm-dark">Implementation Intentions</span> make the change stick between sessions.</p>
-          <p className="mt-2 pt-2 border-t border-lm-sunken text-lm-ink-muted">The LMQ is the standard all of this is in service of.</p>
+          <p className="mt-2 pt-2 border-t border-lm-sunken text-lm-ink-muted">LMQ is the standard all of this is in service of.</p>
         </div>
       </div>
     </div>
@@ -926,8 +926,8 @@ function ETAsTool() {
   ];
 
   const etas = [
-    'Lead a safe warm-up & cool-down',
     'Execute choreography with accuracy & timing',
+    'Can lead 2–3 tracks safely and effectively in a team taught class',
     'Coach technique corrections in real-time',
     'Adapt intensity for mixed-ability participants',
     'Build connection with every participant',
@@ -1258,13 +1258,13 @@ export default function ClubCoachPath(_props: { onNavigate?: (page: string) => v
                 </div>
                 <div className="space-y-1">
                   {([
-                    { icon: MessageSquareQuote, label: 'Conversation Templates', sub: 'E-P-E scripts & question banks', tool: 'conversation-templates' as ViewMode },
-                    { icon: Eye, label: 'Observation Framework', sub: 'Structured class observation template', tool: 'observation-framework' as ViewMode },
-                    { icon: Target, label: 'Intention Builder', sub: 'If–then planning template', tool: 'intention-builder' as ViewMode },
                     { icon: Lightbulb, label: 'Frameworks Overview', sub: 'Why Club Coach works the way it does', tool: 'frameworks-overview' as ViewMode },
                     { icon: Brain, label: 'Dreyfus Model', sub: 'Skill stages & coaching approach per domain', tool: 'dreyfus-model' as ViewMode },
                     { icon: ShieldCheck, label: 'ETAs', sub: 'Trust-based activities & the Teaching Trust Map', tool: 'etas' as ViewMode },
                     { icon: Layers, label: 'SSDL', sub: "Matching your coaching role to the instructor's stage", tool: 'ssdl' as ViewMode },
+                    { icon: Eye, label: 'Observation Framework', sub: 'Structured class observation template', tool: 'observation-framework' as ViewMode },
+                    { icon: MessageSquareQuote, label: 'Conversation Templates', sub: 'E-P-E scripts & question banks', tool: 'conversation-templates' as ViewMode },
+                    { icon: Target, label: 'Intention Builder', sub: 'If–then planning template', tool: 'intention-builder' as ViewMode },
                   ]).map(({ icon: Icon, label, sub, tool }) => {
                     const isActive = viewMode === tool;
                     return (
