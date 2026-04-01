@@ -6,7 +6,7 @@ import {
   Eye, Megaphone, Check, Target,
   GraduationCap, MessageSquareQuote, NotebookPen, Shield,
   CalendarClock, Users, BookOpen, Plus,
-  ChevronRight,
+  ChevronRight, Brain, ShieldCheck, Layers,
 } from 'lucide-react';
 import { coachPathStages, COACH_STAGE_META } from '@/data/coach-path-data';
 import type { Session } from '@/data/stage-sessions';
@@ -742,6 +742,262 @@ function IntentionBuilder() {
             );
           })}
         </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   Dreyfus Model Tool
+   ───────────────────────────────────────────── */
+function DreyfusModelTool() {
+  const stages = [
+    {
+      stage: 'Novice',
+      color: '#64748b',
+      coachRole: 'Authority',
+      description: "Follows rules. Needs step-by-step instruction. Cannot deviate from what they've been taught.",
+      approach: 'Direct — give specific instructions and checklists.',
+    },
+    {
+      stage: 'Advanced Beginner',
+      color: '#2563EB',
+      coachRole: 'Mentor',
+      description: 'Starting to recognise patterns. Understands context but still relies on guidelines.',
+      approach: 'Guide — demonstrate and explain why.',
+    },
+    {
+      stage: 'Competent',
+      color: '#D97706',
+      coachRole: 'Facilitator',
+      description: 'Can problem-solve with support. Makes conscious choices. Feels responsibility for outcomes.',
+      approach: 'Facilitate — ask questions, let them work through it.',
+    },
+    {
+      stage: 'Proficient',
+      color: '#059669',
+      coachRole: 'Consultant',
+      description: 'Strong intuition. Sees the whole picture. Mostly self-directed.',
+      approach: 'Consult — prompt reflection, they lead.',
+    },
+    {
+      stage: 'Expert',
+      color: '#0a0a0a',
+      coachRole: 'Peer',
+      description: 'Intuitive mastery. Acts without conscious deliberation. Difficult to articulate their own expertise.',
+      approach: 'Delegate — support their mentoring of others.',
+    },
+  ];
+
+  return (
+    <div className="space-y-8">
+      <div>
+        <h3 className="text-xl font-display font-bold text-lm-dark">The Dreyfus Model</h3>
+        <p className="text-sm text-lm-ink-muted mt-1">Skill stages and what they mean for how you coach each Key Element.</p>
+      </div>
+
+      <div className="rounded-xl border border-lm-green/20 bg-lm-green-mid p-5">
+        <p className="text-sm font-semibold text-lm-dark leading-relaxed">
+          An instructor is not at one stage globally — they are at different stages for different Key Elements. Someone Proficient in Choreography may be a Novice in Connection. Your coaching approach must shift accordingly.
+        </p>
+      </div>
+
+      <div>
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-2 h-2 rounded-full bg-lm-dark flex-shrink-0" />
+          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-lm-dark">The Five Stages</p>
+        </div>
+        <div className="space-y-3">
+          {stages.map((s) => (
+            <div key={s.stage} className="rounded-xl border border-border bg-white p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <span
+                  className="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-bold text-white"
+                  style={{ backgroundColor: s.color }}
+                >
+                  {s.stage}
+                </span>
+                <span className="text-xs text-lm-ink-muted font-medium">Coach as {s.coachRole}</span>
+              </div>
+              <p className="text-sm text-lm-ink-mid leading-relaxed mb-2">{s.description}</p>
+              <p className="text-xs font-semibold text-lm-dark italic">{s.approach}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-border bg-lm-subtle p-4">
+        <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-lm-ink-muted mb-2">Where you see this in Club Coach</p>
+        <p className="text-sm text-lm-ink-mid leading-relaxed">
+          The <span className="font-semibold text-lm-dark">Dreyfus Stage by Domain</span> card on every Instructor Profile shows each instructor's current stage per Key Element. The italicised coaching approach next to each stage tells you exactly how to coach that skill.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   ETAs Tool
+   ───────────────────────────────────────────── */
+function ETAsTool() {
+  const levels = [
+    { level: 1, label: 'Observe only', description: 'Not yet ready. Still learning the foundations.' },
+    { level: 2, label: 'Direct supervision', description: 'You need to be present. Still developing — needs real-time guidance and correction.' },
+    { level: 3, label: 'Indirect supervision', description: "You don't need to be in the room, but check in regularly. Competent but benefits from periodic observation." },
+    { level: 4, label: 'Unsupervised', description: 'Self-directed. Your role is to stretch and challenge, not monitor.' },
+    { level: 5, label: 'Can supervise others', description: 'Ready to support and develop others in this area.' },
+  ];
+
+  const etas = [
+    'Lead a safe warm-up & cool-down',
+    'Execute choreography with accuracy & timing',
+    'Coach technique corrections in real-time',
+    'Adapt intensity for mixed-ability participants',
+    'Build connection with every participant',
+    'Manage equipment failure or participant injury',
+    'Deliver a complete class independently',
+    'Mentor newer instructors',
+  ];
+
+  return (
+    <div className="space-y-8">
+      <div>
+        <h3 className="text-xl font-display font-bold text-lm-dark">Entrustable Teaching Activities</h3>
+        <p className="text-sm text-lm-ink-muted mt-1">Trust-based assessment and the Teaching Trust Map.</p>
+      </div>
+
+      <div className="rounded-xl border border-lm-green/20 bg-lm-green-mid p-5">
+        <p className="text-sm font-semibold text-lm-dark leading-relaxed">
+          ETAs ask a different question from pass/fail: not "can this instructor demonstrate competency?" but "can I trust this instructor to do this activity unsupervised?" The answer is different for every activity — and that's the point.
+        </p>
+      </div>
+
+      <div>
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-2 h-2 rounded-full bg-lm-dark flex-shrink-0" />
+          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-lm-dark">The Five Entrustment Levels</p>
+        </div>
+        <div className="space-y-2">
+          {levels.map((l) => (
+            <div key={l.level} className="flex items-start gap-3 rounded-xl border border-border bg-white p-4">
+              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-lm-dark text-white text-xs font-bold flex items-center justify-center mt-0.5">
+                {l.level}
+              </span>
+              <div>
+                <p className="text-sm font-semibold text-lm-dark">{l.label}</p>
+                <p className="text-xs text-lm-ink-muted mt-0.5 leading-relaxed">{l.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-2 h-2 rounded-full bg-lm-dark flex-shrink-0" />
+          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-lm-dark">The 8 Teaching Activities</p>
+        </div>
+        <div className="space-y-1.5">
+          {etas.map((eta, i) => (
+            <div key={i} className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border bg-white">
+              <span className="text-xs font-bold text-lm-ink-muted w-5 flex-shrink-0">{i + 1}</span>
+              <span className="text-sm text-lm-ink-mid">{eta}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-border bg-lm-subtle p-4">
+        <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-lm-ink-muted mb-2">Where you see this in Club Coach</p>
+        <p className="text-sm text-lm-ink-mid leading-relaxed">
+          The <span className="font-semibold text-lm-dark">Teaching Trust Map</span> on every Instructor Profile shows the current entrustment level for each of these 8 activities. Entrustment is about the task, not the person — the same instructor can be at Level 4 for one activity and Level 2 for another.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   SSDL Tool
+   ───────────────────────────────────────────── */
+function SSDLTool() {
+  const stages = [
+    {
+      code: 'S1',
+      label: 'Dependent',
+      role: 'Authority',
+      color: '#64748b',
+      description: 'Low self-direction. Needs explicit instruction and clear structure to function.',
+      approach: "Structured checklists, specific drills, directive feedback. Tell them exactly what to do and why.",
+    },
+    {
+      code: 'S2',
+      label: 'Interested',
+      role: 'Motivator',
+      color: '#2563EB',
+      description: 'Moderate self-direction. Responds to motivation. Wants to understand the reasoning behind feedback.',
+      approach: "Curated examples, guided goal-setting, explain the why behind your asks.",
+    },
+    {
+      code: 'S3',
+      label: 'Involved',
+      role: 'Facilitator',
+      color: '#D97706',
+      description: 'Intermediate self-direction. Explores with guidance. Capable of designing their own solutions.',
+      approach: "Open-ended challenges, questions over answers. Let them design their own experiments.",
+    },
+    {
+      code: 'S4',
+      label: 'Self-directed',
+      role: 'Consultant',
+      color: '#059669',
+      description: 'High self-direction. Sets own goals. Ready to mentor others.',
+      approach: "Available on request. Prompt reflection — the instructor leads. Connect them to the right people.",
+    },
+  ];
+
+  return (
+    <div className="space-y-8">
+      <div>
+        <h3 className="text-xl font-display font-bold text-lm-dark">Staged Self-Directed Learning</h3>
+        <p className="text-sm text-lm-ink-muted mt-1">Matching your coaching role to the instructor's stage.</p>
+      </div>
+
+      <div className="rounded-xl border border-lm-green/20 bg-lm-green-mid p-5">
+        <p className="text-sm font-semibold text-lm-dark leading-relaxed">
+          The most common coaching failure is a mismatch: directing a self-directed instructor feels patronising; going hands-off with a dependent learner feels abandoning. Club Coach surfaces the right coaching role per skill domain — so you never default to one mode for everyone.
+        </p>
+      </div>
+
+      <div>
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-2 h-2 rounded-full bg-lm-dark flex-shrink-0" />
+          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-lm-dark">The Four Stages</p>
+        </div>
+        <div className="space-y-3">
+          {stages.map((s) => (
+            <div key={s.code} className="rounded-xl border border-border bg-white p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <span
+                  className="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-bold text-white"
+                  style={{ backgroundColor: s.color }}
+                >
+                  {s.code}: {s.label}
+                </span>
+                <span className="text-xs text-lm-ink-muted font-medium">Coach as {s.role}</span>
+              </div>
+              <p className="text-sm text-lm-ink-mid leading-relaxed mb-2">{s.description}</p>
+              <p className="text-xs font-semibold text-lm-dark italic">{s.approach}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-border bg-lm-subtle p-4">
+        <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-lm-ink-muted mb-2">How SSDL maps to Dreyfus</p>
+        <p className="text-sm text-lm-ink-mid leading-relaxed">
+          Dreyfus describes <span className="font-semibold text-lm-dark">cognitive capability</span> — what an instructor can do. SSDL describes <span className="font-semibold text-lm-dark">motivational self-direction</span> — how much they drive their own learning. They often align (a Novice is usually S1) but not always — an experienced instructor returning from a break may be S3 in motivation but S1 in current capability.
+        </p>
       </div>
     </div>
   );
