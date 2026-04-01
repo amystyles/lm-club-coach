@@ -203,7 +203,7 @@ export const coachPathStages: Record<number, StageDetail> = {
       },
       {
         id: 'S1-3',
-        title: 'Understanding the LMQ',
+        title: 'Understanding LMQ',
         subtitle: 'Learning the language of instructor development',
         coachRole: {
           summary: "Student of the framework. Study it before you use it.",
