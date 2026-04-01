@@ -899,7 +899,7 @@ function ETAsTool() {
         </div>
         <div className="space-y-1.5">
           {etas.map((eta, i) => (
-            <div key={i} className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border bg-white">
+            <div key={eta} className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border bg-white">
               <span className="text-xs font-bold text-lm-ink-muted w-5 flex-shrink-0">{i + 1}</span>
               <span className="text-sm text-lm-ink-mid">{eta}</span>
             </div>
