@@ -789,7 +789,7 @@ function FrameworksOverviewTool() {
       <div className="rounded-xl border border-lm-green/20 bg-lm-green-mid p-5">
         <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-lm-dark mb-2">The Standard</p>
         <p className="text-sm font-semibold text-lm-dark leading-relaxed">
-          Everything in Club Coach traces back to the LMQ — the standard that defines instructor excellence. The frameworks below are the research-backed reasons why Club Coach drives LMQ alignment the way it does.
+          The LMQ defines what instructor excellence looks like. Club Coach exists to help coaches develop that excellence in their instructors — and these frameworks are the research-backed tools that make that coaching effective.
         </p>
       </div>
 
