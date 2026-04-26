@@ -64,7 +64,7 @@ export const TopBar = (_props: TopBarProps) => {
                 </AvatarFallback>
               </Avatar>
               <span className="text-sm font-medium hidden sm:inline">
-                {profile?.name?.split(' ')[0]} {profile?.name?.split(' ').slice(-1)[0]?.charAt(0)}.
+                {profile?.name}
               </span>
             </Button>
           </DropdownMenuTrigger>
