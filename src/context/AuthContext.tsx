@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import type { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 import type { Club } from '@/data/types';
@@ -33,16 +33,10 @@ async function fetchProfile(userId: string): Promise<UserProfile | null> {
 
 async function fetchClubs(userId: string): Promise<Club[]> {
   const { data } = await supabase
-    .from('clubs')
-    .select('*')
-    .in('id',
-      (await supabase
-        .from('user_clubs')
-        .select('club_id')
-        .eq('user_id', userId)
-      ).data?.map((r: { club_id: string }) => r.club_id) ?? []
-    );
-  return (data ?? []).map((c: any) => ({
+    .from('user_clubs')
+    .select('clubs(*)')
+    .eq('user_id', userId);
+  return (data ?? []).map(({ clubs: c }: any) => ({
     id: c.id,
     name: c.name,
     region: c.region,
@@ -60,7 +54,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [activeClub, setActiveClub] = useState<Club | null>(null);
   const [loading, setLoading] = useState(true);
 
-  async function hydrate(session: Session | null) {
+  const hydrate = useCallback(async function hydrate(session: Session | null) {
     if (!session) {
       setUser(null);
       setProfile(null);
@@ -76,7 +70,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setProfile(p);
     setClubs(c);
     setActiveClub(prev => prev ?? (c.length === 1 ? c[0] : null));
-  }
+  }, []);
 
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
@@ -89,7 +83,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [hydrate]);
 
   return (
     <AuthContext.Provider value={{ user, profile, clubs, activeClub, setActiveClub, loading }}>
