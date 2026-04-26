@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import type { Instructor } from '@/data/types';
-import { instructors, assessments, STAGE_DATA, KEY_ELEMENT_LABELS } from '@/data/mock-data';
+import { STAGE_DATA, KEY_ELEMENT_LABELS } from '@/data/mock-data';
+import { useInstructors } from '@/hooks/useInstructors';
+import { useAssessments } from '@/hooks/useAssessments';
 import KeyElementHeatmap from '@/components/KeyElementHeatmap';
 import ProgramProgress from '@/components/ProgramProgress';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -50,7 +52,7 @@ function getGradeForElement(instructor: Instructor, element: keyof typeof KEY_EL
   return grade?.grade || 1;
 }
 
-function getStageDistribution(): Record<number, number> {
+function getStageDistribution(instructors: Instructor[]): Record<number, number> {
   const dist: Record<number, number> = {};
   for (let i = 1; i <= 5; i++) {
     dist[i] = 0;
@@ -72,6 +74,13 @@ const NEXT_MILESTONE: Record<number, string> = {
 
 
 export default function Dashboard({ onViewInstructor }: DashboardProps) {
+  const { instructors, loading } = useInstructors();
+  const { assessments } = useAssessments();
+
+  if (loading) {
+    return <div className="p-8 text-muted-foreground text-sm">Loading instructors…</div>;
+  }
+
   const averageLMQ = (
     instructors.reduce((sum, inst) => sum + inst.lmqLevel, 0) / instructors.length
   ).toFixed(1);
@@ -81,7 +90,7 @@ export default function Dashboard({ onViewInstructor }: DashboardProps) {
     (inst) => inst.riskLevel === 'medium' || inst.riskLevel === 'high'
   ).length;
 
-  const stageDist = getStageDistribution();
+  const stageDist = getStageDistribution(instructors);
   const [expandedStages, setExpandedStages] = useState<Set<number>>(new Set());
 
   const toggleStage = (stage: number) => {

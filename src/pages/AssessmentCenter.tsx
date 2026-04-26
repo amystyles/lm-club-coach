@@ -10,8 +10,10 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
-import type { Assessment, KeyElement, Grade } from '@/data/types';
-import { assessments, instructors, LM_PROGRAMS, KEY_ELEMENT_LABELS } from '@/data/mock-data';
+import type { Assessment, Instructor, KeyElement, Grade } from '@/data/types';
+import { LM_PROGRAMS, KEY_ELEMENT_LABELS } from '@/data/mock-data';
+import { useInstructors } from '@/hooks/useInstructors';
+import { useAssessments } from '@/hooks/useAssessments';
 
 const KEY_ELEMENTS: KeyElement[] = ['choreography', 'technique', 'coaching', 'connection', 'performance'];
 
@@ -43,7 +45,7 @@ const getStatusColor = (status: string) => {
   }
 };
 
-const AssessmentCard: React.FC<{ assessment: Assessment }> = ({ assessment }) => {
+const AssessmentCard: React.FC<{ assessment: Assessment; instructors: Instructor[] }> = ({ assessment, instructors }) => {
   const instructor = instructors.find((i) => i.id === assessment.instructorId);
   if (!instructor) return null;
 
@@ -92,9 +94,10 @@ const AssessmentCard: React.FC<{ assessment: Assessment }> = ({ assessment }) =>
   );
 };
 
-const NewObservationDialog: React.FC<{ isOpen: boolean; onOpenChange: (open: boolean) => void }> = ({
+const NewObservationDialog: React.FC<{ isOpen: boolean; onOpenChange: (open: boolean) => void; instructors: Instructor[] }> = ({
   isOpen,
   onOpenChange,
+  instructors,
 }) => {
   const [instructorId, setInstructorId] = useState('');
   const [program, setProgram] = useState('');
@@ -343,8 +346,15 @@ const NewObservationDialog: React.FC<{ isOpen: boolean; onOpenChange: (open: boo
 };
 
 export default function AssessmentCenter() {
+  const { instructors, loading } = useInstructors();
+  const { assessments } = useAssessments();
+
   const [dialogOpen, setDialogOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('all');
+
+  if (loading) {
+    return <div className="p-8 text-muted-foreground text-sm">Loading assessments…</div>;
+  }
 
   const filterAssessments = (status?: string) => {
     if (!status || status === 'all') return assessments;
@@ -392,7 +402,7 @@ export default function AssessmentCenter() {
                 New Observation
               </button>
             </DialogTrigger>
-            <NewObservationDialog isOpen={dialogOpen} onOpenChange={setDialogOpen} />
+            <NewObservationDialog isOpen={dialogOpen} onOpenChange={setDialogOpen} instructors={instructors} />
           </Dialog>
         </div>
       </div>
@@ -414,7 +424,7 @@ export default function AssessmentCenter() {
               </Card>
             ) : (
               filterAssessments().map((assessment) => (
-                <AssessmentCard key={assessment.id} assessment={assessment} />
+                <AssessmentCard key={assessment.id} assessment={assessment} instructors={instructors} />
               ))
             )}
           </TabsContent>
@@ -426,7 +436,7 @@ export default function AssessmentCenter() {
               </Card>
             ) : (
               filterAssessments('scheduled').map((assessment) => (
-                <AssessmentCard key={assessment.id} assessment={assessment} />
+                <AssessmentCard key={assessment.id} assessment={assessment} instructors={instructors} />
               ))
             )}
           </TabsContent>
@@ -438,7 +448,7 @@ export default function AssessmentCenter() {
               </Card>
             ) : (
               filterAssessments('completed').map((assessment) => (
-                <AssessmentCard key={assessment.id} assessment={assessment} />
+                <AssessmentCard key={assessment.id} assessment={assessment} instructors={instructors} />
               ))
             )}
           </TabsContent>
@@ -450,7 +460,7 @@ export default function AssessmentCenter() {
               </Card>
             ) : (
               filterAssessments('draft').map((assessment) => (
-                <AssessmentCard key={assessment.id} assessment={assessment} />
+                <AssessmentCard key={assessment.id} assessment={assessment} instructors={instructors} />
               ))
             )}
           </TabsContent>

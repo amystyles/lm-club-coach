@@ -1,11 +1,7 @@
 import { useState, useMemo } from 'react';
 import type { Instructor } from '@/data/types';
-import {
-  instructors,
-  STAGE_DATA,
-  KEY_ELEMENT_LABELS,
-  LM_PROGRAMS,
-} from '@/data/mock-data';
+import { STAGE_DATA, KEY_ELEMENT_LABELS, LM_PROGRAMS } from '@/data/mock-data';
+import { useInstructors } from '@/hooks/useInstructors';
 import {
   Table,
   TableHeader,
@@ -72,6 +68,8 @@ function formatDate(dateString: string): string {
 }
 
 export default function TeamRoster({ onViewInstructor }: TeamRosterProps) {
+  const { instructors, loading } = useInstructors();
+
   const [searchTerm, setSearchTerm] = useState('');
   const [stageFilter, setStageFilter] = useState('all');
   const [programFilter, setProgramFilter] = useState('all');
@@ -120,7 +118,11 @@ export default function TeamRoster({ onViewInstructor }: TeamRosterProps) {
     });
 
     return filtered;
-  }, [searchTerm, stageFilter, programFilter, riskFilter, sortBy]);
+  }, [instructors, searchTerm, stageFilter, programFilter, riskFilter, sortBy]);
+
+  if (loading) {
+    return <div className="p-8 text-muted-foreground text-sm">Loading roster…</div>;
+  }
 
   const getStageName = (stage: number): string => {
     const stageData = STAGE_DATA.find((s) => s.stage === stage);
