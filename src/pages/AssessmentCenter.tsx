@@ -12,8 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import type { Assessment, Instructor, KeyElement, Grade } from '@/data/types';
 import { LM_PROGRAMS, KEY_ELEMENT_LABELS } from '@/data/mock-data';
-import { useInstructors } from '@/hooks/useInstructors';
-import { useAssessments } from '@/hooks/useAssessments';
+import { useData } from '@/context/DataContext';
 
 const KEY_ELEMENTS: KeyElement[] = ['choreography', 'technique', 'coaching', 'connection', 'performance'];
 
@@ -346,8 +345,7 @@ const NewObservationDialog: React.FC<{ isOpen: boolean; onOpenChange: (open: boo
 };
 
 export default function AssessmentCenter() {
-  const { instructors, loading } = useInstructors();
-  const { assessments } = useAssessments();
+  const { instructors, assessments, loading } = useData();
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('all');

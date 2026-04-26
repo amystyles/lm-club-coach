@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import type { Instructor } from '@/data/types';
 import { STAGE_DATA, KEY_ELEMENT_LABELS } from '@/data/mock-data';
-import { useInstructors } from '@/hooks/useInstructors';
-import { useAssessments } from '@/hooks/useAssessments';
+import { useData } from '@/context/DataContext';
 import KeyElementHeatmap from '@/components/KeyElementHeatmap';
 import ProgramProgress from '@/components/ProgramProgress';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -74,8 +73,7 @@ const NEXT_MILESTONE: Record<number, string> = {
 
 
 export default function Dashboard({ onViewInstructor }: DashboardProps) {
-  const { instructors, loading } = useInstructors();
-  const { assessments } = useAssessments();
+  const { instructors, assessments, loading } = useData();
   const [expandedStages, setExpandedStages] = useState<Set<number>>(new Set());
 
   if (loading) {

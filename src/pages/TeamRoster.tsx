@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import type { Instructor } from '@/data/types';
 import { STAGE_DATA, KEY_ELEMENT_LABELS, LM_PROGRAMS } from '@/data/mock-data';
-import { useInstructors } from '@/hooks/useInstructors';
+import { useData } from '@/context/DataContext';
 import {
   Table,
   TableHeader,
@@ -68,7 +68,7 @@ function formatDate(dateString: string): string {
 }
 
 export default function TeamRoster({ onViewInstructor }: TeamRosterProps) {
-  const { instructors, loading } = useInstructors();
+  const { instructors, loading } = useData();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [stageFilter, setStageFilter] = useState('all');
