@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { useAuth } from './context/AuthContext';
+import Login from './pages/Login';
+import ClubPicker from './pages/ClubPicker';
 import AppLayout from './components/layout/AppLayout';
 import Dashboard from './pages/Dashboard';
 import TeamRoster from './pages/TeamRoster';
@@ -21,6 +24,19 @@ const PAGE_TITLES: Record<string, { title: string; subtitle?: string }> = {
 };
 
 function App() {
+  const { user, clubs, activeClub, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-muted-foreground text-sm">Loading…</div>
+      </div>
+    );
+  }
+
+  if (!user) return <Login />;
+  if (!activeClub && clubs.length > 1) return <ClubPicker />;
+
   const [activePage, setActivePage] = useState('dashboard');
   const [selectedInstructorId, setSelectedInstructorId] = useState<string | null>(null);
   const [previousPage, setPreviousPage] = useState<'dashboard' | 'roster'>('dashboard');
