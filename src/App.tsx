@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from './context/AuthContext';
 import Login from './pages/Login';
+import ResetPassword from './pages/ResetPassword';
 import ClubPicker from './pages/ClubPicker';
 import AppLayout from './components/layout/AppLayout';
 import Dashboard from './pages/Dashboard';
@@ -24,7 +25,7 @@ const PAGE_TITLES: Record<string, { title: string; subtitle?: string }> = {
 };
 
 function App() {
-  const { user, clubs, activeClub, loading } = useAuth();
+  const { user, clubs, activeClub, loading, isRecovery } = useAuth();
 
   if (loading) {
     return (
@@ -34,6 +35,7 @@ function App() {
     );
   }
 
+  if (isRecovery) return <ResetPassword />;
   if (!user) return <Login />;
   if (!activeClub && clubs.length > 1) return <ClubPicker />;
 

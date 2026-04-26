@@ -17,6 +17,13 @@ interface TopBarProps {
   subtitle?: string;
 }
 
+function nameInitials(name: string | undefined): string {
+  if (!name) return '?';
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  return parts[0].slice(0, 2).toUpperCase();
+}
+
 export const TopBar = (_props: TopBarProps) => {
   const { profile } = useAuth();
   return (
@@ -60,7 +67,7 @@ export const TopBar = (_props: TopBarProps) => {
             <Button variant="ghost" className="h-9 px-2 gap-2">
               <Avatar className="h-8 w-8">
                 <AvatarFallback className="bg-primary text-primary-foreground text-xs font-bold">
-                  {profile?.initials ?? '?'}
+                  {nameInitials(profile?.name)}
                 </AvatarFallback>
               </Avatar>
               <span className="text-sm font-medium hidden sm:inline">

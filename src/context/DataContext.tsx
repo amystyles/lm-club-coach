@@ -19,6 +19,7 @@ function mapInstructor(row: any): Instructor {
     riskLevel: row.risk_level as 'low' | 'medium' | 'high',
     certDate: row.cert_date ?? undefined,
     goals: row.goals ?? [],
+    trustOverrides: row.trust_overrides ?? {},
     programs: (row.instructor_programs ?? []).map((p: any) => ({
       name: p.name,
       lmqLevel: p.lmq_level as LMQLevel,

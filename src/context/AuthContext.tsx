@@ -18,9 +18,25 @@ interface AuthContextValue {
   activeClub: Club | null;
   setActiveClub: (club: Club) => void;
   loading: boolean;
+  isRecovery: boolean;
+  clearRecovery: () => void;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
+
+function normalizeName(name: string, email: string): string {
+  if (!name || name === email) {
+    return email.split('@')[0].split('.').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
+  }
+  return name;
+}
+
+function normalizeInitials(initials: string, name: string): string {
+  if (!initials || initials.length < 2) {
+    return name.split(' ').map(s => s[0]).join('').toUpperCase().slice(0, 2);
+  }
+  return initials;
+}
 
 async function fetchProfile(userId: string): Promise<UserProfile | null> {
   const { data } = await supabase
@@ -28,7 +44,9 @@ async function fetchProfile(userId: string): Promise<UserProfile | null> {
     .select('*')
     .eq('id', userId)
     .single();
-  return data as UserProfile | null;
+  if (!data) return null;
+  const name = normalizeName(data.name, data.email);
+  return { ...data, name, initials: normalizeInitials(data.initials, name) } as UserProfile;
 }
 
 async function fetchClubs(userId: string): Promise<Club[]> {
@@ -53,6 +71,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [clubs, setClubs] = useState<Club[]>([]);
   const [activeClub, setActiveClub] = useState<Club | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isRecovery, setIsRecovery] = useState(false);
 
   const hydrate = useCallback(async function hydrate(session: Session | null) {
     if (!session) {
@@ -73,16 +92,42 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      await hydrate(session);
-      if (event === 'INITIAL_SESSION') setLoading(false);
+    let settled = false;
+
+    const settle = async (session: Session | null) => {
+      if (settled) return;
+      settled = true;
+      try {
+        await hydrate(session);
+      } catch (err) {
+        console.error('Auth hydrate failed:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        setIsRecovery(true);
+        setLoading(false);
+        settled = true;
+        return;
+      }
+      if (!settled) {
+        settle(session);
+      } else {
+        hydrate(session).catch(err => console.error('Auth hydrate failed:', err));
+      }
     });
+
+    // Fallback: resolve initial session if INITIAL_SESSION event doesn't fire
+    supabase.auth.getSession().then(({ data: { session } }) => settle(session));
 
     return () => subscription.unsubscribe();
   }, [hydrate]);
 
   return (
-    <AuthContext.Provider value={{ user, profile, clubs, activeClub, setActiveClub, loading }}>
+    <AuthContext.Provider value={{ user, profile, clubs, activeClub, setActiveClub, loading, isRecovery, clearRecovery: () => setIsRecovery(false) }}>
       {children}
     </AuthContext.Provider>
   );
