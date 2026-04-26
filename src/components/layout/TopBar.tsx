@@ -9,6 +9,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Bell, Search } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
+import { signOut } from '@/lib/auth';
 
 interface TopBarProps {
   pageTitle: string;
@@ -16,6 +18,7 @@ interface TopBarProps {
 }
 
 export const TopBar = (_props: TopBarProps) => {
+  const { profile } = useAuth();
   return (
     <div className="fixed top-0 left-0 right-0 h-14 bg-card border-b border-border flex items-center justify-between px-6 z-30 ml-64 transition-all duration-300">
       {/* Left: Search */}
@@ -57,21 +60,21 @@ export const TopBar = (_props: TopBarProps) => {
             <Button variant="ghost" className="h-9 px-2 gap-2">
               <Avatar className="h-8 w-8">
                 <AvatarFallback className="bg-primary text-primary-foreground text-xs font-bold">
-                  SM
+                  {profile?.initials ?? '?'}
                 </AvatarFallback>
               </Avatar>
-              <span className="text-sm font-medium hidden sm:inline">Sarah M.</span>
+              <span className="text-sm font-medium hidden sm:inline">
+                {profile?.name?.split(' ')[0]} {profile?.name?.split(' ').slice(-1)[0]?.charAt(0)}.
+              </span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem disabled className="text-xs text-muted-foreground">
-              Sarah Mitchell
+              {profile?.name}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Sign Out</DropdownMenuItem>
+            <DropdownMenuItem onClick={signOut}>Sign Out</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
