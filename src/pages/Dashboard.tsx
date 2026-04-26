@@ -76,6 +76,7 @@ const NEXT_MILESTONE: Record<number, string> = {
 export default function Dashboard({ onViewInstructor }: DashboardProps) {
   const { instructors, loading } = useInstructors();
   const { assessments } = useAssessments();
+  const [expandedStages, setExpandedStages] = useState<Set<number>>(new Set());
 
   if (loading) {
     return <div className="p-8 text-muted-foreground text-sm">Loading instructors…</div>;
@@ -91,7 +92,6 @@ export default function Dashboard({ onViewInstructor }: DashboardProps) {
   ).length;
 
   const stageDist = getStageDistribution(instructors);
-  const [expandedStages, setExpandedStages] = useState<Set<number>>(new Set());
 
   const toggleStage = (stage: number) => {
     setExpandedStages(prev => {
