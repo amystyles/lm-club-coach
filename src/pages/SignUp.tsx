@@ -7,6 +7,7 @@ import { supabase } from '@/lib/supabase';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Copy, Check, RefreshCw, Eye, EyeOff } from 'lucide-react';
+import LMWordmark from '@/components/LMWordmark';
 
 const REGIONS = ['Northeast', 'Southeast', 'Midwest', 'Southwest', 'West', 'Northwest', 'International'];
 
@@ -130,15 +131,21 @@ export default function SignUp({ onBack }: Props) {
   }
 
   return (
+    <>
+    <style>{`
+      @keyframes lm-fade-up {
+        from { opacity: 0; transform: translateY(18px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      .lm-animate {
+        opacity: 0;
+        animation: lm-fade-up 0.55s cubic-bezier(0.22,1,0.36,1) forwards;
+      }
+    `}</style>
     <div className="min-h-screen flex items-center justify-center py-12 px-4" style={{ background: 'linear-gradient(160deg, #060606 0%, #0c0c0c 50%, #091409 100%)' }}>
       <div className="w-full max-w-lg">
 
-        {/* Header */}
-        <div className="text-center mb-8">
-          <p className="text-lm-green/70 text-[10px] font-bold tracking-[0.4em] uppercase mb-2">Les Mills</p>
-          <h1 className="text-white font-display font-bold text-3xl tracking-widest uppercase mb-1">Club Coach</h1>
-          <p className="text-white/40 text-sm">Create your account</p>
-        </div>
+        <LMWordmark tagline="Build your squad. Shape the standard." />
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
 
@@ -323,5 +330,6 @@ export default function SignUp({ onBack }: Props) {
         </form>
       </div>
     </div>
+    </>
   );
 }
