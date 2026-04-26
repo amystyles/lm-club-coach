@@ -33,7 +33,7 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-background">
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">LM Club Coach</CardTitle>
+          <CardTitle className="text-2xl uppercase tracking-widest">LM Club Coach</CardTitle>
           <p className="text-sm text-muted-foreground">Sign in to your account</p>
         </CardHeader>
         <CardContent>
