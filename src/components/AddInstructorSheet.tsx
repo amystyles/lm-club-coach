@@ -36,8 +36,8 @@ function statusToLmqLevel(status: string): number {
 const schema = z.object({
   name: z.string().min(2, 'Name is required'),
   joinDate: z.string().min(1, 'Join date is required'),
-  stage: z.coerce.number().int().min(1).max(6),
-  lmqLevel: z.coerce.number().int().min(1).max(10),
+  stage: z.number().int().min(1).max(6),
+  lmqLevel: z.number().int().min(1).max(10),
   priorityElement: z.enum(KEY_ELEMENTS),
   riskLevel: z.enum(['low', 'medium', 'high']),
   programs: z

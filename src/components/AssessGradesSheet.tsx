@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useData } from '@/context/DataContext';
-import type { Instructor, KeyElement, Grade } from '@/data/types';
+import type { Instructor, KeyElement } from '@/data/types';
 import { KEY_ELEMENT_LABELS } from '@/data/mock-data';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';

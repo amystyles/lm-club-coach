@@ -29,6 +29,7 @@ function mapInstructor(row: any): Instructor {
       notes: g.notes ?? undefined,
       lastAssessed: g.last_assessed ?? undefined,
     })),
+    trustOverrides: (row.trust_overrides as Record<string, number>) ?? {},
   };
 }
 

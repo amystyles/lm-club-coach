@@ -46,7 +46,6 @@ interface Props {
 export default function SignUp({ onBack }: Props) {
   const [password, setPassword] = useState(generatePassword);
   const [copied, setCopied] = useState(false);
-  const [showCustom, setShowCustom] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
