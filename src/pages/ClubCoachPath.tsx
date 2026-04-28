@@ -113,8 +113,8 @@ function BriefTab({ session, stageColor }: { session: Session; stageColor: strin
           </div>
 
           {cs.lmqAlignment && (
-            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 flex items-start gap-3">
-              <Shield className="w-4 h-4 text-slate-600 flex-shrink-0 mt-0.5" />
+            <div className="rounded-xl border border-border bg-muted/30 p-4 flex items-start gap-3">
+              <Shield className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-0.5" />
               <div>
                 <p className="font-bold text-lm-dark text-[10px] uppercase tracking-[0.15em] mb-1">LMQ Alignment</p>
                 <p className="text-lm-ink-mid text-sm leading-relaxed">{cs.lmqAlignment}</p>
@@ -962,7 +962,7 @@ function ETAsTool() {
         <div className="space-y-2">
           {levels.map((l) => (
             <div key={l.level} className="flex items-start gap-3 rounded-xl border border-border bg-card p-4">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-lm-dark text-white text-xs font-bold flex items-center justify-center mt-0.5">
+              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-foreground text-background text-xs font-bold flex items-center justify-center mt-0.5">
                 {l.level}
               </span>
               <div>

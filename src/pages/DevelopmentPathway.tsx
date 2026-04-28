@@ -261,8 +261,8 @@ function PromptsTab({ session, stageColor }: { session: Session; stageColor: str
       </div>
 
       {cs.lmqAlignment && (
-        <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 flex items-start gap-3">
-          <Shield className="w-4 h-4 text-slate-600 flex-shrink-0 mt-0.5" />
+        <div className="rounded-xl border border-border bg-muted/30 p-4 flex items-start gap-3">
+          <Shield className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-0.5" />
           <div>
             <p className="font-bold text-lm-dark text-[10px] uppercase tracking-[0.15em] mb-1">LMQ Alignment</p>
             <p className="text-lm-ink-mid text-sm leading-relaxed">{cs.lmqAlignment}</p>
@@ -910,7 +910,7 @@ export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page:
                     <Zap className={`w-4 h-4 ${viewMode === 'activities' ? 'text-[#00FF63]' : 'text-muted-foreground'}`} />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className={`text-sm font-bold leading-tight ${viewMode === 'activities' ? 'text-white' : 'text-foreground'}`}>
+                    <p className={`text-sm font-bold leading-tight text-foreground`}>
                       Activities & Tools
                     </p>
                     <p className={`text-[11px] mt-0.5 ${viewMode === 'activities' ? 'text-[#00FF63]/50' : 'text-muted-foreground'}`}>
