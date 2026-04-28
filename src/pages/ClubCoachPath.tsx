@@ -32,15 +32,15 @@ function BriefTab({ session, stageColor }: { session: Session; stageColor: strin
   return (
     <div className="space-y-5">
       {cs?.goals && cs.goals.length > 0 && (
-        <div className="rounded-xl border border-lm-green/25 bg-lm-green-mid p-5">
+        <div className="rounded-xl border border-[#00FF63]/20 bg-[#00FF63]/[.06] p-5">
           <div className="flex items-center gap-2 mb-3">
-            <GraduationCap className="w-3.5 h-3.5 text-lm-dark" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-lm-dark">Session Goals</span>
+            <GraduationCap className="w-3.5 h-3.5 text-[#00FF63]" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#00FF63]">Session Goals</span>
           </div>
           <ul className="space-y-2">
             {cs.goals.map((goal, i) => (
-              <li key={i} className="flex gap-2.5 text-sm text-lm-dark leading-relaxed">
-                <Check className="w-4 h-4 flex-shrink-0 mt-0.5 text-lm-dark/60" />
+              <li key={i} className="flex gap-2.5 text-sm text-white/80 leading-relaxed">
+                <Check className="w-4 h-4 flex-shrink-0 mt-0.5 text-[#00FF63]/70" />
                 <span className="font-medium">{goal}</span>
               </li>
             ))}
@@ -57,9 +57,9 @@ function BriefTab({ session, stageColor }: { session: Session; stageColor: strin
           </div>
           <p className="text-lm-dark font-semibold text-sm leading-relaxed mb-2">{session.coachRole.summary}</p>
           <p className="text-lm-ink-mid text-sm leading-relaxed mb-4">{session.coachRole.context}</p>
-          <div className="flex items-start gap-2.5 bg-lm-green-mid rounded-lg px-4 py-3 border border-lm-green/10">
-            <Star className="w-3.5 h-3.5 flex-shrink-0 mt-0.5 text-lm-dark" />
-            <p className="text-lm-dark font-semibold text-sm italic">{session.coachRole.principle}</p>
+          <div className="flex items-start gap-2.5 bg-[#00FF63]/[.07] rounded-lg px-4 py-3 border border-[#00FF63]/15">
+            <Star className="w-3.5 h-3.5 flex-shrink-0 mt-0.5 text-[#00FF63]" />
+            <p className="text-white/80 font-semibold text-sm italic">{session.coachRole.principle}</p>
           </div>
         </div>
       )}
@@ -90,10 +90,10 @@ function BriefTab({ session, stageColor }: { session: Session; stageColor: strin
             <p className="text-lm-dark text-sm font-medium leading-relaxed">{cs.what}</p>
           </div>
 
-          <div className="rounded-xl border border-border bg-card p-5 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-1 h-full bg-lm-dark" />
-            <Badge className="text-[10px] tracking-wider uppercase font-bold px-2 py-0.5 mb-2 bg-lm-dark text-white">Why</Badge>
-            <p className="text-lm-dark text-sm font-medium leading-relaxed">{cs.why}</p>
+          <div className="rounded-xl border border-white/8 bg-white/[.03] p-5 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-1 h-full bg-white/30" />
+            <Badge className="text-[10px] tracking-wider uppercase font-bold px-2 py-0.5 mb-2 bg-white/10 text-white border border-white/15">Why</Badge>
+            <p className="text-white/80 text-sm font-medium leading-relaxed">{cs.why}</p>
           </div>
 
           <div className="rounded-xl border border-border bg-card p-5 relative overflow-hidden">
@@ -365,8 +365,8 @@ function SessionWorkspace({
               onClick={() => onTabChange(tab.id)}
               className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all focus:outline-none ${
                 isActive
-                  ? 'bg-lm-dark text-white shadow-sm'
-                  : 'text-lm-ink-muted bg-lm-subtle hover:bg-lm-sunken hover:text-lm-ink-mid'
+                  ? 'bg-[#00FF63] text-[#0A0A0A] shadow-sm'
+                  : 'text-white/40 hover:text-white/70 hover:bg-white/5'
               }`}
             >
               <Icon className="w-3.5 h-3.5" />
@@ -406,21 +406,26 @@ function SessionList({
           <button
             key={session.id}
             onClick={() => onSelect(session.id)}
-            className={`w-full text-left px-3 py-4 rounded-xl transition-all focus:outline-none flex items-start gap-3 ${
-              isActive ? 'bg-lm-dark shadow-sm' : 'hover:bg-lm-subtle'
+            className={`w-full text-left px-3 py-3.5 rounded-lg transition-all focus:outline-none flex items-start gap-3 relative ${
+              isActive
+                ? 'bg-[#00FF63]/[.08] border border-[#00FF63]/20'
+                : 'border border-transparent hover:bg-white/[.04]'
             }`}
           >
+            {isActive && (
+              <div className="absolute left-0 top-2 bottom-2 w-[3px] rounded-r-full bg-[#00FF63]" />
+            )}
             <span className={`text-[10px] font-bold tabular-nums mt-0.5 flex-shrink-0 w-4 ${
-              isActive ? 'text-white/30' : 'text-lm-ink-muted/40'
+              isActive ? 'text-[#00FF63]/60' : 'text-white/20'
             }`}>
               {String(idx + 1).padStart(2, '0')}
             </span>
             <div className="min-w-0 flex-1">
-              <p className={`text-sm font-medium leading-snug ${isActive ? 'text-white' : 'text-lm-dark'}`}>
+              <p className={`text-sm font-medium leading-snug ${isActive ? 'text-white' : 'text-white/60'}`}>
                 {session.title}
               </p>
               {session.sessionPlan && (
-                <p className={`text-xs mt-1 ${isActive ? 'text-white/40' : 'text-lm-ink-muted'}`}>
+                <p className={`text-xs mt-0.5 ${isActive ? 'text-[#00FF63]/50' : 'text-white/25'}`}>
                   {session.sessionPlan.totalDuration}
                 </p>
               )}
@@ -429,8 +434,8 @@ function SessionList({
         );
       })}
 
-      <button className="w-full text-left px-3 py-2.5 rounded-xl border border-dashed border-lm-sunken hover:border-lm-ink-muted/40 hover:bg-lm-subtle/50 transition-all focus:outline-none mt-1 group">
-        <span className="flex items-center gap-1.5 text-xs text-lm-ink-muted/50 group-hover:text-lm-ink-muted transition-colors">
+      <button className="w-full text-left px-3 py-2.5 rounded-lg border border-dashed border-white/10 hover:border-white/20 hover:bg-white/[.03] transition-all focus:outline-none mt-2 group">
+        <span className="flex items-center gap-1.5 text-xs text-white/25 group-hover:text-white/40 transition-colors">
           <Plus className="w-3.5 h-3.5" />
           Add session
         </span>
@@ -1200,8 +1205,13 @@ export default function ClubCoachPath(_props: { onNavigate?: (page: string) => v
               >
                 {/* Stage color top bar */}
                 <div
-                  className="absolute top-0 left-0 right-0 h-[3px] rounded-t-xl transition-all duration-200"
-                  style={{ backgroundColor: stage.color, opacity: isActive ? 1 : 0.4 }}
+                  className="absolute top-0 left-0 right-0 rounded-t-xl transition-all duration-200"
+                  style={{
+                    backgroundColor: stage.color,
+                    height: isActive ? '5px' : '2px',
+                    opacity: isActive ? 1 : 0.25,
+                    boxShadow: isActive ? `0 0 12px ${stage.color}70` : 'none',
+                  }}
                 />
                 {/* Ghost stage number background */}
                 <div
@@ -1241,9 +1251,9 @@ export default function ClubCoachPath(_props: { onNavigate?: (page: string) => v
             <div className="w-full lg:w-64 flex-shrink-0 space-y-4 lg:sticky lg:top-6">
               {/* Sessions */}
               <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
-                <div className="px-1 mb-6 pb-3 border-b border-border">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-lm-ink-muted">Sessions</p>
-                  <p className="text-xs text-lm-ink-muted mt-0.5">{currentStageData.subtitle}</p>
+                <div className="px-1 mb-4 pb-3 border-b border-border flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#00FF63]" />
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">Sessions</p>
                 </div>
                 <SessionList
                   sessions={currentStageData.sessions}
@@ -1254,36 +1264,40 @@ export default function ClubCoachPath(_props: { onNavigate?: (page: string) => v
 
               {/* Tools & Reference */}
               <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
-                <div className="px-1 mb-3 pb-3 border-b border-border">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-lm-ink-muted">Tools & Reference</p>
+                <div className="px-1 mb-3 pb-3 border-b border-border flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#00FF63]" />
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">Tools & Reference</p>
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-px">
                   {([
-                    { icon: Lightbulb, label: 'Frameworks Overview', sub: 'Why Club Coach works the way it does', tool: 'frameworks-overview' as ViewMode },
-                    { icon: Brain, label: 'Dreyfus Model', sub: 'Skill stages & coaching approach per domain', tool: 'dreyfus-model' as ViewMode },
-                    { icon: ShieldCheck, label: 'ETAs', sub: 'Trust-based activities & the Teaching Trust Map', tool: 'etas' as ViewMode },
-                    { icon: Layers, label: 'SSDL', sub: "Matching your coaching role to the instructor's stage", tool: 'ssdl' as ViewMode },
-                    { icon: Eye, label: 'Observation Framework', sub: 'Structured class observation template', tool: 'observation-framework' as ViewMode },
-                    { icon: MessageSquareQuote, label: 'Conversation Templates', sub: 'E-P-E scripts & question banks', tool: 'conversation-templates' as ViewMode },
-                    { icon: Target, label: 'Intention Builder', sub: 'If–then planning template', tool: 'intention-builder' as ViewMode },
+                    { icon: Lightbulb, label: 'Frameworks', sub: 'Why it works', tool: 'frameworks-overview' as ViewMode },
+                    { icon: Brain, label: 'Dreyfus Model', sub: 'Skill stages', tool: 'dreyfus-model' as ViewMode },
+                    { icon: ShieldCheck, label: 'ETAs', sub: 'Trust-based activities', tool: 'etas' as ViewMode },
+                    { icon: Layers, label: 'SSDL', sub: 'Coaching role matching', tool: 'ssdl' as ViewMode },
+                    { icon: Eye, label: 'Observation', sub: 'Class template', tool: 'observation-framework' as ViewMode },
+                    { icon: MessageSquareQuote, label: 'Conversations', sub: 'E-P-E scripts', tool: 'conversation-templates' as ViewMode },
+                    { icon: Target, label: 'Intentions', sub: 'If–then planning', tool: 'intention-builder' as ViewMode },
                   ]).map(({ icon: Icon, label, sub, tool }) => {
                     const isActive = viewMode === tool;
                     return (
                       <button
                         key={label}
                         onClick={() => handleToolSelect(tool)}
-                        className={`w-full text-left flex items-start gap-3 px-3 py-3 rounded-xl transition-all group focus:outline-none ${
-                          isActive ? 'bg-lm-dark' : 'hover:bg-lm-subtle'
+                        className={`w-full text-left flex items-center gap-3 px-2.5 py-2.5 rounded-lg transition-all group focus:outline-none relative ${
+                          isActive ? 'bg-[#00FF63]/[.08] border border-[#00FF63]/20' : 'border border-transparent hover:bg-white/[.04]'
                         }`}
                       >
-                        <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${
-                          isActive ? 'bg-lm-green/20' : 'bg-lm-subtle group-hover:bg-lm-sunken'
+                        {isActive && (
+                          <div className="absolute left-0 top-1.5 bottom-1.5 w-[2.5px] rounded-r-full bg-[#00FF63]" />
+                        )}
+                        <div className={`w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0 transition-colors ${
+                          isActive ? 'bg-[#00FF63]/15' : 'bg-white/5 group-hover:bg-white/8'
                         }`}>
-                          <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-lm-green' : 'text-lm-ink-mid'}`} />
+                          <Icon className={`w-3 h-3 ${isActive ? 'text-[#00FF63]' : 'text-white/40'}`} />
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className={`text-sm font-semibold leading-tight ${isActive ? 'text-white' : 'text-lm-dark'}`}>{label}</p>
-                          <p className={`text-[11px] mt-0.5 leading-snug ${isActive ? 'text-white/50' : 'text-lm-ink-muted'}`}>{sub}</p>
+                          <p className={`text-[13px] font-semibold leading-none ${isActive ? 'text-white' : 'text-white/55'}`}>{label}</p>
+                          <p className={`text-[10px] mt-0.5 leading-none ${isActive ? 'text-[#00FF63]/50' : 'text-white/25'}`}>{sub}</p>
                         </div>
                       </button>
                     );
