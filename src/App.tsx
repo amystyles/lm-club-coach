@@ -1,4 +1,8 @@
 import { useState } from 'react';
+import { useAuth } from './context/AuthContext';
+import Login from './pages/Login';
+import ResetPassword from './pages/ResetPassword';
+import ClubPicker from './pages/ClubPicker';
 import AppLayout from './components/layout/AppLayout';
 import Dashboard from './pages/Dashboard';
 import TeamRoster from './pages/TeamRoster';
@@ -8,6 +12,7 @@ import DevelopmentPathway from './pages/DevelopmentPathway';
 import ClubCoachPath from './pages/ClubCoachPath';
 import LMQReference from './pages/LMQReference';
 import FeedbackBuilder from './pages/FeedbackBuilder';
+import SignUp from './pages/SignUp';
 
 const PAGE_TITLES: Record<string, { title: string; subtitle?: string }> = {
   dashboard: { title: 'Dashboard', subtitle: 'Team overview & instructor development' },
@@ -18,9 +23,24 @@ const PAGE_TITLES: Record<string, { title: string; subtitle?: string }> = {
   'lmq-reference': { title: 'LMQ Reference', subtitle: 'Levels, grades & key elements' },
   feedback: { title: 'Feedback Builder', subtitle: 'CRC & GROW guided tools' },
   profile: { title: 'Instructor Profile', subtitle: 'Individual development view' },
+  'add-coach': { title: 'Add Coach Account', subtitle: 'Create a new Club Coach or GFM account' },
 };
 
 function App() {
+  const { user, clubs, activeClub, loading, isRecovery, isAdmin } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-muted-foreground text-sm">Loading…</div>
+      </div>
+    );
+  }
+
+  if (isRecovery) return <ResetPassword />;
+  if (!user) return <Login />;
+  if (!activeClub && clubs.length > 1) return <ClubPicker />;
+
   const [activePage, setActivePage] = useState('dashboard');
   const [selectedInstructorId, setSelectedInstructorId] = useState<string | null>(null);
   const [previousPage, setPreviousPage] = useState<'dashboard' | 'roster'>('dashboard');
@@ -61,6 +81,12 @@ function App() {
         return <LMQReference />;
       case 'feedback':
         return <FeedbackBuilder />;
+      case 'add-coach':
+        return isAdmin ? (
+          <SignUp onBack={() => handleNavigate('roster')} />
+        ) : (
+          <Dashboard onViewInstructor={(id) => handleViewInstructor(id, 'dashboard')} />
+        );
       case 'profile':
         return selectedInstructorId ? (
           <InstructorProfile

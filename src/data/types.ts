@@ -37,6 +37,7 @@ export interface Instructor {
   goals: string[];
   riskLevel: 'low' | 'medium' | 'high';
   certDate?: string;
+  trustOverrides: Record<string, number>;
 }
 
 export interface ClubCoach {

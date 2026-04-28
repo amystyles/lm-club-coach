@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import type { KeyElement, Stage, Instructor } from '@/data/types';
-import { instructors, assessments, coaches, STAGE_DATA, KEY_ELEMENT_LABELS } from '@/data/mock-data';
+import { STAGE_DATA, KEY_ELEMENT_LABELS, LM_PROGRAMS } from '@/data/mock-data';
+import { useData } from '@/context/DataContext';
+import AssessGradesSheet from '@/components/AssessGradesSheet';
+import AssessTrustSheet from '@/components/AssessTrustSheet';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -69,6 +72,9 @@ const INTENTIONS: Record<KeyElement, string> = {
 
 export function InstructorProfile({ instructorId, onBack, source }: InstructorProfileProps) {
   const [dreyfusInfoOpen, setDreyfusInfoOpen] = useState(false);
+  const [assessOpen, setAssessOpen] = useState(false);
+  const [trustAssessOpen, setTrustAssessOpen] = useState(false);
+  const { instructors, assessments } = useData();
   const instructor = instructors.find(i => i.id === instructorId);
 
   if (!instructor) {
@@ -179,9 +185,16 @@ export function InstructorProfile({ instructorId, onBack, source }: InstructorPr
           <CardHeader className="p-0">
             <div className="px-5 py-3 bg-[#0d0d0d] rounded-t-lg border-b border-white/8 flex items-center gap-3">
               <div className="w-1 h-8 rounded-full bg-lm-green/80 flex-shrink-0" />
-              <div>
+              <div className="flex-1">
                 <CardTitle className="text-white text-sm leading-tight">Key Element Profile</CardTitle>
               </div>
+              <button
+                onClick={() => setAssessOpen(true)}
+                className="text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full transition-colors"
+                style={{ backgroundColor: '#00FF63', color: '#0A0A0A' }}
+              >
+                Assess
+              </button>
             </div>
           </CardHeader>
           <CardContent className="space-y-3 pt-5">
@@ -233,7 +246,7 @@ export function InstructorProfile({ instructorId, onBack, source }: InstructorPr
         </Card>
 
         {/* Section 2: Teaching Trust Map */}
-        <TrustMap instructor={instructor} />
+        <TrustMap instructor={instructor} onAssess={() => setTrustAssessOpen(true)} />
 
         {/* Section 3: Dreyfus Stage by Domain */}
         <Card>
@@ -242,8 +255,15 @@ export function InstructorProfile({ instructorId, onBack, source }: InstructorPr
               <div className="w-1 h-8 rounded-full bg-lm-green/80 flex-shrink-0" />
               <div className="flex-1">
                 <CardTitle className="text-white text-sm leading-tight">Dreyfus Stage by Domain</CardTitle>
-                <p className="text-white/40 text-xs mt-0.5">Coaching should be different for each skill</p>
+                <p className="text-white/40 text-xs mt-0.5">Skills & Observation Guide</p>
               </div>
+              <button
+                onClick={() => setAssessOpen(true)}
+                className="text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full transition-colors mr-1"
+                style={{ backgroundColor: '#00FF63', color: '#0A0A0A' }}
+              >
+                Assess
+              </button>
               <button
                 onClick={() => setDreyfusInfoOpen(o => !o)}
                 className="flex-shrink-0 text-white/40 hover:text-lm-green transition-colors"
@@ -280,26 +300,60 @@ export function InstructorProfile({ instructorId, onBack, source }: InstructorPr
               </div>
             )}
           </CardHeader>
-          <CardContent className="space-y-3 pt-5">
-            {KEY_ELEMENTS.map(element => {
-              const grade = getGrade(instructor, element);
-              const dreyfus = getDreyfusStage(grade, element, instructor.stage);
-              const guidance = DREYFUS_GUIDANCE[dreyfus];
-              const badgeClass = DREYFUS_BADGE[dreyfus];
-              return (
-                <div key={element} className="flex items-center gap-3 flex-wrap">
-                  <span className="w-28 text-sm font-medium text-foreground flex-shrink-0">
-                    {KEY_ELEMENT_LABELS[element]}
-                  </span>
-                  <span className={`px-2 py-0.5 rounded text-xs font-semibold flex-shrink-0 ${badgeClass}`}>
-                    {dreyfus}
-                  </span>
-                  <span className="flex-1 text-xs italic text-muted-foreground bg-lm-subtle px-3 py-1 rounded min-w-0">
-                    {guidance}
-                  </span>
-                </div>
-              );
-            })}
+          <CardContent className="pt-4 pb-5">
+            {/* LMQ + grade summary row */}
+            <div className="flex items-center gap-3 mb-5 pb-4 border-b border-lm-sunken flex-wrap">
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-lm-ink-muted">LMQ Level</span>
+                <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-lm-dark text-white text-sm font-bold font-display">{instructor.lmqLevel}</span>
+              </div>
+              <div className="w-px h-4 bg-lm-sunken" />
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-lm-ink-muted">Grades</span>
+                {KEY_ELEMENTS.map(el => {
+                  const g = getGrade(instructor, el);
+                  return (
+                    <span key={el} className="text-[10px] font-semibold text-lm-ink-mid">
+                      {KEY_ELEMENT_LABELS[el].slice(0,3)}: <span className={g ? 'text-lm-dark font-bold' : 'text-lm-ink-muted'}>{g ? `G${g}` : '—'}</span>
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              {KEY_ELEMENTS.map(element => {
+                const grade = getGrade(instructor, element);
+                const dreyfus = getDreyfusStage(grade, element, instructor.stage);
+                const guidance = DREYFUS_GUIDANCE[dreyfus];
+                const badgeClass = DREYFUS_BADGE[dreyfus];
+                const GRADE_PILL: Record<number, string> = {
+                  1: 'bg-lm-subtle text-lm-ink-mid border border-lm-sunken',
+                  2: 'bg-amber-50 text-amber-700 border border-amber-200',
+                  3: 'bg-green-50 text-green-700 border border-green-200',
+                };
+                return (
+                  <div key={element} className="space-y-1.5">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-semibold text-lm-dark flex-1">{KEY_ELEMENT_LABELS[element]}</span>
+                      {grade !== null && (
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${GRADE_PILL[grade]}`}>
+                          G{grade}{element === 'choreography' && grade === 2 ? ' (max)' : ''}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2 flex-wrap pl-0">
+                      <span className={`px-2 py-0.5 rounded text-[11px] font-semibold flex-shrink-0 ${badgeClass}`}>
+                        {dreyfus}
+                      </span>
+                      <span className="flex-1 text-xs italic text-muted-foreground bg-lm-subtle px-3 py-1 rounded min-w-0">
+                        {guidance}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </CardContent>
         </Card>
 
@@ -328,18 +382,15 @@ export function InstructorProfile({ instructorId, onBack, source }: InstructorPr
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {completedAssessments.map(a => {
-                    const assessorCoach = coaches.find(c => c.id === a.assessorId);
-                    return (
-                      <tr key={a.id}>
-                        <td className="py-2 pr-3 text-xs">{a.date}</td>
-                        <td className="py-2 pr-3 text-xs">{a.program}</td>
-                        <td className="py-2 pr-3 text-xs">{TYPE_LABELS[a.type] ?? a.type}</td>
-                        <td className="py-2 pr-3 text-xs">{assessorCoach?.name ?? a.assessorId}</td>
-                        <td className="py-2 text-xs text-right font-medium">L{a.overallLevel}</td>
-                      </tr>
-                    );
-                  })}
+                  {completedAssessments.map(a => (
+                    <tr key={a.id}>
+                      <td className="py-2 pr-3 text-xs">{a.date}</td>
+                      <td className="py-2 pr-3 text-xs">{a.program}</td>
+                      <td className="py-2 pr-3 text-xs">{TYPE_LABELS[a.type] ?? a.type}</td>
+                      <td className="py-2 pr-3 text-xs text-muted-foreground">—</td>
+                      <td className="py-2 text-xs text-right font-medium">L{a.overallLevel}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             )}
@@ -364,7 +415,127 @@ export function InstructorProfile({ instructorId, onBack, source }: InstructorPr
           </CardContent>
         </Card>
 
+        {/* Section 6: LM Journey */}
+        {(() => {
+          const lmProgramSet = new Set(LM_PROGRAMS);
+          const nonLmPrograms = instructor.programs.filter(p => !lmProgramSet.has(p.name));
+          const lmProgramsOnProfile = instructor.programs.filter(p => lmProgramSet.has(p.name));
+          const hasLm = lmProgramsOnProfile.length > 0;
+          const hasNonLm = nonLmPrograms.length > 0;
+          const noPrograms = instructor.programs.length === 0;
+
+          return (
+            <Card>
+              <CardHeader className="p-0">
+                <div className="px-5 py-3 bg-[#0d0d0d] rounded-t-lg border-b border-white/8 flex items-center gap-3">
+                  <div className="w-1 h-8 rounded-full bg-lm-green/80 flex-shrink-0" />
+                  <div>
+                    <CardTitle className="text-white text-sm leading-tight">LM Journey</CardTitle>
+                    <p className="text-white/40 text-xs mt-0.5">Pathway to Les Mills certification & development</p>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="pt-5 space-y-5">
+
+                {/* 5 Key Elements universal note */}
+                <div className="rounded-lg bg-lm-subtle border border-lm-sunken px-4 py-3">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-lm-ink-muted mb-1.5">Universal Framework</p>
+                  <p className="text-xs text-lm-dark leading-relaxed">
+                    The 5 Key Elements — Choreography, Technique, Coaching, Connection, and Performance — are the foundation of great group fitness instruction regardless of format. Every assessment in this app uses this framework, whether the instructor teaches Les Mills or any other program.
+                  </p>
+                </div>
+
+                {/* LM program status */}
+                {hasLm && (
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-lm-ink-muted mb-2">Active LM Programs</p>
+                    <div className="flex flex-wrap gap-2">
+                      {lmProgramsOnProfile.map(p => (
+                        <span key={p.name} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-lm-dark text-white">
+                          {p.name}
+                          <span className="text-lm-green font-bold">LMQ {p.lmqLevel}</span>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Non-LM programs with pathway nudge */}
+                {(hasNonLm || noPrograms) && (
+                  <div className="rounded-lg border-2 border-dashed border-lm-green/30 px-4 py-4 space-y-3">
+                    <div className="flex items-start gap-2">
+                      <div className="w-2 h-2 rounded-full bg-lm-green flex-shrink-0 mt-1.5" />
+                      <div>
+                        <p className="text-xs font-bold text-lm-dark">
+                          {noPrograms ? 'No programs added yet' : `Teaching ${nonLmPrograms.map(p => p.name).join(', ')} — not yet LM certified`}
+                        </p>
+                        <p className="text-xs text-lm-ink-muted mt-0.5 leading-relaxed">
+                          The skills being developed here directly translate to LM certification. Grade 1 competency across all 5 Key Elements is the readiness signal for LM Initial Training.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2 pl-4">
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-lm-ink-muted">LM Pathway Steps</p>
+                      {[
+                        { step: '1', label: 'Build G1 across all 5 Key Elements', done: KEY_ELEMENTS.every(el => (instructor.grades.find(g => g.element === el)?.grade ?? 0) >= 1) },
+                        { step: '2', label: 'Recommend Initial Training (IT) for a suitable LM program', done: false },
+                        { step: '3', label: 'Support through IT → Certification (Stage 1 & 2)', done: instructor.stage >= 3 },
+                        { step: '4', label: 'First timetable slot — coach through Stage 3', done: instructor.stage >= 4 },
+                        { step: '5', label: 'Ongoing LMQ development through regular assessment', done: instructor.lmqLevel >= 4 },
+                      ].map(({ step, label, done }) => (
+                        <div key={step} className="flex items-start gap-2.5">
+                          <div className={`w-4 h-4 rounded-full flex-shrink-0 flex items-center justify-center text-[9px] font-bold mt-0.5 ${done ? 'bg-lm-green text-lm-dark' : 'bg-lm-sunken text-lm-ink-muted'}`}>
+                            {done ? '✓' : step}
+                          </div>
+                          <span className={`text-xs leading-snug ${done ? 'text-lm-ink-mid line-through' : 'text-lm-dark'}`}>{label}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Key element → LM program alignment */}
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-lm-ink-muted mb-3">Key Element → LM Program Alignment</p>
+                  <div className="space-y-2">
+                    {([
+                      { element: 'Choreography', programs: 'BODYPUMP · BODYCOMBAT · BODYATTACK · BODYSTEP', note: 'Accuracy and timing under a structured release framework.' },
+                      { element: 'Technique', programs: 'All LM Programs', note: 'LMQ level directly reflects technique mastery and self-correction.' },
+                      { element: 'Coaching', programs: 'BODYPUMP · RPM · LES MILLS CORE', note: 'CRC framework — Connect, Recommend, Commend — is the LM coaching model.' },
+                      { element: 'Connection', programs: 'BODYJAM · LES MILLS DANCE · BORN TO MOVE', note: 'Look, See & Respond. Making every participant feel seen.' },
+                      { element: 'Performance', programs: 'BODYCOMBAT · BODYATTACK · RPM · THE TRIP', note: 'Commitment to the release energy. Leading from the front.' },
+                    ] as const).map(({ element, programs, note }) => (
+                      <div key={element} className="flex gap-3 py-2 border-b border-lm-sunken last:border-0">
+                        <div className="w-24 flex-shrink-0">
+                          <p className="text-[11px] font-bold text-lm-dark">{element}</p>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[10px] font-semibold text-lm-ink-mid truncate">{programs}</p>
+                          <p className="text-[10px] text-lm-ink-muted leading-relaxed mt-0.5">{note}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+              </CardContent>
+            </Card>
+          );
+        })()}
+
       </div>
+
+      <AssessGradesSheet
+        open={assessOpen}
+        onClose={() => setAssessOpen(false)}
+        instructor={instructor}
+      />
+      <AssessTrustSheet
+        open={trustAssessOpen}
+        onClose={() => setTrustAssessOpen(false)}
+        instructor={instructor}
+      />
     </div>
   );
 }

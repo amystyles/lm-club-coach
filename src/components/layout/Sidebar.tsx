@@ -1,13 +1,9 @@
 import { useState } from 'react';
-import { Users } from 'lucide-react';
-import { ChevronDown, Menu, X } from 'lucide-react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { Users, LogOut } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
+import { useAuth } from '@/context/AuthContext';
+import { signOut } from '@/lib/auth';
 
 interface SidebarProps {
   activePage: string;
@@ -73,11 +69,9 @@ const navItems: NavItem[] = [
   },
 ];
 
-type RoleType = 'Coach' | 'GFM' | 'Instructor';
-
 export const Sidebar = ({ activePage, onNavigate }: SidebarProps) => {
   const [collapsed, setCollapsed] = useState(false);
-  const [role, setRole] = useState<RoleType>('Coach');
+  const { profile, isAdmin } = useAuth();
 
   return (
     <div
@@ -120,7 +114,7 @@ export const Sidebar = ({ activePage, onNavigate }: SidebarProps) => {
 
       {/* ── Nav Items ── */}
       <nav className="flex-1 px-2 py-4 space-y-0.5 overflow-y-auto">
-        {navItems.map((item) => {
+        {[...navItems, ...(isAdmin ? [{ id: 'add-coach', label: 'Add Coach', icon: <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-3-3a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" /></svg> }] : [])].map((item) => {
           const isActive = activePage === item.id;
           return (
             <button
@@ -146,33 +140,30 @@ export const Sidebar = ({ activePage, onNavigate }: SidebarProps) => {
 
       <Separator />
 
-      {/* ── Role Section ── */}
-      <div className="p-4 space-y-2">
+      {/* ── User / Sign Out ── */}
+      <div className="p-4">
         {!collapsed ? (
-          <>
-            <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
-              Current Role
-            </p>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="w-full flex items-center justify-between px-3 py-2 rounded-lg border border-border text-sm font-medium text-lm-dark hover:bg-lm-subtle transition-colors focus:outline-none">
-                  {role}
-                  <ChevronDown className="w-3.5 h-3.5 text-lm-ink-muted" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="w-48">
-                <DropdownMenuItem onClick={() => setRole('Coach')}>Coach</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setRole('GFM')}>GFM</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setRole('Instructor')}>Instructor</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </>
-        ) : (
-          <div className="flex justify-center">
-            <div className="w-8 h-8 rounded-lg bg-lm-subtle flex items-center justify-center text-xs font-bold text-lm-ink-mid">
-              {role.charAt(0)}
+          <div className="flex items-center justify-between gap-2">
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-lm-dark truncate">{profile?.name}</p>
+              <p className="text-[11px] text-muted-foreground truncate">{profile?.title}</p>
             </div>
+            <button
+              onClick={signOut}
+              title="Sign out"
+              className="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-md text-muted-foreground hover:text-lm-dark hover:bg-lm-subtle transition-colors focus:outline-none"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
           </div>
+        ) : (
+          <button
+            onClick={signOut}
+            title="Sign out"
+            className="w-full flex justify-center items-center h-8 rounded-md text-muted-foreground hover:text-lm-dark hover:bg-lm-subtle transition-colors focus:outline-none"
+          >
+            <LogOut className="w-4 h-4" />
+          </button>
         )}
       </div>
     </div>

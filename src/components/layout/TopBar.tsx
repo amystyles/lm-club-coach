@@ -9,13 +9,23 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Bell, Search } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
+import { signOut } from '@/lib/auth';
 
 interface TopBarProps {
   pageTitle: string;
   subtitle?: string;
 }
 
+function nameInitials(name: string | undefined): string {
+  if (!name) return '?';
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  return parts[0].slice(0, 2).toUpperCase();
+}
+
 export const TopBar = (_props: TopBarProps) => {
+  const { profile } = useAuth();
   return (
     <div className="fixed top-0 left-0 right-0 h-14 bg-card border-b border-border flex items-center justify-between px-6 z-30 ml-64 transition-all duration-300">
       {/* Left: Search */}
@@ -57,21 +67,21 @@ export const TopBar = (_props: TopBarProps) => {
             <Button variant="ghost" className="h-9 px-2 gap-2">
               <Avatar className="h-8 w-8">
                 <AvatarFallback className="bg-primary text-primary-foreground text-xs font-bold">
-                  SM
+                  {nameInitials(profile?.name)}
                 </AvatarFallback>
               </Avatar>
-              <span className="text-sm font-medium hidden sm:inline">Sarah M.</span>
+              <span className="text-sm font-medium hidden sm:inline">
+                {profile?.name}
+              </span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem disabled className="text-xs text-muted-foreground">
-              Sarah Mitchell
+              {profile?.name}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Sign Out</DropdownMenuItem>
+            <DropdownMenuItem onClick={signOut}>Sign Out</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

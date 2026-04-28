@@ -1,11 +1,8 @@
 import { useState, useMemo } from 'react';
 import type { Instructor } from '@/data/types';
-import {
-  instructors,
-  STAGE_DATA,
-  KEY_ELEMENT_LABELS,
-  LM_PROGRAMS,
-} from '@/data/mock-data';
+import { STAGE_DATA, KEY_ELEMENT_LABELS, LM_PROGRAMS } from '@/data/mock-data';
+import { useData } from '@/context/DataContext';
+import AddInstructorSheet from '@/components/AddInstructorSheet';
 import {
   Table,
   TableHeader,
@@ -72,6 +69,9 @@ function formatDate(dateString: string): string {
 }
 
 export default function TeamRoster({ onViewInstructor }: TeamRosterProps) {
+  const { instructors, loading } = useData();
+
+  const [addOpen, setAddOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [stageFilter, setStageFilter] = useState('all');
   const [programFilter, setProgramFilter] = useState('all');
@@ -120,7 +120,11 @@ export default function TeamRoster({ onViewInstructor }: TeamRosterProps) {
     });
 
     return filtered;
-  }, [searchTerm, stageFilter, programFilter, riskFilter, sortBy]);
+  }, [instructors, searchTerm, stageFilter, programFilter, riskFilter, sortBy]);
+
+  if (loading) {
+    return <div className="p-8 text-muted-foreground text-sm">Loading roster…</div>;
+  }
 
   const getStageName = (stage: number): string => {
     const stageData = STAGE_DATA.find((s) => s.stage === stage);
@@ -172,6 +176,7 @@ export default function TeamRoster({ onViewInstructor }: TeamRosterProps) {
             <p className="text-white/40 text-sm">{instructors.length} instructors across {STAGE_DATA.length} development stages</p>
           </div>
           <button
+            onClick={() => setAddOpen(true)}
             className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold transition-colors focus:outline-none"
             style={{ backgroundColor: '#00FF63', color: '#0A0A0A' }}
           >
@@ -468,6 +473,7 @@ export default function TeamRoster({ onViewInstructor }: TeamRosterProps) {
         </div>
       </Card>
       </div>
+      <AddInstructorSheet open={addOpen} onClose={() => setAddOpen(false)} />
     </div>
   );
 }

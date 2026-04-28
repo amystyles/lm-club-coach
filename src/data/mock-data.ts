@@ -71,6 +71,7 @@ export const instructors: Instructor[] = [
       { element: 'performance', grade: 2, lastAssessed: '2026-02-12' },
     ],
     priorityElement: 'connection',
+    trustOverrides: {},
     goals: ['Achieve Connection Grade 2 by Q2', 'Use participant names genuinely 3x per class', 'Begin Look, See & Respond practice'],
   },
   {
@@ -86,6 +87,7 @@ export const instructors: Instructor[] = [
       { element: 'coaching', grade: 1, lastAssessed: '2026-03-01' },
     ],
     priorityElement: 'choreography',
+    trustOverrides: {},
     goals: ['Complete IMT within 2 weeks', 'Submit certification video by Day 30', 'Achieve Choreography Grade 1 consistently'],
   },
   {
@@ -104,6 +106,7 @@ export const instructors: Instructor[] = [
       { element: 'performance', grade: 2, lastAssessed: '2026-01-15' },
     ],
     priorityElement: 'coaching',
+    trustOverrides: {},
     goals: ['Achieve Coaching Grade 3', 'Begin Presenter pathway', 'Mentor 1 new instructor this quarter'],
   },
   {
@@ -121,6 +124,7 @@ export const instructors: Instructor[] = [
       { element: 'performance', grade: 1, lastAssessed: '2025-12-10' },
     ],
     priorityElement: 'technique',
+    trustOverrides: {},
     goals: ['Secure regular timetable slot within 8 weeks', 'Team-teach 3 classes with mentor', 'Build Technique to G2'],
   },
   {
@@ -139,6 +143,7 @@ export const instructors: Instructor[] = [
       { element: 'performance', grade: 1, lastAssessed: '2026-02-28' },
     ],
     priorityElement: 'performance',
+    trustOverrides: {},
     goals: ['Achieve Performance Grade 2', 'Work on dramatic contrast', 'Master team-teaching with music'],
   },
   {
@@ -156,6 +161,7 @@ export const instructors: Instructor[] = [
       { element: 'performance', grade: 2, lastAssessed: '2026-01-20' },
     ],
     priorityElement: 'coaching',
+    trustOverrides: {},
     goals: ['Build Layer 2 coaching consistency', 'Achieve Coaching G2 by next quarter', 'Add ≥2 L2 cues per track'],
   },
   {
@@ -170,6 +176,7 @@ export const instructors: Instructor[] = [
       { element: 'coaching', grade: 1 },
     ],
     priorityElement: 'choreography',
+    trustOverrides: {},
     goals: ['Complete all pre-work videos', 'Observe 4+ live BODYPUMP classes', 'Practice allocated track with mentor'],
   },
   {
@@ -188,6 +195,7 @@ export const instructors: Instructor[] = [
       { element: 'performance', grade: 2, lastAssessed: '2026-03-01' },
     ],
     priorityElement: 'connection',
+    trustOverrides: {},
     goals: ['Achieve Connection G3', 'Begin TAP Coach pathway', 'Mentor 2 instructors this quarter'],
   },
 ];
