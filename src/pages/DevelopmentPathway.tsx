@@ -840,10 +840,10 @@ export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page:
                 <div
                   className="absolute top-0 left-0 right-0 rounded-t-xl transition-all duration-200"
                   style={{
-                    backgroundColor: stage.color,
+                    backgroundColor: '#00FF63',
                     height: isActive ? '5px' : '2px',
-                    opacity: isActive ? 1 : 0.25,
-                    boxShadow: isActive ? `0 0 12px ${stage.color}70` : 'none',
+                    opacity: isActive ? 1 : 0.2,
+                    boxShadow: isActive ? '0 0 12px rgba(0,255,99,0.5)' : 'none',
                   }}
                 />
                 {/* Ghost stage number background */}
