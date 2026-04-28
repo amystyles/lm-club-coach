@@ -179,7 +179,7 @@ export default function TrustMap({ instructor, onAssess }: TrustMapProps) {
           const color = LEVEL_COLORS[level - 1];
 
           return (
-            <div key={eta} className="flex items-center gap-3 py-2.5 border-b border-[#f4f4f4] last:border-0">
+            <div key={eta} className="flex items-center gap-3 py-2.5 border-b border-border last:border-0">
               <div className="flex-1 min-w-0">
                 <p className="text-sm text-lm-dark leading-snug">{eta}</p>
                 <div className="flex items-center gap-2 mt-0.5">
@@ -196,7 +196,7 @@ export default function TrustMap({ instructor, onAssess }: TrustMapProps) {
                     key={dot}
                     className="w-3 h-3 rounded-full transition-all"
                     style={{
-                      backgroundColor: dot <= level ? color : '#e2e8f0',
+                      backgroundColor: dot <= level ? color : 'hsl(var(--border))',
                     }}
                   />
                 ))}

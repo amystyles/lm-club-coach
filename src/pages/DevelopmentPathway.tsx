@@ -75,7 +75,7 @@ function BriefTab({ session, stageColor }: { session: Session; stageColor: strin
           <p className="text-lm-ink-mid text-xs mb-3 leading-relaxed">{session.keyElementFocus.title}</p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {session.keyElementFocus.elements.map((el) => (
-              <div key={el.name} className="bg-white rounded-xl border border-border p-4">
+              <div key={el.name} className="bg-card rounded-xl border border-border p-4">
                 <p className="font-bold text-lm-dark text-sm mb-1">{el.name}</p>
                 <p className="text-lm-ink-muted text-xs leading-relaxed">{el.description}</p>
               </div>
@@ -87,19 +87,19 @@ function BriefTab({ session, stageColor }: { session: Session; stageColor: strin
       {/* WHAT / WHY / HOW */}
       {cs && (
         <div className="space-y-4">
-          <div className="rounded-xl border border-border bg-white p-5 relative overflow-hidden">
+          <div className="rounded-xl border border-border bg-card p-5 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-1 h-full" style={{ backgroundColor: stageColor }} />
             <Badge className="text-[10px] tracking-wider uppercase font-bold px-2 py-0.5 mb-2" style={{ backgroundColor: stageColor, color: '#fff' }}>What</Badge>
             <p className="text-lm-dark text-sm font-medium leading-relaxed">{cs.what}</p>
           </div>
 
-          <div className="rounded-xl border border-border bg-white p-5 relative overflow-hidden">
+          <div className="rounded-xl border border-border bg-card p-5 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-1 h-full bg-lm-dark" />
             <Badge className="text-[10px] tracking-wider uppercase font-bold px-2 py-0.5 mb-2 bg-lm-dark text-white">Why</Badge>
             <p className="text-lm-dark text-sm font-medium leading-relaxed">{cs.why}</p>
           </div>
 
-          <div className="rounded-xl border border-border bg-white p-5 relative overflow-hidden">
+          <div className="rounded-xl border border-border bg-card p-5 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-1 h-full bg-lm-green" />
             <div className="flex items-center gap-2 mb-3">
               <Badge className="text-[10px] tracking-wider uppercase font-bold px-2 py-0.5 bg-lm-green text-lm-dark">How</Badge>
@@ -129,7 +129,7 @@ function BriefTab({ session, stageColor }: { session: Session; stageColor: strin
 
       {/* Fallback coach actions */}
       {!cs && session.content.map((section, idx) => (
-        <div key={idx} className="border border-border rounded-xl p-5 bg-white relative overflow-hidden">
+        <div key={idx} className="border border-border rounded-xl p-5 bg-card relative overflow-hidden">
           <div className="absolute top-0 left-0 w-1 h-full" style={{ backgroundColor: stageColor }} />
           <h4 className="font-bold text-lm-dark mb-3 text-sm flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4" style={{ color: stageColor }} />
@@ -190,7 +190,7 @@ function PlanTab({ session, stageColor }: { session: Session; stageColor: string
               >
                 {idx + 1}
               </div>
-              <div className="flex-1 rounded-xl border border-border bg-white p-5 hover:shadow-sm transition-shadow">
+              <div className="flex-1 rounded-xl border border-border bg-card p-5 hover:shadow-sm transition-shadow">
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <p className="font-bold text-lm-dark text-sm">{block.title}</p>
                   <span className="flex-shrink-0 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-lm-subtle text-lm-ink-mid border border-lm-sunken whitespace-nowrap">
@@ -206,9 +206,9 @@ function PlanTab({ session, stageColor }: { session: Session; stageColor: string
                   ))}
                 </ul>
                 {block.tip && (
-                  <div className="mt-3 flex items-start gap-2 rounded-lg bg-amber-50 border border-amber-100 px-3 py-2.5">
+                  <div className="mt-3 flex items-start gap-2 rounded-lg bg-amber-500/10 border border-amber-500/20 px-3 py-2.5">
                     <Info className="w-3.5 h-3.5 flex-shrink-0 mt-0.5 text-amber-600" />
-                    <p className="text-xs text-amber-800 leading-relaxed">{block.tip}</p>
+                    <p className="text-xs text-amber-700 dark:text-amber-400 leading-relaxed">{block.tip}</p>
                   </div>
                 )}
               </div>
@@ -243,7 +243,7 @@ function PromptsTab({ session, stageColor }: { session: Session; stageColor: str
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {cs.prompts.map((group) => (
-          <div key={group.label} className="rounded-xl border border-border bg-white p-5">
+          <div key={group.label} className="rounded-xl border border-border bg-card p-5">
             <p className="text-[10px] font-bold text-lm-dark uppercase tracking-[0.15em] mb-4 flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: stageColor }} />
               {group.label}
@@ -291,7 +291,7 @@ function NotesTab({ session }: { session: Session }) {
           <p className="text-lm-ink-mid text-sm mb-4 leading-relaxed">{session.instructorPreWork.description}</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {session.instructorPreWork.phases.map((phase) => (
-              <div key={phase.name} className="border border-border rounded-xl p-4 bg-white">
+              <div key={phase.name} className="border border-border rounded-xl p-4 bg-card">
                 <h5 className="font-bold text-lm-dark text-[10px] uppercase tracking-wider mb-3">{phase.name}</h5>
                 <ul className="space-y-2">
                   {phase.items.map((item, i) => (
@@ -309,7 +309,7 @@ function NotesTab({ session }: { session: Session }) {
 
       {/* Warning */}
       {session.warning && (
-        <Alert variant="destructive" className="bg-red-50 border-red-200 rounded-xl">
+        <Alert variant="destructive" className="bg-red-500/10 border-red-500/20 rounded-xl">
           <AlertTriangle className="h-4 w-4 text-red-600" />
           <AlertDescription className="text-red-800 mt-1 leading-relaxed">{session.warning.description}</AlertDescription>
         </Alert>
@@ -317,13 +317,13 @@ function NotesTab({ session }: { session: Session }) {
 
       {/* Pro Tip */}
       {session.proTip && (
-        <div className="rounded-xl border border-amber-200 bg-amber-50/60 p-4 flex items-start gap-3">
+        <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-4 flex items-start gap-3">
           <div className="w-7 h-7 rounded-lg flex items-center justify-center bg-amber-100 flex-shrink-0">
             <Info className="w-3.5 h-3.5 text-amber-700" />
           </div>
           <div>
             <p className="font-bold text-amber-900 text-[10px] uppercase tracking-wider mb-1">Pro Tip</p>
-            <p className="text-amber-800 text-sm leading-relaxed">{session.proTip}</p>
+            <p className="text-amber-700 dark:text-amber-400 text-sm leading-relaxed">{session.proTip}</p>
           </div>
         </div>
       )}
@@ -340,7 +340,7 @@ function NotesTab({ session }: { session: Session }) {
           onChange={(e) => setNotes(e.target.value)}
           placeholder="What did you observe? Strengths, gaps, follow-up items..."
           rows={5}
-          className="w-full rounded-lg border border-border bg-white px-4 py-3 text-sm text-lm-ink-mid placeholder:text-lm-ink-muted/50 focus:outline-none focus:ring-2 focus:ring-lm-green focus:border-transparent resize-y"
+          className="w-full rounded-lg border border-border bg-card px-4 py-3 text-sm text-lm-ink-mid placeholder:text-lm-ink-muted/50 focus:outline-none focus:ring-2 focus:ring-lm-green focus:border-transparent resize-y"
         />
       </div>
     </div>
@@ -476,7 +476,7 @@ function ActivityDetail({
             {item.duration}
           </span>
           {isDone && (
-            <span className="inline-flex items-center gap-1 text-xs font-semibold text-green-700 bg-green-50 border border-green-200 px-2.5 py-1 rounded-full">
+            <span className="inline-flex items-center gap-1 text-xs font-semibold text-green-700 dark:text-green-400 bg-green-500/10 border border-green-500/20 px-2.5 py-1 rounded-full">
               <CheckCircle2 className="w-3 h-3" />
               Completed
             </span>
@@ -497,7 +497,7 @@ function ActivityDetail({
             href="#"
             data-program={item.video.program}
             data-video-type="masterclass"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-lm-dark bg-white border border-border px-3 py-1.5 rounded-lg hover:bg-lm-subtle transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-lm-dark bg-card border border-border px-3 py-1.5 rounded-lg hover:bg-lm-subtle transition-colors"
           >
             {item.video.label}
             <ArrowUpRight className="w-3 h-3" />
@@ -615,7 +615,7 @@ function ActivitiesView({ groups }: { groups: KEActivityGroup[] }) {
         {groups.map((group, gi) => {
           const groupChecked = group.items.filter((_, ii) => checked[makeKey(gi, ii)]).length;
           return (
-            <div key={group.element} className="bg-white rounded-2xl border border-border overflow-hidden shadow-sm">
+            <div key={group.element} className="bg-card rounded-2xl border border-border overflow-hidden shadow-sm">
               {/* KE header */}
               <div className="px-5 py-4 flex items-center justify-between" style={{ borderBottom: `3px solid ${group.color}` }}>
                 <div className="flex items-center gap-2.5">
@@ -873,7 +873,7 @@ export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page:
             {/* ── Left: Session List + Tools ── */}
             <div className="w-full lg:w-64 flex-shrink-0 space-y-4 lg:sticky lg:top-6">
               {/* Sessions */}
-              <div className="bg-white rounded-2xl border border-border p-4 shadow-sm">
+              <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
                 <div className="px-1 mb-6 pb-3 border-b border-border">
                   <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-lm-ink-muted">Sessions</p>
                 </div>
@@ -890,7 +890,7 @@ export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page:
                 className={`w-full text-left rounded-2xl border p-4 shadow-sm transition-all focus:outline-none ${
                   viewMode === 'activities'
                     ? 'bg-lm-dark border-lm-dark'
-                    : 'bg-white border-border hover:border-lm-ink-muted/30'
+                    : 'bg-card border-border hover:border-lm-ink-muted/30'
                 }`}
               >
                 <div className="flex items-center gap-3">
@@ -911,7 +911,7 @@ export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page:
               </button>
 
               {/* Reference links */}
-              <div className="bg-white rounded-2xl border border-border p-4 shadow-sm">
+              <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
                 <div className="px-1 mb-3 pb-3 border-b border-border">
                   <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-lm-ink-muted">Reference</p>
                 </div>
@@ -942,7 +942,7 @@ export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page:
 
             {/* ── Right: Session Workspace / Activities ── */}
             <div className="flex-1 min-w-0">
-              <div className="bg-white rounded-2xl border border-border px-8 py-7 shadow-sm">
+              <div className="bg-card rounded-2xl border border-border px-8 py-7 shadow-sm">
                 {viewMode === 'activities' ? (
                   <ActivitiesView groups={currentStageData.keActivities || []} />
                 ) : currentSession ? (

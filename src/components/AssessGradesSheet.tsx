@@ -135,7 +135,7 @@ export default function AssessGradesSheet({ open, onClose, instructor }: Props) 
     <Sheet open={open} onOpenChange={v => !v && onClose()}>
       <SheetContent
         side="right"
-        className="p-0 w-full sm:max-w-[560px] flex flex-col overflow-hidden border-l border-[#e8e8e8]"
+        className="p-0 w-full sm:max-w-[560px] flex flex-col overflow-hidden border-l border-border"
         style={{ gap: 0 }}
       >
         {/* Header */}
@@ -219,27 +219,27 @@ export default function AssessGradesSheet({ open, onClose, instructor }: Props) 
                     onClick={() => !disabled && setGrade(activeElement, grade)}
                     className={`w-full text-left rounded-xl border-2 px-4 py-3.5 transition-all ${
                       disabled
-                        ? 'border-dashed border-[#e5e5e5] opacity-40 cursor-not-allowed'
+                        ? 'border-dashed border-border opacity-40 cursor-not-allowed'
                         : isSelected
                         ? 'border-lm-dark bg-lm-dark'
-                        : 'border-[#e8e8e8] hover:border-[#ccc] bg-white'
+                        : 'border-border hover:border-muted-foreground/30 bg-card'
                     }`}
                   >
                     <div className="flex items-start gap-3">
                       <div
                         className={`w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center text-[10px] font-bold mt-0.5 transition-all ${
-                          disabled ? 'bg-[#e5e5e5] text-[#aaa]'
-                          : isSelected ? 'text-lm-dark' : 'bg-[#f0f0f0] text-lm-ink-mid'
+                          disabled ? 'bg-muted text-muted-foreground'
+                          : isSelected ? 'text-lm-dark' : 'bg-muted text-muted-foreground'
                         }`}
                         style={isSelected && !disabled ? { backgroundColor: accentColor } : {}}
                       >
                         {grade}
                       </div>
                       <div className="min-w-0">
-                        <p className={`text-xs font-bold mb-0.5 ${isSelected ? 'text-white' : disabled ? 'text-[#aaa]' : 'text-lm-dark'}`}>
+                        <p className={`text-xs font-bold mb-0.5 ${isSelected ? 'text-white' : disabled ? 'text-muted-foreground' : 'text-lm-dark'}`}>
                           {label}
                         </p>
-                        <p className={`text-xs leading-relaxed ${isSelected ? 'text-white/70' : disabled ? 'text-[#bbb]' : 'text-lm-ink-muted'}`}>
+                        <p className={`text-xs leading-relaxed ${isSelected ? 'text-white/70' : disabled ? 'text-muted-foreground' : 'text-lm-ink-muted'}`}>
                           {desc}
                         </p>
                       </div>
@@ -263,7 +263,7 @@ export default function AssessGradesSheet({ open, onClose, instructor }: Props) 
             </div>
 
             {/* Grade summary */}
-            <div className="rounded-xl bg-[#f8f8f8] border border-[#eee] px-4 py-3">
+            <div className="rounded-xl bg-muted border border-border px-4 py-3">
               <p className="text-[10px] font-bold uppercase tracking-widest text-lm-ink-muted mb-2">All Elements</p>
               <div className="grid grid-cols-5 gap-2">
                 {KEY_ELEMENTS.map(el => {
@@ -278,8 +278,8 @@ export default function AssessGradesSheet({ open, onClose, instructor }: Props) 
                       <div
                         className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all"
                         style={{
-                          backgroundColor: isThis ? accentColor : '#e8e8e8',
-                          color: isThis ? '#000' : '#666',
+                          backgroundColor: isThis ? accentColor : 'hsl(var(--muted))',
+                          color: isThis ? '#000' : 'hsl(var(--muted-foreground))',
                         }}
                       >
                         {g}
@@ -296,7 +296,7 @@ export default function AssessGradesSheet({ open, onClose, instructor }: Props) 
         </div>
 
         {/* Footer */}
-        <div className="flex-shrink-0 px-7 py-5 border-t border-[#f0f0f0] bg-white flex items-center gap-3">
+        <div className="flex-shrink-0 px-7 py-5 border-t border-border bg-card flex items-center gap-3">
           <button
             onClick={handleSave}
             disabled={saving || saved}
@@ -313,7 +313,7 @@ export default function AssessGradesSheet({ open, onClose, instructor }: Props) 
           </button>
           <button
             onClick={onClose}
-            className="h-10 px-5 text-sm font-medium rounded-full border border-[#ddd] text-lm-ink-mid hover:bg-[#f5f5f5] transition-colors"
+            className="h-10 px-5 text-sm font-medium rounded-full border border-border text-lm-ink-mid hover:bg-muted transition-colors"
           >
             Cancel
           </button>

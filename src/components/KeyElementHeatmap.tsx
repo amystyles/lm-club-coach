@@ -13,9 +13,9 @@ const ELEMENTS = [
 type ElementKey = typeof ELEMENTS[number]['key'];
 
 const GRADE_STYLES: Record<number, string> = {
-  1: 'bg-red-50 text-red-700 border-red-200',
-  2: 'bg-amber-50 text-amber-700 border-amber-200',
-  3: 'bg-green-50 text-green-700 border-green-200',
+  1: 'bg-red-500/10 text-red-600 border-red-500/20 dark:text-red-400 dark:border-red-500/30',
+  2: 'bg-amber-500/10 text-amber-600 border-amber-500/20 dark:text-amber-400 dark:border-amber-500/30',
+  3: 'bg-green-500/10 text-green-700 border-green-500/20 dark:text-green-400 dark:border-green-500/30',
 };
 
 function getGrade(instructor: Instructor, element: ElementKey): number {

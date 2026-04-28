@@ -29,7 +29,7 @@ interface TeamRosterProps {
 
 const GRADE_COLORS: Record<number, string> = {
   1: 'bg-lm-subtle text-lm-dark border border-lm-sunken',
-  2: 'bg-red-50 text-lm-red border border-red-200',
+  2: 'bg-red-500/10 text-lm-red border border-red-500/20',
   3: 'bg-lm-green-mid text-lm-dark border border-lm-green/30',
 };
 
@@ -41,8 +41,8 @@ const GRADE_LABELS: Record<number, string> = {
 
 const RISK_COLORS: Record<string, string> = {
   low: 'bg-lm-subtle text-lm-ink-mid',
-  medium: 'bg-amber-50 text-amber-700 border border-amber-200',
-  high: 'bg-red-50 text-lm-red border border-red-200',
+  medium: 'bg-amber-500/10 text-amber-700 border border-amber-500/20 dark:text-amber-400',
+  high: 'bg-red-500/10 text-lm-red border border-red-500/20',
 };
 
 const KEY_ELEMENT_ORDER = [
@@ -212,7 +212,7 @@ export default function TeamRoster({ onViewInstructor }: TeamRosterProps) {
         </Card>
         <Card className={`border-t-2 ${atRiskCount > 0 ? 'border-t-lm-red' : 'border-t-lm-green'}`}>
           <CardContent className="p-4 flex items-center gap-3">
-            <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${atRiskCount > 0 ? 'bg-red-50' : 'bg-lm-subtle'}`}>
+            <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${atRiskCount > 0 ? 'bg-red-500/10' : 'bg-lm-subtle'}`}>
               <AlertTriangle className={`w-4 h-4 ${atRiskCount > 0 ? 'text-lm-red' : 'text-lm-ink-mid'}`} />
             </div>
             <div>
@@ -342,7 +342,7 @@ export default function TeamRoster({ onViewInstructor }: TeamRosterProps) {
                   <TableRow
                     key={instructor.id}
                     className={`border-b border-lm-sunken transition-colors cursor-pointer group ${
-                      isAtRisk ? 'hover:bg-red-50/50' : 'hover:bg-lm-subtle/60'
+                      isAtRisk ? 'hover:bg-red-500/5' : 'hover:bg-lm-subtle/60'
                     }`}
                     onClick={() => onViewInstructor(instructor.id, 'roster')}
                   >

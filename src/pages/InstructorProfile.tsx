@@ -23,9 +23,9 @@ function getGrade(instructor: Instructor, element: KeyElement): number | null {
 }
 
 function pillStyle(lmqLevel: number): string {
-  if (lmqLevel >= 7) return 'border border-green-200 text-green-700 bg-green-50';
-  if (lmqLevel >= 4) return 'border border-amber-200 text-amber-700 bg-amber-50';
-  return 'border border-red-200 text-red-700 bg-red-50';
+  if (lmqLevel >= 7) return 'border border-green-500/20 text-green-700 bg-green-500/10 dark:text-green-400 dark:border-green-500/30';
+  if (lmqLevel >= 4) return 'border border-amber-500/20 text-amber-700 bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/30';
+  return 'border border-red-500/20 text-red-600 bg-red-500/10 dark:text-red-400 dark:border-red-500/30';
 }
 
 type DreyfusStage = 'Not yet assessed' | 'Novice' | 'Advanced Beginner' | 'Competent' | 'Proficient' | 'Expert';
@@ -47,12 +47,12 @@ const DREYFUS_GUIDANCE: Record<DreyfusStage, string> = {
 };
 
 const DREYFUS_BADGE: Record<DreyfusStage, string> = {
-  'Not yet assessed': 'bg-slate-100 text-slate-500',
-  'Novice': 'bg-slate-100 text-slate-600',
-  'Advanced Beginner': 'bg-blue-50 text-blue-700',
-  'Competent': 'bg-amber-50 text-amber-700',
-  'Proficient': 'bg-green-50 text-green-700',
-  'Expert': 'bg-lm-dark text-white',
+  'Not yet assessed': 'bg-muted text-muted-foreground',
+  'Novice': 'bg-muted text-muted-foreground',
+  'Advanced Beginner': 'bg-blue-500/10 text-blue-700 dark:text-blue-400',
+  'Competent': 'bg-amber-500/10 text-amber-700 dark:text-amber-400',
+  'Proficient': 'bg-green-500/10 text-green-700 dark:text-green-400',
+  'Expert': 'bg-foreground text-background',
 };
 
 const TYPE_LABELS: Record<string, string> = {
@@ -225,7 +225,7 @@ export function InstructorProfile({ instructorId, onBack, source }: InstructorPr
               return (
                 <div key={element} className="flex items-center gap-3">
                   <span className="w-28 text-sm font-medium text-foreground flex-shrink-0">{label}</span>
-                  <div className="flex-1 h-4 bg-slate-100 rounded-full overflow-hidden">
+                  <div className="flex-1 h-4 bg-muted rounded-full overflow-hidden">
                     {grade !== null && (
                       <div className={`h-full rounded-full ${barWidthClass} ${barColorClass}`} />
                     )}
@@ -329,8 +329,8 @@ export function InstructorProfile({ instructorId, onBack, source }: InstructorPr
                 const badgeClass = DREYFUS_BADGE[dreyfus];
                 const GRADE_PILL: Record<number, string> = {
                   1: 'bg-lm-subtle text-lm-ink-mid border border-lm-sunken',
-                  2: 'bg-amber-50 text-amber-700 border border-amber-200',
-                  3: 'bg-green-50 text-green-700 border border-green-200',
+                  2: 'bg-amber-500/10 text-amber-700 border border-amber-500/20 dark:text-amber-400 dark:border-amber-500/30',
+                  3: 'bg-green-500/10 text-green-700 border border-green-500/20 dark:text-green-400 dark:border-green-500/30',
                 };
                 return (
                   <div key={element} className="space-y-1.5">

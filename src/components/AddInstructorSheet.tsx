@@ -62,8 +62,8 @@ interface Props {
   onClose: () => void;
 }
 
-const LABEL = 'text-[10px] font-bold uppercase tracking-[0.15em] text-[#666] mb-1.5 block';
-const SECTION = 'pb-6 border-b border-[#f0f0f0] last:border-0 last:pb-0';
+const LABEL = 'text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground mb-1.5 block';
+const SECTION = 'pb-6 border-b border-border last:border-0 last:pb-0';
 
 export default function AddInstructorSheet({ open, onClose }: Props) {
   const { activeClub } = useAuth();
@@ -143,7 +143,7 @@ export default function AddInstructorSheet({ open, onClose }: Props) {
     <Sheet open={open} onOpenChange={(v) => !v && onClose()}>
       <SheetContent
         side="right"
-        className="p-0 w-full sm:max-w-[480px] flex flex-col overflow-hidden border-l border-[#e8e8e8]"
+        className="p-0 w-full sm:max-w-[480px] flex flex-col overflow-hidden border-l border-border"
         style={{ gap: 0 }}
       >
         {/* Header */}
@@ -264,7 +264,7 @@ export default function AddInstructorSheet({ open, onClose }: Props) {
                       <button
                         type="button"
                         onClick={() => remove(idx)}
-                        className="w-7 h-7 flex-shrink-0 flex items-center justify-center rounded text-lm-ink-muted hover:text-lm-red hover:bg-red-50 transition-colors"
+                        className="w-7 h-7 flex-shrink-0 flex items-center justify-center rounded text-lm-ink-muted hover:text-lm-red hover:bg-red-500/10 transition-colors"
                       >
                         <X className="w-3.5 h-3.5" />
                       </button>
@@ -366,12 +366,12 @@ export default function AddInstructorSheet({ open, onClose }: Props) {
             </div>
 
             {serverError && (
-              <p className="text-xs text-lm-red bg-red-50 border border-red-200 rounded px-3 py-2">{serverError}</p>
+              <p className="text-xs text-lm-red bg-red-500/10 border border-red-500/20 rounded px-3 py-2">{serverError}</p>
             )}
           </div>
 
           {/* Footer */}
-          <div className="flex-shrink-0 px-7 py-5 border-t border-[#f0f0f0] bg-white flex items-center gap-3">
+          <div className="flex-shrink-0 px-7 py-5 border-t border-border bg-card flex items-center gap-3">
             <button
               type="submit"
               disabled={saving}

@@ -212,7 +212,7 @@ function LMQContextPanel({
     <div className="space-y-5">
       {/* Instructor + KE context */}
       {instructor && ke && (
-        <div className="rounded-xl border border-border bg-white p-5">
+        <div className="rounded-xl border border-border bg-card p-5">
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-lm-ink-muted mb-3">LMQ Context</p>
           <p className="font-bold text-lm-dark text-sm">{instructor.name}</p>
           <div className="flex items-center gap-2 mt-1 mb-4">
@@ -257,7 +257,7 @@ function LMQContextPanel({
 
       {/* Framework reminder */}
       {framework && (
-        <div className="rounded-xl border border-border bg-white p-5">
+        <div className="rounded-xl border border-border bg-card p-5">
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-lm-ink-muted mb-3">
             {framework === 'crc' ? 'CRC Method' : framework === 'grow' ? 'GROW Model' : 'E-P-E Method'}
           </p>
@@ -384,37 +384,37 @@ const DREYFUS_COACHING_GUIDANCE: Record<DreyfusStage, {
     register: 'No grade data yet — use your observation to calibrate the approach.',
     avoid: 'Assuming a level before you\'ve seen them teach this element.',
     example: 'Watch one class and note what\'s present before giving specific feedback.',
-    badge: 'bg-slate-100 text-slate-500',
+    badge: 'bg-muted text-muted-foreground',
   },
   'Novice': {
     register: 'Direct and specific. Use clear language — "Do this, then this."',
     avoid: 'Open-ended questions — they don\'t yet have the framework to answer them.',
     example: '"In the squat track, set up with feet hip-width, then cue depth before adding load."',
-    badge: 'bg-slate-100 text-slate-600',
+    badge: 'bg-muted text-muted-foreground',
   },
   'Advanced Beginner': {
     register: 'Demonstrate and explain why. Show them what good looks like.',
     avoid: 'Assuming they can self-diagnose — they see patterns but can\'t yet prioritise.',
     example: '"Watch how the timing changes when you start the cue before the transition — here\'s why that works."',
-    badge: 'bg-blue-50 text-blue-700',
+    badge: 'bg-blue-500/10 text-blue-700 dark:text-blue-400',
   },
   'Competent': {
     register: 'Ask questions, let them problem-solve. Use E-P-E (Elicit–Provide–Elicit).',
     avoid: 'Telling them the answer when they can find it themselves.',
     example: '"What did you notice about participant engagement in Track 3? What would you try differently?"',
-    badge: 'bg-amber-50 text-amber-700',
+    badge: 'bg-amber-500/10 text-amber-700 dark:text-amber-400',
   },
   'Proficient': {
     register: 'Prompt reflection, they lead. Use coaching-led questions.',
     avoid: 'Over-directing — they\'ll disengage if you treat them like a beginner.',
     example: '"You mentioned wanting to work on Connection — what did you see today that tells you where you are?"',
-    badge: 'bg-green-50 text-green-700',
+    badge: 'bg-green-500/10 text-green-700 dark:text-green-400',
   },
   'Expert': {
     register: 'Stretch and challenge. Thought-provoking questions. One precise observation.',
     avoid: 'Volume of feedback — at this level, less is more.',
     example: '"If that class was 90% of world-class, what do you think the last 10% is?"',
-    badge: 'bg-lm-dark text-white',
+    badge: 'bg-foreground text-background',
   },
 };
 
@@ -568,7 +568,7 @@ export default function FeedbackBuilder() {
           {/* ── Step 1: LMQ Context ── */}
           {step === 'context' && (
             <div className="space-y-4">
-              <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden space-y-0">
+              <div className="bg-card rounded-2xl border border-border shadow-sm overflow-hidden space-y-0">
                 <div className="px-5 py-3 bg-[#0d0d0d] flex items-center gap-3">
                   <div className="w-1 h-8 rounded-full bg-lm-green/80 flex-shrink-0" />
                   <div>
@@ -607,7 +607,7 @@ export default function FeedbackBuilder() {
                             key={element}
                             onClick={() => set({ keyElement: element })}
                             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 transition-all text-sm font-semibold focus:outline-none ${
-                              isSelected ? 'text-white shadow-sm' : 'border-lm-sunken text-lm-ink-mid hover:border-lm-ink-muted/30 bg-white'
+                              isSelected ? 'text-white shadow-sm' : 'border-lm-sunken text-lm-ink-mid hover:border-lm-ink-muted/30 bg-card'
                             }`}
                             style={isSelected ? { backgroundColor: KE_COLORS[element], borderColor: KE_COLORS[element] } : {}}
                           >
@@ -632,12 +632,12 @@ export default function FeedbackBuilder() {
                         {instructor.name} — {KEY_ELEMENT_LABELS[ke]}
                       </p>
                       <div className="grid grid-cols-2 gap-4">
-                        <div className="bg-white/70 rounded-lg p-3">
+                        <div className="bg-background/70 rounded-lg p-3">
                           <p className="text-[9px] font-bold uppercase tracking-widest text-lm-ink-muted mb-1">Current — Grade {currentGrade}</p>
                           <p className="text-xs text-lm-ink-mid leading-relaxed">{LMQ_GRADE_DESCRIPTORS[ke][currentGrade].description}</p>
                         </div>
                         {currentGrade < 3 && (
-                          <div className="bg-white/70 rounded-lg p-3">
+                          <div className="bg-background/70 rounded-lg p-3">
                             <p className="text-[9px] font-bold uppercase tracking-widest mb-1" style={{ color: keColor }}>
                               Target — Grade {currentGrade + 1}
                             </p>
@@ -657,7 +657,7 @@ export default function FeedbackBuilder() {
                       className={`flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-full border transition-all focus:outline-none ${
                         obsOpen
                           ? 'bg-lm-dark text-white border-lm-dark'
-                          : 'bg-white text-lm-ink-mid border-lm-sunken hover:border-lm-ink-muted/40'
+                          : 'bg-card text-lm-ink-mid border-border hover:border-lm-ink-muted/40'
                       }`}
                     >
                       <Eye className="w-3.5 h-3.5" />
@@ -684,7 +684,7 @@ export default function FeedbackBuilder() {
 
               {/* ── Observation Framework Panel ── */}
               {obsOpen && (
-                <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden">
+                <div className="bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
                   <div className="px-5 py-3 bg-[#0d0d0d] flex items-center gap-3">
                     <div className="w-1 h-8 rounded-full bg-lm-green/80 flex-shrink-0" />
                     <div>
@@ -695,8 +695,8 @@ export default function FeedbackBuilder() {
 
                   <div className="p-6 space-y-6">
                     {/* Rule callout */}
-                    <div className="rounded-xl bg-amber-50 border border-amber-200 px-4 py-3">
-                      <p className="text-xs text-amber-800 leading-relaxed">
+                    <div className="rounded-xl bg-amber-500/10 border border-amber-500/20 px-4 py-3">
+                      <p className="text-xs text-amber-700 dark:text-amber-400 leading-relaxed">
                         <span className="font-bold">Write what you SAW, not what you THINK about what you saw.</span>{' '}
                         "Instructor looked at the back row twice in Track 3" is an observation. "Instructor doesn't connect with the back row" is an interpretation.
                       </p>
@@ -723,7 +723,7 @@ export default function FeedbackBuilder() {
                             </button>
                           </div>
                           {gradeOpen && (
-                            <div className="px-4 py-3 bg-white border-b border-lm-sunken grid grid-cols-3 gap-3">
+                            <div className="px-4 py-3 bg-card border-b border-border grid grid-cols-3 gap-3">
                               {(['g1', 'g2', 'g3'] as const).map((g, idx) => (
                                 <div key={g} className="rounded-lg bg-lm-subtle p-2.5">
                                   <p className="text-[9px] font-bold uppercase tracking-widest mb-1" style={{ color: idx === 2 ? color : undefined }}>
@@ -734,7 +734,7 @@ export default function FeedbackBuilder() {
                               ))}
                             </div>
                           )}
-                          <div className="p-4 bg-white">
+                          <div className="p-4 bg-card">
                             <Textarea
                               value={obsNotes[element] ?? ''}
                               onChange={(e) => setObsNotes((prev) => ({ ...prev, [element]: e.target.value }))}
@@ -763,7 +763,7 @@ export default function FeedbackBuilder() {
                                 <ChevronDown className={`w-3.5 h-3.5 text-lm-ink-muted transition-transform ${isOpen ? 'rotate-180' : ''}`} />
                               </button>
                               {isOpen && (
-                                <div className="p-3 bg-white">
+                                <div className="p-3 bg-card">
                                   <Textarea
                                     value={trackNotes[track] ?? ''}
                                     onChange={(e) => setTrackNotes((prev) => ({ ...prev, [track]: e.target.value }))}
@@ -786,7 +786,7 @@ export default function FeedbackBuilder() {
 
           {/* ── Step 2: Framework ── */}
           {step === 'framework' && (
-            <div className="bg-white rounded-2xl border border-border p-8 shadow-sm space-y-8">
+            <div className="bg-card rounded-2xl border border-border p-8 shadow-sm space-y-8">
               <div>
                 <button onClick={() => setStep('context')} className="flex items-center gap-1.5 text-xs text-lm-ink-muted hover:text-lm-dark mb-4 transition-colors">
                   <ArrowLeft className="w-3.5 h-3.5" /> Back
@@ -829,7 +829,7 @@ export default function FeedbackBuilder() {
                       key={opt.id}
                       onClick={() => set({ framework: opt.id })}
                       className={`text-left rounded-xl border-2 p-6 transition-all focus:outline-none ${
-                        isSelected ? 'border-lm-dark bg-lm-subtle shadow-sm' : 'border-lm-sunken hover:border-lm-ink-muted/30 bg-white'
+                        isSelected ? 'border-lm-dark bg-lm-subtle shadow-sm' : 'border-lm-sunken hover:border-lm-ink-muted/30 bg-card'
                       }`}
                     >
                       <div className="flex items-start justify-between gap-3 mb-3">
@@ -870,7 +870,7 @@ export default function FeedbackBuilder() {
 
           {/* ── Step 3: Build ── */}
           {step === 'build' && (
-            <div className="bg-white rounded-2xl border border-border p-8 shadow-sm space-y-8">
+            <div className="bg-card rounded-2xl border border-border p-8 shadow-sm space-y-8">
               <div>
                 <button onClick={() => setStep('framework')} className="flex items-center gap-1.5 text-xs text-lm-ink-muted hover:text-lm-dark mb-4 transition-colors">
                   <ArrowLeft className="w-3.5 h-3.5" /> Back
@@ -910,7 +910,7 @@ export default function FeedbackBuilder() {
                       <ChevronDown className={`w-4 h-4 text-lm-ink-muted transition-transform ${coachingGuideOpen ? 'rotate-180' : ''}`} />
                     </button>
                     {coachingGuideOpen && (
-                      <div className="px-4 py-4 space-y-3 bg-white">
+                      <div className="px-4 py-4 space-y-3 bg-card">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                           <div className="rounded-lg bg-lm-subtle p-3">
                             <p className="text-[9px] font-bold uppercase tracking-widest text-lm-ink-muted mb-1">Register</p>
@@ -947,7 +947,7 @@ export default function FeedbackBuilder() {
                     <ChevronDown className={`w-4 h-4 text-lm-ink-muted transition-transform ${obsNotesInStep3Open ? 'rotate-180' : ''}`} />
                   </button>
                   {obsNotesInStep3Open && (
-                    <div className="px-4 py-3 bg-white">
+                    <div className="px-4 py-3 bg-card">
                       <p className="text-xs text-lm-ink-mid leading-relaxed whitespace-pre-wrap">{obsNotes[ke]}</p>
                     </div>
                   )}
@@ -1058,7 +1058,7 @@ export default function FeedbackBuilder() {
                     End every conversation with one specific if-then plan. Goals with if-then plans are completed ~3× more often.
                   </p>
                 </div>
-                <div className="p-5 space-y-4 bg-white">
+                <div className="p-5 space-y-4 bg-card">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <p className="text-[10px] font-bold uppercase tracking-widest text-lm-ink-muted mb-1.5">IF</p>
@@ -1112,7 +1112,7 @@ export default function FeedbackBuilder() {
                         <ChevronDown className={`w-3.5 h-3.5 text-lm-ink-muted transition-transform ${intentionExamplesOpen ? 'rotate-180' : ''}`} />
                       </button>
                       {intentionExamplesOpen && (
-                        <div className="px-3 py-3 space-y-2.5 bg-white">
+                        <div className="px-3 py-3 space-y-2.5 bg-card">
                           {INTENTION_EXAMPLES[ke].map((ex, i) => (
                             <button
                               key={i}
@@ -1150,7 +1150,7 @@ export default function FeedbackBuilder() {
 
           {/* ── Step 4: Review ── */}
           {step === 'review' && (
-            <div className="bg-white rounded-2xl border border-border p-8 shadow-sm space-y-8">
+            <div className="bg-card rounded-2xl border border-border p-8 shadow-sm space-y-8">
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-lm-ink-muted mb-1">Step 4</p>
                 <h2 className="text-xl font-display font-bold text-lm-dark">Review & Deliver</h2>

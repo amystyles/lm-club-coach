@@ -73,7 +73,7 @@ function BriefTab({ session, stageColor }: { session: Session; stageColor: strin
           <p className="text-lm-ink-mid text-xs mb-3 leading-relaxed">{session.keyElementFocus.title}</p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {session.keyElementFocus.elements.map((el) => (
-              <div key={el.name} className="bg-white rounded-xl border border-border p-4">
+              <div key={el.name} className="bg-card rounded-xl border border-border p-4">
                 <p className="font-bold text-lm-dark text-sm mb-1">{el.name}</p>
                 <p className="text-lm-ink-muted text-xs leading-relaxed">{el.description}</p>
               </div>
@@ -84,19 +84,19 @@ function BriefTab({ session, stageColor }: { session: Session; stageColor: strin
 
       {cs && (
         <div className="space-y-4">
-          <div className="rounded-xl border border-border bg-white p-5 relative overflow-hidden">
+          <div className="rounded-xl border border-border bg-card p-5 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-1 h-full" style={{ backgroundColor: stageColor }} />
             <Badge className="text-[10px] tracking-wider uppercase font-bold px-2 py-0.5 mb-2" style={{ backgroundColor: stageColor, color: '#fff' }}>What</Badge>
             <p className="text-lm-dark text-sm font-medium leading-relaxed">{cs.what}</p>
           </div>
 
-          <div className="rounded-xl border border-border bg-white p-5 relative overflow-hidden">
+          <div className="rounded-xl border border-border bg-card p-5 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-1 h-full bg-lm-dark" />
             <Badge className="text-[10px] tracking-wider uppercase font-bold px-2 py-0.5 mb-2 bg-lm-dark text-white">Why</Badge>
             <p className="text-lm-dark text-sm font-medium leading-relaxed">{cs.why}</p>
           </div>
 
-          <div className="rounded-xl border border-border bg-white p-5 relative overflow-hidden">
+          <div className="rounded-xl border border-border bg-card p-5 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-1 h-full bg-lm-green" />
             <div className="flex items-center gap-2 mb-3">
               <Badge className="text-[10px] tracking-wider uppercase font-bold px-2 py-0.5 bg-lm-green text-lm-dark">How</Badge>
@@ -125,7 +125,7 @@ function BriefTab({ session, stageColor }: { session: Session; stageColor: strin
       )}
 
       {!cs && session.content.map((section, idx) => (
-        <div key={idx} className="border border-border rounded-xl p-5 bg-white relative overflow-hidden">
+        <div key={idx} className="border border-border rounded-xl p-5 bg-card relative overflow-hidden">
           <div className="absolute top-0 left-0 w-1 h-full" style={{ backgroundColor: stageColor }} />
           <h4 className="font-bold text-lm-dark mb-3 text-sm flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4" style={{ color: stageColor }} />
@@ -186,7 +186,7 @@ function PlanTab({ session, stageColor }: { session: Session; stageColor: string
               >
                 {idx + 1}
               </div>
-              <div className="flex-1 rounded-xl border border-border bg-white p-5 hover:shadow-sm transition-shadow">
+              <div className="flex-1 rounded-xl border border-border bg-card p-5 hover:shadow-sm transition-shadow">
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <p className="font-bold text-lm-dark text-sm">{block.title}</p>
                   <span className="flex-shrink-0 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-lm-subtle text-lm-ink-mid border border-lm-sunken whitespace-nowrap">
@@ -202,9 +202,9 @@ function PlanTab({ session, stageColor }: { session: Session; stageColor: string
                   ))}
                 </ul>
                 {block.tip && (
-                  <div className="mt-3 flex items-start gap-2 rounded-lg bg-amber-50 border border-amber-100 px-3 py-2.5">
+                  <div className="mt-3 flex items-start gap-2 rounded-lg bg-amber-500/10 border border-amber-500/20 px-3 py-2.5">
                     <Info className="w-3.5 h-3.5 flex-shrink-0 mt-0.5 text-amber-600" />
-                    <p className="text-xs text-amber-800 leading-relaxed">{block.tip}</p>
+                    <p className="text-xs text-amber-700 dark:text-amber-400 leading-relaxed">{block.tip}</p>
                   </div>
                 )}
               </div>
@@ -239,7 +239,7 @@ function PromptsTab({ session, stageColor }: { session: Session; stageColor: str
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {cs.prompts.map((group) => (
-          <div key={group.label} className="rounded-xl border border-border bg-white p-5">
+          <div key={group.label} className="rounded-xl border border-border bg-card p-5">
             <p className="text-[10px] font-bold text-lm-dark uppercase tracking-[0.15em] mb-4 flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: stageColor }} />
               {group.label}
@@ -268,20 +268,20 @@ function NotesTab({ session }: { session: Session }) {
   return (
     <div className="space-y-6">
       {session.warning && (
-        <Alert variant="destructive" className="bg-red-50 border-red-200 rounded-xl">
+        <Alert variant="destructive" className="bg-red-500/10 border-red-500/20 rounded-xl">
           <AlertTriangle className="h-4 w-4 text-red-600" />
           <AlertDescription className="text-red-800 mt-1 leading-relaxed">{session.warning.description}</AlertDescription>
         </Alert>
       )}
 
       {session.proTip && (
-        <div className="rounded-xl border border-amber-200 bg-amber-50/60 p-4 flex items-start gap-3">
+        <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-4 flex items-start gap-3">
           <div className="w-7 h-7 rounded-lg flex items-center justify-center bg-amber-100 flex-shrink-0">
             <Info className="w-3.5 h-3.5 text-amber-700" />
           </div>
           <div>
             <p className="font-bold text-amber-900 text-[10px] uppercase tracking-wider mb-1">Pro Tip</p>
-            <p className="text-amber-800 text-sm leading-relaxed">{session.proTip}</p>
+            <p className="text-amber-700 dark:text-amber-400 text-sm leading-relaxed">{session.proTip}</p>
           </div>
         </div>
       )}
@@ -297,7 +297,7 @@ function NotesTab({ session }: { session: Session }) {
           onChange={(e) => setNotes(e.target.value)}
           placeholder="What landed? What will you try? What questions came up?"
           rows={5}
-          className="w-full rounded-lg border border-border bg-white px-4 py-3 text-sm text-lm-ink-mid placeholder:text-lm-ink-muted/50 focus:outline-none focus:ring-2 focus:ring-lm-green focus:border-transparent resize-y"
+          className="w-full rounded-lg border border-border bg-card px-4 py-3 text-sm text-lm-ink-mid placeholder:text-lm-ink-muted/50 focus:outline-none focus:ring-2 focus:ring-lm-green focus:border-transparent resize-y"
         />
       </div>
     </div>
@@ -519,7 +519,7 @@ function ConversationTemplates() {
           )}
           <div className="space-y-2 pl-4">
             {section.items.map((item, i) => (
-              <div key={i} className="rounded-xl border border-border bg-white p-4">
+              <div key={i} className="rounded-xl border border-border bg-card p-4">
                 <div className="flex items-start gap-3">
                   {'step' in item && item.step && (
                     <span
@@ -564,17 +564,17 @@ function ObservationFramework() {
         <p className="text-sm text-lm-ink-muted mt-1">Structured template for class observation. Capture facts first — interpretation second.</p>
       </div>
 
-      <div className="rounded-xl border border-amber-200 bg-amber-50/60 p-4 flex items-start gap-3">
+      <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-4 flex items-start gap-3">
         <Info className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
         <div>
           <p className="text-xs font-bold text-amber-900 mb-1">Observation rule</p>
-          <p className="text-xs text-amber-800 leading-relaxed">Write facts first. Separate what you <em>saw</em> from what you <em>think</em> about what you saw. "Instructor looked at the back wall during the squat track" is a fact. "Instructor lacks confidence" is an interpretation.</p>
+          <p className="text-xs text-amber-700 dark:text-amber-400 leading-relaxed">Write facts first. Separate what you <em>saw</em> from what you <em>think</em> about what you saw. "Instructor looked at the back wall during the squat track" is a fact. "Instructor lacks confidence" is an interpretation.</p>
         </div>
       </div>
 
       <div className="space-y-4">
         {elements.map((el) => (
-          <div key={el.name} className="rounded-2xl border border-border bg-white overflow-hidden shadow-sm">
+          <div key={el.name} className="rounded-2xl border border-border bg-card overflow-hidden shadow-sm">
             <div className="px-5 py-3 flex items-center gap-2.5" style={{ borderBottom: `3px solid ${el.color}` }}>
               <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: el.color }} />
               <p className="text-sm font-bold text-lm-dark uppercase tracking-wider">{el.name}</p>
@@ -600,7 +600,7 @@ function ObservationFramework() {
         ))}
       </div>
 
-      <div className="rounded-xl border border-border bg-white p-5">
+      <div className="rounded-xl border border-border bg-card p-5">
         <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-lm-ink-muted mb-3">Track-by-track notes</p>
         <div className="space-y-3">
           {['Warm-up', 'Track 2', 'Track 3', 'Track 4', 'Track 5', 'Track 6', 'Cool-down'].map((track) => (
@@ -682,14 +682,14 @@ function IntentionBuilder() {
       <div className="rounded-2xl border-2 border-lm-green/30 bg-lm-green-mid p-6">
         <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-lm-dark mb-4">The Template</p>
         <div className="flex items-start gap-3 flex-wrap">
-          <div className="flex items-center gap-2 bg-white rounded-xl px-4 py-3 border border-lm-green/20 shadow-sm">
+          <div className="flex items-center gap-2 bg-card rounded-xl px-4 py-3 border border-lm-green/20 shadow-sm">
             <span className="text-[10px] font-bold uppercase tracking-wider text-lm-ink-muted">If</span>
             <span className="text-sm font-semibold text-lm-dark">[specific class moment]</span>
           </div>
           <div className="flex items-center self-center">
             <ChevronRight className="w-4 h-4 text-lm-ink-muted" />
           </div>
-          <div className="flex items-center gap-2 bg-white rounded-xl px-4 py-3 border border-lm-green/20 shadow-sm">
+          <div className="flex items-center gap-2 bg-card rounded-xl px-4 py-3 border border-lm-green/20 shadow-sm">
             <span className="text-[10px] font-bold uppercase tracking-wider text-lm-ink-muted">Then</span>
             <span className="text-sm font-semibold text-lm-dark">[specific behaviour I will do]</span>
           </div>
@@ -702,7 +702,7 @@ function IntentionBuilder() {
         <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-lm-ink-muted mb-3">Specificity Checklist</p>
         <div className="space-y-2">
           {checklist.map((item) => (
-            <div key={item.label} className="flex items-start gap-3 rounded-xl border border-border bg-white p-4">
+            <div key={item.label} className="flex items-start gap-3 rounded-xl border border-border bg-card p-4">
               <div className="w-4 h-4 rounded border-2 border-lm-ink-muted/30 flex-shrink-0 mt-0.5" />
               <div>
                 <p className="text-sm font-semibold text-lm-dark">{item.label}</p>
@@ -723,7 +723,7 @@ function IntentionBuilder() {
               <div key={el.name} className="rounded-xl border border-border overflow-hidden">
                 <button
                   onClick={() => setSelectedElement(isOpen ? null : el.name)}
-                  className="w-full flex items-center gap-3 px-4 py-3 bg-white hover:bg-lm-subtle transition-colors focus:outline-none text-left"
+                  className="w-full flex items-center gap-3 px-4 py-3 bg-card hover:bg-lm-subtle transition-colors focus:outline-none text-left"
                 >
                   <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: el.color }} />
                   <span className="text-sm font-semibold text-lm-dark flex-1">{el.name}</span>
@@ -732,7 +732,7 @@ function IntentionBuilder() {
                 {isOpen && (
                   <div className="px-4 pb-4 bg-lm-subtle space-y-2 pt-2">
                     {el.examples.map((ex, i) => (
-                      <div key={i} className="rounded-lg bg-white border border-border p-3">
+                      <div key={i} className="rounded-lg bg-card border border-border p-3">
                         <p className="text-xs text-lm-ink-mid italic leading-relaxed">"{ex}"</p>
                       </div>
                     ))}
@@ -800,7 +800,7 @@ function FrameworksOverviewTool() {
         </div>
         <div className="space-y-3">
           {frameworks.map((f) => (
-            <div key={f.model} className="rounded-xl border border-border bg-white p-4">
+            <div key={f.model} className="rounded-xl border border-border bg-card p-4">
               <p className="text-xs text-lm-ink-muted italic mb-1.5">{f.question}</p>
               <p className="text-sm font-bold text-lm-dark mb-1">{f.model}</p>
               <p className="text-sm text-lm-ink-mid leading-relaxed">{f.answer}</p>
@@ -886,7 +886,7 @@ function DreyfusModelTool() {
         </div>
         <div className="space-y-3">
           {stages.map((s) => (
-            <div key={s.stage} className="rounded-xl border border-border bg-white p-4">
+            <div key={s.stage} className="rounded-xl border border-border bg-card p-4">
               <div className="flex items-center gap-2 mb-2">
                 <span
                   className="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-bold text-white"
@@ -956,7 +956,7 @@ function ETAsTool() {
         </div>
         <div className="space-y-2">
           {levels.map((l) => (
-            <div key={l.level} className="flex items-start gap-3 rounded-xl border border-border bg-white p-4">
+            <div key={l.level} className="flex items-start gap-3 rounded-xl border border-border bg-card p-4">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-lm-dark text-white text-xs font-bold flex items-center justify-center mt-0.5">
                 {l.level}
               </span>
@@ -976,7 +976,7 @@ function ETAsTool() {
         </div>
         <div className="space-y-1.5">
           {etas.map((eta, i) => (
-            <div key={eta} className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border bg-white">
+            <div key={eta} className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border bg-card">
               <span className="text-xs font-bold text-lm-ink-muted w-5 flex-shrink-0">{i + 1}</span>
               <span className="text-sm text-lm-ink-mid">{eta}</span>
             </div>
@@ -1053,7 +1053,7 @@ function SSDLTool() {
         </div>
         <div className="space-y-3">
           {stages.map((s) => (
-            <div key={s.code} className="rounded-xl border border-border bg-white p-4">
+            <div key={s.code} className="rounded-xl border border-border bg-card p-4">
               <div className="flex items-center gap-2 mb-2">
                 <span
                   className="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-bold text-white"
@@ -1240,7 +1240,7 @@ export default function ClubCoachPath(_props: { onNavigate?: (page: string) => v
             {/* ── Left: Session List + Tools ── */}
             <div className="w-full lg:w-64 flex-shrink-0 space-y-4 lg:sticky lg:top-6">
               {/* Sessions */}
-              <div className="bg-white rounded-2xl border border-border p-4 shadow-sm">
+              <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
                 <div className="px-1 mb-6 pb-3 border-b border-border">
                   <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-lm-ink-muted">Sessions</p>
                   <p className="text-xs text-lm-ink-muted mt-0.5">{currentStageData.subtitle}</p>
@@ -1253,7 +1253,7 @@ export default function ClubCoachPath(_props: { onNavigate?: (page: string) => v
               </div>
 
               {/* Tools & Reference */}
-              <div className="bg-white rounded-2xl border border-border p-4 shadow-sm">
+              <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
                 <div className="px-1 mb-3 pb-3 border-b border-border">
                   <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-lm-ink-muted">Tools & Reference</p>
                 </div>
@@ -1294,7 +1294,7 @@ export default function ClubCoachPath(_props: { onNavigate?: (page: string) => v
 
             {/* ── Right: Session Workspace / Tool Panel ── */}
             <div className="flex-1 min-w-0">
-              <div className="bg-white rounded-2xl border border-border px-8 py-7 shadow-sm">
+              <div className="bg-card rounded-2xl border border-border px-8 py-7 shadow-sm">
                 {viewMode === 'conversation-templates' ? (
                   <ConversationTemplates />
                 ) : viewMode === 'observation-framework' ? (

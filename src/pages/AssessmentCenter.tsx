@@ -21,9 +21,9 @@ const getAssessmentTypeColor = (type: string) => {
     case 'observation':
       return 'bg-lm-subtle text-lm-ink-mid';
     case 'certification':
-      return 'bg-purple-100 text-purple-800';
+      return 'bg-purple-500/10 text-purple-700 dark:text-purple-400';
     case 'grade-review':
-      return 'bg-orange-100 text-orange-800';
+      return 'bg-orange-500/10 text-orange-700 dark:text-orange-400';
     case 'quarterly':
       return 'bg-lm-green-mid text-lm-dark';
     default:
@@ -38,7 +38,7 @@ const getStatusColor = (status: string) => {
     case 'completed':
       return 'bg-lm-green-mid text-lm-dark';
     case 'draft':
-      return 'bg-yellow-100 text-yellow-800';
+      return 'bg-yellow-500/10 text-yellow-700 dark:text-yellow-400';
     default:
       return 'bg-lm-subtle text-lm-ink-muted';
   }
@@ -57,7 +57,7 @@ const AssessmentCard: React.FC<{ assessment: Assessment; instructors: Instructor
           <div className="flex items-center gap-3 mb-2">
             <div>
               <p className="font-semibold text-sm">{instructor.name}</p>
-              <p className="text-xs text-gray-500">{assessment.program}</p>
+              <p className="text-xs text-muted-foreground">{assessment.program}</p>
             </div>
             <Badge variant="outline" className="text-xs">
               {new Date(assessment.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
@@ -86,7 +86,7 @@ const AssessmentCard: React.FC<{ assessment: Assessment; instructors: Instructor
       {assessment.status === 'completed' && feedbackPreview && (
         <>
           <Separator className="my-3" />
-          <p className="text-xs text-gray-600 italic">{feedbackPreview}</p>
+          <p className="text-xs text-muted-foreground italic">{feedbackPreview}</p>
         </>
       )}
     </Card>
@@ -237,7 +237,7 @@ const NewObservationDialog: React.FC<{ isOpen: boolean; onOpenChange: (open: boo
                     ))}
                   </div>
 
-                  <Label htmlFor={`evidence-${element}`} className="text-xs text-gray-600 mb-2 block">
+                  <Label htmlFor={`evidence-${element}`} className="text-xs text-muted-foreground mb-2 block">
                     Evidence
                   </Label>
                   <Textarea
@@ -278,7 +278,7 @@ const NewObservationDialog: React.FC<{ isOpen: boolean; onOpenChange: (open: boo
                 <Label htmlFor="connect" className="text-sm font-medium mb-2 block">
                   Connect
                 </Label>
-                <p className="text-xs text-gray-600 mb-2">
+                <p className="text-xs text-muted-foreground mb-2">
                   Eye contact, name, genuine observation of something working. Not a compliment — evidence.
                 </p>
                 <Textarea
@@ -294,7 +294,7 @@ const NewObservationDialog: React.FC<{ isOpen: boolean; onOpenChange: (open: boo
                 <Label htmlFor="recommend" className="text-sm font-medium mb-2 block">
                   Recommend
                 </Label>
-                <p className="text-xs text-gray-600 mb-2">
+                <p className="text-xs text-muted-foreground mb-2">
                   One development priority. Specific. Tied to a KE. A concrete next step with a date.
                 </p>
                 <Textarea
@@ -310,7 +310,7 @@ const NewObservationDialog: React.FC<{ isOpen: boolean; onOpenChange: (open: boo
                 <Label htmlFor="commend" className="text-sm font-medium mb-2 block">
                   Commend
                 </Label>
-                <p className="text-xs text-gray-600 mb-2">
+                <p className="text-xs text-muted-foreground mb-2">
                   Affirm the strength and the instructor's capacity to grow. Based on what you observed.
                 </p>
                 <Textarea
@@ -417,7 +417,7 @@ export default function AssessmentCenter() {
 
           <TabsContent value="all" className="space-y-4">
             {filterAssessments().length === 0 ? (
-              <Card className="p-8 text-center text-gray-500">
+              <Card className="p-8 text-center text-muted-foreground">
                 No assessments found.
               </Card>
             ) : (
@@ -429,7 +429,7 @@ export default function AssessmentCenter() {
 
           <TabsContent value="scheduled" className="space-y-4">
             {filterAssessments('scheduled').length === 0 ? (
-              <Card className="p-8 text-center text-gray-500">
+              <Card className="p-8 text-center text-muted-foreground">
                 No scheduled assessments.
               </Card>
             ) : (
@@ -441,7 +441,7 @@ export default function AssessmentCenter() {
 
           <TabsContent value="completed" className="space-y-4">
             {filterAssessments('completed').length === 0 ? (
-              <Card className="p-8 text-center text-gray-500">
+              <Card className="p-8 text-center text-muted-foreground">
                 No completed assessments.
               </Card>
             ) : (
@@ -453,7 +453,7 @@ export default function AssessmentCenter() {
 
           <TabsContent value="draft" className="space-y-4">
             {filterAssessments('draft').length === 0 ? (
-              <Card className="p-8 text-center text-gray-500">
+              <Card className="p-8 text-center text-muted-foreground">
                 No draft assessments.
               </Card>
             ) : (
