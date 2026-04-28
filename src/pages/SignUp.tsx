@@ -2,12 +2,10 @@ import { useState, useCallback } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signUp } from '@/lib/auth';
-import { supabase } from '@/lib/supabase';
+import { createUserAsAdmin } from '@/lib/admin';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Copy, Check, RefreshCw, Eye, EyeOff } from 'lucide-react';
-import LMWordmark from '@/components/LMWordmark';
 
 const REGIONS = ['Northeast', 'Southeast', 'Midwest', 'Southwest', 'West', 'Northwest', 'International'];
 
@@ -77,32 +75,15 @@ export default function SignUp({ onBack }: Props) {
     const fullName = `${values.firstName} ${values.lastName}`;
 
     try {
-      const { session } = await signUp(values.email, finalPassword, {
+      await createUserAsAdmin({
+        email: values.email,
+        password: finalPassword,
         name: fullName,
         initials,
         title: values.role,
+        clubName: values.clubName,
+        region: values.region,
       });
-
-      // If session exists (email confirm disabled), create club + membership
-      if (session) {
-        const { data: club, error: clubErr } = await supabase
-          .from('clubs')
-          .insert({
-            name: values.clubName,
-            region: values.region,
-            gfm_name: values.role === 'GFM' ? fullName : '',
-          })
-          .select('id')
-          .single();
-
-        if (!clubErr && club) {
-          await supabase.from('user_clubs').insert({
-            user_id: session.user.id,
-            club_id: club.id,
-          });
-        }
-      }
-
       setSuccess(true);
     } catch (err: any) {
       setError(err.message ?? 'Something went wrong. Please try again.');
@@ -111,41 +92,26 @@ export default function SignUp({ onBack }: Props) {
 
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: 'linear-gradient(160deg, #060606 0%, #0c0c0c 50%, #091409 100%)' }}>
-        <div className="w-full max-w-sm text-center px-6">
-          <div className="w-14 h-14 rounded-full mx-auto mb-6 flex items-center justify-center" style={{ backgroundColor: '#00FF63' }}>
-            <Check className="w-7 h-7 text-black" />
-          </div>
-          <h2 className="text-white font-display font-bold text-2xl mb-2">Account created</h2>
-          <p className="text-white/50 text-sm mb-8">Check your email to confirm your account, then sign in.</p>
-          <button
-            onClick={onBack}
-            className="w-full h-11 rounded-full text-sm font-bold transition-colors"
-            style={{ backgroundColor: '#00FF63', color: '#0A0A0A' }}
-          >
-            Back to Sign In
-          </button>
+      <div className="max-w-sm mx-auto text-center py-16">
+        <div className="w-14 h-14 rounded-full mx-auto mb-6 flex items-center justify-center" style={{ backgroundColor: '#00FF63' }}>
+          <Check className="w-7 h-7 text-black" />
         </div>
+        <h2 className="font-display font-bold text-2xl mb-2">Account created</h2>
+        <p className="text-muted-foreground text-sm mb-8">Account is ready. Share the credentials with the coach so they can sign in.</p>
+        <button
+          onClick={onBack}
+          className="w-full h-11 rounded-full text-sm font-bold transition-colors"
+          style={{ backgroundColor: '#00FF63', color: '#0A0A0A' }}
+        >
+          Back to Roster
+        </button>
       </div>
     );
   }
 
   return (
-    <>
-    <style>{`
-      @keyframes lm-fade-up {
-        from { opacity: 0; transform: translateY(18px); }
-        to   { opacity: 1; transform: translateY(0); }
-      }
-      .lm-animate {
-        opacity: 0;
-        animation: lm-fade-up 0.55s cubic-bezier(0.22,1,0.36,1) forwards;
-      }
-    `}</style>
-    <div className="min-h-screen flex items-center justify-center py-12 px-4" style={{ background: 'linear-gradient(160deg, #060606 0%, #0c0c0c 50%, #091409 100%)' }}>
-      <div className="w-full max-w-lg">
-
-        <LMWordmark tagline="Build your squad. Shape the standard." />
+    <div className="max-w-lg mx-auto py-6">
+      <div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
 
@@ -325,11 +291,10 @@ export default function SignUp({ onBack }: Props) {
           </button>
 
           <button type="button" onClick={onBack} className="w-full text-center text-sm text-white/30 hover:text-white/60 transition-colors py-1">
-            Already have an account? Sign in
+            Cancel
           </button>
         </form>
       </div>
     </div>
-    </>
   );
 }

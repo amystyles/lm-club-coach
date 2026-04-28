@@ -12,6 +12,7 @@ import DevelopmentPathway from './pages/DevelopmentPathway';
 import ClubCoachPath from './pages/ClubCoachPath';
 import LMQReference from './pages/LMQReference';
 import FeedbackBuilder from './pages/FeedbackBuilder';
+import SignUp from './pages/SignUp';
 
 const PAGE_TITLES: Record<string, { title: string; subtitle?: string }> = {
   dashboard: { title: 'Dashboard', subtitle: 'Team overview & instructor development' },
@@ -22,10 +23,11 @@ const PAGE_TITLES: Record<string, { title: string; subtitle?: string }> = {
   'lmq-reference': { title: 'LMQ Reference', subtitle: 'Levels, grades & key elements' },
   feedback: { title: 'Feedback Builder', subtitle: 'CRC & GROW guided tools' },
   profile: { title: 'Instructor Profile', subtitle: 'Individual development view' },
+  'add-coach': { title: 'Add Coach Account', subtitle: 'Create a new Club Coach or GFM account' },
 };
 
 function App() {
-  const { user, clubs, activeClub, loading, isRecovery } = useAuth();
+  const { user, clubs, activeClub, loading, isRecovery, isAdmin } = useAuth();
 
   if (loading) {
     return (
@@ -79,6 +81,12 @@ function App() {
         return <LMQReference />;
       case 'feedback':
         return <FeedbackBuilder />;
+      case 'add-coach':
+        return isAdmin ? (
+          <SignUp onBack={() => handleNavigate('roster')} />
+        ) : (
+          <Dashboard onViewInstructor={(id) => handleViewInstructor(id, 'dashboard')} />
+        );
       case 'profile':
         return selectedInstructorId ? (
           <InstructorProfile

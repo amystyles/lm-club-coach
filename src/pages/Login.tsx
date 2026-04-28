@@ -4,7 +4,6 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn, resetPasswordEmail } from '@/lib/auth';
 import { Loader2, ArrowLeft } from 'lucide-react';
-import SignUp from './SignUp';
 import LMWordmark from '@/components/LMWordmark';
 
 const schema = z.object({
@@ -156,7 +155,6 @@ function FieldError({ msg }: { msg?: string }) {
 }
 
 export default function Login() {
-  const [showSignUp, setShowSignUp] = useState(false);
   const [showForgot, setShowForgot] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
   const [resetSent, setResetSent] = useState(false);
@@ -168,7 +166,6 @@ export default function Login() {
     resolver: zodResolver(schema),
   });
 
-  if (showSignUp) return <SignUp onBack={() => setShowSignUp(false)} />;
 
   async function onSubmit(values: FormValues) {
     setError(null);
@@ -362,26 +359,6 @@ export default function Login() {
           </div>
 
           {/* Sign up prompt */}
-          <p className="lm-animate" style={{
-            animationDelay: '340ms',
-            textAlign: 'center', marginTop: '22px',
-            color: 'rgba(255,255,255,0.25)', fontSize: '12px', fontFamily: "'Inter', sans-serif",
-          }}>
-            New to Club Coach?{' '}
-            <button
-              type="button"
-              onClick={() => setShowSignUp(true)}
-              style={{
-                background: 'none', border: 'none', cursor: 'pointer', padding: 0,
-                color: 'rgba(255,255,255,0.55)', fontSize: '12px', fontFamily: "'Inter', sans-serif",
-                textDecoration: 'underline', textUnderlineOffset: '3px', transition: 'color 0.15s',
-              }}
-              onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.55)')}
-            >
-              Create an account
-            </button>
-          </p>
         </div>
       </div>
     </>

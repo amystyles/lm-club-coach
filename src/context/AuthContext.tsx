@@ -20,6 +20,7 @@ interface AuthContextValue {
   loading: boolean;
   isRecovery: boolean;
   clearRecovery: () => void;
+  isAdmin: boolean;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -127,7 +128,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [hydrate]);
 
   return (
-    <AuthContext.Provider value={{ user, profile, clubs, activeClub, setActiveClub, loading, isRecovery, clearRecovery: () => setIsRecovery(false) }}>
+    <AuthContext.Provider value={{ user, profile, clubs, activeClub, setActiveClub, loading, isRecovery, clearRecovery: () => setIsRecovery(false), isAdmin: user?.email === import.meta.env.VITE_ADMIN_EMAIL }}>
       {children}
     </AuthContext.Provider>
   );
