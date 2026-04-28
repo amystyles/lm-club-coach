@@ -8,7 +8,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
-import { Users, TrendingUp, ClipboardList, AlertTriangle, ChevronRight } from 'lucide-react';
+import { Users, TrendingUp, ClipboardList, AlertTriangle, ChevronRight, ArrowRight } from 'lucide-react';
 
 interface DashboardProps {
   onViewInstructor: (id: string, source: 'dashboard' | 'roster') => void;
@@ -135,62 +135,31 @@ export default function Dashboard({ onViewInstructor }: DashboardProps) {
       </div>
 
       <div className="px-6 py-6 space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="border-t-2 border-t-lm-green">
-          <CardContent className="pt-6">
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-sm text-lm-ink-muted font-medium">Total Instructors</p>
-                <p className="text-3xl font-bold mt-2">{instructors.length}</p>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        {[
+          { label: 'Total Instructors', value: instructors.length, sub: `${instructors.filter(i => i.stage >= 3).length} on timetable`, accent: '#00FF63', icon: <Users className="w-3.5 h-3.5" /> },
+          { label: 'Avg LMQ Level', value: averageLMQ, sub: 'across all instructors', accent: '#00FF63', icon: <TrendingUp className="w-3.5 h-3.5" /> },
+          { label: 'Assessments Due', value: assessmentsDue, sub: 'scheduled this period', accent: '#00FF63', icon: <ClipboardList className="w-3.5 h-3.5" /> },
+          { label: 'At Risk', value: atRiskInstructors, sub: 'need attention', accent: '#FF623E', icon: <AlertTriangle className="w-3.5 h-3.5" /> },
+        ].map(({ label, value, sub, accent, icon }) => (
+          <div key={label} className="relative bg-card border border-border rounded-xl overflow-hidden group hover:border-opacity-60 transition-all">
+            {/* Accent bar */}
+            <div className="absolute left-0 top-0 bottom-0 w-[3px]" style={{ backgroundColor: accent }} />
+            <div className="pl-5 pr-4 pt-4 pb-4">
+              {/* Label row */}
+              <div className="flex items-center gap-1.5 mb-3">
+                <span style={{ color: accent }}>{icon}</span>
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">{label}</span>
               </div>
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-lm-subtle">
-                <Users className="w-5 h-5 text-lm-ink-mid" />
-              </div>
+              {/* Number */}
+              <p className="font-display font-bold leading-none mb-1.5" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', color: accent }}>
+                {value}
+              </p>
+              {/* Sub-stat */}
+              <p className="text-[11px] text-muted-foreground">{sub}</p>
             </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-t-2 border-t-lm-green">
-          <CardContent className="pt-6">
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-sm text-lm-ink-muted font-medium">Average LMQ Level</p>
-                <p className="text-3xl font-bold mt-2">{averageLMQ}</p>
-              </div>
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-lm-subtle">
-                <TrendingUp className="w-5 h-5 text-lm-ink-mid" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-t-2 border-t-lm-green">
-          <CardContent className="pt-6">
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-sm text-lm-ink-muted font-medium">Assessments Due</p>
-                <p className="text-3xl font-bold mt-2">{assessmentsDue}</p>
-              </div>
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-lm-subtle">
-                <ClipboardList className="w-5 h-5 text-lm-ink-mid" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-t-2 border-t-lm-red">
-          <CardContent className="pt-6">
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-sm text-lm-ink-muted font-medium">At-Risk Instructors</p>
-                <p className="text-3xl font-bold mt-2">{atRiskInstructors}</p>
-              </div>
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-red-50">
-                <AlertTriangle className="w-5 h-5 text-lm-red" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+          </div>
+        ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
