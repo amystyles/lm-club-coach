@@ -10,9 +10,14 @@
     --lm-green: #00FF63;
     --lm-red: #FF623E;
     --lm-green-mid: rgba(0,255,99,0.20);
+    --lm-bg: #FFFFFF;
     --lm-subtle: #F7F7F7;
+    --lm-sunken: #F0F0F0;
     --lm-dark: #0A0A0A;
+    --lm-dark-mid: #111111;
+    --lm-ink: #111111;
     --lm-ink-mid: #444444;
+    --lm-ink-muted: #888888;
 
     --background: 0 0% 100%;
     --foreground: 0 0% 4%;
@@ -42,9 +47,14 @@
   }
 
   .dark {
+    --lm-bg: #111111;
     --lm-subtle: #1C1C1C;
+    --lm-sunken: #161616;
     --lm-dark: #F5F5F5;
+    --lm-dark-mid: #E8E8E8;
+    --lm-ink: #E0E0E0;
     --lm-ink-mid: #CCCCCC;
+    --lm-ink-muted: #999999;
 
     --background: 0 0% 7%;
     --foreground: 0 0% 96%;
