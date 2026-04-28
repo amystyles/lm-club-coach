@@ -8,7 +8,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
-import { Users, TrendingUp, ClipboardList, AlertTriangle, ChevronRight, ArrowRight } from 'lucide-react';
+import { Users, TrendingUp, ClipboardList, AlertTriangle, ChevronRight } from 'lucide-react';
 
 interface DashboardProps {
   onViewInstructor: (id: string, source: 'dashboard' | 'roster') => void;
@@ -238,14 +238,14 @@ export default function Dashboard({ onViewInstructor }: DashboardProps) {
             const isAtRisk = instructor.riskLevel !== 'low';
             const riskLabel = instructor.riskLevel === 'high' ? 'High Risk' : 'At Risk';
             const riskStyle = instructor.riskLevel === 'high'
-              ? 'bg-red-50 text-red-700 border-red-200'
-              : 'bg-yellow-50 text-yellow-700 border-yellow-200';
+              ? 'bg-red-500/10 text-red-600 border-red-500/20 dark:text-red-400'
+              : 'bg-yellow-500/10 text-yellow-700 border-yellow-500/20 dark:text-yellow-400';
 
             return (
               <div
                 key={instructor.id}
                 onClick={() => onViewInstructor(instructor.id, 'dashboard')}
-                className="group relative bg-white rounded-2xl border border-border overflow-hidden cursor-pointer hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 shadow-sm"
+                className="group relative bg-card rounded-2xl border border-border overflow-hidden cursor-pointer hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 shadow-sm"
               >
                 {/* Brand green top bar */}
                 <div className="h-[3px] w-full bg-lm-green" />

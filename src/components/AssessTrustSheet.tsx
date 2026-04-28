@@ -229,14 +229,14 @@ export default function AssessTrustSheet({ open, onClose, instructor }: Props) {
         </div>
 
         {/* ETA list */}
-        <div className="flex-1 overflow-y-auto divide-y divide-[#f0f0f0]">
+        <div className="flex-1 overflow-y-auto divide-y divide-border">
           {ETA_GUIDES.map((eta, idx) => {
             const t = trust[idx];
             const isExpanded = expanded === idx;
             const hasOverride = t.level !== null;
 
             return (
-              <div key={idx} className={`transition-colors ${isExpanded ? 'bg-[#fafafa]' : 'bg-white'}`}>
+              <div key={idx} className={`transition-colors ${isExpanded ? 'bg-muted/50' : 'bg-card'}`}>
                 {/* Row header */}
                 <button
                   type="button"
@@ -280,7 +280,7 @@ export default function AssessTrustSheet({ open, onClose, instructor }: Props) {
 
                 {/* Expanded content */}
                 {isExpanded && (
-                  <div className="px-5 pb-5 space-y-4 border-t border-[#ebebeb]">
+                  <div className="px-5 pb-5 space-y-4 border-t border-border">
 
                     {/* What to look for */}
                     <div className="pt-4">
@@ -304,7 +304,7 @@ export default function AssessTrustSheet({ open, onClose, instructor }: Props) {
                               className={`w-full text-left rounded-lg border-2 px-3.5 py-3 transition-all ${
                                 isSelected
                                   ? ''
-                                  : 'border-[#d0d0d0] bg-white hover:border-[#aaa]'
+                                  : 'border-border bg-card hover:border-muted-foreground/40'
                               }`}
                               style={isSelected ? { backgroundColor: color + '18', borderColor: color } : {}}
                             >
@@ -364,7 +364,7 @@ export default function AssessTrustSheet({ open, onClose, instructor }: Props) {
         </div>
 
         {/* Footer */}
-        <div className="flex-shrink-0 px-7 py-5 border-t border-[#f0f0f0] bg-white flex items-center gap-3">
+        <div className="flex-shrink-0 px-7 py-5 border-t border-border bg-card flex items-center gap-3">
           <button
             onClick={handleSave}
             disabled={saving || saved}

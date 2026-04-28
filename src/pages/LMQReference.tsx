@@ -296,14 +296,14 @@ export default function LMQReference() {
           <h1 className="mb-2">
             LMQ Level Reference Guide
           </h1>
-          <p className="text-lg text-slate-600">
+          <p className="text-lg text-muted-foreground">
             How grades across the 5 Key Elements combine to determine an instructor's LMQ Level (1–10)
           </p>
         </div>
 
         {/* Section 1: Key Rules */}
         <div className="mb-12">
-          <h2 className="text-2xl font-bold text-slate-900 mb-6">Key Rules</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-6">Key Rules</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card className="border-l-4 border-l-lm-dark shadow-sm hover:shadow-md transition-shadow">
               <CardHeader>
@@ -312,8 +312,8 @@ export default function LMQReference() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-slate-700 font-medium mb-2">Minimum Grade 1</p>
-                <ul className="space-y-1 text-sm text-slate-600">
+                <p className="text-foreground/80 font-medium mb-2">Minimum Grade 1</p>
+                <ul className="space-y-1 text-sm text-muted-foreground">
                   <li>• Technique: Grade 1</li>
                   <li>• Coaching: Grade 1</li>
                 </ul>
@@ -327,8 +327,8 @@ export default function LMQReference() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-slate-700 font-medium mb-2">Required for Level 2+</p>
-                <p className="text-sm text-slate-600">
+                <p className="text-foreground/80 font-medium mb-2">Required for Level 2+</p>
+                <p className="text-sm text-muted-foreground">
                   Choreography Grade 2 unlocks Level 2 and all higher levels
                 </p>
               </CardContent>
@@ -341,8 +341,8 @@ export default function LMQReference() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-slate-700 font-medium mb-2">Movement Rules</p>
-                <ul className="space-y-1 text-sm text-slate-600">
+                <p className="text-foreground/80 font-medium mb-2">Movement Rules</p>
+                <ul className="space-y-1 text-sm text-muted-foreground">
                   <li>• Levels 1–6.5: Cannot drop below previous</li>
                   <li>• Levels 7–10: Can move up or down</li>
                 </ul>
@@ -355,15 +355,15 @@ export default function LMQReference() {
 
         {/* Section 2: Level Table */}
         <div className="mb-12">
-          <h2 className="text-2xl font-bold text-slate-900 mb-6">LMQ Level Progression</h2>
-          <div className="bg-white rounded-lg shadow-md overflow-hidden border border-slate-200">
+          <h2 className="text-2xl font-bold text-foreground mb-6">LMQ Level Progression</h2>
+          <div className="bg-card rounded-lg shadow-md overflow-hidden border border-border">
             <Table>
-              <TableHeader className="bg-slate-900 text-white">
+              <TableHeader className="bg-foreground text-background">
                 <TableRow className="border-0">
-                  <TableHead className="text-white font-bold">Level</TableHead>
-                  <TableHead className="text-white font-bold">Choreography</TableHead>
-                  <TableHead className="text-white font-bold">+ Other Key Elements</TableHead>
-                  <TableHead className="text-white font-bold">Min. Conditions</TableHead>
+                  <TableHead className="text-background font-bold">Level</TableHead>
+                  <TableHead className="text-background font-bold">Choreography</TableHead>
+                  <TableHead className="text-background font-bold">+ Other Key Elements</TableHead>
+                  <TableHead className="text-background font-bold">Min. Conditions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -371,21 +371,21 @@ export default function LMQReference() {
                   <TableRow
                     key={row.level}
                     className={`
-                      border-b border-slate-200 transition-colors
+                      border-b border-border transition-colors
                       ${isPremiumLevel(row.level)
-                        ? 'bg-amber-50 hover:bg-amber-100'
+                        ? 'bg-amber-500/10 hover:bg-amber-500/20'
                         : idx % 2 === 0
-                          ? 'bg-white hover:bg-slate-50'
-                          : 'bg-slate-50 hover:bg-slate-100'}
+                          ? 'bg-card hover:bg-muted/50'
+                          : 'bg-muted/30 hover:bg-muted/60'}
                     `}
                   >
                     <TableCell>
-                      <span className="font-bold text-lg text-slate-900">
+                      <span className="font-bold text-lg">
                         {row.level}
-                        {row.level === 6 && <span className="text-xs text-slate-500">.5</span>}
+                        {row.level === 6 && <span className="text-xs text-muted-foreground">.5</span>}
                       </span>
                       {isPremiumLevel(row.level) && (
-                        <Badge variant="secondary" className="ml-2 bg-amber-200 text-amber-900">
+                        <Badge variant="secondary" className="ml-2 bg-amber-500/20 text-amber-700 dark:text-amber-400">
                           Premium
                         </Badge>
                       )}
@@ -395,8 +395,8 @@ export default function LMQReference() {
                         {row.choreography}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-sm text-slate-700">{row.other}</TableCell>
-                    <TableCell className="text-sm text-slate-600">{row.minConditions}</TableCell>
+                    <TableCell className="text-sm text-foreground/80">{row.other}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground">{row.minConditions}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -408,47 +408,47 @@ export default function LMQReference() {
 
         {/* Section 3: Key Elements Detail */}
         <div className="mb-12">
-          <h2 className="text-2xl font-bold text-slate-900 mb-6">5 Key Elements Detailed Reference</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-6">5 Key Elements Detailed Reference</h2>
           <Accordion type="single" collapsible className="space-y-3">
             {(Object.entries(keyElementDetails) as Array<[keyof typeof keyElementDetails, typeof keyElementDetails[keyof typeof keyElementDetails]]>).map(
               ([element, details]) => (
                 <AccordionItem
                   key={element}
                   value={element}
-                  className="border border-slate-300 rounded-lg px-4 bg-white data-[state=open]:shadow-md transition-shadow"
+                  className="border border-border rounded-lg px-4 bg-card data-[state=open]:shadow-md transition-shadow"
                 >
                   <AccordionTrigger className="hover:no-underline py-4">
                     <div className="flex items-center gap-3 text-left">
                       <div>
-                        <p className="font-bold text-slate-900">
+                        <p className="font-bold text-foreground">
                           {KEY_ELEMENT_LABELS[element as keyof typeof KEY_ELEMENT_LABELS]}
                         </p>
-                        <p className="text-sm text-slate-600">{details.description}</p>
+                        <p className="text-sm text-muted-foreground">{details.description}</p>
                       </div>
                     </div>
                   </AccordionTrigger>
                   <AccordionContent className="pt-4 pb-6 space-y-6">
                     {/* Grade Breakdown */}
                     <div>
-                      <h4 className="font-bold text-slate-900 mb-4">Grade Breakdown</h4>
+                      <h4 className="font-bold text-foreground mb-4">Grade Breakdown</h4>
                       <div className="space-y-4">
                         {Object.entries(details.grades).map(([gradeKey, grade]) => (
                           <div
                             key={gradeKey}
-                            className="border border-slate-200 rounded-lg p-4 bg-slate-50"
+                            className="border border-border rounded-lg p-4 bg-muted/30"
                           >
                             <div className="flex items-start gap-3 mb-3">
                               <Badge variant="secondary" className="mt-1 font-bold">
                                 Grade {gradeKey}
                               </Badge>
                               <div>
-                                <p className="font-bold text-slate-900">{grade.title}</p>
-                                <p className="text-sm text-slate-600 italic">{grade.criteria}</p>
+                                <p className="font-bold text-foreground">{grade.title}</p>
+                                <p className="text-sm text-muted-foreground italic">{grade.criteria}</p>
                               </div>
                             </div>
                             <ul className="ml-4 space-y-1">
                               {grade.details.map((detail, idx) => (
-                                <li key={idx} className="text-sm text-slate-700 list-disc">
+                                <li key={idx} className="text-sm text-foreground/80 list-disc">
                                   {detail}
                                 </li>
                               ))}
@@ -459,12 +459,12 @@ export default function LMQReference() {
                     </div>
 
                     {/* Practice Drills */}
-                    <div className="pt-4 border-t border-slate-200">
-                      <h4 className="font-bold text-slate-900 mb-3">Practice Drills</h4>
+                    <div className="pt-4 border-t border-border">
+                      <h4 className="font-bold text-foreground mb-3">Practice Drills</h4>
                       <ul className="space-y-2">
                         {details.drills.map((drill, idx) => (
-                          <li key={idx} className="flex gap-2 text-sm text-slate-700">
-                            <span className="text-slate-400 font-bold">•</span>
+                          <li key={idx} className="flex gap-2 text-sm text-foreground/80">
+                            <span className="text-muted-foreground font-bold">•</span>
                             <span>{drill}</span>
                           </li>
                         ))}
