@@ -39,7 +39,7 @@ function BriefTab({ session, stageColor }: { session: Session; stageColor: strin
           </div>
           <ul className="space-y-2">
             {cs.goals.map((goal, i) => (
-              <li key={i} className="flex gap-2.5 text-sm text-white/80 leading-relaxed">
+              <li key={i} className="flex gap-2.5 text-sm text-foreground leading-relaxed">
                 <Check className="w-4 h-4 flex-shrink-0 mt-0.5 text-[#00FF63]/70" />
                 <span className="font-medium">{goal}</span>
               </li>
@@ -60,7 +60,7 @@ function BriefTab({ session, stageColor }: { session: Session; stageColor: strin
           <p className="text-lm-ink-mid text-sm leading-relaxed mb-4">{session.coachRole.context}</p>
           <div className="flex items-start gap-2.5 bg-[#00FF63]/[.07] rounded-lg px-4 py-3 border border-[#00FF63]/15">
             <Star className="w-3.5 h-3.5 flex-shrink-0 mt-0.5 text-[#00FF63]" />
-            <p className="text-white/80 font-semibold text-sm italic">{session.coachRole.principle}</p>
+            <p className="text-foreground font-semibold text-sm italic">{session.coachRole.principle}</p>
           </div>
         </div>
       )}
@@ -93,10 +93,10 @@ function BriefTab({ session, stageColor }: { session: Session; stageColor: strin
             <p className="text-lm-dark text-sm font-medium leading-relaxed">{cs.what}</p>
           </div>
 
-          <div className="rounded-xl border border-white/8 bg-white/[.03] p-5 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-1 h-full bg-white/30" />
-            <Badge className="text-[10px] tracking-wider uppercase font-bold px-2 py-0.5 mb-2 bg-white/10 text-white border border-white/15">Why</Badge>
-            <p className="text-white/80 text-sm font-medium leading-relaxed">{cs.why}</p>
+          <div className="rounded-xl border border-border bg-muted/20 p-5 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-1 h-full bg-foreground/20" />
+            <Badge className="text-[10px] tracking-wider uppercase font-bold px-2 py-0.5 mb-2 bg-muted text-foreground border border-border">Why</Badge>
+            <p className="text-foreground text-sm font-medium leading-relaxed">{cs.why}</p>
           </div>
 
           <div className="rounded-xl border border-border bg-card p-5 relative overflow-hidden">
@@ -411,7 +411,7 @@ function SessionWorkspace({
               className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all focus:outline-none ${
                 isActive
                   ? 'bg-[#00FF63] text-[#0A0A0A] shadow-sm'
-                  : 'text-white/40 hover:text-white/70 hover:bg-white/5'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/40'
               }`}
             >
               <Icon className="w-3.5 h-3.5" />
@@ -690,23 +690,23 @@ function SessionList({
             className={`w-full text-left px-3 py-3.5 rounded-lg transition-all focus:outline-none flex items-start gap-3 relative ${
               isActive
                 ? 'bg-[#00FF63]/[.08] border border-[#00FF63]/20'
-                : 'border border-transparent hover:bg-white/[.04]'
+                : 'border border-transparent hover:bg-muted/50'
             }`}
           >
             {isActive && (
               <div className="absolute left-0 top-2 bottom-2 w-[3px] rounded-r-full bg-[#00FF63]" />
             )}
             <span className={`text-[10px] font-bold tabular-nums mt-0.5 flex-shrink-0 w-4 ${
-              isActive ? 'text-[#00FF63]/60' : 'text-white/20'
+              isActive ? 'text-[#00FF63]/60' : 'text-muted-foreground/40'
             }`}>
               {String(idx + 1).padStart(2, '0')}
             </span>
             <div className="min-w-0 flex-1">
-              <p className={`text-sm font-medium leading-snug ${isActive ? 'text-white' : 'text-white/60'}`}>
+              <p className={`text-sm font-medium leading-snug ${isActive ? 'text-foreground' : 'text-muted-foreground'}`}>
                 {session.title}
               </p>
               {session.sessionPlan && (
-                <p className={`text-xs mt-0.5 ${isActive ? 'text-[#00FF63]/50' : 'text-white/25'}`}>
+                <p className={`text-xs mt-0.5 ${isActive ? 'text-[#00FF63]/50' : 'text-muted-foreground/60'}`}>
                   {session.sessionPlan.totalDuration}
                 </p>
               )}
@@ -715,8 +715,8 @@ function SessionList({
         );
       })}
 
-      <button className="w-full text-left px-3 py-2.5 rounded-lg border border-dashed border-white/10 hover:border-white/20 hover:bg-white/[.03] transition-all focus:outline-none mt-2 group">
-        <span className="flex items-center gap-1.5 text-xs text-white/25 group-hover:text-white/40 transition-colors">
+      <button className="w-full text-left px-3 py-2.5 rounded-lg border border-dashed border-border hover:border-muted-foreground/30 hover:bg-muted/30 transition-all focus:outline-none mt-2 group">
+        <span className="flex items-center gap-1.5 text-xs text-muted-foreground/60 group-hover:text-muted-foreground transition-colors">
           <Plus className="w-3.5 h-3.5" />
           Add session
         </span>
@@ -885,7 +885,7 @@ export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page:
               <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
                 <div className="px-1 mb-4 pb-3 border-b border-border flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-[#00FF63]" />
-                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">Sessions</p>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Sessions</p>
                 </div>
                 <SessionList
                   sessions={currentStageData.sessions}
@@ -900,14 +900,14 @@ export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page:
                 className={`w-full text-left rounded-2xl border p-4 shadow-sm transition-all focus:outline-none ${
                   viewMode === 'activities'
                     ? 'bg-[#00FF63]/[.08] border-[#00FF63]/20'
-                    : 'bg-card border-border hover:border-white/20'
+                    : 'bg-card border-border hover:border-muted-foreground/30'
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors ${
-                    viewMode === 'activities' ? 'bg-[#00FF63]/15' : 'bg-white/5'
+                    viewMode === 'activities' ? 'bg-[#00FF63]/15' : 'bg-muted/40'
                   }`}>
-                    <Zap className={`w-4 h-4 ${viewMode === 'activities' ? 'text-[#00FF63]' : 'text-white/40'}`} />
+                    <Zap className={`w-4 h-4 ${viewMode === 'activities' ? 'text-[#00FF63]' : 'text-muted-foreground'}`} />
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className={`text-sm font-bold leading-tight ${viewMode === 'activities' ? 'text-white' : 'text-foreground'}`}>
@@ -924,7 +924,7 @@ export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page:
               <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
                 <div className="px-1 mb-3 pb-3 border-b border-border flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-[#00FF63]" />
-                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">Reference</p>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Reference</p>
                 </div>
                 <div className="space-y-px">
                   {[
@@ -933,16 +933,16 @@ export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page:
                     <button
                       key={label}
                       onClick={() => onNavigate?.(page)}
-                      className="w-full text-left flex items-center gap-3 px-2.5 py-2.5 rounded-lg hover:bg-white/[.04] transition-all group focus:outline-none border border-transparent"
+                      className="w-full text-left flex items-center gap-3 px-2.5 py-2.5 rounded-lg hover:bg-muted/50 transition-all group focus:outline-none border border-transparent"
                     >
-                      <div className="w-6 h-6 rounded-md bg-white/5 flex items-center justify-center flex-shrink-0 group-hover:bg-white/8 transition-colors">
-                        <Icon className="w-3 h-3 text-white/40" />
+                      <div className="w-6 h-6 rounded-md bg-muted/40 flex items-center justify-center flex-shrink-0 group-hover:bg-muted/50 transition-colors">
+                        <Icon className="w-3 h-3 text-muted-foreground" />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="text-[13px] font-semibold text-white/55 leading-none">{label}</p>
-                        <p className="text-[10px] text-white/25 mt-0.5 leading-none">{sub}</p>
+                        <p className="text-[13px] font-semibold text-foreground/70 leading-none">{label}</p>
+                        <p className="text-[10px] text-muted-foreground/60 mt-0.5 leading-none">{sub}</p>
                       </div>
-                      <ArrowUpRight className="w-3 h-3 text-white/20 flex-shrink-0 group-hover:text-white/40 transition-colors" />
+                      <ArrowUpRight className="w-3 h-3 text-muted-foreground/40 flex-shrink-0 group-hover:text-muted-foreground transition-colors" />
                     </button>
                   ))}
                 </div>
