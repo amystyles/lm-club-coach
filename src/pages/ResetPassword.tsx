@@ -3,7 +3,19 @@ import { updatePassword } from '@/lib/auth';
 import { useAuth } from '@/context/AuthContext';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, Eye, EyeOff, RefreshCw } from 'lucide-react';
+
+function generatePassword(): string {
+  const upper = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+  const lower = 'abcdefghjkmnpqrstuvwxyz';
+  const digits = '23456789';
+  const symbols = '!@#$%&*';
+  const all = upper + lower + digits + symbols;
+  const rand = (set: string) => set[Math.floor(Math.random() * set.length)];
+  const core = Array.from({ length: 10 }, () => rand(all)).join('');
+  return (rand(upper) + rand(lower) + rand(digits) + rand(symbols) + core)
+    .split('').sort(() => Math.random() - 0.5).join('').slice(0, 14);
+}
 
 export default function ResetPassword() {
   const { clearRecovery } = useAuth();
@@ -12,6 +24,8 @@ export default function ResetPassword() {
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [done, setDone] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -52,24 +66,44 @@ export default function ResetPassword() {
               <div className="px-5 py-5 space-y-4">
                 <div>
                   <Label className="text-white/60 text-xs mb-1.5 block">New Password</Label>
-                  <Input
-                    type="password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    placeholder="Min. 8 characters"
-                    autoFocus
-                    className="bg-white/6 border-white/10 text-white placeholder:text-white/20 focus-visible:ring-lm-green/40 focus-visible:border-lm-green/50 h-10"
-                  />
+                  <div className="flex items-center gap-2">
+                    <Input
+                      type={showPassword ? 'text' : 'password'}
+                      value={password}
+                      onChange={e => setPassword(e.target.value)}
+                      placeholder="Min. 8 characters"
+                      autoFocus
+                      className="bg-white/6 border-white/10 text-white placeholder:text-white/20 focus-visible:ring-lm-green/40 focus-visible:border-lm-green/50 h-10"
+                    />
+                    <button type="button" onClick={() => setShowPassword(v => !v)}
+                      className="w-10 h-10 flex-shrink-0 rounded-lg flex items-center justify-center text-white/40 hover:text-white transition-colors"
+                      style={{ border: '1px solid rgba(255,255,255,0.1)' }}>
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                    <button type="button" onClick={() => { const p = generatePassword(); setPassword(p); setConfirm(p); setShowPassword(true); setShowConfirm(true); }}
+                      className="w-10 h-10 flex-shrink-0 rounded-lg flex items-center justify-center text-white/40 hover:text-white transition-colors"
+                      style={{ border: '1px solid rgba(255,255,255,0.1)' }}
+                      title="Generate password">
+                      <RefreshCw className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
                 <div>
                   <Label className="text-white/60 text-xs mb-1.5 block">Confirm Password</Label>
-                  <Input
-                    type="password"
-                    value={confirm}
-                    onChange={e => setConfirm(e.target.value)}
-                    placeholder="Repeat password"
-                    className="bg-white/6 border-white/10 text-white placeholder:text-white/20 focus-visible:ring-lm-green/40 focus-visible:border-lm-green/50 h-10"
-                  />
+                  <div className="flex items-center gap-2">
+                    <Input
+                      type={showConfirm ? 'text' : 'password'}
+                      value={confirm}
+                      onChange={e => setConfirm(e.target.value)}
+                      placeholder="Repeat password"
+                      className="bg-white/6 border-white/10 text-white placeholder:text-white/20 focus-visible:ring-lm-green/40 focus-visible:border-lm-green/50 h-10"
+                    />
+                    <button type="button" onClick={() => setShowConfirm(v => !v)}
+                      className="w-10 h-10 flex-shrink-0 rounded-lg flex items-center justify-center text-white/40 hover:text-white transition-colors"
+                      style={{ border: '1px solid rgba(255,255,255,0.1)' }}>
+                      {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

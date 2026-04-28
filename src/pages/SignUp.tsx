@@ -116,45 +116,45 @@ export default function SignUp({ onBack }: Props) {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
 
           {/* Personal Details */}
-          <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-            <div className="px-5 py-3 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-              <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/40">Personal Details</p>
+          <div className="rounded-2xl overflow-hidden bg-card border border-border">
+            <div className="px-5 py-3 border-b border-border">
+              <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-muted-foreground">Personal Details</p>
             </div>
             <div className="px-5 py-5 space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <Label className="text-white/60 text-xs mb-1.5 block">First Name</Label>
+                  <Label className="text-muted-foreground text-xs mb-1.5 block">First Name</Label>
                   <Input
                     {...register('firstName')}
                     placeholder="Amy"
-                    className="bg-white/6 border-white/10 text-white placeholder:text-white/20 focus-visible:ring-lm-green/40 focus-visible:border-lm-green/50 h-10"
+                    className="bg-background border-input text-foreground placeholder:text-muted-foreground focus-visible:ring-lm-green/40 focus-visible:border-lm-green/50 h-10"
                   />
                   {errors.firstName && <p className="text-xs text-red-400 mt-1">{errors.firstName.message}</p>}
                 </div>
                 <div>
-                  <Label className="text-white/60 text-xs mb-1.5 block">Last Name</Label>
+                  <Label className="text-muted-foreground text-xs mb-1.5 block">Last Name</Label>
                   <Input
                     {...register('lastName')}
                     placeholder="Styles"
-                    className="bg-white/6 border-white/10 text-white placeholder:text-white/20 focus-visible:ring-lm-green/40 focus-visible:border-lm-green/50 h-10"
+                    className="bg-background border-input text-foreground placeholder:text-muted-foreground focus-visible:ring-lm-green/40 focus-visible:border-lm-green/50 h-10"
                   />
                   {errors.lastName && <p className="text-xs text-red-400 mt-1">{errors.lastName.message}</p>}
                 </div>
               </div>
               <div>
-                <Label className="text-white/60 text-xs mb-1.5 block">Email</Label>
+                <Label className="text-muted-foreground text-xs mb-1.5 block">Email</Label>
                 <Input
                   {...register('email')}
                   type="email"
                   placeholder="you@lesmills.com"
-                  className="bg-white/6 border-white/10 text-white placeholder:text-white/20 focus-visible:ring-lm-green/40 focus-visible:border-lm-green/50 h-10"
+                  className="bg-background border-input text-foreground placeholder:text-muted-foreground focus-visible:ring-lm-green/40 focus-visible:border-lm-green/50 h-10"
                 />
                 {errors.email && <p className="text-xs text-red-400 mt-1">{errors.email.message}</p>}
               </div>
 
               {/* Role toggle */}
               <div>
-                <Label className="text-white/60 text-xs mb-1.5 block">Role</Label>
+                <Label className="text-muted-foreground text-xs mb-1.5 block">Role</Label>
                 <Controller
                   control={control}
                   name="role"
@@ -165,10 +165,9 @@ export default function SignUp({ onBack }: Props) {
                           key={r}
                           type="button"
                           onClick={() => field.onChange(r)}
-                          className="h-10 rounded-lg text-sm font-semibold transition-all border"
-                          style={field.value === r
-                            ? { backgroundColor: '#00FF63', color: '#0A0A0A', borderColor: '#00FF63' }
-                            : { backgroundColor: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.5)', borderColor: 'rgba(255,255,255,0.1)' }
+                          className={field.value === r
+                            ? 'h-10 rounded-lg text-sm font-semibold transition-all border bg-[#00FF63] text-[#0A0A0A] border-[#00FF63]'
+                            : 'h-10 rounded-lg text-sm font-semibold transition-all border bg-muted text-muted-foreground border-border'
                           }
                         >
                           {r}
@@ -182,28 +181,28 @@ export default function SignUp({ onBack }: Props) {
           </div>
 
           {/* Club Details */}
-          <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-            <div className="px-5 py-3 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-              <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/40">Club Details</p>
+          <div className="rounded-2xl overflow-hidden bg-card border border-border">
+            <div className="px-5 py-3 border-b border-border">
+              <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-muted-foreground">Club Details</p>
             </div>
             <div className="px-5 py-5 space-y-4">
               <div>
-                <Label className="text-white/60 text-xs mb-1.5 block">Club Name</Label>
+                <Label className="text-muted-foreground text-xs mb-1.5 block">Club Name</Label>
                 <Input
                   {...register('clubName')}
                   placeholder="e.g. Midtown Fitness Club"
-                  className="bg-white/6 border-white/10 text-white placeholder:text-white/20 focus-visible:ring-lm-green/40 focus-visible:border-lm-green/50 h-10"
+                  className="bg-background border-input text-foreground placeholder:text-muted-foreground focus-visible:ring-lm-green/40 focus-visible:border-lm-green/50 h-10"
                 />
                 {errors.clubName && <p className="text-xs text-red-400 mt-1">{errors.clubName.message}</p>}
               </div>
               <div>
-                <Label className="text-white/60 text-xs mb-1.5 block">Region</Label>
+                <Label className="text-muted-foreground text-xs mb-1.5 block">Region</Label>
                 <Input
                   {...register('region')}
                   list="regions-list"
                   placeholder="e.g. Northeast"
                   autoComplete="off"
-                  className="bg-white/6 border-white/10 text-white placeholder:text-white/20 focus-visible:ring-lm-green/40 focus-visible:border-lm-green/50 h-10"
+                  className="bg-background border-input text-foreground placeholder:text-muted-foreground focus-visible:ring-lm-green/40 focus-visible:border-lm-green/50 h-10"
                 />
                 <datalist id="regions-list">
                   {REGIONS.map(r => <option key={r} value={r} />)}
@@ -214,32 +213,30 @@ export default function SignUp({ onBack }: Props) {
           </div>
 
           {/* Password */}
-          <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-            <div className="px-5 py-3 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-              <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/40">Password</p>
+          <div className="rounded-2xl overflow-hidden bg-card border border-border">
+            <div className="px-5 py-3 border-b border-border">
+              <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-muted-foreground">Password</p>
             </div>
             <div className="px-5 py-5 space-y-3">
               {!useCustomPassword && (
                 <div>
-                  <Label className="text-white/60 text-xs mb-1.5 block">Generated password — copy this before continuing</Label>
+                  <Label className="text-muted-foreground text-xs mb-1.5 block">Generated password — copy this before continuing</Label>
                   <div className="flex items-center gap-2">
                     <div className="flex-1 h-10 rounded-lg px-3 flex items-center font-mono text-sm text-white/90 tracking-wider"
                       style={{ background: 'rgba(0,255,99,0.06)', border: '1px solid rgba(0,255,99,0.2)' }}>
                       {showPassword ? password : '•'.repeat(password.length)}
                     </div>
                     <button type="button" onClick={() => setShowPassword(v => !v)}
-                      className="w-10 h-10 rounded-lg flex items-center justify-center text-white/40 hover:text-white transition-colors"
-                      style={{ border: '1px solid rgba(255,255,255,0.1)' }}>
+                      className="w-10 h-10 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors border border-border">
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
                     <button type="button" onClick={handleCopy}
                       className="w-10 h-10 rounded-lg flex items-center justify-center transition-colors"
-                      style={{ background: copied ? '#00FF63' : 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: copied ? '#0A0A0A' : 'rgba(255,255,255,0.5)' }}>
+                      className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors border border-border ${copied ? 'bg-[#00FF63] text-[#0A0A0A]' : 'bg-muted text-muted-foreground'}`}>
                       {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                     </button>
                     <button type="button" onClick={() => setPassword(generatePassword())}
-                      className="w-10 h-10 rounded-lg flex items-center justify-center text-white/40 hover:text-white transition-colors"
-                      style={{ border: '1px solid rgba(255,255,255,0.1)' }}>
+                      className="w-10 h-10 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors border border-border">
                       <RefreshCw className="w-4 h-4" />
                     </button>
                   </div>
@@ -255,7 +252,7 @@ export default function SignUp({ onBack }: Props) {
                     onClick={() => field.onChange(!field.value)}
                     className="flex items-center gap-2 text-xs text-white/40 hover:text-white/60 transition-colors"
                   >
-                    <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${field.value ? 'border-lm-green bg-lm-green' : 'border-white/20'}`}>
+                    <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${field.value ? 'border-lm-green bg-lm-green' : 'border-border'}`}>
                       {field.value && <Check className="w-2.5 h-2.5 text-black" />}
                     </div>
                     Set my own password
@@ -269,7 +266,7 @@ export default function SignUp({ onBack }: Props) {
                     {...register('customPassword')}
                     type="password"
                     placeholder="Min. 8 characters"
-                    className="bg-white/6 border-white/10 text-white placeholder:text-white/20 focus-visible:ring-lm-green/40 focus-visible:border-lm-green/50 h-10"
+                    className="bg-background border-input text-foreground placeholder:text-muted-foreground focus-visible:ring-lm-green/40 focus-visible:border-lm-green/50 h-10"
                   />
                   {errors.customPassword && <p className="text-xs text-red-400 mt-1">{errors.customPassword.message}</p>}
                 </div>
@@ -290,7 +287,7 @@ export default function SignUp({ onBack }: Props) {
             {isSubmitting ? 'Creating account…' : 'Create Account'}
           </button>
 
-          <button type="button" onClick={onBack} className="w-full text-center text-sm text-white/30 hover:text-white/60 transition-colors py-1">
+          <button type="button" onClick={onBack} className="w-full text-center text-sm text-muted-foreground hover:text-foreground transition-colors py-1">
             Cancel
           </button>
         </form>

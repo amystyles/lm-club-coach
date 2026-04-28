@@ -1170,11 +1170,12 @@ export default function ClubCoachPath(_props: { onNavigate?: (page: string) => v
             </span>
           </div>
           <h1 className="font-display font-bold leading-[1.0] mb-4">
-            <span className="block text-white text-5xl md:text-6xl">Every Coach.</span>
-            <span className="block text-lm-green text-5xl md:text-6xl italic">Every Stage.</span>
+            <span className="block text-white text-5xl md:text-6xl">Club Coach</span>
+            <span className="block text-lm-green text-5xl md:text-6xl italic">Development.</span>
           </h1>
           <p className="text-white/40 text-sm leading-relaxed max-w-md">
-            A structured development pathway for the coach behind the coach.
+            Develop the Coach. Strengthen the Club.<br />
+            A structured pathway for every stage of the Club Coach journey — from first observation to fully independent mentor.
           </p>
         </div>
 

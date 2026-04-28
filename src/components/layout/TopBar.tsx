@@ -8,8 +8,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Bell, Search } from 'lucide-react';
+import { Bell, Search, Sun, Moon } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import { useTheme } from '@/context/ThemeContext';
 import { signOut } from '@/lib/auth';
 
 interface TopBarProps {
@@ -26,6 +27,7 @@ function nameInitials(name: string | undefined): string {
 
 export const TopBar = (_props: TopBarProps) => {
   const { profile } = useAuth();
+  const { theme, toggle } = useTheme();
   return (
     <div className="fixed top-0 left-0 right-0 h-14 bg-card border-b border-border flex items-center justify-between px-6 z-30 ml-64 transition-all duration-300">
       {/* Left: Search */}
@@ -42,6 +44,11 @@ export const TopBar = (_props: TopBarProps) => {
 
       {/* Right: Icons & User */}
       <div className="flex items-center gap-4">
+        {/* Theme Toggle */}
+        <Button variant="ghost" size="icon" className="h-9 w-9" onClick={toggle} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+          {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+        </Button>
+
         {/* Notification Bell */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
