@@ -231,7 +231,6 @@ export default function SignUp({ onBack }: Props) {
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
                     <button type="button" onClick={handleCopy}
-                      className="w-10 h-10 rounded-lg flex items-center justify-center transition-colors"
                       className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors border border-border ${copied ? 'bg-[#00FF63] text-[#0A0A0A]' : 'bg-muted text-muted-foreground'}`}>
                       {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                     </button>
