@@ -32,15 +32,15 @@ function BriefTab({ session, stageColor }: { session: Session; stageColor: strin
     <div className="space-y-5">
       {/* Session Goals — context for what this session needs to achieve */}
       {cs?.goals && cs.goals.length > 0 && (
-        <div className="rounded-xl border border-lm-green/25 bg-lm-green-mid p-5">
+        <div className="rounded-xl border border-[#00FF63]/20 bg-[#00FF63]/[.06] p-5">
           <div className="flex items-center gap-2 mb-3">
-            <GraduationCap className="w-3.5 h-3.5 text-lm-dark" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-lm-dark">Session Goals</span>
+            <GraduationCap className="w-3.5 h-3.5 text-[#00FF63]" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#00FF63]">Session Goals</span>
           </div>
           <ul className="space-y-2">
             {cs.goals.map((goal, i) => (
-              <li key={i} className="flex gap-2.5 text-sm text-lm-dark leading-relaxed">
-                <Check className="w-4 h-4 flex-shrink-0 mt-0.5 text-lm-dark/60" />
+              <li key={i} className="flex gap-2.5 text-sm text-white/80 leading-relaxed">
+                <Check className="w-4 h-4 flex-shrink-0 mt-0.5 text-[#00FF63]/70" />
                 <span className="font-medium">{goal}</span>
               </li>
             ))}
@@ -58,9 +58,9 @@ function BriefTab({ session, stageColor }: { session: Session; stageColor: strin
           </div>
           <p className="text-lm-dark font-semibold text-sm leading-relaxed mb-2">{session.coachRole.summary}</p>
           <p className="text-lm-ink-mid text-sm leading-relaxed mb-4">{session.coachRole.context}</p>
-          <div className="flex items-start gap-2.5 bg-lm-green-mid rounded-lg px-4 py-3 border border-lm-green/10">
-            <Star className="w-3.5 h-3.5 flex-shrink-0 mt-0.5 text-lm-dark" />
-            <p className="text-lm-dark font-semibold text-sm italic">{session.coachRole.principle}</p>
+          <div className="flex items-start gap-2.5 bg-[#00FF63]/[.07] rounded-lg px-4 py-3 border border-[#00FF63]/15">
+            <Star className="w-3.5 h-3.5 flex-shrink-0 mt-0.5 text-[#00FF63]" />
+            <p className="text-white/80 font-semibold text-sm italic">{session.coachRole.principle}</p>
           </div>
         </div>
       )}
@@ -93,10 +93,10 @@ function BriefTab({ session, stageColor }: { session: Session; stageColor: strin
             <p className="text-lm-dark text-sm font-medium leading-relaxed">{cs.what}</p>
           </div>
 
-          <div className="rounded-xl border border-border bg-card p-5 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-1 h-full bg-lm-dark" />
-            <Badge className="text-[10px] tracking-wider uppercase font-bold px-2 py-0.5 mb-2 bg-lm-dark text-white">Why</Badge>
-            <p className="text-lm-dark text-sm font-medium leading-relaxed">{cs.why}</p>
+          <div className="rounded-xl border border-white/8 bg-white/[.03] p-5 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-1 h-full bg-white/30" />
+            <Badge className="text-[10px] tracking-wider uppercase font-bold px-2 py-0.5 mb-2 bg-white/10 text-white border border-white/15">Why</Badge>
+            <p className="text-white/80 text-sm font-medium leading-relaxed">{cs.why}</p>
           </div>
 
           <div className="rounded-xl border border-border bg-card p-5 relative overflow-hidden">
@@ -116,8 +116,8 @@ function BriefTab({ session, stageColor }: { session: Session; stageColor: strin
           </div>
 
           {cs.lmqAlignment && (
-            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 flex items-start gap-3">
-              <Shield className="w-4 h-4 text-slate-600 flex-shrink-0 mt-0.5" />
+            <div className="rounded-xl border border-border bg-muted/30 p-4 flex items-start gap-3">
+              <Shield className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-0.5" />
               <div>
                 <p className="font-bold text-lm-dark text-[10px] uppercase tracking-[0.15em] mb-1">LMQ Alignment</p>
                 <p className="text-lm-ink-mid text-sm leading-relaxed">{cs.lmqAlignment}</p>
@@ -410,8 +410,8 @@ function SessionWorkspace({
               onClick={() => onTabChange(tab.id)}
               className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all focus:outline-none ${
                 isActive
-                  ? 'bg-lm-dark text-white shadow-sm'
-                  : 'text-lm-ink-muted bg-lm-subtle hover:bg-lm-sunken hover:text-lm-ink-mid'
+                  ? 'bg-[#00FF63] text-[#0A0A0A] shadow-sm'
+                  : 'text-white/40 hover:text-white/70 hover:bg-white/5'
               }`}
             >
               <Icon className="w-3.5 h-3.5" />
@@ -687,21 +687,26 @@ function SessionList({
           <button
             key={session.id}
             onClick={() => onSelect(session.id)}
-            className={`w-full text-left px-3 py-4 rounded-xl transition-all focus:outline-none flex items-start gap-3 ${
-              isActive ? 'bg-lm-dark shadow-sm' : 'hover:bg-lm-subtle'
+            className={`w-full text-left px-3 py-3.5 rounded-lg transition-all focus:outline-none flex items-start gap-3 relative ${
+              isActive
+                ? 'bg-[#00FF63]/[.08] border border-[#00FF63]/20'
+                : 'border border-transparent hover:bg-white/[.04]'
             }`}
           >
+            {isActive && (
+              <div className="absolute left-0 top-2 bottom-2 w-[3px] rounded-r-full bg-[#00FF63]" />
+            )}
             <span className={`text-[10px] font-bold tabular-nums mt-0.5 flex-shrink-0 w-4 ${
-              isActive ? 'text-white/30' : 'text-lm-ink-muted/40'
+              isActive ? 'text-[#00FF63]/60' : 'text-white/20'
             }`}>
               {String(idx + 1).padStart(2, '0')}
             </span>
             <div className="min-w-0 flex-1">
-              <p className={`text-sm font-medium leading-snug ${isActive ? 'text-white' : 'text-lm-dark'}`}>
+              <p className={`text-sm font-medium leading-snug ${isActive ? 'text-white' : 'text-white/60'}`}>
                 {session.title}
               </p>
               {session.sessionPlan && (
-                <p className={`text-xs mt-1 ${isActive ? 'text-white/40' : 'text-lm-ink-muted'}`}>
+                <p className={`text-xs mt-0.5 ${isActive ? 'text-[#00FF63]/50' : 'text-white/25'}`}>
                   {session.sessionPlan.totalDuration}
                 </p>
               )}
@@ -710,9 +715,8 @@ function SessionList({
         );
       })}
 
-      {/* Add session affordance */}
-      <button className="w-full text-left px-3 py-2.5 rounded-xl border border-dashed border-lm-sunken hover:border-lm-ink-muted/40 hover:bg-lm-subtle/50 transition-all focus:outline-none mt-1 group">
-        <span className="flex items-center gap-1.5 text-xs text-lm-ink-muted/50 group-hover:text-lm-ink-muted transition-colors">
+      <button className="w-full text-left px-3 py-2.5 rounded-lg border border-dashed border-white/10 hover:border-white/20 hover:bg-white/[.03] transition-all focus:outline-none mt-2 group">
+        <span className="flex items-center gap-1.5 text-xs text-white/25 group-hover:text-white/40 transition-colors">
           <Plus className="w-3.5 h-3.5" />
           Add session
         </span>
@@ -834,8 +838,13 @@ export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page:
               >
                 {/* Stage color top bar */}
                 <div
-                  className="absolute top-0 left-0 right-0 h-[3px] rounded-t-xl transition-all duration-200"
-                  style={{ backgroundColor: stage.color, opacity: isActive ? 1 : 0.4 }}
+                  className="absolute top-0 left-0 right-0 rounded-t-xl transition-all duration-200"
+                  style={{
+                    backgroundColor: stage.color,
+                    height: isActive ? '5px' : '2px',
+                    opacity: isActive ? 1 : 0.25,
+                    boxShadow: isActive ? `0 0 12px ${stage.color}70` : 'none',
+                  }}
                 />
                 {/* Ghost stage number background */}
                 <div
@@ -889,21 +898,21 @@ export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page:
                 onClick={() => setViewMode(viewMode === 'activities' ? 'session' : 'activities')}
                 className={`w-full text-left rounded-2xl border p-4 shadow-sm transition-all focus:outline-none ${
                   viewMode === 'activities'
-                    ? 'bg-lm-dark border-lm-dark'
-                    : 'bg-card border-border hover:border-lm-ink-muted/30'
+                    ? 'bg-[#00FF63]/[.08] border-[#00FF63]/20'
+                    : 'bg-card border-border hover:border-white/20'
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors ${
-                    viewMode === 'activities' ? 'bg-lm-green/20' : 'bg-lm-subtle'
+                    viewMode === 'activities' ? 'bg-[#00FF63]/15' : 'bg-white/5'
                   }`}>
-                    <Zap className={`w-4 h-4 ${viewMode === 'activities' ? 'text-lm-green' : 'text-lm-ink-mid'}`} />
+                    <Zap className={`w-4 h-4 ${viewMode === 'activities' ? 'text-[#00FF63]' : 'text-white/40'}`} />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className={`text-sm font-bold leading-tight ${viewMode === 'activities' ? 'text-white' : 'text-lm-dark'}`}>
+                    <p className={`text-sm font-bold leading-tight ${viewMode === 'activities' ? 'text-white' : 'text-foreground'}`}>
                       Activities & Tools
                     </p>
-                    <p className={`text-[11px] mt-0.5 ${viewMode === 'activities' ? 'text-white/50' : 'text-lm-ink-muted'}`}>
+                    <p className={`text-[11px] mt-0.5 ${viewMode === 'activities' ? 'text-[#00FF63]/50' : 'text-muted-foreground'}`}>
                       {currentStageData.keActivities?.reduce((s, g) => s + g.items.length, 0) ?? 0} activities
                     </p>
                   </div>
