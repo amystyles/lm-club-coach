@@ -13,7 +13,7 @@ import ClubCoachPath from './pages/ClubCoachPath';
 import LMQReference from './pages/LMQReference';
 import FeedbackBuilder from './pages/FeedbackBuilder';
 import SignUp from './pages/SignUp';
-
+import { coaches } from './data/mock-data';
 const PAGE_TITLES: Record<string, { title: string; subtitle?: string }> = {
   dashboard: { title: 'Dashboard', subtitle: 'Team overview & instructor development' },
   roster: { title: 'Instructor Team', subtitle: 'All instructors at a glance' },
@@ -44,6 +44,17 @@ function App() {
   const [activePage, setActivePage] = useState('dashboard');
   const [selectedInstructorId, setSelectedInstructorId] = useState<string | null>(null);
   const [previousPage, setPreviousPage] = useState<'dashboard' | 'roster'>('dashboard');
+  const [completedSessionIds, setCompletedSessionIds] = useState<Record<string, string[]>>(
+    () => Object.fromEntries(coaches.map(c => [c.id, c.completedSessionIds]))
+  );
+
+  const handleCompleteSession = (coachId: string, sessionId: string) => {
+    setCompletedSessionIds(prev => {
+      const current = prev[coachId] ?? [];
+      if (current.includes(sessionId)) return prev;
+      return { ...prev, [coachId]: [...current, sessionId] };
+    });
+  };
 
   const handleViewInstructor = (id: string, source: 'dashboard' | 'roster' = 'dashboard') => {
     setSelectedInstructorId(id);
@@ -68,7 +79,13 @@ function App() {
   const renderPage = () => {
     switch (activePage) {
       case 'dashboard':
-        return <Dashboard onViewInstructor={(id) => handleViewInstructor(id, 'dashboard')} />;
+        return (
+          <Dashboard
+            onViewInstructor={(id) => handleViewInstructor(id, 'dashboard')}
+            completedSessionIds={completedSessionIds}
+            onNavigate={handleNavigate}
+          />
+        );
       case 'roster':
         return <TeamRoster onViewInstructor={(id) => handleViewInstructor(id, 'roster')} />;
       case 'assessments':
@@ -76,7 +93,13 @@ function App() {
       case 'development':
         return <DevelopmentPathway onNavigate={handleNavigate} />;
       case 'coach-path':
-        return <ClubCoachPath onNavigate={handleNavigate} />;
+        return (
+          <ClubCoachPath
+            onNavigate={handleNavigate}
+            completedSessionIds={completedSessionIds['coach-1'] ?? []}
+            onCompleteSession={(sessionId) => handleCompleteSession('coach-1', sessionId)}
+          />
+        );
       case 'lmq-reference':
         return <LMQReference />;
       case 'feedback':
@@ -95,10 +118,20 @@ function App() {
             source={previousPage}
           />
         ) : (
-          <Dashboard onViewInstructor={(id) => handleViewInstructor(id, 'dashboard')} />
+          <Dashboard
+            onViewInstructor={(id) => handleViewInstructor(id, 'dashboard')}
+            completedSessionIds={completedSessionIds}
+            onNavigate={handleNavigate}
+          />
         );
       default:
-        return <Dashboard onViewInstructor={(id) => handleViewInstructor(id, 'dashboard')} />;
+        return (
+          <Dashboard
+            onViewInstructor={(id) => handleViewInstructor(id, 'dashboard')}
+            completedSessionIds={completedSessionIds}
+            onNavigate={handleNavigate}
+          />
+        );
     }
   };
 
