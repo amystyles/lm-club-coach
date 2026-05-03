@@ -434,7 +434,7 @@ function SessionList({
               key={session.id}
               className="w-full px-3 py-4 rounded-xl flex items-start gap-3 opacity-50 cursor-not-allowed"
             >
-              <Lock className="w-3.5 h-3.5 text-lm-ink-muted/50 flex-shrink-0 mt-0.5" />
+              <Lock className="w-3.5 h-3.5 text-lm-ink-muted flex-shrink-0 mt-0.5" />
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium leading-snug text-lm-ink-muted">{session.title}</p>
                 <p className="text-xs text-lm-ink-muted/50 mt-0.5">Complete previous session first</p>
@@ -1141,7 +1141,7 @@ function isSessionLocked(sessionIndex: number, sessions: { id: string }[], compl
 type ViewMode = 'session' | 'conversation-templates' | 'observation-framework' | 'intention-builder' | 'frameworks-overview' | 'dreyfus-model' | 'etas' | 'ssdl';
 
 interface ClubCoachPathProps {
-  onNavigate: (page: string) => void;
+  onNavigate?: (page: string) => void;
   completedSessionIds: string[];
   onCompleteSession: (sessionId: string) => void;
 }
