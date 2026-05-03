@@ -6,7 +6,7 @@ import {
   Eye, Megaphone, Check, Target,
   GraduationCap, MessageSquareQuote, NotebookPen, Shield,
   CalendarClock, Users, BookOpen, Plus,
-  ChevronRight, Brain, ShieldCheck, Layers, Lightbulb,
+  ChevronRight, Brain, ShieldCheck, Layers, Lightbulb, Lock,
 } from 'lucide-react';
 import { coachPathStages, COACH_STAGE_META } from '@/data/coach-path-data';
 import type { Session } from '@/data/stage-sessions';
@@ -312,11 +312,15 @@ function SessionWorkspace({
   stageColor,
   activeTab,
   onTabChange,
+  isCompleted,
+  onComplete,
 }: {
   session: Session;
   stageColor: string;
   activeTab: TabId;
   onTabChange: (tab: TabId) => void;
+  isCompleted: boolean;
+  onComplete: () => void;
 }) {
   const availableTabs = TABS.filter((tab) => {
     if (tab.id === 'plan')    return !!session.sessionPlan;
@@ -382,6 +386,23 @@ function SessionWorkspace({
         {currentTab === 'prompts' && <PromptsTab session={session} stageColor={stageColor} />}
         {currentTab === 'notes'   && <NotesTab   session={session} />}
       </div>
+
+      <div className="mt-8 pt-5 border-t border-lm-sunken">
+        {isCompleted ? (
+          <div className="flex items-center gap-2 text-lm-green">
+            <CheckCircle2 className="w-4 h-4" />
+            <span className="text-sm font-semibold">Session completed</span>
+          </div>
+        ) : (
+          <button
+            onClick={onComplete}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-lm-green text-lm-dark text-sm font-bold hover:bg-lm-green/90 transition-colors"
+          >
+            <CheckCircle2 className="w-4 h-4" />
+            Mark Session Complete
+          </button>
+        )}
+      </div>
     </div>
   );
 }
@@ -393,15 +414,35 @@ function SessionList({
   sessions,
   activeId,
   onSelect,
+  completedIds,
 }: {
   sessions: Session[];
   activeId: string;
   onSelect: (id: string) => void;
+  completedIds: string[];
 }) {
   return (
     <div className="space-y-0.5">
       {sessions.map((session, idx) => {
         const isActive = session.id === activeId;
+        const locked = isSessionLocked(idx, sessions, completedIds);
+        const completed = completedIds.includes(session.id);
+
+        if (locked) {
+          return (
+            <div
+              key={session.id}
+              className="w-full px-3 py-4 rounded-xl flex items-start gap-3 opacity-50 cursor-not-allowed"
+            >
+              <Lock className="w-3.5 h-3.5 text-lm-ink-muted/50 flex-shrink-0 mt-0.5" />
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-medium leading-snug text-lm-ink-muted">{session.title}</p>
+                <p className="text-xs text-lm-ink-muted/50 mt-0.5">Complete previous session first</p>
+              </div>
+            </div>
+          );
+        }
+
         return (
           <button
             key={session.id}
@@ -425,6 +466,9 @@ function SessionList({
                 </p>
               )}
             </div>
+            {completed && (
+              <CheckCircle2 className={`w-3.5 h-3.5 flex-shrink-0 mt-0.5 ${isActive ? 'text-lm-green' : 'text-lm-green/70'}`} />
+            )}
           </button>
         );
       })}
@@ -1081,11 +1125,28 @@ function SSDLTool() {
 }
 
 /* ─────────────────────────────────────────────
+   Session locking helper
+   ───────────────────────────────────────────── */
+function isSessionLocked(sessionIndex: number, sessions: { id: string }[], completedIds: string[]): boolean {
+  if (sessionIndex === 0) return false;
+  for (let i = 0; i < sessionIndex; i++) {
+    if (!completedIds.includes(sessions[i].id)) return true;
+  }
+  return false;
+}
+
+/* ─────────────────────────────────────────────
    Main Page
    ───────────────────────────────────────────── */
 type ViewMode = 'session' | 'conversation-templates' | 'observation-framework' | 'intention-builder' | 'frameworks-overview' | 'dreyfus-model' | 'etas' | 'ssdl';
 
-export default function ClubCoachPath(_props: { onNavigate?: (page: string) => void }) {
+interface ClubCoachPathProps {
+  onNavigate: (page: string) => void;
+  completedSessionIds: string[];
+  onCompleteSession: (sessionId: string) => void;
+}
+
+export default function ClubCoachPath({ onNavigate: _onNavigate, completedSessionIds, onCompleteSession }: ClubCoachPathProps) {
   const [activeStage, setActiveStage] = useState(1);
   const [activeSessions, setActiveSessions] = useState<Record<number, string>>({});
   const [activeTab, setActiveTab] = useState<TabId>('brief');
@@ -1248,6 +1309,7 @@ export default function ClubCoachPath(_props: { onNavigate?: (page: string) => v
                   sessions={currentStageData.sessions}
                   activeId={getActiveSessionId(activeStage)}
                   onSelect={handleSessionSelect}
+                  completedIds={completedSessionIds}
                 />
               </div>
 
@@ -1315,6 +1377,8 @@ export default function ClubCoachPath(_props: { onNavigate?: (page: string) => v
                     stageColor={currentStageColor}
                     activeTab={activeTab}
                     onTabChange={setActiveTab}
+                    isCompleted={completedSessionIds.includes(currentSession.id)}
+                    onComplete={() => onCompleteSession(currentSession.id)}
                   />
                 ) : (
                   <p className="text-lm-ink-muted text-sm">Select a session to begin.</p>
