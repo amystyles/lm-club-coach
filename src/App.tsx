@@ -97,7 +97,7 @@ function App() {
           <ClubCoachPath
             onNavigate={handleNavigate}
             completedSessionIds={completedSessionIds['coach-1'] ?? []}
-            onCompleteSession={(sessionId) => handleCompleteSession('coach-1', sessionId)}
+            onCompleteSession={(sessionId: string) => handleCompleteSession('coach-1', sessionId)}
           />
         );
       case 'lmq-reference':
