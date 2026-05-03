@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Instructor } from '@/data/types';
-import { STAGE_DATA, KEY_ELEMENT_LABELS } from '@/data/mock-data';
+import { coaches, STAGE_DATA, KEY_ELEMENT_LABELS } from '@/data/mock-data';
 import { useData } from '@/context/DataContext';
 import KeyElementHeatmap from '@/components/KeyElementHeatmap';
 import ProgramProgress from '@/components/ProgramProgress';
@@ -9,9 +9,12 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 import { Users, TrendingUp, ClipboardList, AlertTriangle, ChevronRight } from 'lucide-react';
+import CoachProgressPanel from '@/components/CoachProgressPanel';
 
 interface DashboardProps {
   onViewInstructor: (id: string, source: 'dashboard' | 'roster') => void;
+  completedSessionIds: Record<string, string[]>;
+  onNavigate: (page: string) => void;
 }
 
 
@@ -72,13 +75,14 @@ const NEXT_MILESTONE: Record<number, string> = {
 };
 
 
-export default function Dashboard({ onViewInstructor }: DashboardProps) {
+export default function Dashboard({ onViewInstructor, completedSessionIds, onNavigate }: DashboardProps) {
   const { instructors, assessments, loading } = useData();
   const [expandedStages, setExpandedStages] = useState<Set<number>>(new Set());
 
   if (loading) {
     return <div className="p-8 text-muted-foreground text-sm">Loading instructors…</div>;
   }
+
 
   const averageLMQ = (
     instructors.reduce((sum, inst) => sum + inst.lmqLevel, 0) / instructors.length
@@ -257,6 +261,13 @@ export default function Dashboard({ onViewInstructor }: DashboardProps) {
           <ProgramProgress />
         </div>
       </div>
+
+      {/* Coach Progress */}
+      <CoachProgressPanel
+        coaches={coaches}
+        completedSessionIds={completedSessionIds}
+        onPrepSession={() => onNavigate('coach-path')}
+      />
 
       <div>
         <h2 className="text-lg font-bold mb-4">
