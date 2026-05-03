@@ -1127,11 +1127,7 @@ function SSDLTool() {
 /* ─────────────────────────────────────────────
    Session locking helper
    ───────────────────────────────────────────── */
-function isSessionLocked(sessionIndex: number, sessions: { id: string }[], completedIds: string[]): boolean {
-  if (sessionIndex === 0) return false;
-  for (let i = 0; i < sessionIndex; i++) {
-    if (!completedIds.includes(sessions[i].id)) return true;
-  }
+function isSessionLocked(_sessionIndex: number, _sessions: { id: string }[], _completedIds: string[]): boolean {
   return false;
 }
 

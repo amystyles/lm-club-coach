@@ -49,7 +49,7 @@ export const coachPathStages: Record<number, StageDetail> = {
               title: 'Connection',
               steps: [
                 "TAP Coach asks: tell me about your journey into fitness and coaching",
-                "No agenda yet — just listen and respond honestly",
+                "Listen and respond honestly — there's no right answer here.",
               ],
               tip: "Don't rush past this. Your TAP Coach is building a mental model of who you are.",
             },
@@ -88,8 +88,8 @@ export const coachPathStages: Record<number, StageDetail> = {
         title: 'The Frameworks Behind Club Coach',
         subtitle: 'Understanding the system you are about to use',
         coachRole: {
-          summary: "Guide. You're not teaching theory — you're showing a new Club Coach the tools they're about to use and why they exist.",
-          context: "This session gives new Club Coaches the philosophical foundation before they start using the system. Understanding why Club Coach works the way it does makes every subsequent session more coherent. Don't lecture — use the tools in the reference panel as you walk through each framework.",
+          summary: "Learner of the system. You're not here to master these frameworks — you're here to understand why Club Coach is built around them.",
+          context: "Your TAP Coach will walk you through the five frameworks that underpin Club Coach. You don't need to master them today — just understand why each one exists and how they connect. Engage actively: make connections to instructors you already know, ask questions when something's unclear, and use the reference tools as your TAP Coach introduces each framework. This foundation makes every session that follows more coherent.",
           principle: "When you understand the why behind a tool, you use it better.",
         },
         coachingSession: {
@@ -162,22 +162,22 @@ export const coachPathStages: Record<number, StageDetail> = {
               title: 'LMQ as the North Star',
               steps: [
                 "Open LMQ Reference together",
-                "Establish: LMQ is the standard. Everything in Club Coach traces back to it. Your job as a Club Coach is to drive alignment between each instructor and that standard.",
-                "Ask: which of the 5 Key Elements do you feel least confident assessing right now?",
+                "TAP Coach establishes: LMQ is the standard. Everything in Club Coach traces back to it. Your job as a Club Coach is to drive alignment between each instructor and that standard.",
+                "TAP Coach asks: which of the 5 Key Elements do you feel least confident assessing right now?",
               ],
-              tip: "Don't go deep into LMQ here — that's Session 3. Just establish it as the foundation everything else is built on.",
+              tip: "You'll go much deeper into LMQ in Session 3 — today is just about understanding it as the standard everything else is built on.",
             },
             {
               duration: '25 min',
               title: 'The Five Frameworks',
               steps: [
-                "Dreyfus (5 min): Open the Dreyfus Model tool. Walk through the five stages. Ask: 'Think of an instructor you know — where are they for Choreography vs Connection? Same stage?'",
-                "ETAs (5 min): Open the ETAs tool. Walk through the trust levels and the 8 activities. Ask: 'What would you need to see before you'd trust someone to teach completely unsupervised?'",
-                "SSDL (5 min): Open the SSDL tool. Walk through the four coaching roles. Ask: 'Have you ever coached someone with the wrong approach for their stage? What happened?'",
-                "Implementation Intentions (5 min): Explain the if-then format. Open the Intention Builder. Ask: 'What's the difference between \"work on your connection\" and a specific if-then plan?'",
-                "E-P-E (5 min): Explain Elicit–Provide–Elicit. Open Conversation Templates. Ask: 'What happens when you lead with your observation instead of asking first?'",
+                "Dreyfus (5 min): TAP Coach opens the Dreyfus Model tool and walks through the five stages. Ask: 'Think of an instructor you know — where are they for Choreography vs Connection? Same stage?'",
+                "ETAs (5 min): TAP Coach opens the ETAs tool and walks through the trust levels and the 8 activities. Ask: 'What would you need to see before you'd trust someone to teach completely unsupervised?'",
+                "SSDL (5 min): TAP Coach opens the SSDL tool and walks through the four coaching roles. Ask: 'Have you ever coached someone with the wrong approach for their stage? What happened?'",
+                "Implementation Intentions (5 min): TAP Coach explains the if-then format and opens the Intention Builder. Ask: 'What's the difference between \"work on your connection\" and a specific if-then plan?'",
+                "E-P-E (5 min): TAP Coach explains Elicit–Provide–Elicit and opens Conversation Templates. Ask: 'What happens when you lead with your observation instead of asking first?'",
               ],
-              tip: "Keep each to 5 minutes. The depth comes in later sessions — this session is about the map, not the territory.",
+              tip: "You'll return to each of these frameworks in depth over the coming sessions — today is about the map, not the territory. Don't worry if it doesn't all land immediately.",
             },
             {
               duration: '5 min',
@@ -1055,7 +1055,7 @@ export const coachPathStages: Record<number, StageDetail> = {
                 "Discuss examples from group fitness: 'the class is about them, not me' / 'connection before choreography'",
                 "Talk through what an instructor in liminal space looks like: working harder, feeling stuck, temporarily less fluent",
               ],
-              tip: "Share a personal example from your own development — a moment when you felt worse before you felt better. It makes this concept real.",
+              tip: "Think of a time in your own development when you felt worse before you felt better — bring that example to this conversation. It makes the concept real.",
             },
             {
               duration: '10 min',
