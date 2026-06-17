@@ -830,7 +830,128 @@ git commit -m "feat: TAP-authored observations for assigned clubs"
 
 ---
 
-## Deployment Path A/B/C — Recommended Behaviour
+## Deployment Path A/B/C — LMUS Service Tiers (Revised)
+
+**Status:** Product framing from LMUS business model — **who develops GFMs and Club Coaches**, not only who develops instructors.
+
+The earlier recommendation in this doc framed A/B/C as *instructor* development lead (Club Mentor vs TAP). That remains a **second axis**. The primary sales framing is:
+
+| Path | LMUS sells… | Primary developer | App is used to… |
+|------|-------------|-------------------|-----------------|
+| **C — TAP service** | Dedicated TAP Coach developing your people | **TAP Coach** | Run coach-path 1:1s, debrief, sign off sessions/stages, view club observations |
+| **B — Hybrid** | Platform + methodology; club/region delivers | **GFM or Regional GF Director** | Train and develop GFMs / Club Coaches on coach-path; oversee their progress |
+| **A — Club-led** | Self-serve growth toolkit | **GFM (self)** | Own development on coach-path; grow capability without sold TAP hours |
+
+```mermaid
+flowchart TB
+  LMUS[LMUS Super Admin]
+  subgraph tierC [Path C - TAP Service]
+    TAP[TAP Coach]
+    TAP --> DEV1[GFM / Club Coach on coach-path]
+  end
+  subgraph tierB [Path B - Hybrid]
+    RGD[Regional GF Director or Senior GFM]
+    RGD --> DEV2[GFM / Club Coach on coach-path]
+  end
+  subgraph tierA [Path A - Club-led]
+    GFM[GFM self]
+    GFM --> DEV3[Own coach-path journey]
+  end
+  LMUS --> tierC
+  LMUS --> tierB
+  LMUS --> tierA
+  DEV1 & DEV2 & DEV3 --> INST[Instructor Development - separate axis]
+```
+
+### Two axes (don't conflate)
+
+| Axis | Question | Paths |
+|------|----------|-------|
+| **1. Coach development tier** (this section) | Who develops GFMs / Club Coaches on `coach-path`? | A=self/club, B=GFD/GFM, C=TAP |
+| **2. Instructor development lead** (below) | Who leads hands-on instructor work post-IT? | Often correlates with tier but not 1:1 |
+
+A **Hybrid coach tier** club can still be Club-led for instructors (internal mentor). A **TAP service** club might have TAP develop coaches *and* lean on TAP more for instructor cert windows.
+
+### Instructor development lead (secondary axis)
+
+| Path | Who leads instructor hands-on dev | TAP role |
+|------|-----------------------------------|----------|
+| **A** | Club Mentor (in-club) | Plan + cert review; escalation |
+| **B** | Club Mentor primary, TAP in loop | Sync + video review |
+| **C** | TAP Coach | Weekly check-ins, drives cert windows |
+
+Use `clubs.instructor_dev_lead` derived from tier defaults; LMUS can override per club.
+
+### Sign-off authority by coach-development tier
+
+The plan assumed TAP always signs off coach-path. **That only fits Path C.**
+
+| Tier | Session prep by | Sign-off by | Stage sign-off by |
+|------|-----------------|-------------|-------------------|
+| **C — TAP service** | GFM / Club Coach | TAP Coach | TAP Coach |
+| **B — Hybrid** | GFM / Club Coach | **Regional GFD or mentoring GFM** | Same development lead |
+| **A — Club-led** | GFM (self) | **Self-certify with integrity prompts**, or optional regional review | GFM marks stage complete; LMUS may audit |
+
+Path A creates tension with `coach-path-data.ts` (every session says "1:1 with TAP Coach"). Options:
+
+1. **Path-aware copy** — "1:1 with your development lead" / "Reflection & self-assessment" on Path A
+2. **Internal mentor as TAP-equivalent** — senior GFM or regional peer assigned as `development_lead_id` even on Path A
+3. **Separate lighter curriculum** for Path A — **not recommended** (3× maintenance)
+
+Recommend **(2) for B** and **(1)+(optional regional audit) for A**.
+
+### What you're missing (gaps vs this business model)
+
+| Gap | Why it matters |
+|-----|----------------|
+| **Regional GF Director role** | Hybrid tier names RGD as primary developer — no `regional_gfd` role, no multi-club scope, no RGD dashboard |
+| **Generic `development_lead`** | Sign-off can't always be TAP — need `development_lead_id` + `development_lead_type` (`tap` \| `gfd` \| `gfm` \| `self`) per enrollment |
+| **Enrollment initiator varies by tier** | C: LMUS enrolls + assigns TAP. B: RGD/GFM enrolls coaches they develop. A: GFM self-enrolls or LMUS opens club tier |
+| **Developer mode (not just oversight)** | Hybrid GFD/GFM must do what TAP does on Path C: read prep, write feedback, sign off — not only read notes on Dashboard |
+| **Cross-club visibility** | Regional GFD sees GFMs/club coaches across multiple clubs in their region |
+| **Org / region hierarchy** | `regions` → `clubs` → `users`; LMUS ops at top — today flat `clubs` only |
+| **Commercial metadata** | `service_tier`, seat limits, TAP hours, feature flags — not in schema |
+| **Coach tier vs instructor tier** | One club might need different defaults on each axis — single `deployment_path` field is insufficient |
+| **Club-led sign-off without TAP** | Phase 2 is TAP-only; Path A needs alternate completion workflow |
+| **Curriculum voice on Path A** | 109× "TAP Coach" strings need path-aware rendering |
+| **Provisioning chain** | Who creates GFM accounts at each tier; who can invite Club Coaches |
+| **LMUS audit / quality** | LMUS needs cross-tier visibility for quality assurance without doing every sign-off |
+| **Instructor pathway on Path A** | GFM growing self on coach-path still needs to develop instructors — Club Mentor model on instructor axis |
+
+### Recommended schema evolution
+
+```sql
+-- Replace single deployment_path semantics with explicit tiers
+alter table public.clubs
+  add column if not exists coach_dev_tier text not null default 'club_led'
+    check (coach_dev_tier in ('club_led', 'hybrid', 'tap_service')),
+  add column if not exists instructor_dev_lead text not null default 'club_mentor'
+    check (instructor_dev_lead in ('club_mentor', 'hybrid', 'tap_coach'));
+
+-- Enrollment carries who develops this person
+alter table public.coach_path_enrollments
+  add column if not exists development_lead_type text not null default 'tap_coach'
+    check (development_lead_type in ('tap_coach', 'regional_gfd', 'gfm', 'self')),
+  add column if not exists development_lead_id uuid references public.profiles(id);
+```
+
+Keep `deployment_path` A/B/C as legacy display mapping: `A→club_led`, `B→hybrid`, `C→tap_service` until LMUS renames in UI.
+
+### Implementation phasing (revised)
+
+| Phase | Work |
+|-------|------|
+| **0–1** | GFM dual-role + locking (unchanged) |
+| **2** | Path **C only**: LMUS enrollment, TAP login, TAP sign-off, `tap_feedback` |
+| **2b** | Path **B**: `regional_gfd` role, development lead sign-off, multi-club RGD dashboard, GFM developer mode |
+| **3** | Path **A**: self-serve coach-path, path-aware curriculum copy, optional regional audit |
+| **3b** | Instructor dev lead axis: `club_mentor_id`, path-aware instructor session copy |
+
+**YAGNI:** Ship Path C (TAP service) first — it matches the curriculum as written and the highest-value LMUS SKU. Hybrid and Club-led layers need the `development_lead` abstraction before they work honestly.
+
+---
+
+## Deployment Path A/B/C — Instructor Lead Detail (Original)
 
 **Status:** Recommended model (confirm exact LMUS labels with ops team).
 
