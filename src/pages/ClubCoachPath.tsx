@@ -10,6 +10,11 @@ import {
 } from 'lucide-react';
 import { coachPathStages, COACH_STAGE_META } from '@/data/coach-path-data';
 import type { Session } from '@/data/stage-sessions';
+import SessionNotesField from '@/components/SessionNotesField';
+import AddSessionDialog from '@/components/AddSessionDialog';
+import { useCustomSessions } from '@/context/CustomSessionsContext';
+import { useAuth } from '@/context/AuthContext';
+import { formValuesToSessionData, type CustomSessionFormValues } from '@/lib/custom-session-form';
 
 /* ─────────────────────────────────────────────
    Tab definition
@@ -263,8 +268,6 @@ function PromptsTab({ session, stageColor }: { session: Session; stageColor: str
    Notes Tab
    ───────────────────────────────────────────── */
 function NotesTab({ session }: { session: Session }) {
-  const [notes, setNotes] = useState('');
-
   return (
     <div className="space-y-6">
       {session.warning && (
@@ -286,20 +289,7 @@ function NotesTab({ session }: { session: Session }) {
         </div>
       )}
 
-      <div className="rounded-xl border border-border bg-lm-subtle p-5">
-        <div className="flex items-center gap-2 mb-1.5">
-          <NotebookPen className="w-3.5 h-3.5 text-lm-ink-muted" />
-          <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-lm-ink-muted">Your Notes</span>
-        </div>
-        <p className="text-lm-ink-muted text-xs mb-3">Capture reflections from this session. Stays local to your browser.</p>
-        <textarea
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          placeholder="What landed? What will you try? What questions came up?"
-          rows={5}
-          className="w-full rounded-lg border border-border bg-white px-4 py-3 text-sm text-lm-ink-mid placeholder:text-lm-ink-muted/50 focus:outline-none focus:ring-2 focus:ring-lm-green focus:border-transparent resize-y"
-        />
-      </div>
+      <SessionNotesField pathKey="coach-path" sessionId={session.id} />
     </div>
   );
 }
@@ -415,11 +405,15 @@ function SessionList({
   activeId,
   onSelect,
   completedIds,
+  onAddSession,
+  canAddSession,
 }: {
   sessions: Session[];
   activeId: string;
   onSelect: (id: string) => void;
   completedIds: string[];
+  onAddSession: () => void;
+  canAddSession: boolean;
 }) {
   return (
     <div className="space-y-0.5">
@@ -473,12 +467,18 @@ function SessionList({
         );
       })}
 
-      <button className="w-full text-left px-3 py-2.5 rounded-xl border border-dashed border-lm-sunken hover:border-lm-ink-muted/40 hover:bg-lm-subtle/50 transition-all focus:outline-none mt-1 group">
-        <span className="flex items-center gap-1.5 text-xs text-lm-ink-muted/50 group-hover:text-lm-ink-muted transition-colors">
-          <Plus className="w-3.5 h-3.5" />
-          Add session
-        </span>
-      </button>
+      {canAddSession && (
+        <button
+          type="button"
+          onClick={onAddSession}
+          className="w-full text-left px-3 py-2.5 rounded-xl border border-dashed border-lm-sunken hover:border-lm-ink-muted/40 hover:bg-lm-subtle/50 transition-all focus:outline-none mt-1 group"
+        >
+          <span className="flex items-center gap-1.5 text-xs text-lm-ink-muted/50 group-hover:text-lm-ink-muted transition-colors">
+            <Plus className="w-3.5 h-3.5" />
+            Add session
+          </span>
+        </button>
+      )}
     </div>
   );
 }
@@ -1143,23 +1143,32 @@ interface ClubCoachPathProps {
 }
 
 export default function ClubCoachPath({ onNavigate: _onNavigate, completedSessionIds, onCompleteSession }: ClubCoachPathProps) {
+  const { getSessionsForStage, createSession } = useCustomSessions();
+  const { isAdmin } = useAuth();
   const [activeStage, setActiveStage] = useState(1);
   const [activeSessions, setActiveSessions] = useState<Record<number, string>>({});
   const [activeTab, setActiveTab] = useState<TabId>('brief');
   const [viewMode, setViewMode] = useState<ViewMode>('session');
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
 
   const currentStageData = coachPathStages[activeStage];
   const currentStageMeta = COACH_STAGE_META[activeStage - 1];
   const currentStageColor = currentStageMeta?.color || '#0A0A0A';
+  const stageSessions = [
+    ...(currentStageData?.sessions ?? []),
+    ...getSessionsForStage('coach-path', activeStage),
+  ];
 
   const getActiveSessionId = (stageNum: number) => {
-    const stage = coachPathStages[stageNum];
-    return activeSessions[stageNum] || stage?.sessions[0]?.id || '';
+    const builtIn = coachPathStages[stageNum]?.sessions ?? [];
+    const custom = getSessionsForStage('coach-path', stageNum);
+    const sessions = [...builtIn, ...custom];
+    return activeSessions[stageNum] || sessions[0]?.id || '';
   };
 
   const currentSession =
-    currentStageData?.sessions.find((s) => s.id === getActiveSessionId(activeStage)) ||
-    currentStageData?.sessions[0];
+    stageSessions.find((s) => s.id === getActiveSessionId(activeStage)) ||
+    stageSessions[0];
 
   const handleSessionSelect = (id: string) => {
     setActiveSessions((prev) => ({ ...prev, [activeStage]: id }));
@@ -1173,6 +1182,19 @@ export default function ClubCoachPath({ onNavigate: _onNavigate, completedSessio
 
   const handleToolSelect = (tool: ViewMode) => {
     setViewMode(viewMode === tool ? 'session' : tool);
+  };
+
+  const handleAddSession = async (values: CustomSessionFormValues) => {
+    const sessionData = formValuesToSessionData(values);
+    const session = await createSession({
+      pathKey: 'coach-path',
+      stageNumber: activeStage,
+      title: values.title,
+      subtitle: values.subtitle,
+      duration: values.planDuration,
+      sessionData,
+    });
+    handleSessionSelect(session.id);
   };
 
   return (
@@ -1302,10 +1324,12 @@ export default function ClubCoachPath({ onNavigate: _onNavigate, completedSessio
                   <p className="text-xs text-lm-ink-muted mt-0.5">{currentStageData.subtitle}</p>
                 </div>
                 <SessionList
-                  sessions={currentStageData.sessions}
+                  sessions={stageSessions}
                   activeId={getActiveSessionId(activeStage)}
                   onSelect={handleSessionSelect}
                   completedIds={completedSessionIds}
+                  onAddSession={() => setAddDialogOpen(true)}
+                  canAddSession={isAdmin}
                 />
               </div>
 
@@ -1384,6 +1408,12 @@ export default function ClubCoachPath({ onNavigate: _onNavigate, completedSessio
           </div>
         )}
       </div>
+
+      <AddSessionDialog
+        open={addDialogOpen && isAdmin}
+        onOpenChange={setAddDialogOpen}
+        onSubmit={handleAddSession}
+      />
     </div>
   );
 }

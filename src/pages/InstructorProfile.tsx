@@ -4,6 +4,7 @@ import { STAGE_DATA, KEY_ELEMENT_LABELS, LM_PROGRAMS } from '@/data/mock-data';
 import { useData } from '@/context/DataContext';
 import AssessGradesSheet from '@/components/AssessGradesSheet';
 import AssessTrustSheet from '@/components/AssessTrustSheet';
+import DevelopmentNotesSection from '@/components/DevelopmentNotesSection';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -74,7 +75,7 @@ export function InstructorProfile({ instructorId, onBack, source }: InstructorPr
   const [dreyfusInfoOpen, setDreyfusInfoOpen] = useState(false);
   const [assessOpen, setAssessOpen] = useState(false);
   const [trustAssessOpen, setTrustAssessOpen] = useState(false);
-  const { instructors, assessments } = useData();
+  const { instructors, assessments, developmentNotes } = useData();
   const instructor = instructors.find(i => i.id === instructorId);
 
   if (!instructor) {
@@ -414,6 +415,8 @@ export function InstructorProfile({ instructorId, onBack, source }: InstructorPr
             </p>
           </CardContent>
         </Card>
+
+        <DevelopmentNotesSection instructorId={instructorId} notes={developmentNotes} />
 
         {/* Section 6: LM Journey */}
         {(() => {

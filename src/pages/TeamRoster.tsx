@@ -142,7 +142,9 @@ export default function TeamRoster({ onViewInstructor }: TeamRosterProps) {
 
   // Summary stats
   const atRiskCount = instructors.filter((i) => i.riskLevel === 'medium' || i.riskLevel === 'high').length;
-  const avgLMQ = (instructors.reduce((sum, i) => sum + i.lmqLevel, 0) / instructors.length).toFixed(1);
+  const avgLMQ = instructors.length === 0
+    ? '—'
+    : (instructors.reduce((sum, i) => sum + i.lmqLevel, 0) / instructors.length).toFixed(1);
 
   return (
     <div className="-m-6">

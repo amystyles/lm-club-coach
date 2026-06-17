@@ -9,6 +9,11 @@ import {
 } from 'lucide-react';
 import { STAGE_DATA } from '@/data/mock-data';
 import { stageDetails, type Session, type KEActivityGroup } from '@/data/stage-sessions';
+import SessionNotesField from '@/components/SessionNotesField';
+import AddSessionDialog from '@/components/AddSessionDialog';
+import { useCustomSessions } from '@/context/CustomSessionsContext';
+import { useAuth } from '@/context/AuthContext';
+import { formValuesToSessionData, type CustomSessionFormValues } from '@/lib/custom-session-form';
 
 /* ─────────────────────────────────────────────
    Tab definition
@@ -277,8 +282,6 @@ function PromptsTab({ session, stageColor }: { session: Session; stageColor: str
    Notes Tab — goals (checkable) + notes area
    ───────────────────────────────────────────── */
 function NotesTab({ session }: { session: Session }) {
-  const [notes, setNotes] = useState('');
-
   return (
     <div className="space-y-6">
       {/* Instructor Pre-Work */}
@@ -328,21 +331,11 @@ function NotesTab({ session }: { session: Session }) {
         </div>
       )}
 
-      {/* Notes */}
-      <div className="rounded-xl border border-border bg-lm-subtle p-5">
-        <div className="flex items-center gap-2 mb-1.5">
-          <NotebookPen className="w-3.5 h-3.5 text-lm-ink-muted" />
-          <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-lm-ink-muted">Your Notes</span>
-        </div>
-        <p className="text-lm-ink-muted text-xs mb-3">Capture observations from this session. Stays local to your browser.</p>
-        <textarea
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          placeholder="What did you observe? Strengths, gaps, follow-up items..."
-          rows={5}
-          className="w-full rounded-lg border border-border bg-white px-4 py-3 text-sm text-lm-ink-mid placeholder:text-lm-ink-muted/50 focus:outline-none focus:ring-2 focus:ring-lm-green focus:border-transparent resize-y"
-        />
-      </div>
+      <SessionNotesField
+        pathKey="development-pathway"
+        sessionId={session.id}
+        placeholder="What did you observe? Strengths, gaps, follow-up items..."
+      />
     </div>
   );
 }
@@ -674,10 +667,14 @@ function SessionList({
   sessions,
   activeId,
   onSelect,
+  onAddSession,
+  canAddSession,
 }: {
   sessions: Session[];
   activeId: string;
   onSelect: (id: string) => void;
+  onAddSession: () => void;
+  canAddSession: boolean;
 }) {
   return (
     <div className="space-y-0.5">
@@ -711,12 +708,18 @@ function SessionList({
       })}
 
       {/* Add session affordance */}
-      <button className="w-full text-left px-3 py-2.5 rounded-xl border border-dashed border-lm-sunken hover:border-lm-ink-muted/40 hover:bg-lm-subtle/50 transition-all focus:outline-none mt-1 group">
-        <span className="flex items-center gap-1.5 text-xs text-lm-ink-muted/50 group-hover:text-lm-ink-muted transition-colors">
-          <Plus className="w-3.5 h-3.5" />
-          Add session
-        </span>
-      </button>
+      {canAddSession && (
+        <button
+          type="button"
+          onClick={onAddSession}
+          className="w-full text-left px-3 py-2.5 rounded-xl border border-dashed border-lm-sunken hover:border-lm-ink-muted/40 hover:bg-lm-subtle/50 transition-all focus:outline-none mt-1 group"
+        >
+          <span className="flex items-center gap-1.5 text-xs text-lm-ink-muted/50 group-hover:text-lm-ink-muted transition-colors">
+            <Plus className="w-3.5 h-3.5" />
+            Add session
+          </span>
+        </button>
+      )}
     </div>
   );
 }
@@ -725,22 +728,31 @@ function SessionList({
    Main Page
    ───────────────────────────────────────────── */
 export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page: string) => void }) {
+  const { getSessionsForStage, createSession } = useCustomSessions();
+  const { isAdmin } = useAuth();
   const [activeStage, setActiveStage] = useState(1);
   const [activeSessions, setActiveSessions] = useState<Record<number, string>>({});
   const [activeTab, setActiveTab] = useState<TabId>('brief');
   const [viewMode, setViewMode] = useState<'session' | 'activities'>('session');
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
 
   const currentStageData = stageDetails[activeStage];
   const currentStageColor = currentStageData?.color || '#0A0A0A';
+  const stageSessions = [
+    ...(currentStageData?.sessions ?? []),
+    ...getSessionsForStage('development-pathway', activeStage),
+  ];
 
   const getActiveSessionId = (stageNum: number) => {
-    const stage = stageDetails[stageNum];
-    return activeSessions[stageNum] || stage?.sessions[0]?.id || '';
+    const builtIn = stageDetails[stageNum]?.sessions ?? [];
+    const custom = getSessionsForStage('development-pathway', stageNum);
+    const sessions = [...builtIn, ...custom];
+    return activeSessions[stageNum] || sessions[0]?.id || '';
   };
 
   const currentSession =
-    currentStageData?.sessions.find((s) => s.id === getActiveSessionId(activeStage)) ||
-    currentStageData?.sessions[0];
+    stageSessions.find((s) => s.id === getActiveSessionId(activeStage)) ||
+    stageSessions[0];
 
   const handleSessionSelect = (id: string) => {
     setActiveSessions((prev) => ({ ...prev, [activeStage]: id }));
@@ -750,6 +762,19 @@ export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page:
   const handleStageSelect = (stage: number) => {
     setActiveStage(stage);
     setViewMode('session');
+  };
+
+  const handleAddSession = async (values: CustomSessionFormValues) => {
+    const sessionData = formValuesToSessionData(values);
+    const session = await createSession({
+      pathKey: 'development-pathway',
+      stageNumber: activeStage,
+      title: values.title,
+      subtitle: values.subtitle,
+      duration: values.planDuration,
+      sessionData,
+    });
+    handleSessionSelect(session.id);
   };
 
   return (
@@ -878,9 +903,11 @@ export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page:
                   <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-lm-ink-muted">Sessions</p>
                 </div>
                 <SessionList
-                  sessions={currentStageData.sessions}
+                  sessions={stageSessions}
                   activeId={getActiveSessionId(activeStage)}
                   onSelect={handleSessionSelect}
+                  onAddSession={() => setAddDialogOpen(true)}
+                  canAddSession={isAdmin}
                 />
               </div>
 
@@ -961,6 +988,12 @@ export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page:
           </div>
         )}
       </div>
+
+      <AddSessionDialog
+        open={addDialogOpen && isAdmin}
+        onOpenChange={setAddDialogOpen}
+        onSubmit={handleAddSession}
+      />
     </div>
   );
 }

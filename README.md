@@ -1,73 +1,109 @@
-# React + TypeScript + Vite
+# LM Club Coach
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Les Mills instructor development platform for Club Coaches and GFMs. Track instructor grades, run observations, manage development notes, and follow the Club Coach Path curriculum.
 
-Currently, two official plugins are available:
+## Prerequisites
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Node.js 20+
+- [pnpm](https://pnpm.io/) 10+
+- A [Supabase](https://supabase.com/) project
 
-## React Compiler
+## Local setup
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. **Install dependencies**
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+pnpm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. **Configure environment**
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Copy `.env.example` to `.env.local` and fill in your Supabase credentials:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cp .env.example .env.local
 ```
+
+| Variable | Description |
+|----------|-------------|
+| `VITE_SUPABASE_URL` | Supabase project URL (Settings → API) |
+| `VITE_SUPABASE_ANON_KEY` | Supabase anon/public key |
+| `VITE_ADMIN_EMAIL` | Email allowed to create coach accounts via **Add Coach** |
+
+3. **Apply database migrations**
+
+In the Supabase SQL editor (or via Supabase CLI), run in order:
+
+- `supabase/migrations/001_initial_schema.sql`
+- `supabase/migrations/002_feature_completion.sql`
+- `supabase/migrations/003_custom_sessions_and_notes_review.sql`
+- `supabase/migrations/004_custom_sessions_session_data.sql`
+
+4. **Seed demo data (optional)**
+
+```bash
+# Run supabase/seed.sql in the SQL editor
+```
+
+5. **Deploy the admin edge function**
+
+```bash
+supabase functions deploy create-user
+```
+
+Set these secrets on the function:
+
+- `ADMIN_EMAIL` — same value as `VITE_ADMIN_EMAIL`
+- `SUPABASE_SERVICE_ROLE_KEY` — from Supabase Settings → API
+
+6. **Start the dev server**
+
+```bash
+pnpm dev
+```
+
+Open http://localhost:5173
+
+## First user
+
+Accounts are admin-provisioned (no public sign-up). To create the first coach:
+
+1. Create a user in Supabase Auth (Dashboard → Authentication → Users), or use the **Add Coach** screen after signing in as the admin email.
+2. Link the user to a club via `user_clubs` if not created by the edge function.
+3. Sign in with email + password.
+
+## Production (Vercel)
+
+1. Connect the GitHub repo to Vercel.
+2. Set environment variables: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_ADMIN_EMAIL`.
+3. Deploy from `main` — build command: `pnpm run build`, output: `dist`.
+
+Live app: https://lm-club-coach.vercel.app
+
+## Features
+
+| Area | Status |
+|------|--------|
+| Login / password reset | Supabase Auth |
+| Multi-club picker | `user_clubs` |
+| Instructor roster + add | `instructors` table |
+| Grade & trust assessments | `instructor_grades`, `trust_overrides` |
+| Observations | Assessment Centre → New Observation |
+| Development notes | Instructor profile |
+| Session notes & coach path progress | `session_progress` |
+| Custom pathway sessions | `custom_sessions` |
+| Admin: create coach + club | `create-user` edge function |
+
+## Scripts
+
+```bash
+pnpm dev      # development server
+pnpm build    # production build
+pnpm preview  # preview production build
+pnpm lint     # ESLint
+```
+
+## Docs
+
+- `docs/superpowers/specs/2026-04-26-supabase-integration-design.md` — auth & schema design
+- `docs/superpowers/plans/` — feature implementation plans

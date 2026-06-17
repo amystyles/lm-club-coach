@@ -17,11 +17,10 @@ VITE_ADMIN_EMAIL=coach.demo@lesmills.com
 `VITE_ADMIN_EMAIL` is optional — it only unlocks the in-app "Add Coach" admin nav (the underlying `create-user` edge function additionally needs server-side secrets, so that flow is not exercisable locally).
 
 ### Running
-- Dev server: `pnpm dev` → http://localhost:5173 . This is the way to run the app; Vite dev uses esbuild and **does not typecheck**, so it runs even though `pnpm run build` currently fails (see below).
+- Install deps: `pnpm install`
+- Dev server: `pnpm dev` → http://localhost:5173
+- Production build: `pnpm run build` (runs `tsc` then Vite)
 - Demo login (Supabase email/password): `coach.demo@lesmills.com` / `DemoCoach123!`. This account is linked to **Midtown Fitness Club**, the only seeded club with instructor data, so the Dashboard / Instructor Team views populate. Other clubs have no instructors seeded.
 
-### Known pre-existing failures (not environment issues)
-- `pnpm run build` fails: `tsc` reports a real type error in `src/App.tsx` (a `<Dashboard>` render is missing required props). Vite dev is unaffected.
-- `pnpm run lint` fails with ~40 errors (unused vars, `no-explicit-any`) plus a `react-hooks` order warning. `App.tsx` also calls `useState` after early conditional `return`s, which triggers a runtime "change in the order of Hooks" console warning and a full-screen loading flash on some navigations.
-
-These are bugs in the committed code, not setup problems — do not assume the environment is broken if you hit them.
+### Known pre-existing issues (not environment issues)
+- `pnpm run lint` may report pre-existing rule violations (unused vars, `no-explicit-any`, hook ordering). These are code-quality debt, not setup problems.
