@@ -826,13 +826,141 @@ git commit -m "feat: TAP-authored observations for assigned clubs"
 - **TAP proxy sign-off outside the app** — TAP logs in; no external tool needed
 - **TAP-led instructor certification workflow** — defer; read access + optional TAP observations (Task 11) covers "add value" for v1
 - **Full scheduling/calendar for TAP 1:1s** — out of scope; TAP sessions happen offline
-- **Deployment path A/B/C branching** — until Les Mills defines behaviour per path in a spec
+- **Deployment path A/B/C branching** — Phase 3; path-aware copy + assignments, not content forks (see Deployment Path section)
+
+---
+
+## Deployment Path A/B/C — Recommended Behaviour
+
+**Status:** Recommended model (confirm exact LMUS labels with ops team).
+
+The codebase stores `clubs.deployment_path` (`'A' | 'B' | 'C'`) and displays it on the club picker, but **does not define what each path means**. The instructor curriculum (`stage-sessions.ts`) repeatedly asks: *"Confirm whether a Club Mentor or TAP Coach will lead hands-on development."* That binary is what A/B/C should configure — **not a third copy of the curriculum**.
+
+### Recommended definitions
+
+| Path | Name | Who leads instructor hands-on dev | TAP role | Typical club profile |
+|------|------|-----------------------------------|----------|----------------------|
+| **A** | **Club-led** | **Club Mentor** (in-club experienced instructor) | TAP-designed plan + certification review; TAP steps in only on escalation | Mature club, strong internal mentor bench (e.g. mock `Westside` — 22 instructors, 3 coaches) |
+| **B** | **Hybrid** (default) | **Club Mentor primary**, TAP in the loop | TAP plan + scheduled sync/check-ins; TAP may review videos remotely | Most clubs — club owns rhythm, TAP ensures plan fidelity (e.g. mock `Midtown`) |
+| **C** | **TAP-led** | **TAP Coach** (regional/remote hands-on) | TAP runs weekly check-ins, observes (live or video), drives 30-day / post-cert windows | Smaller clubs or limited mentor capacity (e.g. mock `Downtown` — 8 instructors, 1 coach) |
+
+### What deployment path should **not** change
+
+| Area | Behaviour across A/B/C |
+|------|--------------------------|
+| **Club Coach Path** (`coach-path`) | Always LMUS enrollment + TAP 1:1 + TAP session/stage sign-off. Curriculum is TAP-driven regardless of club path. |
+| **GFM dual-role** | Unchanged — GFM can be on coach-path and oversee team. |
+| **Instructor Development curriculum** | **One** `stage-sessions.ts` library. No Path A/B/C content forks. |
+| **LMQ / Assessment framework** | Same standards; only *who leads* differs. |
+
+### What deployment path **should** change (product behaviour)
+
+Use `deployment_path` as **club configuration** that drives defaults and UI — not separate YAML/TS content trees.
+
+```mermaid
+flowchart TD
+  DP[clubs.deployment_path A/B/C]
+  DP --> A[Path A: default lead = club_mentor]
+  DP --> B[Path B: default lead = hybrid]
+  DP --> C[Path C: default lead = tap_coach]
+
+  A --> UI[Instructor Development UI]
+  B --> UI
+  C --> UI
+
+  UI --> COPY[Session copy: who leads check-ins / observations]
+  UI --> ASSIGN[Required assignment: club_mentor_id and/or TAP]
+  UI --> CHECK[Checklist auto-ticks the path-appropriate lead]
+  UI --> DASH[Dashboard: who is overdue for check-in]
+```
+
+**1. Default development lead per club**
+
+Add a derived or stored field (recommend derive first, persist if LMUS overrides per club):
+
+```ts
+// src/lib/deployment-path.ts
+export type InstructorDevLead = 'club_mentor' | 'hybrid' | 'tap_coach';
+
+export function defaultInstructorDevLead(path: DeploymentPath): InstructorDevLead {
+  switch (path) {
+    case 'A': return 'club_mentor';
+    case 'B': return 'hybrid';
+    case 'C': return 'tap_coach';
+  }
+}
+```
+
+**2. Instructor-level assignment (required before Stage 2+ sessions unlock)**
+
+| Path | Required before post-IT work | UI |
+|------|------------------------------|-----|
+| A | `instructors.club_mentor_id` (FK → another instructor) | Pick mentor from club roster |
+| B | Club Mentor **and** TAP visibility on plan | Mentor primary; TAP assignment at club level |
+| C | Active TAP assignment for club/coach | TAP Coach named; Club Coach = logistics + context |
+
+Schema addition (Phase 3 or folded into Phase 2):
+
+```sql
+alter table public.instructors
+  add column if not exists club_mentor_id uuid references public.instructors(id);
+
+alter table public.clubs
+  add column if not exists instructor_dev_lead text
+    check (instructor_dev_lead in ('club_mentor', 'hybrid', 'tap_coach'));
+-- default from deployment_path on insert; LMUS can override
+```
+
+**3. Contextual copy in Instructor Development (not new content)**
+
+Sessions that today say *"Confirm whether a Club Mentor or TAP Coach will lead…"* should render path-aware helper text:
+
+| Path | Rendered default |
+|------|------------------|
+| A | "Your club is **Path A (Club-led)**. Confirm the **Club Mentor** who will lead hands-on development. TAP reviews certification; escalate to TAP if the instructor stalls." |
+| B | "Your club is **Path B (Hybrid)**. Confirm the **Club Mentor** leading day-to-day development. TAP stays aligned on the plan — note sync points in the instructor plan." |
+| C | "Your club is **Path C (TAP-led)**. Confirm the **TAP Coach** leading hands-on development. Your role is club context, logistics, and supporting observations." |
+
+Implement via a small `getDeploymentPathCopy(path, sessionId)` helper — **do not** triplicate `stage-sessions.ts`.
+
+**4. Dashboard & accountability**
+
+| Path | "Who is overdue?" widget |
+|------|--------------------------|
+| A | Club Mentor / Club Coach — weekly check-in on cert window instructors |
+| B | Club Mentor first; flag to TAP if check-in missed 2 weeks |
+| C | TAP Coach queue primary; Club Coach sees "awaiting TAP check-in" |
+
+**5. TAP app visibility**
+
+| Path | TAP Instructor Context tab |
+|------|----------------------------|
+| A | Read-only unless escalated or cert review |
+| B | Active on assigned clubs — plan sync + video review |
+| C | Primary operator — same as coach-path TAP workload for instructor dev |
+
+### Implementation phasing
+
+| Phase | Deployment path work |
+|-------|---------------------|
+| **0–1** | No change — ship GFM + locking first |
+| **2** | LMUS sets `deployment_path` at club create; show path badge + 1-line description in club picker |
+| **3** | `club_mentor_id`, path-aware session copy, assignment gates on instructor development |
+| **4** | Dashboard accountability widgets per path |
+
+**YAGNI guardrail:** Do not build Path A/B/C until Phase 2 TAP + enrollment ship. Path is configuration on top of a working mentor/TAP model, not a prerequisite.
+
+### Why this is the best fit
+
+1. **Matches existing curriculum** — content already describes Club Mentor *or* TAP; A/B/C picks the default instead of asking every club to re-decide.
+2. **Matches mock data intuition** — large club → A, mid → B, small/low coach count → C.
+3. **Keeps coach-path clean** — coach development is always TAP-mediated; deployment path is an **instructor ops** knob.
+4. **Avoids 3× content maintenance** — one session library, path-aware presentation layer.
+5. **LMUS control** — path set at club provisioning; optional per-club override of `instructor_dev_lead` without renumbering A/B/C.
 
 ---
 
 ## Open Questions for Product Owner
-
-1. **Deployment path A/B/C** — does it change who leads coach development (club mentor vs TAP)?
 
 **Resolved:**
 
@@ -842,7 +970,8 @@ git commit -m "feat: TAP-authored observations for assigned clubs"
 - **GFM dual-role:** GFMs complete `coach-path` like Club Coaches and oversee team development (Phase 0).
 - **TAP login:** TAP Coaches are full app users with assignment-scoped access.
 - **TAP visibility:** TAP reads coach prep notes, club assessments, development notes, and instructor context for assigned coaches' clubs.
-- **TAP contribution:** TAP writes `tap_feedback` on coach-path sessions (debrief/value-add where curriculum asks) and signs off sessions/stages.
+- **TAP contribution:** TAP writes `tap_feedback` on coach-path sessions and signs off sessions/stages.
+- **Deployment path A/B/C:** **Instructor Development lead model** (Club Mentor / Hybrid / TAP-led); does **not** change Club Coach Path. See section above. Confirm exact LMUS naming for A/B/C with ops.
 
 ---
 
@@ -878,6 +1007,7 @@ git commit -m "feat: TAP-authored observations for assigned clubs"
 | Does TAP log into the app? | **Yes** — `tap_coach` role, assignment-scoped shell |
 | What can TAP see? | Prep notes, assessments, development notes, instructors (assigned clubs) |
 | What can TAP add? | Session `tap_feedback`, session/stage sign-off; optional instructor observations (Task 11) |
+| Deployment path A/B/C? | **Instructor dev lead only** (A=club mentor, B=hybrid, C=TAP-led); coach-path unchanged |
 | Build order | **Phase 0** (GFM oversight) → **Phase 1** (interim locking) → **Phase 2** (LMUS + TAP) |
 
 The Club Coach product is a strong **playbook + club operations** tool. To become a **guided credentialing pathway** as the curriculum describes, it needs TAP in the workflow — not just in the words.
