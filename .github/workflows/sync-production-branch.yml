@@ -1,0 +1,29 @@
+name: Sync production branch
+
+# Vercel production is configured for feature/supabase-integration (not main).
+# After merges to main, sync that branch so production deploys automatically.
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Merge main into production branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin feature/supabase-integration
+          git checkout feature/supabase-integration
+          git merge origin/main -X theirs -m "chore: sync production branch with main"
+          git push origin feature/supabase-integration
