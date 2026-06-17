@@ -4,7 +4,7 @@
 
 **Goal:** Decide whether Club Coach needs its own defined pathway with dedicated access controls aligned to TAP-guided development, and close the gaps between curriculum intent and product behaviour.
 
-**Architecture:** Club Coach already has a **content pathway** (`coach-path`) separate from instructor development (`development-pathway`), but **access is club-scoped only** — any club member can use both paths and self-mark completion. TAP is embedded in ~109 curriculum references as the human mentor who runs 1:1 sessions, yet has **no product representation** (no role, assignment, approval, or visibility). The recommended direction is a **three-actor model**: developing person (Club Coach or GFM on `coach-path`), TAP Coach (guide + gatekeeper), GFM (oversight of club coaches' pathways). **GFM is dual-role** — same `coach-path` participant experience as a Club Coach, plus a separate oversight surface to read notes and monitor team coach development. Do not create a second pathway for GFMs.
+**Architecture:** Club Coach already has a **content pathway** (`coach-path`) separate from instructor development (`development-pathway`). **Enrollment is LMUS Super Admin–initiated** — a user is not on the coach path until LMUS enrolls them and assigns a TAP Coach. TAP then **signs off per session and per stage** before progression unlocks. TAP is embedded in curriculum as the human mentor but has no product workflow yet. The actor model is: **LMUS Super Admin** (enroll + assign TAP) → **developing person** (Club Coach or GFM on `coach-path`) → **TAP Coach** (session + stage sign-off) → **GFM oversight** (read team progress/notes, separate from own path). Do not create a second pathway for GFMs.
 
 **Tech Stack:** React 18, TypeScript, Vite, Supabase (Auth, RLS, Postgres), existing `session_progress` + `coach-path-data.ts`
 
@@ -27,7 +27,8 @@ What you **do not** have is a pathway that behaves like the curriculum describes
 | **Navigation** | Separate sidebar item ✓ | Separate journey ✓ |
 | **Progress storage** | `session_progress` keyed by `coach-path` ✓ | Per-coach tracking ✓ |
 | **Session locking** | UI exists; `isSessionLocked` always returns `false` ✗ | Sequential unlock within stage |
-| **TAP gate** | None ✗ | TAP runs 1:1 sessions; S5-4 requires formal TAP acknowledgment |
+| **Enrollment** | Any club member can open coach-path ✗ | LMUS Super Admin enrolls user; assigns TAP ✗ |
+| **TAP sign-off** | Self-mark complete ✗ | Per session + per stage by TAP ✗ |
 | **Coach stage** | Hardcoded `coachStage: 1` on Dashboard ✗ | Derived from progress / TAP sign-off |
 | **TAP assignment** | `tapCoachId?` on type only ✗ | Each coach has a TAP Coach |
 | **Roles** | Club Coach = GFM (same permissions); title is display-only | GFM is **both** pathway participant and team overseer; TAP guides development |
@@ -155,16 +156,23 @@ Do **not** create a third `path_key` or a separate "GFM path". Extend governance
 ```mermaid
 flowchart TB
   subgraph actors [Actors]
+    LMUS[LMUS Super Admin]
     CC[Club Coach - developing]
     GFM_DEV[GFM - developing on same path]
     GFM_OV[GFM - oversight mode]
-    TAP[TAP Coach - regional mentor]
+    TAP[TAP Coach - session + stage sign-off]
+  end
+
+  subgraph enrollment [Enrollment gate]
+    ENR[coach_path_enrollments]
+    ASSIGN[tap_coach_assignments]
   end
 
   subgraph coachpath [Club Coach Path - coach-path]
     PREP[Prep: Brief / Plan / Prompts / Notes]
     LOCK[Sequential session access]
-    ACK[TAP acknowledgment per stage or session]
+    SESS_ACK[TAP session sign-off]
+    STAGE_ACK[TAP stage sign-off]
   end
 
   subgraph oversight [GFM Oversight - Dashboard only]
@@ -172,31 +180,42 @@ flowchart TB
     TEAM_NOTES[Session notes review]
   end
 
-  subgraph clubops [Club Operations - unchanged access]
-    ROSTER[Instructor Team]
-    ASSESS[Assessment Centre]
-    DEVPATH[Instructor Development]
-  end
-
+  LMUS --> ENR
+  LMUS --> ASSIGN
+  ENR --> CC
+  ENR --> GFM_DEV
+  ASSIGN --> TAP
   CC --> PREP
   GFM_DEV --> PREP
   CC --> LOCK
   GFM_DEV --> LOCK
-  TAP --> ACK
+  TAP --> SESS_ACK
+  TAP --> STAGE_ACK
+  SESS_ACK --> LOCK
+  STAGE_ACK --> LOCK
   TAP -->|reads| PREP
   GFM_OV --> TEAM_PROG
   GFM_OV --> TEAM_NOTES
-  GFM_OV --> ROSTER
-  GFM_OV --> ASSESS
-  CC --> DEVPATH
-  GFM_DEV --> DEVPATH
 ```
+
+### LMUS enrollment + TAP sign-off (confirmed)
+
+**Enrollment is not automatic.** A Club Coach or GFM only enters the coach development journey when **LMUS Super Admin** enrolls them. LMUS then **initiates TAP** by assigning a TAP Coach to that enrollment.
+
+**TAP signs off at two levels:**
+
+| Level | Who triggers prep | Who signs off | Unlocks |
+|-------|-------------------|---------------|---------|
+| **Session** | Coach/GFM marks "Prepped for TAP Session" after 1:1 | TAP Coach | Next session in stage |
+| **Stage** | All sessions in stage are TAP-confirmed | TAP Coach | First session of next stage |
+
+Until LMUS enrolls a user, the Club Coach Path nav item shows an **enrollment-pending** state (no session access). Until TAP is assigned, enrolled users see **awaiting TAP assignment**.
 
 ### GFM dual-role (confirmed)
 
 | Mode | When | What they do in the app |
 |------|------|-------------------------|
-| **Participant** | GFM is being coached by TAP (same as Club Coach) | Full `coach-path` access: prep, notes, mark sessions, tools & reference |
+| **Participant** | GFM is being coached by TAP (same as Club Coach) | Full `coach-path` access **once LMUS enrolled + TAP assigned** |
 | **Oversight** | GFM manages club coach development | Dashboard: all club coaches' stage/progress, session notes review, no editing others' progress |
 
 `profiles.title` (`'Club Coach'` | `'GFM'`) remains **display-only** for permissions. Use it only to **show/hide oversight UI** — never to block a GFM from `coach-path`.
@@ -205,28 +224,55 @@ Progress is always keyed by **`user_id` + `club_id` + `path_key`** — a GFM's o
 
 ### Access tiers (proposed)
 
-| Role | Own Club Coach Path | Oversee team coach-path | Instructor Development | Club data |
-|------|---------------------|-------------------------|------------------------|-----------|
-| **Club Coach** | Full participant (prep, notes, mark) | — | Full access | Own club |
-| **GFM** | Full participant (same as Club Coach) | Read progress + notes for all club coaches | Full access | Own club |
-| **TAP Coach** | — | Read assigned coaches' notes; approve/unlock sessions | Read-only (optional) | Assigned coaches' clubs |
-| **Admin** | — | Assign TAP ↔ coach; provision accounts | — | All |
+| Role | Enroll in coach-path | Own Club Coach Path | Oversee team coach-path | TAP assignment | Instructor Development |
+|------|---------------------|---------------------|-------------------------|----------------|------------------------|
+| **Club Coach** | — (LMUS enrolls) | Participant once enrolled | — | — | Full access |
+| **GFM** | — (LMUS enrolls) | Participant once enrolled | Read progress + notes | — | Full access |
+| **TAP Coach** | — | — | Read assigned coaches | — | Read-only (optional) |
+| **LMUS Super Admin** | Enroll any user; assign TAP | — | All clubs (ops view) | Assign TAP ↔ coach | Provision accounts |
 
 ### Completion states (proposed)
 
-Replace boolean `completed` with a status enum on `session_progress`:
+Replace boolean `completed` with explicit session and stage status:
 
 ```sql
--- Proposed migration 005
+-- On session_progress (per session)
 alter table public.session_progress
   add column if not exists completion_status text not null default 'not_started'
     check (completion_status in ('not_started', 'prepped', 'tap_confirmed'));
 
--- 'prepped' = coach marked ready after TAP 1:1
--- 'tap_confirmed' = TAP acknowledged (unlocks next session)
+-- New: stage-level TAP sign-off
+create table if not exists public.coach_path_stage_signoffs (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references public.profiles(id) on delete cascade,
+  club_id uuid not null references public.clubs(id) on delete cascade,
+  stage_number int not null check (stage_number between 1 and 5),
+  signed_off_by uuid not null references public.profiles(id),
+  signed_off_at timestamptz not null default now(),
+  unique (user_id, club_id, stage_number)
+);
+
+-- New: LMUS-initiated enrollment
+create table if not exists public.coach_path_enrollments (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references public.profiles(id) on delete cascade,
+  club_id uuid not null references public.clubs(id) on delete cascade,
+  enrolled_by uuid not null references public.profiles(id),
+  enrolled_at timestamptz not null default now(),
+  status text not null default 'active'
+    check (status in ('active', 'paused', 'completed', 'withdrawn')),
+  unique (user_id, club_id)
+);
 ```
 
-Locking rule: session N+1 unlocks when session N is `tap_confirmed` (or `prepped` if you want a softer MVP).
+**Locking rules:**
+
+1. User must have `coach_path_enrollments.status = 'active'` to access any session
+2. Session N+1 unlocks when session N is `tap_confirmed`
+3. Stage S+1 session 1 unlocks when stage S has `coach_path_stage_signoffs` row **and** all sessions in stage S are `tap_confirmed`
+4. Coach marks `prepped` after 1:1; TAP moves to `tap_confirmed`
+
+**Phase 1 interim:** Sequential locking among `tap_confirmed` sessions only (honor system for `prepped` → `tap_confirmed` until Phase 2 TAP UI ships). Enrollment gate ships in Phase 2 with LMUS admin.
 
 ---
 
@@ -387,9 +433,9 @@ git commit -m "feat: GFM dual-role dashboard with my path and team oversight"
 
 ---
 
-## Phase 1 — Pathway Integrity (no TAP login)
+## Phase 1 — Pathway Integrity (interim locking)
 
-Restore trust in progress display without new roles. Estimated scope: 4 tasks, no new tables.
+Restore progress display accuracy. **Full enrollment + TAP gates ship in Phase 2.** Phase 1 locking is sequential among completed sessions as an interim step; replace with `tap_confirmed` + stage sign-off in Phase 2.
 
 ### Task 1: Enforce sequential session locking
 
@@ -492,96 +538,154 @@ git commit -m "feat: deep-link to Club Coach Path session"
 
 ---
 
-## Phase 2 — TAP Access Layer (target state)
+## Phase 2 — LMUS Enrollment + TAP Sign-Off (target state)
 
-### Task 5: Schema — roles and TAP assignments
+### Task 5: Schema — roles, enrollments, assignments, sign-offs
 
 **Files:**
-- Create: `supabase/migrations/006_tap_coach_assignments.sql` (renumbered — `005` is club roster RLS)
+- Create: `supabase/migrations/006_lm_us_enrollment_and_tap.sql` (renumbered — `005` is club roster RLS)
 
-- [ ] **Step 1: Add role to profiles**
+- [ ] **Step 1: Add `app_role` to profiles**
 
 ```sql
 alter table public.profiles
   add column if not exists app_role text not null default 'club_coach'
-    check (app_role in ('club_coach', 'gfm', 'tap_coach', 'admin'));
+    check (app_role in ('club_coach', 'gfm', 'tap_coach', 'lmus_admin'));
 ```
 
-- [ ] **Step 2: Create assignments table**
+Map existing `VITE_ADMIN_EMAIL` user to `lmus_admin` on first login or via seed migration. `lmus_admin` replaces the single-email admin check over time.
+
+- [ ] **Step 2: Create `coach_path_enrollments`**
+
+```sql
+create table if not exists public.coach_path_enrollments (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references public.profiles(id) on delete cascade,
+  club_id uuid not null references public.clubs(id) on delete cascade,
+  enrolled_by uuid not null references public.profiles(id),
+  enrolled_at timestamptz not null default now(),
+  status text not null default 'active'
+    check (status in ('active', 'paused', 'completed', 'withdrawn')),
+  unique (user_id, club_id)
+);
+```
+
+Only `lmus_admin` can insert/update. Enrolled users can read own row.
+
+- [ ] **Step 3: Create `tap_coach_assignments`**
 
 ```sql
 create table if not exists public.tap_coach_assignments (
   id uuid primary key default gen_random_uuid(),
-  club_id uuid not null references public.clubs(id) on delete cascade,
-  coach_user_id uuid not null references public.profiles(id) on delete cascade,
+  enrollment_id uuid not null references public.coach_path_enrollments(id) on delete cascade,
   tap_coach_user_id uuid not null references public.profiles(id) on delete cascade,
+  assigned_by uuid not null references public.profiles(id),
+  assigned_at timestamptz not null default now(),
   active boolean not null default true,
-  created_at timestamptz not null default now(),
-  unique (club_id, coach_user_id)
+  unique (enrollment_id)
 );
 ```
 
-- [ ] **Step 3: RLS policies**
+LMUS assigns TAP when enrolling (or immediately after). One active TAP per enrollment.
 
-TAP coaches read `session_progress` + notes for assigned `coach_user_id`. Coaches and GFMs read/write own rows. GFMs read all `coach-path` rows in club (oversight). Club Coaches read only own rows for writing; club-wide read already granted by migration `003`.
+- [ ] **Step 4: Add `completion_status` + `coach_path_stage_signoffs`**
 
-- [ ] **Step 4: Apply migration and commit**
+(See Completion states section above.)
 
-```bash
-git add supabase/migrations/006_tap_coach_assignments.sql
-git commit -m "feat: add TAP coach assignments and app roles"
-```
+- [ ] **Step 5: RLS policies**
 
-### Task 6: TAP Coach dashboard view
+| Table | LMUS admin | TAP coach | Coach/GFM | GFM oversight |
+|-------|------------|-----------|-----------|---------------|
+| `coach_path_enrollments` | CRUD all | Read assigned | Read own | Read club |
+| `tap_coach_assignments` | CRUD all | Read own assignments | Read own | Read club |
+| `session_progress` | Read all | Read/write assigned (confirm) | Read/write own (prepped) | Read club |
+| `coach_path_stage_signoffs` | Read all | Insert for assigned | Read own | Read club |
 
-**Files:**
-- Create: `src/pages/TapCoachDashboard.tsx`
-- Modify: `src/App.tsx`, `src/components/layout/Sidebar.tsx`
-
-- [ ] **Step 1: List assigned coaches with stage, next session, latest notes**
-
-- [ ] **Step 2: Show only when `profile.app_role === 'tap_coach'`**
-
-- [ ] **Step 3: Commit**
+- [ ] **Step 6: Commit**
 
 ```bash
-git add src/pages/TapCoachDashboard.tsx src/App.tsx src/components/layout/Sidebar.tsx
-git commit -m "feat: TAP Coach dashboard for assigned coaches"
+git add supabase/migrations/006_lm_us_enrollment_and_tap.sql
+git commit -m "feat: LMUS enrollment, TAP assignment, session and stage sign-offs"
 ```
 
-### Task 7: TAP session acknowledgment
+### Task 6: LMUS Super Admin — enroll + assign TAP
 
 **Files:**
-- Modify: `supabase/migrations/005_tap_coach_assignments.sql` (or 006 for completion_status)
-- Modify: `src/context/SessionProgressContext.tsx`
-- Modify: `src/pages/TapCoachDashboard.tsx`
+- Create: `src/pages/LmusAdminPanel.tsx`
+- Modify: `src/App.tsx`, `src/components/layout/Sidebar.tsx`, `src/context/AuthContext.tsx`
 
-- [ ] **Step 1: Add `completion_status` column to `session_progress`**
+- [ ] **Step 1: Replace `isAdmin` email check with `profile.app_role === 'lmus_admin'`** (keep email fallback during migration)
 
-- [ ] **Step 2: Add `confirmSession(coachUserId, sessionId)` for TAP role**
+- [ ] **Step 2: Admin panel: select user + club → Enroll in Club Coach Path → Assign TAP Coach**
 
-- [ ] **Step 3: Update locking to require `tap_confirmed` on prior session**
+Workflow: LMUS picks a Club Coach or GFM at a club, clicks **Enroll**, then selects a TAP Coach from `profiles` where `app_role = 'tap_coach'`.
+
+- [ ] **Step 3: Show enrollment status on user list (active / paused / completed)**
 
 - [ ] **Step 4: Commit**
 
 ```bash
-git add supabase/migrations/ src/context/SessionProgressContext.tsx src/pages/TapCoachDashboard.tsx src/pages/ClubCoachPath.tsx
-git commit -m "feat: TAP acknowledgment gates session progression"
+git add src/pages/LmusAdminPanel.tsx src/App.tsx src/components/layout/Sidebar.tsx src/context/AuthContext.tsx
+git commit -m "feat: LMUS Super Admin enrolls users and assigns TAP coaches"
 ```
 
-### Task 8: Admin — assign TAP to coach
+### Task 7: Enrollment gate on Club Coach Path
 
 **Files:**
-- Modify: `supabase/functions/create-user/index.ts`
-- Create: `src/pages/AssignTapCoach.tsx` (admin only)
+- Create: `src/context/CoachPathEnrollmentContext.tsx`
+- Modify: `src/pages/ClubCoachPath.tsx`, `src/components/layout/Sidebar.tsx`
 
-- [ ] **Step 1: Admin UI to link coach ↔ TAP within a club**
+- [ ] **Step 1: Load enrollment + TAP assignment for active user/club**
 
-- [ ] **Step 2: Commit**
+- [ ] **Step 2: If not enrolled → show "Enrollment pending — contact LMUS" empty state (no sessions)**
+
+- [ ] **Step 3: If enrolled but no TAP → show "Awaiting TAP Coach assignment"**
+
+- [ ] **Step 4: If enrolled + TAP assigned → normal path UI**
+
+- [ ] **Step 5: Commit**
 
 ```bash
-git add supabase/functions/create-user/index.ts src/pages/AssignTapCoach.tsx src/App.tsx
-git commit -m "feat: admin TAP coach assignment"
+git add src/context/CoachPathEnrollmentContext.tsx src/pages/ClubCoachPath.tsx src/components/layout/Sidebar.tsx
+git commit -m "feat: gate Club Coach Path on LMUS enrollment and TAP assignment"
+```
+
+### Task 8: TAP Coach dashboard — session + stage sign-off
+
+**Files:**
+- Create: `src/pages/TapCoachDashboard.tsx`
+- Modify: `src/context/SessionProgressContext.tsx`
+- Modify: `src/pages/ClubCoachPath.tsx`
+
+- [ ] **Step 1: List assigned coaches with stage, sessions awaiting sign-off, latest prep notes**
+
+- [ ] **Step 2: `confirmSession(coachUserId, sessionId)` — sets `completion_status = 'tap_confirmed'`**
+
+- [ ] **Step 3: `confirmStage(coachUserId, stageNumber)` — inserts `coach_path_stage_signoffs` row** (enabled only when all sessions in stage are `tap_confirmed`)
+
+- [ ] **Step 4: Update `isSessionLocked` to require `tap_confirmed` on prior session AND stage sign-off before next stage**
+
+```tsx
+function isSessionLocked(
+  stageNum: number,
+  sessionIndex: number,
+  sessions: { id: string }[],
+  progressBySessionId: Record<string, CompletionStatus>,
+  stageSignoffs: Set<number>,
+): boolean {
+  if (!isEnrolled) return true;
+  if (stageNum > 1 && !stageSignoffs.has(stageNum - 1)) return true;
+  if (sessionIndex === 0) return false;
+  const priorId = sessions[sessionIndex - 1].id;
+  return progressBySessionId[priorId] !== 'tap_confirmed';
+}
+```
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add src/pages/TapCoachDashboard.tsx src/context/SessionProgressContext.tsx src/pages/ClubCoachPath.tsx
+git commit -m "feat: TAP session and stage sign-off gates progression"
 ```
 
 ---
@@ -598,14 +702,17 @@ git commit -m "feat: admin TAP coach assignment"
 
 ## Open Questions for Product Owner
 
-Before Phase 2, confirm with Les Mills:
+Before Phase 2 engineering, confirm with Les Mills:
 
-1. **Will TAP Coaches log into this app**, or should acknowledgment happen via a separate Les Mills ops tool?
-2. **Is coach-path enrollment automatic** for every Club Coach/GFM account, or TAP-initiated?
-3. **Stage transitions** — does TAP sign off per session, per stage, or only at S5-4 completion?
-4. **Deployment path A/B/C** — does it change who leads coach development (club mentor vs TAP)?
+1. **Will TAP Coaches log into this app**, or should sign-off happen via a separate Les Mills ops tool?
+2. **Deployment path A/B/C** — does it change who leads coach development (club mentor vs TAP)?
 
-**Resolved:** GFMs complete `coach-path` like Club Coaches **and** oversee team coach development via Dashboard (Phase 0).
+**Resolved:**
+
+- **Enrollment:** LMUS Super Admin initiates coach-path enrollment (not automatic, not self-serve).
+- **TAP assignment:** LMUS initiates TAP Coach assignment at enrollment.
+- **Sign-off:** TAP signs off **per session** and **per stage**.
+- **GFM dual-role:** GFMs complete `coach-path` like Club Coaches and oversee team development (Phase 0).
 
 ---
 
@@ -614,7 +721,7 @@ Before Phase 2, confirm with Les Mills:
 **Spec coverage:**
 - [x] Assess whether dedicated pathway exists → Executive Answer
 - [x] Assess whether dedicated access needed → Access tiers + Decision Matrix
-- [x] GFM dual-role (participant + oversight) → Phase 0 + GFM dual-role section
+- [x] LMUS enrollment + TAP per-session/per-stage sign-off → LMUS enrollment section + Phase 2 Tasks 5–8
 - [x] TAP-driven guidance gap → Gap Analysis §1
 - [x] What's missing → Gap Analysis §1–6
 - [x] Actionable next steps → Phase 0 + Phase 1 + Phase 2 tasks
@@ -631,10 +738,11 @@ Before Phase 2, confirm with Les Mills:
 |----------|--------|
 | Do you need a defined pathway? | **Already have it** (`coach-path`) |
 | Do GFMs need their own pathway? | **No** — same `coach-path`; oversight is a Dashboard mode |
-| Can GFMs complete coach-path like Club Coaches? | **Yes** — required; Phase 0 ensures UI supports both modes |
-| Do you need separate access? | **Need pathway governance** + **GFM oversight roster** (Phase 0) |
-| Is TAP represented correctly? | **No** — TAP is in curriculum text only |
-| Biggest quick win? | **Phase 0 GFM dashboard split**, then session locking (Phase 1) |
-| Biggest strategic gap? | **TAP Coach role with assignment + acknowledgment** (Phase 2) |
+| Can GFMs complete coach-path like Club Coaches? | **Yes** — once LMUS enrolls them (Phase 0 UX + Phase 2 gate) |
+| Is enrollment automatic? | **No** — LMUS Super Admin enrolls; then assigns TAP |
+| How does TAP gate progression? | **Per session** (`tap_confirmed`) **and per stage** (`coach_path_stage_signoffs`) |
+| Do you need separate access? | **Yes** — enrollment gate + TAP sign-off + GFM oversight (Phases 0–2) |
+| Is TAP represented correctly? | **No** — curriculum only; Phase 2 adds TAP dashboard |
+| Build order | **Phase 0** (GFM oversight) → **Phase 1** (interim locking) → **Phase 2** (LMUS + TAP) |
 
 The Club Coach product is a strong **playbook + club operations** tool. To become a **guided credentialing pathway** as the curriculum describes, it needs TAP in the workflow — not just in the words.
