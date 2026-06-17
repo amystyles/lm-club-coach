@@ -5,41 +5,67 @@ import {
   type HandbookData,
 } from '@/lib/handbook';
 
+type HandbookState = {
+  program: string | null;
+  data: HandbookData | null;
+  loading: boolean;
+  error: string | null;
+};
+
+const idleState: HandbookState = {
+  program: null,
+  data: null,
+  loading: false,
+  error: null,
+};
+
 export function useHandbook(programCode: string | null) {
-  const [data, setData] = useState<HandbookData | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const enabled = Boolean(programCode && isHandbookProgram(programCode));
+  const [state, setState] = useState<HandbookState>(idleState);
 
   useEffect(() => {
-    if (!programCode || !isHandbookProgram(programCode)) {
-      setData(null);
-      setError(null);
-      setLoading(false);
-      return;
-    }
+    if (!enabled || !programCode) return;
 
     let cancelled = false;
-    setLoading(true);
-    setError(null);
 
     fetchHandbook(programCode)
       .then((result) => {
-        if (!cancelled) setData(result);
+        if (!cancelled) {
+          setState({
+            program: programCode,
+            data: result,
+            loading: false,
+            error: null,
+          });
+        }
       })
       .catch((err: unknown) => {
         if (!cancelled) {
-          setData(null);
-          setError(err instanceof Error ? err.message : 'Failed to load handbook data');
+          setState({
+            program: programCode,
+            data: null,
+            loading: false,
+            error: err instanceof Error ? err.message : 'Failed to load handbook data',
+          });
         }
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
       });
 
     return () => {
       cancelled = true;
     };
-  }, [programCode]);
+  }, [enabled, programCode]);
 
-  return { handbook: data, loading, error };
+  if (!enabled) {
+    return { handbook: null, loading: false, error: null };
+  }
+
+  if (state.program !== programCode) {
+    return { handbook: null, loading: true, error: null };
+  }
+
+  return {
+    handbook: state.data,
+    loading: state.loading,
+    error: state.error,
+  };
 }
