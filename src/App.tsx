@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from './context/AuthContext';
+import { useSessionProgress } from './context/SessionProgressContext';
 import Login from './pages/Login';
 import ResetPassword from './pages/ResetPassword';
 import ClubPicker from './pages/ClubPicker';
@@ -13,7 +14,6 @@ import ClubCoachPath from './pages/ClubCoachPath';
 import LMQReference from './pages/LMQReference';
 import FeedbackBuilder from './pages/FeedbackBuilder';
 import SignUp from './pages/SignUp';
-import { coaches } from './data/mock-data';
 const PAGE_TITLES: Record<string, { title: string; subtitle?: string }> = {
   dashboard: { title: 'Dashboard', subtitle: 'Team overview & instructor development' },
   roster: { title: 'Instructor Team', subtitle: 'All instructors at a glance' },
@@ -27,7 +27,11 @@ const PAGE_TITLES: Record<string, { title: string; subtitle?: string }> = {
 };
 
 function App() {
-  const { user, clubs, activeClub, loading, isRecovery, isAdmin } = useAuth();
+  const { user, clubs, activeClub, loading, isRecovery, isAdmin, profile } = useAuth();
+  const { completedSessionIds, markComplete } = useSessionProgress();
+  const [activePage, setActivePage] = useState('dashboard');
+  const [selectedInstructorId, setSelectedInstructorId] = useState<string | null>(null);
+  const [previousPage, setPreviousPage] = useState<'dashboard' | 'roster'>('dashboard');
 
   if (loading) {
     return (
@@ -41,19 +45,11 @@ function App() {
   if (!user) return <Login />;
   if (!activeClub && clubs.length > 1) return <ClubPicker />;
 
-  const [activePage, setActivePage] = useState('dashboard');
-  const [selectedInstructorId, setSelectedInstructorId] = useState<string | null>(null);
-  const [previousPage, setPreviousPage] = useState<'dashboard' | 'roster'>('dashboard');
-  const [completedSessionIds, setCompletedSessionIds] = useState<Record<string, string[]>>(
-    () => Object.fromEntries(coaches.map(c => [c.id, c.completedSessionIds]))
-  );
+  const coachProgressKey = user?.id ?? 'coach-path';
+  const coachCompletedIds = completedSessionIds[coachProgressKey] ?? [];
 
-  const handleCompleteSession = (coachId: string, sessionId: string) => {
-    setCompletedSessionIds(prev => {
-      const current = prev[coachId] ?? [];
-      if (current.includes(sessionId)) return prev;
-      return { ...prev, [coachId]: [...current, sessionId] };
-    });
+  const handleCompleteSession = async (sessionId: string) => {
+    await markComplete('coach-path', sessionId);
   };
 
   const handleViewInstructor = (id: string, source: 'dashboard' | 'roster' = 'dashboard') => {
@@ -84,6 +80,7 @@ function App() {
             onViewInstructor={(id) => handleViewInstructor(id, 'dashboard')}
             completedSessionIds={completedSessionIds}
             onNavigate={handleNavigate}
+            coachProfile={profile}
           />
         );
       case 'roster':
@@ -96,8 +93,8 @@ function App() {
         return (
           <ClubCoachPath
             onNavigate={handleNavigate}
-            completedSessionIds={completedSessionIds['coach-1'] ?? []}
-            onCompleteSession={(sessionId: string) => handleCompleteSession('coach-1', sessionId)}
+            completedSessionIds={coachCompletedIds}
+            onCompleteSession={handleCompleteSession}
           />
         );
       case 'lmq-reference':
@@ -112,6 +109,7 @@ function App() {
             onViewInstructor={(id) => handleViewInstructor(id, 'dashboard')}
             completedSessionIds={completedSessionIds}
             onNavigate={handleNavigate}
+            coachProfile={profile}
           />
         );
       case 'profile':
@@ -126,6 +124,7 @@ function App() {
             onViewInstructor={(id) => handleViewInstructor(id, 'dashboard')}
             completedSessionIds={completedSessionIds}
             onNavigate={handleNavigate}
+            coachProfile={profile}
           />
         );
       default:
@@ -134,6 +133,7 @@ function App() {
             onViewInstructor={(id) => handleViewInstructor(id, 'dashboard')}
             completedSessionIds={completedSessionIds}
             onNavigate={handleNavigate}
+            coachProfile={profile}
           />
         );
     }

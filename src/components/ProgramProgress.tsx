@@ -1,5 +1,5 @@
-import { instructors } from '@/data/mock-data';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import type { Instructor } from '@/data/types';
 
 function pillStyle(lmqLevel: number): string {
   if (lmqLevel >= 7) return 'border border-green-200 text-green-700 bg-green-50';
@@ -7,8 +7,24 @@ function pillStyle(lmqLevel: number): string {
   return 'border border-red-200 text-red-700 bg-red-50';
 }
 
-export default function ProgramProgress() {
+export default function ProgramProgress({ instructors }: { instructors: Instructor[] }) {
   const sorted = [...instructors].sort((a, b) => a.name.localeCompare(b.name));
+
+  if (sorted.length === 0) {
+    return (
+      <Card>
+        <CardHeader className="p-0">
+          <div className="px-5 py-3 bg-[#0d0d0d] rounded-t-lg border-b border-white/8 flex items-center gap-3">
+            <div className="w-1 h-8 rounded-full bg-lm-green/80 flex-shrink-0" />
+            <CardTitle className="text-white text-sm leading-tight">Program Development</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent className="py-8 text-sm text-muted-foreground text-center">
+          Add instructors to see program progress here.
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card>

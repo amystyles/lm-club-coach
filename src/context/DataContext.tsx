@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from './AuthContext';
-import type { Instructor, Assessment, Stage, LMQLevel, KeyElement, Grade } from '@/data/types';
+import type { Instructor, Assessment, Stage, LMQLevel, KeyElement, Grade, DevelopmentNote } from '@/data/types';
 
 function mapInstructor(row: any): Instructor {
   return {
@@ -53,9 +53,24 @@ function mapAssessment(row: any): Assessment {
   };
 }
 
+function mapDevelopmentNote(row: any): DevelopmentNote {
+  return {
+    id: row.id,
+    instructorId: row.instructor_id,
+    authorId: row.author_id,
+    date: row.date,
+    keyElement: row.key_element as KeyElement,
+    observation: row.observation,
+    recommendation: row.recommendation,
+    followUp: row.follow_up ?? undefined,
+    grade: row.grade ?? undefined,
+  };
+}
+
 interface DataContextValue {
   instructors: Instructor[];
   assessments: Assessment[];
+  developmentNotes: DevelopmentNote[];
   loading: boolean;
   error: string | null;
   refresh: () => void;
@@ -67,6 +82,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const { activeClub } = useAuth();
   const [instructors, setInstructors] = useState<Instructor[]>([]);
   const [assessments, setAssessments] = useState<Assessment[]>([]);
+  const [developmentNotes, setDevelopmentNotes] = useState<DevelopmentNote[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -74,7 +90,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     if (!activeClub) return;
     setLoading(true);
     setError(null);
-    const [instResult, assmtResult] = await Promise.all([
+    const [instResult, assmtResult, notesResult] = await Promise.all([
       supabase
         .from('instructors')
         .select('*, instructor_programs(*), instructor_grades(*)')
@@ -84,18 +100,25 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         .select('*')
         .eq('club_id', activeClub.id)
         .order('date', { ascending: false }),
+      supabase
+        .from('development_notes')
+        .select('*')
+        .eq('club_id', activeClub.id)
+        .order('date', { ascending: false }),
     ]);
     if (instResult.error) setError(instResult.error.message);
     else setInstructors((instResult.data ?? []).map(mapInstructor));
     if (assmtResult.error) setError(assmtResult.error.message);
     else setAssessments((assmtResult.data ?? []).map(mapAssessment));
+    if (notesResult.error) setError(notesResult.error.message);
+    else setDevelopmentNotes((notesResult.data ?? []).map(mapDevelopmentNote));
     setLoading(false);
   }, [activeClub?.id]);
 
   useEffect(() => { fetch(); }, [fetch]);
 
   return (
-    <DataContext.Provider value={{ instructors, assessments, loading, error, refresh: fetch }}>
+    <DataContext.Provider value={{ instructors, assessments, developmentNotes, loading, error, refresh: fetch }}>
       {children}
     </DataContext.Provider>
   );

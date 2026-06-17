@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import type { Instructor } from '@/data/types';
-import { coaches, STAGE_DATA, KEY_ELEMENT_LABELS } from '@/data/mock-data';
+import { STAGE_DATA, KEY_ELEMENT_LABELS } from '@/data/mock-data';
 import { useData } from '@/context/DataContext';
+import type { UserProfile } from '@/context/AuthContext';
 import KeyElementHeatmap from '@/components/KeyElementHeatmap';
 import ProgramProgress from '@/components/ProgramProgress';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -15,6 +16,7 @@ interface DashboardProps {
   onViewInstructor: (id: string, source: 'dashboard' | 'roster') => void;
   completedSessionIds: Record<string, string[]>;
   onNavigate: (page: string) => void;
+  coachProfile: UserProfile | null;
 }
 
 
@@ -75,9 +77,25 @@ const NEXT_MILESTONE: Record<number, string> = {
 };
 
 
-export default function Dashboard({ onViewInstructor, completedSessionIds, onNavigate }: DashboardProps) {
+export default function Dashboard({ onViewInstructor, completedSessionIds, onNavigate, coachProfile }: DashboardProps) {
   const { instructors, assessments, loading } = useData();
   const [expandedStages, setExpandedStages] = useState<Set<number>>(new Set());
+
+  const coaches = coachProfile
+    ? [{
+        id: coachProfile.id,
+        name: coachProfile.name,
+        initials: coachProfile.initials,
+        coachStage: 1 as const,
+        instructorIds: instructors.map((i) => i.id),
+        clubId: instructors[0]?.clubId ?? '',
+        lmqLevel: 1 as const,
+        programs: [],
+        yearsTeaching: 0,
+        skillsCompleted: [],
+        completedSessionIds: completedSessionIds[coachProfile.id] ?? [],
+      }]
+    : [];
 
   if (loading) {
     return <div className="p-8 text-muted-foreground text-sm">Loading instructors…</div>;
@@ -199,7 +217,7 @@ export default function Dashboard({ onViewInstructor, completedSessionIds, onNav
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         <div className="lg:col-span-3">
-          <KeyElementHeatmap />
+          <KeyElementHeatmap instructors={instructors} />
         </div>
 
         <Card className="lg:col-span-2">
@@ -258,7 +276,7 @@ export default function Dashboard({ onViewInstructor, completedSessionIds, onNav
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         <div className="lg:col-span-5">
-          <ProgramProgress />
+          <ProgramProgress instructors={instructors} />
         </div>
       </div>
 

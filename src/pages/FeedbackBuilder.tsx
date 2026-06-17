@@ -5,7 +5,9 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { instructors, KEY_ELEMENT_LABELS } from '@/data/mock-data';
+import { KEY_ELEMENT_LABELS } from '@/data/mock-data';
+import { useData } from '@/context/DataContext';
+import type { Instructor } from '@/data/types';
 import type { KeyElement, Grade } from '@/data/types';
 
 /* ─────────────────────────────────────────────
@@ -193,11 +195,13 @@ function LMQContextPanel({
   framework,
   intentionIf,
   intentionThen,
+  instructors,
 }: {
   state: FeedbackState;
   framework: Framework | null;
   intentionIf: string;
   intentionThen: string;
+  instructors: Instructor[];
 }) {
   const instructor = instructors.find((i) => i.id === state.instructorId);
   const ke = state.keyElement as KeyElement | '';
@@ -432,6 +436,7 @@ function getSupervisionLevel(grade: number | null, stage: number): string {
    Main Page
    ───────────────────────────────────────────── */
 export default function FeedbackBuilder() {
+  const { instructors, loading } = useData();
   const [step, setStep] = useState<Step>('context');
   const [coachingGuideOpen, setCoachingGuideOpen] = useState(true);
   const [obsOpen, setObsOpen] = useState(false);
@@ -507,6 +512,10 @@ export default function FeedbackBuilder() {
     setObsOpen(false);
     setStep('context');
   };
+
+  if (loading) {
+    return <div className="p-8 text-muted-foreground text-sm">Loading instructors…</div>;
+  }
 
   return (
     <div className="min-h-screen bg-background -m-6">
@@ -1254,6 +1263,7 @@ export default function FeedbackBuilder() {
             framework={state.framework}
             intentionIf={intentionIf}
             intentionThen={intentionThen}
+            instructors={instructors}
           />
         </div>
       </div>
