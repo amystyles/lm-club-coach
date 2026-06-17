@@ -108,7 +108,11 @@ function App() {
         return isAdmin ? (
           <SignUp onBack={() => handleNavigate('roster')} />
         ) : (
-          <Dashboard onViewInstructor={(id) => handleViewInstructor(id, 'dashboard')} />
+          <Dashboard
+            onViewInstructor={(id) => handleViewInstructor(id, 'dashboard')}
+            completedSessionIds={completedSessionIds}
+            onNavigate={handleNavigate}
+          />
         );
       case 'profile':
         return selectedInstructorId ? (
