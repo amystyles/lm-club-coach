@@ -23,3 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 .worktrees/
+
+# Pilot — local handbooks & URL spreadsheets (do not commit LM IP)
+docs/pilot/handbooks/
+docs/pilot/data/
+docs/pilot/resource-urls.csv
