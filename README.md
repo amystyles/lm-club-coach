@@ -36,6 +36,8 @@ In the Supabase SQL editor (or via Supabase CLI), run in order:
 
 - `supabase/migrations/001_initial_schema.sql`
 - `supabase/migrations/002_feature_completion.sql`
+- `supabase/migrations/003_custom_sessions_and_notes_review.sql`
+- `supabase/migrations/004_custom_sessions_session_data.sql`
 
 4. **Seed demo data (optional)**
 

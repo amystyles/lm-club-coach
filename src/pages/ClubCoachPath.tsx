@@ -13,6 +13,8 @@ import type { Session } from '@/data/stage-sessions';
 import SessionNotesField from '@/components/SessionNotesField';
 import AddSessionDialog from '@/components/AddSessionDialog';
 import { useCustomSessions } from '@/context/CustomSessionsContext';
+import { useAuth } from '@/context/AuthContext';
+import { formValuesToSessionData, type CustomSessionFormValues } from '@/lib/custom-session-form';
 
 /* ─────────────────────────────────────────────
    Tab definition
@@ -404,12 +406,14 @@ function SessionList({
   onSelect,
   completedIds,
   onAddSession,
+  canAddSession,
 }: {
   sessions: Session[];
   activeId: string;
   onSelect: (id: string) => void;
   completedIds: string[];
   onAddSession: () => void;
+  canAddSession: boolean;
 }) {
   return (
     <div className="space-y-0.5">
@@ -463,16 +467,18 @@ function SessionList({
         );
       })}
 
-      <button
-        type="button"
-        onClick={onAddSession}
-        className="w-full text-left px-3 py-2.5 rounded-xl border border-dashed border-lm-sunken hover:border-lm-ink-muted/40 hover:bg-lm-subtle/50 transition-all focus:outline-none mt-1 group"
-      >
-        <span className="flex items-center gap-1.5 text-xs text-lm-ink-muted/50 group-hover:text-lm-ink-muted transition-colors">
-          <Plus className="w-3.5 h-3.5" />
-          Add session
-        </span>
-      </button>
+      {canAddSession && (
+        <button
+          type="button"
+          onClick={onAddSession}
+          className="w-full text-left px-3 py-2.5 rounded-xl border border-dashed border-lm-sunken hover:border-lm-ink-muted/40 hover:bg-lm-subtle/50 transition-all focus:outline-none mt-1 group"
+        >
+          <span className="flex items-center gap-1.5 text-xs text-lm-ink-muted/50 group-hover:text-lm-ink-muted transition-colors">
+            <Plus className="w-3.5 h-3.5" />
+            Add session
+          </span>
+        </button>
+      )}
     </div>
   );
 }
@@ -1138,6 +1144,7 @@ interface ClubCoachPathProps {
 
 export default function ClubCoachPath({ onNavigate: _onNavigate, completedSessionIds, onCompleteSession }: ClubCoachPathProps) {
   const { getSessionsForStage, createSession } = useCustomSessions();
+  const { isAdmin } = useAuth();
   const [activeStage, setActiveStage] = useState(1);
   const [activeSessions, setActiveSessions] = useState<Record<number, string>>({});
   const [activeTab, setActiveTab] = useState<TabId>('brief');
@@ -1177,13 +1184,15 @@ export default function ClubCoachPath({ onNavigate: _onNavigate, completedSessio
     setViewMode(viewMode === tool ? 'session' : tool);
   };
 
-  const handleAddSession = async (values: { title: string; subtitle: string; duration: string }) => {
+  const handleAddSession = async (values: CustomSessionFormValues) => {
+    const sessionData = formValuesToSessionData(values);
     const session = await createSession({
       pathKey: 'coach-path',
       stageNumber: activeStage,
       title: values.title,
       subtitle: values.subtitle,
-      duration: values.duration,
+      duration: values.planDuration,
+      sessionData,
     });
     handleSessionSelect(session.id);
   };
@@ -1320,6 +1329,7 @@ export default function ClubCoachPath({ onNavigate: _onNavigate, completedSessio
                   onSelect={handleSessionSelect}
                   completedIds={completedSessionIds}
                   onAddSession={() => setAddDialogOpen(true)}
+                  canAddSession={isAdmin}
                 />
               </div>
 
@@ -1400,7 +1410,7 @@ export default function ClubCoachPath({ onNavigate: _onNavigate, completedSessio
       </div>
 
       <AddSessionDialog
-        open={addDialogOpen}
+        open={addDialogOpen && isAdmin}
         onOpenChange={setAddDialogOpen}
         onSubmit={handleAddSession}
       />
