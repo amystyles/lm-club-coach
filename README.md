@@ -89,6 +89,7 @@ Live app: https://lm-club-coach.vercel.app
 | Observations | Assessment Centre → New Observation |
 | Development notes | Instructor profile |
 | Session notes & coach path progress | `session_progress` |
+| Custom pathway sessions | `custom_sessions` |
 | Admin: create coach + club | `create-user` edge function |
 
 ## Scripts
