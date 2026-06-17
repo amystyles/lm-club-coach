@@ -102,9 +102,9 @@ export default function Dashboard({ onViewInstructor, completedSessionIds, onNav
   }
 
 
-  const averageLMQ = (
-    instructors.reduce((sum, inst) => sum + inst.lmqLevel, 0) / instructors.length
-  ).toFixed(1);
+  const averageLMQ = instructors.length === 0
+    ? '—'
+    : (instructors.reduce((sum, inst) => sum + inst.lmqLevel, 0) / instructors.length).toFixed(1);
 
   const assessmentsDue = assessments.filter((a) => a.status === 'scheduled').length;
   const atRiskInstructors = instructors.filter(
