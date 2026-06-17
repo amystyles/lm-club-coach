@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 import { Users, TrendingUp, ClipboardList, AlertTriangle, ChevronRight } from 'lucide-react';
 import CoachProgressPanel from '@/components/CoachProgressPanel';
+import SessionNotesReviewPanel from '@/components/SessionNotesReviewPanel';
 
 interface DashboardProps {
   onViewInstructor: (id: string, source: 'dashboard' | 'roster') => void;
@@ -286,6 +287,8 @@ export default function Dashboard({ onViewInstructor, completedSessionIds, onNav
         completedSessionIds={completedSessionIds}
         onPrepSession={() => onNavigate('coach-path')}
       />
+
+      <SessionNotesReviewPanel />
 
       <div>
         <h2 className="text-lg font-bold mb-4">
