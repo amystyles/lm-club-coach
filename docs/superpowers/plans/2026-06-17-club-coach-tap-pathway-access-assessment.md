@@ -4,7 +4,7 @@
 
 **Goal:** Decide whether Club Coach needs its own defined pathway with dedicated access controls aligned to TAP-guided development, and close the gaps between curriculum intent and product behaviour.
 
-**Architecture:** Club Coach already has a **content pathway** (`coach-path`) separate from instructor development (`development-pathway`). **Enrollment is LMUS Super Admin–initiated** — a user is not on the coach path until LMUS enrolls them and assigns a TAP Coach. TAP then **signs off per session and per stage** before progression unlocks. TAP is embedded in curriculum as the human mentor but has no product workflow yet. The actor model is: **LMUS Super Admin** (enroll + assign TAP) → **developing person** (Club Coach or GFM on `coach-path`) → **TAP Coach** (session + stage sign-off) → **GFM oversight** (read team progress/notes, separate from own path). Do not create a second pathway for GFMs.
+**Architecture:** Club Coach already has a **content pathway** (`coach-path`) separate from instructor development (`development-pathway`). **Enrollment is LMUS Super Admin–initiated** — a user is not on the coach path until LMUS enrolls them and assigns a TAP Coach. **TAP Coaches log into this app** with their own role: view assigned coaches' prep notes, club observations, assessments, and development feedback; **contribute TAP debrief/feedback** on coach-path sessions where curriculum calls for it; and **sign off per session and per stage**. Actor model: **LMUS Super Admin** → **developing person** (Club Coach or GFM) → **TAP Coach** (in-app mentor) → **GFM oversight** (read team progress/notes).
 
 **Tech Stack:** React 18, TypeScript, Vite, Supabase (Auth, RLS, Postgres), existing `session_progress` + `coach-path-data.ts`
 
@@ -82,10 +82,14 @@ The app is positioned as a **prep and reference tool between live TAP sessions**
 
 | Missing capability | Why it matters |
 |--------------------|----------------|
-| TAP user role / login | TAP cannot see coach notes, approve sessions, or assign next work |
-| `tap_coach_assignments` table | No link between developing coach and TAP mentor |
-| TAP session acknowledgment | S5-4 and stage transitions are unenforceable |
-| TAP visibility into prep notes | GFMs can read notes (`003` migration); TAP cannot |
+| LMUS enrollment gate | Any club member can open coach-path today; should require LMUS enrollment |
+| TAP user role / login | TAP cannot sign off sessions or stages; no in-app presence ✗ |
+| `coach_path_enrollments` table | No record of who LMUS enrolled |
+| `tap_coach_assignments` table | No link between enrollment and TAP mentor |
+| `coach_path_stage_signoffs` table | Stage transitions have no TAP gate |
+| TAP session acknowledgment | Progress is self-certified |
+| TAP visibility into club observations | Cannot read assessments, development notes, or instructor feedback ✗ |
+| TAP contribution surfaces | Curriculum asks TAP to debrief/give feedback; no field for TAP input ✗ |
 
 ### 2. Pathway integrity is broken (high)
 
@@ -211,6 +215,38 @@ flowchart TB
 
 Until LMUS enrolls a user, the Club Coach Path nav item shows an **enrollment-pending** state (no session access). Until TAP is assigned, enrolled users see **awaiting TAP assignment**.
 
+### TAP Coach in-app role (confirmed)
+
+**TAP Coaches are full app users** provisioned by LMUS (`app_role = 'tap_coach'`). They log in with email + password like other roles and see a **TAP-focused shell** (not the Club Coach operations dashboard).
+
+| Capability | Scope | Notes |
+|------------|-------|-------|
+| **View assigned coaches** | Coaches/GFMs with active `tap_coach_assignments` | Primary work queue |
+| **View coach-path prep notes** | `session_progress.notes` for assigned coaches | Coach's reflection before/after 1:1 |
+| **Add TAP session feedback** | `session_progress.tap_feedback` for assigned coaches | Debrief, coaching points, answers to session prompts |
+| **Session sign-off** | Sets `completion_status = 'tap_confirmed'` | Unlocks next session |
+| **Stage sign-off** | Inserts `coach_path_stage_signoffs` | Unlocks next stage |
+| **View observations & feedback** | `assessments`, `development_notes` for clubs of assigned coaches | Read-only; see what coach observed in the field |
+| **View instructor context** | `instructors`, grades, profiles in those clubs | Supports debrief sessions (e.g. S1-4 observation review) |
+| **Contribute on instructor work** | Optional Phase 2b: TAP-authored `development_notes` or assessments with `assessor_role = 'tap'` | Where certification/observation content expects TAP input |
+
+TAP does **not** get GFM oversight powers (club-wide coach monitoring) unless they are also a GFM account. TAP visibility is **assignment-scoped**: only clubs/coaches LMUS linked via enrollment.
+
+**Coach-path session UX (dual pane when TAP opens a session):**
+
+```
+┌─────────────────────────────────────────────────────┐
+│ Session S1-4 — Observation Debrief                  │
+├──────────────────────┬──────────────────────────────┤
+│ Coach prep notes     │ TAP debrief & feedback        │
+│ (read-only for TAP)  │ (editable by TAP)             │
+├──────────────────────┴──────────────────────────────┤
+│ [Sign off session]  (enabled when feedback saved)     │
+└─────────────────────────────────────────────────────┘
+```
+
+Coach sees TAP feedback on their session after debrief (read-only on coach side).
+
 ### GFM dual-role (confirmed)
 
 | Mode | When | What they do in the app |
@@ -228,7 +264,7 @@ Progress is always keyed by **`user_id` + `club_id` + `path_key`** — a GFM's o
 |------|---------------------|---------------------|-------------------------|----------------|------------------------|
 | **Club Coach** | — (LMUS enrolls) | Participant once enrolled | — | — | Full access |
 | **GFM** | — (LMUS enrolls) | Participant once enrolled | Read progress + notes | — | Full access |
-| **TAP Coach** | — | — | Read assigned coaches | — | Read-only (optional) |
+| **TAP Coach** | — | Read assigned; write `tap_feedback` + sign-off | Read assigned coaches' clubs | Assigned coaches only | Read observations, dev notes, assessments | Add debrief notes; optional TAP assessments |
 | **LMUS Super Admin** | Enroll any user; assign TAP | — | All clubs (ops view) | Assign TAP ↔ coach | Provision accounts |
 
 ### Completion states (proposed)
@@ -239,7 +275,10 @@ Replace boolean `completed` with explicit session and stage status:
 -- On session_progress (per session)
 alter table public.session_progress
   add column if not exists completion_status text not null default 'not_started'
-    check (completion_status in ('not_started', 'prepped', 'tap_confirmed'));
+    check (completion_status in ('not_started', 'prepped', 'tap_confirmed')),
+  add column if not exists tap_feedback text not null default '',
+  add column if not exists tap_feedback_at timestamptz,
+  add column if not exists tap_feedback_by uuid references public.profiles(id);
 
 -- New: stage-level TAP sign-off
 create table if not exists public.coach_path_stage_signoffs (
@@ -543,7 +582,7 @@ git commit -m "feat: deep-link to Club Coach Path session"
 ### Task 5: Schema — roles, enrollments, assignments, sign-offs
 
 **Files:**
-- Create: `supabase/migrations/006_lm_us_enrollment_and_tap.sql` (renumbered — `005` is club roster RLS)
+- Create: `supabase/migrations/006_lmus_enrollment_and_tap.sql` (renumbered — `005` is club roster RLS)
 
 - [ ] **Step 1: Add `app_role` to profiles**
 
@@ -598,13 +637,16 @@ LMUS assigns TAP when enrolling (or immediately after). One active TAP per enrol
 |-------|------------|-----------|-----------|---------------|
 | `coach_path_enrollments` | CRUD all | Read assigned | Read own | Read club |
 | `tap_coach_assignments` | CRUD all | Read own assignments | Read own | Read club |
-| `session_progress` | Read all | Read/write assigned (confirm) | Read/write own (prepped) | Read club |
+| `session_progress` | Read all | Read/write assigned (`notes` read, `tap_feedback` write, confirm) | Read/write own (`notes`, `prepped`) | Read club |
 | `coach_path_stage_signoffs` | Read all | Insert for assigned | Read own | Read club |
+| `assessments` | Read all | Read clubs of assigned coaches | CRUD own club | CRUD own club |
+| `development_notes` | Read all | Read clubs of assigned coaches; optional insert as TAP | CRUD own club | CRUD own club |
+| `instructors` + grades | Read all | Read clubs of assigned coaches | CRUD own club | CRUD own club |
 
 - [ ] **Step 6: Commit**
 
 ```bash
-git add supabase/migrations/006_lm_us_enrollment_and_tap.sql
+git add supabase/migrations/006_lmus_enrollment_and_tap.sql
 git commit -m "feat: LMUS enrollment, TAP assignment, session and stage sign-offs"
 ```
 
@@ -618,7 +660,7 @@ git commit -m "feat: LMUS enrollment, TAP assignment, session and stage sign-off
 
 - [ ] **Step 2: Admin panel: select user + club → Enroll in Club Coach Path → Assign TAP Coach**
 
-Workflow: LMUS picks a Club Coach or GFM at a club, clicks **Enroll**, then selects a TAP Coach from `profiles` where `app_role = 'tap_coach'`.
+Workflow: LMUS picks a Club Coach or GFM at a club, clicks **Enroll**, then selects a TAP Coach from `profiles` where `app_role = 'tap_coach'`. LMUS also provisions TAP accounts via **Add Coach** (extended to support `tap_coach` role).
 
 - [ ] **Step 3: Show enrollment status on user list (active / paused / completed)**
 
@@ -650,42 +692,129 @@ git add src/context/CoachPathEnrollmentContext.tsx src/pages/ClubCoachPath.tsx s
 git commit -m "feat: gate Club Coach Path on LMUS enrollment and TAP assignment"
 ```
 
-### Task 8: TAP Coach dashboard — session + stage sign-off
+### Task 8: TAP Coach app shell + dashboard
 
 **Files:**
 - Create: `src/pages/TapCoachDashboard.tsx`
+- Create: `src/components/layout/TapSidebar.tsx`
+- Modify: `src/App.tsx`, `src/context/AuthContext.tsx`
+
+- [ ] **Step 1: Route TAP users to TAP shell after login** (`profile.app_role === 'tap_coach'`)
+
+TAP sidebar (assignment-scoped):
+- **My Coaches** — dashboard
+- **Instructor Context** — read-only roster/assessments/notes for clubs of assigned coaches
+
+Club Coach / GFM / LMUS keep existing sidebar.
+
+- [ ] **Step 2: Dashboard — assigned coaches with stage, sessions awaiting sign-off, latest prep notes**
+
+- [ ] **Step 3: Deep-link into coach-path session in TAP review mode** (read coach `notes`, edit `tap_feedback`)
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add src/pages/TapCoachDashboard.tsx src/components/layout/TapSidebar.tsx src/App.tsx src/context/AuthContext.tsx
+git commit -m "feat: TAP Coach login shell and assigned-coach dashboard"
+```
+
+### Task 9: TAP sign-off + feedback on coach-path sessions
+
+**Files:**
 - Modify: `src/context/SessionProgressContext.tsx`
+- Modify: `src/pages/TapCoachDashboard.tsx`
 - Modify: `src/pages/ClubCoachPath.tsx`
+- Create: `src/components/TapSessionReviewPanel.tsx`
 
-- [ ] **Step 1: List assigned coaches with stage, sessions awaiting sign-off, latest prep notes**
+- [ ] **Step 1: Add `saveTapFeedback` and `confirmSession` to SessionProgressContext** (TAP role only, assigned coaches)
 
-- [ ] **Step 2: `confirmSession(coachUserId, sessionId)` — sets `completion_status = 'tap_confirmed'`**
+```ts
+async function saveTapFeedback(
+  coachUserId: string,
+  sessionId: string,
+  tapFeedback: string,
+): Promise<void> {
+  // upsert session_progress for coachUserId with tap_feedback, tap_feedback_by, tap_feedback_at
+}
 
-- [ ] **Step 3: `confirmStage(coachUserId, stageNumber)` — inserts `coach_path_stage_signoffs` row** (enabled only when all sessions in stage are `tap_confirmed`)
-
-- [ ] **Step 4: Update `isSessionLocked` to require `tap_confirmed` on prior session AND stage sign-off before next stage**
-
-```tsx
-function isSessionLocked(
-  stageNum: number,
-  sessionIndex: number,
-  sessions: { id: string }[],
-  progressBySessionId: Record<string, CompletionStatus>,
-  stageSignoffs: Set<number>,
-): boolean {
-  if (!isEnrolled) return true;
-  if (stageNum > 1 && !stageSignoffs.has(stageNum - 1)) return true;
-  if (sessionIndex === 0) return false;
-  const priorId = sessions[sessionIndex - 1].id;
-  return progressBySessionId[priorId] !== 'tap_confirmed';
+async function confirmSession(coachUserId: string, sessionId: string): Promise<void> {
+  // set completion_status = 'tap_confirmed' — require tap_feedback non-empty for sessions
+  //   where coach-path session has format including TAP debrief (default: all sessions)
 }
 ```
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 2: `TapSessionReviewPanel` — coach prep notes (read-only) + TAP feedback textarea + Sign off session**
+
+- [ ] **Step 3: On ClubCoachPath, show TAP feedback section when `tap_feedback` exists** (read-only for coach/GFM)
+
+- [ ] **Step 4: `confirmStage(coachUserId, stageNumber)` — stage sign-off when all sessions `tap_confirmed`**
+
+- [ ] **Step 5: Update `isSessionLocked`** (require `tap_confirmed` on prior session AND stage sign-off before next stage)
+
+- [ ] **Step 6: Commit**
 
 ```bash
-git add src/pages/TapCoachDashboard.tsx src/context/SessionProgressContext.tsx src/pages/ClubCoachPath.tsx
-git commit -m "feat: TAP session and stage sign-off gates progression"
+git add src/context/SessionProgressContext.tsx src/pages/TapCoachDashboard.tsx src/pages/ClubCoachPath.tsx src/components/TapSessionReviewPanel.tsx
+git commit -m "feat: TAP session feedback and sign-off on coach-path"
+```
+
+### Task 10: TAP read access to observations & instructor feedback
+
+**Files:**
+- Modify: `supabase/migrations/006_lmus_enrollment_and_tap.sql` (TAP RLS policies)
+- Create: `src/pages/TapInstructorContext.tsx`
+- Modify: `src/hooks/useAssessments.ts`, `src/context/DataContext.tsx` (optional TAP-scoped fetch)
+
+- [ ] **Step 1: RLS helper — TAP can read rows where `club_id` in assigned coaches' clubs**
+
+```sql
+create or replace function public.tap_assigned_club_ids()
+returns setof uuid language sql stable security definer as $$
+  select distinct e.club_id
+  from public.coach_path_enrollments e
+  join public.tap_coach_assignments t on t.enrollment_id = e.id
+  where t.tap_coach_user_id = auth.uid() and t.active and e.status = 'active';
+$$;
+
+create policy "tap coaches read assigned club assessments"
+  on public.assessments for select using (
+    club_id in (select public.tap_assigned_club_ids())
+  );
+
+create policy "tap coaches read assigned club development_notes"
+  on public.development_notes for select using (
+    club_id in (select public.tap_assigned_club_ids())
+  );
+```
+
+- [ ] **Step 2: `TapInstructorContext` page — instructor list for assigned clubs with links to assessments + development notes** (read-only)
+
+- [ ] **Step 3: From TAP coach dashboard, link "View field observations" for a coach's club**
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add supabase/migrations/006_lmus_enrollment_and_tap.sql src/pages/TapInstructorContext.tsx src/hooks/useAssessments.ts
+git commit -m "feat: TAP read access to observations and development feedback"
+```
+
+### Task 11 (optional): TAP-authored instructor contributions
+
+**Files:**
+- Modify: `src/data/types.ts`, `supabase/migrations/007_tap_assessor.sql`
+- Modify: `src/pages/AssessmentCenter.tsx` or new `TapAddObservation.tsx`
+
+Only if Les Mills wants TAP to **write** instructor observations in-app (not just read). Defer unless required for certification workflow.
+
+- [ ] **Step 1: Add `assessor_role` column to `assessments`** (persist `'coach' | 'tap' | 'gfm'`)
+
+- [ ] **Step 2: TAP can create observation-type assessments for instructors in assigned clubs**
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add supabase/migrations/007_tap_assessor.sql src/pages/TapAddObservation.tsx
+git commit -m "feat: TAP-authored observations for assigned clubs"
 ```
 
 ---
@@ -694,7 +823,8 @@ git commit -m "feat: TAP session and stage sign-off gates progression"
 
 - **A second coach pathway or "GFM path"** — GFMs use `coach-path` as participants; oversight is a Dashboard view, not a curriculum
 - **Blocking GFMs from coach-path** — title controls oversight UI visibility only
-- **TAP-led instructor certification in v1 of TAP role** — keep instructor TAP references in content; certification workflow is Assessment Centre scope
+- **TAP proxy sign-off outside the app** — TAP logs in; no external tool needed
+- **TAP-led instructor certification workflow** — defer; read access + optional TAP observations (Task 11) covers "add value" for v1
 - **Full scheduling/calendar for TAP 1:1s** — out of scope; TAP sessions happen offline
 - **Deployment path A/B/C branching** — until Les Mills defines behaviour per path in a spec
 
@@ -702,10 +832,7 @@ git commit -m "feat: TAP session and stage sign-off gates progression"
 
 ## Open Questions for Product Owner
 
-Before Phase 2 engineering, confirm with Les Mills:
-
-1. **Will TAP Coaches log into this app**, or should sign-off happen via a separate Les Mills ops tool?
-2. **Deployment path A/B/C** — does it change who leads coach development (club mentor vs TAP)?
+1. **Deployment path A/B/C** — does it change who leads coach development (club mentor vs TAP)?
 
 **Resolved:**
 
@@ -713,6 +840,9 @@ Before Phase 2 engineering, confirm with Les Mills:
 - **TAP assignment:** LMUS initiates TAP Coach assignment at enrollment.
 - **Sign-off:** TAP signs off **per session** and **per stage**.
 - **GFM dual-role:** GFMs complete `coach-path` like Club Coaches and oversee team development (Phase 0).
+- **TAP login:** TAP Coaches are full app users with assignment-scoped access.
+- **TAP visibility:** TAP reads coach prep notes, club assessments, development notes, and instructor context for assigned coaches' clubs.
+- **TAP contribution:** TAP writes `tap_feedback` on coach-path sessions (debrief/value-add where curriculum asks) and signs off sessions/stages.
 
 ---
 
@@ -721,7 +851,9 @@ Before Phase 2 engineering, confirm with Les Mills:
 **Spec coverage:**
 - [x] Assess whether dedicated pathway exists → Executive Answer
 - [x] Assess whether dedicated access needed → Access tiers + Decision Matrix
-- [x] LMUS enrollment + TAP per-session/per-stage sign-off → LMUS enrollment section + Phase 2 Tasks 5–8
+- [x] GFM dual-role (participant + oversight) → Phase 0 + GFM dual-role section
+- [x] LMUS enrollment + TAP per-session/per-stage sign-off → Phase 2 Tasks 5–9
+- [x] TAP login + observations visibility + session feedback → TAP in-app role section + Tasks 8–10
 - [x] TAP-driven guidance gap → Gap Analysis §1
 - [x] What's missing → Gap Analysis §1–6
 - [x] Actionable next steps → Phase 0 + Phase 1 + Phase 2 tasks
@@ -742,7 +874,10 @@ Before Phase 2 engineering, confirm with Les Mills:
 | Is enrollment automatic? | **No** — LMUS Super Admin enrolls; then assigns TAP |
 | How does TAP gate progression? | **Per session** (`tap_confirmed`) **and per stage** (`coach_path_stage_signoffs`) |
 | Do you need separate access? | **Yes** — enrollment gate + TAP sign-off + GFM oversight (Phases 0–2) |
-| Is TAP represented correctly? | **No** — curriculum only; Phase 2 adds TAP dashboard |
+| Is TAP represented correctly? | **No** — Phase 2 adds TAP login, feedback, observations read, sign-off |
+| Does TAP log into the app? | **Yes** — `tap_coach` role, assignment-scoped shell |
+| What can TAP see? | Prep notes, assessments, development notes, instructors (assigned clubs) |
+| What can TAP add? | Session `tap_feedback`, session/stage sign-off; optional instructor observations (Task 11) |
 | Build order | **Phase 0** (GFM oversight) → **Phase 1** (interim locking) → **Phase 2** (LMUS + TAP) |
 
 The Club Coach product is a strong **playbook + club operations** tool. To become a **guided credentialing pathway** as the curriculum describes, it needs TAP in the workflow — not just in the words.
