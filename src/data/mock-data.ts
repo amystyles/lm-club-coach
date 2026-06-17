@@ -206,12 +206,14 @@ export const coaches: ClubCoach[] = [
     instructorIds: ['ins-1', 'ins-2', 'ins-4', 'ins-7'], clubId: 'club-1',
     lmqLevel: 8, programs: ['BODYPUMP', 'BODYCOMBAT', 'LES MILLS CORE', 'LES MILLS GRIT'],
     yearsTeaching: 6, skillsCompleted: ['Reading an LMQ Profile', 'Team Baseline Discovery', 'Evidence-Based Observation', 'CRC Conversation Delivery', 'GROW Model Facilitation'],
+    completedSessionIds: ['S1-1', 'S1-2', 'S2-1', 'S2-2', 'S2-3', 'S3-1', 'S3-2', 'S3-3', 'S4-1'],
   },
   {
     id: 'coach-2', name: 'Alex Rivera', initials: 'AR', coachStage: 2,
     instructorIds: ['ins-5', 'ins-6'], clubId: 'club-1',
     lmqLevel: 7, programs: ['BODYCOMBAT', 'BODYATTACK', 'LES MILLS GRIT'],
     yearsTeaching: 5, skillsCompleted: ['Reading an LMQ Profile', 'Team Baseline Discovery'],
+    completedSessionIds: ['S1-1'],
   },
 ];
 

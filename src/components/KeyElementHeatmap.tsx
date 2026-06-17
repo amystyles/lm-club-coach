@@ -1,4 +1,3 @@
-import { instructors } from '@/data/mock-data';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import type { Instructor } from '@/data/types';
 
@@ -22,8 +21,24 @@ function getGrade(instructor: Instructor, element: ElementKey): number {
   return instructor.grades.find((g) => g.element === element)?.grade ?? 1;
 }
 
-export default function KeyElementHeatmap() {
+export default function KeyElementHeatmap({ instructors }: { instructors: Instructor[] }) {
   const sorted = [...instructors].sort((a, b) => a.name.localeCompare(b.name));
+
+  if (sorted.length === 0) {
+    return (
+      <Card>
+        <CardHeader className="p-0">
+          <div className="px-5 py-3 bg-[#0d0d0d] rounded-t-lg border-b border-white/8 flex items-center gap-3">
+            <div className="w-1 h-8 rounded-full bg-lm-green/80 flex-shrink-0" />
+            <CardTitle className="text-white text-sm leading-tight">Key Element Overview</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent className="py-8 text-sm text-muted-foreground text-center">
+          Add instructors to see team grades here.
+        </CardContent>
+      </Card>
+    );
+  }
 
   const averages = ELEMENTS.map(({ key }) => {
     const avg = sorted.reduce((sum, inst) => sum + getGrade(inst, key), 0) / sorted.length;

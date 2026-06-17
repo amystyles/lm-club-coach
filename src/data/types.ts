@@ -52,6 +52,7 @@ export interface ClubCoach {
   yearsTeaching: number;
   skillsCompleted: string[];
   tapCoachId?: string;
+  completedSessionIds: string[];
 }
 
 export interface Club {

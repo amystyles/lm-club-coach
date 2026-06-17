@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from './context/AuthContext';
+import { useSessionProgress } from './context/SessionProgressContext';
 import Login from './pages/Login';
 import ResetPassword from './pages/ResetPassword';
 import ClubPicker from './pages/ClubPicker';
@@ -13,7 +14,6 @@ import ClubCoachPath from './pages/ClubCoachPath';
 import LMQReference from './pages/LMQReference';
 import FeedbackBuilder from './pages/FeedbackBuilder';
 import SignUp from './pages/SignUp';
-
 const PAGE_TITLES: Record<string, { title: string; subtitle?: string }> = {
   dashboard: { title: 'Dashboard', subtitle: 'Team overview & instructor development' },
   roster: { title: 'Instructor Team', subtitle: 'All instructors at a glance' },
@@ -27,7 +27,11 @@ const PAGE_TITLES: Record<string, { title: string; subtitle?: string }> = {
 };
 
 function App() {
-  const { user, clubs, activeClub, loading, isRecovery, isAdmin } = useAuth();
+  const { user, clubs, activeClub, loading, isRecovery, isAdmin, profile } = useAuth();
+  const { completedSessionIds, markComplete } = useSessionProgress();
+  const [activePage, setActivePage] = useState('dashboard');
+  const [selectedInstructorId, setSelectedInstructorId] = useState<string | null>(null);
+  const [previousPage, setPreviousPage] = useState<'dashboard' | 'roster'>('dashboard');
 
   if (loading) {
     return (
@@ -41,9 +45,12 @@ function App() {
   if (!user) return <Login />;
   if (!activeClub && clubs.length > 1) return <ClubPicker />;
 
-  const [activePage, setActivePage] = useState('dashboard');
-  const [selectedInstructorId, setSelectedInstructorId] = useState<string | null>(null);
-  const [previousPage, setPreviousPage] = useState<'dashboard' | 'roster'>('dashboard');
+  const coachProgressKey = user?.id ?? 'coach-path';
+  const coachCompletedIds = completedSessionIds[coachProgressKey] ?? [];
+
+  const handleCompleteSession = async (sessionId: string) => {
+    await markComplete('coach-path', sessionId);
+  };
 
   const handleViewInstructor = (id: string, source: 'dashboard' | 'roster' = 'dashboard') => {
     setSelectedInstructorId(id);
@@ -68,7 +75,14 @@ function App() {
   const renderPage = () => {
     switch (activePage) {
       case 'dashboard':
-        return <Dashboard onViewInstructor={(id) => handleViewInstructor(id, 'dashboard')} />;
+        return (
+          <Dashboard
+            onViewInstructor={(id) => handleViewInstructor(id, 'dashboard')}
+            completedSessionIds={completedSessionIds}
+            onNavigate={handleNavigate}
+            coachProfile={profile}
+          />
+        );
       case 'roster':
         return <TeamRoster onViewInstructor={(id) => handleViewInstructor(id, 'roster')} />;
       case 'assessments':
@@ -76,7 +90,13 @@ function App() {
       case 'development':
         return <DevelopmentPathway onNavigate={handleNavigate} />;
       case 'coach-path':
-        return <ClubCoachPath onNavigate={handleNavigate} />;
+        return (
+          <ClubCoachPath
+            onNavigate={handleNavigate}
+            completedSessionIds={coachCompletedIds}
+            onCompleteSession={handleCompleteSession}
+          />
+        );
       case 'lmq-reference':
         return <LMQReference />;
       case 'feedback':
@@ -85,7 +105,12 @@ function App() {
         return isAdmin ? (
           <SignUp onBack={() => handleNavigate('roster')} />
         ) : (
-          <Dashboard onViewInstructor={(id) => handleViewInstructor(id, 'dashboard')} />
+          <Dashboard
+            onViewInstructor={(id) => handleViewInstructor(id, 'dashboard')}
+            completedSessionIds={completedSessionIds}
+            onNavigate={handleNavigate}
+            coachProfile={profile}
+          />
         );
       case 'profile':
         return selectedInstructorId ? (
@@ -95,10 +120,22 @@ function App() {
             source={previousPage}
           />
         ) : (
-          <Dashboard onViewInstructor={(id) => handleViewInstructor(id, 'dashboard')} />
+          <Dashboard
+            onViewInstructor={(id) => handleViewInstructor(id, 'dashboard')}
+            completedSessionIds={completedSessionIds}
+            onNavigate={handleNavigate}
+            coachProfile={profile}
+          />
         );
       default:
-        return <Dashboard onViewInstructor={(id) => handleViewInstructor(id, 'dashboard')} />;
+        return (
+          <Dashboard
+            onViewInstructor={(id) => handleViewInstructor(id, 'dashboard')}
+            completedSessionIds={completedSessionIds}
+            onNavigate={handleNavigate}
+            coachProfile={profile}
+          />
+        );
     }
   };
 

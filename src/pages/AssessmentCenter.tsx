@@ -10,9 +10,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
-import type { Assessment, Instructor, KeyElement, Grade } from '@/data/types';
+import type { Assessment, Instructor, KeyElement, Grade, LMQLevel } from '@/data/types';
 import { LM_PROGRAMS, KEY_ELEMENT_LABELS } from '@/data/mock-data';
 import { useData } from '@/context/DataContext';
+import { useAuth } from '@/context/AuthContext';
+import { supabase } from '@/lib/supabase';
 
 const KEY_ELEMENTS: KeyElement[] = ['choreography', 'technique', 'coaching', 'connection', 'performance'];
 
@@ -93,11 +95,20 @@ const AssessmentCard: React.FC<{ assessment: Assessment; instructors: Instructor
   );
 };
 
-const NewObservationDialog: React.FC<{ isOpen: boolean; onOpenChange: (open: boolean) => void; instructors: Instructor[] }> = ({
+const NewObservationDialog: React.FC<{
+  isOpen: boolean;
+  onOpenChange: (open: boolean) => void;
+  instructors: Instructor[];
+  onCreated: () => void;
+}> = ({
   isOpen,
   onOpenChange,
   instructors,
+  onCreated,
 }) => {
+  const { user, activeClub } = useAuth();
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [instructorId, setInstructorId] = useState('');
   const [program, setProgram] = useState('');
   const [date, setDate] = useState('');
@@ -128,20 +139,78 @@ const NewObservationDialog: React.FC<{ isOpen: boolean; onOpenChange: (open: boo
     setEvidence((prev) => ({ ...prev, [element]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({
-      instructorId,
-      program,
+    if (!user || !activeClub || !instructorId || !program || !date) return;
+
+    setSubmitting(true);
+    setSubmitError(null);
+
+    const selectedInstructor = instructors.find((inst) => inst.id === instructorId);
+    const gradeRows = KEY_ELEMENTS.map((element) => ({
+      element,
+      grade: grades[element],
+      notes: evidence[element] || null,
+    }));
+    const overallLevel = Math.max(
+      1,
+      Math.min(
+        10,
+        selectedInstructor?.lmqLevel ?? Math.round(
+          KEY_ELEMENTS.reduce((sum, element) => sum + grades[element], 0) / KEY_ELEMENTS.length,
+        ),
+      ),
+    ) as LMQLevel;
+    const feedback = [
+      oneThingFocus && `One Thing Focus: ${oneThingFocus}`,
+      crcConnect && `Connect: ${crcConnect}`,
+      crcRecommend && `Recommend: ${crcRecommend}`,
+      crcCommend && `Commend: ${crcCommend}`,
+    ].filter(Boolean).join('\n\n');
+
+    const { error: assessmentError } = await supabase.from('assessments').insert({
+      club_id: activeClub.id,
+      instructor_id: instructorId,
+      assessor_id: user.id,
       date,
-      grades,
-      evidence,
-      oneThingFocus,
-      crcConnect,
-      crcRecommend,
-      crcCommend,
+      program,
+      type: 'observation',
+      grades: gradeRows,
+      overall_level: overallLevel,
+      feedback,
+      recommendations: oneThingFocus ? [oneThingFocus] : [],
+      status: 'completed',
     });
+
+    if (assessmentError) {
+      setSubmitError(assessmentError.message);
+      setSubmitting(false);
+      return;
+    }
+
+    await Promise.all(
+      gradeRows.map((row) =>
+        supabase
+          .from('instructor_grades')
+          .update({
+            grade: row.grade,
+            notes: row.notes,
+            last_assessed: date,
+          })
+          .eq('instructor_id', instructorId)
+          .eq('element', row.element),
+      ),
+    );
+
+    await supabase
+      .from('instructors')
+      .update({ last_assessment: date })
+      .eq('id', instructorId);
+
+    setSubmitting(false);
+    handleReset();
     onOpenChange(false);
+    onCreated();
   };
 
   const handleReset = () => {
@@ -326,6 +395,10 @@ const NewObservationDialog: React.FC<{ isOpen: boolean; onOpenChange: (open: boo
 
           <Separator />
 
+          {submitError && (
+            <p className="text-sm text-red-600">{submitError}</p>
+          )}
+
           {/* Form Actions */}
           <div className="flex gap-3 justify-end pt-4">
             <Button type="button" variant="outline" onClick={() => {
@@ -334,8 +407,8 @@ const NewObservationDialog: React.FC<{ isOpen: boolean; onOpenChange: (open: boo
             }}>
               Cancel
             </Button>
-            <Button type="submit" className="bg-lm-dark hover:bg-lm-dark/90 text-white">
-              Submit Observation
+            <Button type="submit" className="bg-lm-dark hover:bg-lm-dark/90 text-white" disabled={submitting}>
+              {submitting ? 'Saving…' : 'Submit Observation'}
             </Button>
           </div>
         </form>
@@ -345,7 +418,7 @@ const NewObservationDialog: React.FC<{ isOpen: boolean; onOpenChange: (open: boo
 };
 
 export default function AssessmentCenter() {
-  const { instructors, assessments, loading } = useData();
+  const { instructors, assessments, loading, refresh } = useData();
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('all');
@@ -400,7 +473,12 @@ export default function AssessmentCenter() {
                 New Observation
               </button>
             </DialogTrigger>
-            <NewObservationDialog isOpen={dialogOpen} onOpenChange={setDialogOpen} instructors={instructors} />
+            <NewObservationDialog
+              isOpen={dialogOpen}
+              onOpenChange={setDialogOpen}
+              instructors={instructors}
+              onCreated={refresh}
+            />
           </Dialog>
         </div>
       </div>
