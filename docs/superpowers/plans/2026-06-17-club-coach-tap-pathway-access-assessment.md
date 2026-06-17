@@ -4,7 +4,7 @@
 
 **Goal:** Decide whether Club Coach needs its own defined pathway with dedicated access controls aligned to TAP-guided development, and close the gaps between curriculum intent and product behaviour.
 
-**Architecture:** Club Coach already has a **content pathway** (`coach-path`) separate from instructor development (`development-pathway`), but **access is club-scoped only** — any club member can use both paths and self-mark completion. TAP is embedded in ~109 curriculum references as the human mentor who runs 1:1 sessions, yet has **no product representation** (no role, assignment, approval, or visibility). The recommended direction is a **three-actor model**: developing Club Coach (prep + notes), TAP Coach (guide + gatekeeper), GFM (oversight) — without merging TAP into the same login as club coaches unless Les Mills explicitly wants that.
+**Architecture:** Club Coach already has a **content pathway** (`coach-path`) separate from instructor development (`development-pathway`), but **access is club-scoped only** — any club member can use both paths and self-mark completion. TAP is embedded in ~109 curriculum references as the human mentor who runs 1:1 sessions, yet has **no product representation** (no role, assignment, approval, or visibility). The recommended direction is a **three-actor model**: developing person (Club Coach or GFM on `coach-path`), TAP Coach (guide + gatekeeper), GFM (oversight of club coaches' pathways). **GFM is dual-role** — same `coach-path` participant experience as a Club Coach, plus a separate oversight surface to read notes and monitor team coach development. Do not create a second pathway for GFMs.
 
 **Tech Stack:** React 18, TypeScript, Vite, Supabase (Auth, RLS, Postgres), existing `session_progress` + `coach-path-data.ts`
 
@@ -30,7 +30,7 @@ What you **do not** have is a pathway that behaves like the curriculum describes
 | **TAP gate** | None ✗ | TAP runs 1:1 sessions; S5-4 requires formal TAP acknowledgment |
 | **Coach stage** | Hardcoded `coachStage: 1` on Dashboard ✗ | Derived from progress / TAP sign-off |
 | **TAP assignment** | `tapCoachId?` on type only ✗ | Each coach has a TAP Coach |
-| **Roles** | Club Coach = GFM (same permissions) | GFMs review notes; TAP guides coach development |
+| **Roles** | Club Coach = GFM (same permissions); title is display-only | GFM is **both** pathway participant and team overseer; TAP guides development |
 | **Deployment path** | `clubs.deployment_path` A/B/C stored, unused | May affect mentor vs TAP-led instructor dev |
 
 **Bottom line:** You need **pathway governance**, not a second pathway. The `coach-path` content model is sound. What's missing is the **TAP-mediated access layer** that makes the pathway trustworthy as a credentialing journey rather than a self-serve playbook.
@@ -97,15 +97,37 @@ The app is positioned as a **prep and reference tool between live TAP sessions**
 
 The plan in `2026-05-03-coach-progress-dashboard-and-session-locking.md` addressed locking with mock state; Supabase integration landed progress persistence but locking was stubbed out.
 
-### 3. Two pathways, one permission model (medium)
+### 3. GFM dual-role not reflected in UI (high — blocks Phase 1)
 
-Club Coach Path and Instructor Development share club membership access. That's correct for GFMs who do both. It's wrong if:
+**Product decision (confirmed):** A GFM must be able to:
 
-- A club hires a GFM who shouldn't self-enrol in coach development
-- Les Mills wants coach-path enrollment to be TAP-initiated
+1. **Participate** on Club Coach Path exactly like a Club Coach (prep, notes, mark sessions, sequential locking)
+2. **Oversee** Club Coaches' pathway progress and session notes at the club
+
+These are two modes on the **same** `coach-path` — not a separate GFM curriculum.
+
+| Capability | Club Coach | GFM | Current app |
+|------------|------------|-----|-------------|
+| Complete own `coach-path` sessions | ✓ | ✓ | ✓ (data model supports; UI shows self only) |
+| Read own session notes | ✓ | ✓ | ✓ |
+| See all club coaches' pathway progress | ✗ | ✓ | ✗ Dashboard shows logged-in user only |
+| Read all club coaches' session notes | ✗ | ✓ | ~ Partial (`SessionNotesReviewPanel` exists) |
+| Distinguish "my path" vs "team oversight" on Dashboard | — | ✓ | ✗ Single undifferentiated Coach Progress card |
+
+Additional blockers:
+
+- `user_clubs` RLS allows users to read **only their own** membership — GFMs cannot list co-members to build an oversight roster (`001_initial_schema.sql`)
+- `CoachProgressPanel` "Prep" always navigates to the logged-in user's path, not a selected coach's context
+- Page subtitle: "Your development as a Club Coach" — excludes GFM-as-participant framing
+
+### 4. Two pathways, one permission model (medium)
+
+Club Coach Path and Instructor Development share club membership access. That's correct for GFMs who do both. Remaining edge cases:
+
+- Les Mills wants coach-path enrollment to be TAP-initiated (optional future gate)
 - Deployment path C uses TAP-led instructor dev but coach-path is club-self-serve
 
-### 4. Instructor pathway TAP references are disconnected (medium)
+### 5. Instructor pathway TAP references are disconnected (medium)
 
 In `stage-sessions.ts`, TAP appears for certification review, Club Mentor vs TAP Coach choice, and presenter levels. The app has:
 
@@ -115,7 +137,7 @@ In `stage-sessions.ts`, TAP appears for certification review, Club Mentor vs TAP
 
 Club Coach (coach development) and Instructor Development (coaching others) are parallel journeys but TAP's role differs: **mentor to the coach** vs **certification authority for instructors**. The product should reflect both without conflating them.
 
-### 5. Operational gaps (lower but real)
+### 6. Operational gaps (lower but real)
 
 | Gap | Notes |
 |-----|-------|
@@ -128,20 +150,26 @@ Club Coach (coach development) and Instructor Development (coaching others) are 
 
 ## Recommended Model: Three Actors, One Coach Path
 
-Do **not** create a third `path_key`. Extend governance on `coach-path`.
+Do **not** create a third `path_key` or a separate "GFM path". Extend governance on `coach-path` and split the **Dashboard UX** into participant vs oversight surfaces.
 
 ```mermaid
 flowchart TB
   subgraph actors [Actors]
     CC[Club Coach - developing]
+    GFM_DEV[GFM - developing on same path]
+    GFM_OV[GFM - oversight mode]
     TAP[TAP Coach - regional mentor]
-    GFM[GFM - club oversight]
   end
 
   subgraph coachpath [Club Coach Path - coach-path]
     PREP[Prep: Brief / Plan / Prompts / Notes]
     LOCK[Sequential session access]
     ACK[TAP acknowledgment per stage or session]
+  end
+
+  subgraph oversight [GFM Oversight - Dashboard only]
+    TEAM_PROG[Team coach progress]
+    TEAM_NOTES[Session notes review]
   end
 
   subgraph clubops [Club Operations - unchanged access]
@@ -151,23 +179,38 @@ flowchart TB
   end
 
   CC --> PREP
+  GFM_DEV --> PREP
   CC --> LOCK
+  GFM_DEV --> LOCK
   TAP --> ACK
   TAP -->|reads| PREP
-  GFM -->|reads notes| PREP
-  GFM --> ROSTER
-  GFM --> ASSESS
+  GFM_OV --> TEAM_PROG
+  GFM_OV --> TEAM_NOTES
+  GFM_OV --> ROSTER
+  GFM_OV --> ASSESS
   CC --> DEVPATH
+  GFM_DEV --> DEVPATH
 ```
+
+### GFM dual-role (confirmed)
+
+| Mode | When | What they do in the app |
+|------|------|-------------------------|
+| **Participant** | GFM is being coached by TAP (same as Club Coach) | Full `coach-path` access: prep, notes, mark sessions, tools & reference |
+| **Oversight** | GFM manages club coach development | Dashboard: all club coaches' stage/progress, session notes review, no editing others' progress |
+
+`profiles.title` (`'Club Coach'` | `'GFM'`) remains **display-only** for permissions. Use it only to **show/hide oversight UI** — never to block a GFM from `coach-path`.
+
+Progress is always keyed by **`user_id` + `club_id` + `path_key`** — a GFM's own journey and a Club Coach's journey are independent rows in `session_progress`, even in the same club.
 
 ### Access tiers (proposed)
 
-| Role | Club Coach Path | Instructor Development | Club data |
-|------|-----------------|------------------------|-----------|
-| **Club Coach** | Prep, notes, mark "attended" (not "certified") | Full access | Own club |
-| **TAP Coach** | Read assigned coaches' notes; approve/unlock sessions; acknowledge stages | Read-only or comment (optional) | Assigned coaches' clubs |
-| **GFM** | Read all club coaches' notes (exists) | Full access | Own club |
-| **Admin** | Assign TAP ↔ coach; provision accounts | — | All |
+| Role | Own Club Coach Path | Oversee team coach-path | Instructor Development | Club data |
+|------|---------------------|-------------------------|------------------------|-----------|
+| **Club Coach** | Full participant (prep, notes, mark) | — | Full access | Own club |
+| **GFM** | Full participant (same as Club Coach) | Read progress + notes for all club coaches | Full access | Own club |
+| **TAP Coach** | — | Read assigned coaches' notes; approve/unlock sessions | Read-only (optional) | Assigned coaches' clubs |
+| **Admin** | — | Assign TAP ↔ coach; provision accounts | — | All |
 
 ### Completion states (proposed)
 
@@ -197,7 +240,150 @@ Locking rule: session N+1 unlocks when session N is `tap_confirmed` (or `prepped
 | **D. TAP role + assignment + acknowledgment** | Matches curriculum; trustworthy pathway | More schema + UX | ✓ Target state |
 | **E. Separate TAP product** | Clean separation | Overkill for 22 sessions | ✗ |
 
-**Recommended path:** **B → D** in two phases.
+**Recommended path:** **Phase 0 (GFM dual-role) → Phase 1 (locking) → Phase 2 (TAP)**.
+
+---
+
+## Phase 0 — GFM Dual-Role (before locking)
+
+Establish participant + oversight UX so Phase 1 locking applies correctly to both Club Coaches and GFMs. Estimated scope: 3 tasks, 1 small migration.
+
+### Task 0: RLS — club members can list co-members
+
+**Files:**
+- Create: `supabase/migrations/005_club_member_roster.sql`
+
+GFMs need to query who belongs to their club. Today `user_clubs` is owner-read-only.
+
+- [ ] **Step 1: Add read policy for club co-members**
+
+```sql
+-- supabase/migrations/005_club_member_roster.sql
+create policy "club members can read co-member user_clubs"
+  on public.user_clubs for select using (
+    club_id in (select club_id from public.user_clubs where user_id = auth.uid())
+  );
+```
+
+- [ ] **Step 2: Apply migration locally / in Supabase SQL editor**
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add supabase/migrations/005_club_member_roster.sql
+git commit -m "feat: allow club members to read co-member roster for GFM oversight"
+```
+
+### Task 0b: Club coach roster + progress context
+
+**Files:**
+- Create: `src/lib/club-coaches.ts`
+- Create: `src/context/ClubCoachRosterContext.tsx`
+- Modify: `src/App.tsx` (wrap provider)
+
+- [ ] **Step 1: Fetch club coaches for active club**
+
+```ts
+// src/lib/club-coaches.ts
+import { supabase } from '@/lib/supabase';
+import type { UserProfile } from '@/context/AuthContext';
+
+export interface ClubCoachMember {
+  id: string;
+  name: string;
+  initials: string;
+  title: 'Club Coach' | 'GFM';
+}
+
+export async function fetchClubCoaches(clubId: string): Promise<ClubCoachMember[]> {
+  const { data: memberships, error: memError } = await supabase
+    .from('user_clubs')
+    .select('user_id')
+    .eq('club_id', clubId);
+
+  if (memError || !memberships?.length) return [];
+
+  const userIds = memberships.map((m) => m.user_id);
+  const { data: profiles } = await supabase
+    .from('profiles')
+    .select('id, name, initials, title')
+    .in('id', userIds);
+
+  return (profiles ?? []).map((p) => ({
+    id: p.id,
+    name: p.name,
+    initials: p.initials,
+    title: p.title as 'Club Coach' | 'GFM',
+  }));
+}
+```
+
+- [ ] **Step 2: Context loads roster + all club `session_progress` for `coach-path`**
+
+Query `session_progress` where `club_id = activeClub.id` and `path_key = 'coach-path'`. Build `completedSessionIds: Record<userId, string[]>` for the whole club (RLS already allows this per migration `003`).
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add src/lib/club-coaches.ts src/context/ClubCoachRosterContext.tsx src/App.tsx
+git commit -m "feat: load club coach roster and team coach-path progress"
+```
+
+### Task 0c: Split Dashboard — My Path vs Team Oversight
+
+**Files:**
+- Modify: `src/pages/Dashboard.tsx`
+- Modify: `src/components/CoachProgressPanel.tsx`
+- Modify: `src/components/SessionNotesReviewPanel.tsx`
+- Modify: `src/App.tsx` (`PAGE_TITLES` for coach-path subtitle)
+
+- [ ] **Step 1: Dashboard shows two sections when `profile.title === 'GFM'`**
+
+```tsx
+{/* My Club Coach Path — always shown */}
+<CoachProgressPanel
+  title="My Club Coach Path"
+  coaches={[myCoachEntry]}
+  completedSessionIds={completedSessionIds}
+  onPrepSession={() => onNavigate('coach-path')}
+  showPrepButton
+/>
+
+{/* Team oversight — GFM only */}
+{profile?.title === 'GFM' && (
+  <>
+    <CoachProgressPanel
+      title="Team Coach Development"
+      coaches={teamCoachesExcludingSelf}
+      completedSessionIds={clubCompletedSessionIds}
+      showPrepButton={false}
+    />
+    <SessionNotesReviewPanel title="Team Session Notes" />
+  </>
+)}
+```
+
+- [ ] **Step 2: Add optional `title` and `showPrepButton` props to `CoachProgressPanel`**
+
+Club Coaches see only "My Club Coach Path" (one row). GFMs see their own row plus all other club coaches in "Team Coach Development" (read-only progress, no Prep button on team rows).
+
+- [ ] **Step 3: Update coach-path page subtitle**
+
+In `App.tsx`, change subtitle to: `'Your development journey'` (works for Club Coach and GFM).
+
+- [ ] **Step 4: Verify in browser**
+
+| User | Expected Dashboard |
+|------|-------------------|
+| Club Coach | My Club Coach Path (self) + Session Notes Review (club-wide notes — existing) |
+| GFM | My Club Coach Path (self) + Team Coach Development (all coaches) + Team Session Notes |
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add src/pages/Dashboard.tsx src/components/CoachProgressPanel.tsx src/components/SessionNotesReviewPanel.tsx src/App.tsx
+git commit -m "feat: GFM dual-role dashboard with my path and team oversight"
+```
 
 ---
 
@@ -242,8 +428,9 @@ git commit -m "fix: enforce sequential session locking on Club Coach Path"
 
 **Files:**
 - Create: `src/lib/coach-path-progress.ts`
-- Modify: `src/pages/Dashboard.tsx:85-98`
+- Modify: `src/pages/Dashboard.tsx`
 - Modify: `src/components/CoachProgressPanel.tsx`
+- Modify: `src/context/ClubCoachRosterContext.tsx` (team rows use derived stage)
 
 - [ ] **Step 1: Add stage derivation helper**
 
@@ -262,9 +449,9 @@ export function deriveCoachStage(completedIds: string[]): number {
 }
 ```
 
-- [ ] **Step 2: Use derived stage in Dashboard synthetic coach object**
+- [ ] **Step 2: Use `deriveCoachStage()` for every coach row (self + team)**
 
-Replace `coachStage: 1 as const` with `coachStage: deriveCoachStage(completedSessionIds[coachProfile.id] ?? [])`.
+Replace hardcoded `coachStage: 1` in Dashboard's synthetic coach object. In Team Coach Development, derive stage per `user_id` from `clubCompletedSessionIds`.
 
 - [ ] **Step 3: Commit**
 
@@ -310,7 +497,7 @@ git commit -m "feat: deep-link to Club Coach Path session"
 ### Task 5: Schema — roles and TAP assignments
 
 **Files:**
-- Create: `supabase/migrations/005_tap_coach_assignments.sql`
+- Create: `supabase/migrations/006_tap_coach_assignments.sql` (renumbered — `005` is club roster RLS)
 
 - [ ] **Step 1: Add role to profiles**
 
@@ -336,12 +523,12 @@ create table if not exists public.tap_coach_assignments (
 
 - [ ] **Step 3: RLS policies**
 
-TAP coaches read `session_progress` + notes for assigned `coach_user_id`. Coaches read own rows. GFMs read all in club.
+TAP coaches read `session_progress` + notes for assigned `coach_user_id`. Coaches and GFMs read/write own rows. GFMs read all `coach-path` rows in club (oversight). Club Coaches read only own rows for writing; club-wide read already granted by migration `003`.
 
 - [ ] **Step 4: Apply migration and commit**
 
 ```bash
-git add supabase/migrations/005_tap_coach_assignments.sql
+git add supabase/migrations/006_tap_coach_assignments.sql
 git commit -m "feat: add TAP coach assignments and app roles"
 ```
 
@@ -401,7 +588,8 @@ git commit -m "feat: admin TAP coach assignment"
 
 ## What NOT to build (YAGNI)
 
-- **A second coach pathway** — `coach-path` is sufficient
+- **A second coach pathway or "GFM path"** — GFMs use `coach-path` as participants; oversight is a Dashboard view, not a curriculum
+- **Blocking GFMs from coach-path** — title controls oversight UI visibility only
 - **TAP-led instructor certification in v1 of TAP role** — keep instructor TAP references in content; certification workflow is Assessment Centre scope
 - **Full scheduling/calendar for TAP 1:1s** — out of scope; TAP sessions happen offline
 - **Deployment path A/B/C branching** — until Les Mills defines behaviour per path in a spec
@@ -413,10 +601,11 @@ git commit -m "feat: admin TAP coach assignment"
 Before Phase 2, confirm with Les Mills:
 
 1. **Will TAP Coaches log into this app**, or should acknowledgment happen via a separate Les Mills ops tool?
-2. **Is coach-path enrollment automatic** for every Club Coach account, or TAP-initiated?
+2. **Is coach-path enrollment automatic** for every Club Coach/GFM account, or TAP-initiated?
 3. **Stage transitions** — does TAP sign off per session, per stage, or only at S5-4 completion?
-4. **GFM vs Club Coach** — should GFMs have different coach-path permissions, or only oversight (read notes)?
-5. **Deployment path A/B/C** — does it change who leads coach development (club mentor vs TAP)?
+4. **Deployment path A/B/C** — does it change who leads coach development (club mentor vs TAP)?
+
+**Resolved:** GFMs complete `coach-path` like Club Coaches **and** oversee team coach development via Dashboard (Phase 0).
 
 ---
 
@@ -425,9 +614,10 @@ Before Phase 2, confirm with Les Mills:
 **Spec coverage:**
 - [x] Assess whether dedicated pathway exists → Executive Answer
 - [x] Assess whether dedicated access needed → Access tiers + Decision Matrix
+- [x] GFM dual-role (participant + oversight) → Phase 0 + GFM dual-role section
 - [x] TAP-driven guidance gap → Gap Analysis §1
-- [x] What's missing → Gap Analysis §1–5
-- [x] Actionable next steps → Phase 1 + Phase 2 tasks
+- [x] What's missing → Gap Analysis §1–6
+- [x] Actionable next steps → Phase 0 + Phase 1 + Phase 2 tasks
 
 **Placeholder scan:** No TBD implementation steps in Phase 1. Phase 2 Task 4 (deep link) marked optional. Open Questions explicitly flagged for PO.
 
@@ -440,9 +630,11 @@ Before Phase 2, confirm with Les Mills:
 | Question | Answer |
 |----------|--------|
 | Do you need a defined pathway? | **Already have it** (`coach-path`) |
-| Do you need separate access? | **Need pathway governance**, especially TAP acknowledgment |
+| Do GFMs need their own pathway? | **No** — same `coach-path`; oversight is a Dashboard mode |
+| Can GFMs complete coach-path like Club Coaches? | **Yes** — required; Phase 0 ensures UI supports both modes |
+| Do you need separate access? | **Need pathway governance** + **GFM oversight roster** (Phase 0) |
 | Is TAP represented correctly? | **No** — TAP is in curriculum text only |
-| Biggest quick win? | **Turn on session locking + derive coach stage** (Phase 1) |
+| Biggest quick win? | **Phase 0 GFM dashboard split**, then session locking (Phase 1) |
 | Biggest strategic gap? | **TAP Coach role with assignment + acknowledgment** (Phase 2) |
 
 The Club Coach product is a strong **playbook + club operations** tool. To become a **guided credentialing pathway** as the curriculum describes, it needs TAP in the workflow — not just in the words.
