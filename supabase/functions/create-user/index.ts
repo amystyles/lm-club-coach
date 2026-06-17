@@ -48,7 +48,12 @@ Deno.serve(async (req) => {
 
   const { data: club, error: clubError } = await adminClient
     .from('clubs')
-    .insert({ name: clubName, region, gfm_name: title === 'GFM' ? name : '' })
+    .insert({
+      name: clubName,
+      region,
+      deployment_path: 'A',
+      gfm_name: title === 'GFM' ? name : '',
+    })
     .select('id')
     .single()
 

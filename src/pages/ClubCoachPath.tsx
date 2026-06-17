@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { coachPathStages, COACH_STAGE_META } from '@/data/coach-path-data';
 import type { Session } from '@/data/stage-sessions';
+import SessionNotesField from '@/components/SessionNotesField';
 
 /* ─────────────────────────────────────────────
    Tab definition
@@ -263,8 +264,6 @@ function PromptsTab({ session, stageColor }: { session: Session; stageColor: str
    Notes Tab
    ───────────────────────────────────────────── */
 function NotesTab({ session }: { session: Session }) {
-  const [notes, setNotes] = useState('');
-
   return (
     <div className="space-y-6">
       {session.warning && (
@@ -286,20 +285,7 @@ function NotesTab({ session }: { session: Session }) {
         </div>
       )}
 
-      <div className="rounded-xl border border-border bg-lm-subtle p-5">
-        <div className="flex items-center gap-2 mb-1.5">
-          <NotebookPen className="w-3.5 h-3.5 text-lm-ink-muted" />
-          <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-lm-ink-muted">Your Notes</span>
-        </div>
-        <p className="text-lm-ink-muted text-xs mb-3">Capture reflections from this session. Stays local to your browser.</p>
-        <textarea
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          placeholder="What landed? What will you try? What questions came up?"
-          rows={5}
-          className="w-full rounded-lg border border-border bg-white px-4 py-3 text-sm text-lm-ink-mid placeholder:text-lm-ink-muted/50 focus:outline-none focus:ring-2 focus:ring-lm-green focus:border-transparent resize-y"
-        />
-      </div>
+      <SessionNotesField pathKey="coach-path" sessionId={session.id} />
     </div>
   );
 }
