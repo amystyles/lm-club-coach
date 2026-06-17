@@ -4,14 +4,16 @@ import type { SessionPathKey } from '@/context/SessionProgressContext';
 import { useAuth } from '@/context/AuthContext';
 import type { CustomSessionRow } from '@/lib/custom-sessions';
 import { customSessionId, toSession } from '@/lib/custom-sessions';
+import type { CustomSessionData } from '@/lib/custom-session-form';
 import type { Session } from '@/data/stage-sessions';
 
-interface CreateCustomSessionInput {
+export interface CreateCustomSessionInput {
   pathKey: SessionPathKey;
   stageNumber: number;
   title: string;
   subtitle?: string;
   duration?: string;
+  sessionData: CustomSessionData;
 }
 
 interface CustomSessionsContextValue {
@@ -24,7 +26,7 @@ interface CustomSessionsContextValue {
 const CustomSessionsContext = createContext<CustomSessionsContextValue | null>(null);
 
 export function CustomSessionsProvider({ children }: { children: React.ReactNode }) {
-  const { user, activeClub } = useAuth();
+  const { user, activeClub, isAdmin } = useAuth();
   const [rows, setRows] = useState<CustomSessionRow[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -61,11 +63,15 @@ export function CustomSessionsProvider({ children }: { children: React.ReactNode
     if (!user || !activeClub) {
       throw new Error('You must be signed in with an active club to add a session.');
     }
+    if (!isAdmin) {
+      throw new Error('Only admins can add sessions.');
+    }
 
     const stageRows = rows.filter(
       (row) => row.path_key === input.pathKey && row.stage_number === input.stageNumber,
     );
     const sortOrder = stageRows.length;
+    const duration = input.duration?.trim() || input.sessionData.sessionPlan?.totalDuration || '30 min';
 
     const { data, error } = await supabase
       .from('custom_sessions')
@@ -76,8 +82,9 @@ export function CustomSessionsProvider({ children }: { children: React.ReactNode
         stage_number: input.stageNumber,
         title: input.title.trim(),
         subtitle: input.subtitle?.trim() ?? '',
-        duration: input.duration?.trim() || '30 min',
+        duration,
         sort_order: sortOrder,
+        session_data: input.sessionData,
       })
       .select('*')
       .single();
@@ -87,7 +94,7 @@ export function CustomSessionsProvider({ children }: { children: React.ReactNode
     const row = data as CustomSessionRow;
     setRows((prev) => [...prev, row]);
     return toSession(row);
-  }, [user, activeClub, rows]);
+  }, [user, activeClub, isAdmin, rows]);
 
   const value = useMemo(
     () => ({ loading, rows, getSessionsForStage, createSession }),
