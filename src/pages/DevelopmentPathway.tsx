@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import {
   AlertTriangle, CheckCircle2, Info, Star, Clock,
   Eye, Megaphone, Check, Target,
   GraduationCap, MessageSquareQuote, NotebookPen, Shield,
-  CalendarClock, Users, BookOpen, Plus, Zap, FileText, ArrowUpRight,
+  CalendarClock, Users, BookOpen, Plus, Zap, FileText, ArrowUpRight, ExternalLink,
 } from 'lucide-react';
 import { STAGE_DATA } from '@/data/mock-data';
 import { stageDetails, type Session, type KEActivityGroup } from '@/data/stage-sessions';
@@ -13,6 +21,15 @@ import SessionNotesField from '@/components/SessionNotesField';
 import AddSessionDialog from '@/components/AddSessionDialog';
 import { useCustomSessions } from '@/context/CustomSessionsContext';
 import { useAuth } from '@/context/AuthContext';
+import { useData } from '@/context/DataContext';
+import { useHandbook } from '@/hooks/useHandbook';
+import {
+  HANDBOOK_PROGRAMS,
+  isHandbookProgram,
+  resolveHandbookPage,
+  resolveVideoUrl,
+  type HandbookData,
+} from '@/lib/handbook';
 import { formValuesToSessionData, type CustomSessionFormValues } from '@/lib/custom-session-form';
 
 /* ─────────────────────────────────────────────
@@ -435,6 +452,7 @@ function ActivityDetail({
   isDone,
   onToggle,
   onBack,
+  handbook,
 }: {
   item: KEActivityGroup['items'][number];
   elementName: string;
@@ -442,7 +460,14 @@ function ActivityDetail({
   isDone: boolean;
   onToggle: () => void;
   onBack: () => void;
+  handbook: HandbookData | null;
 }) {
+  const handbookPage = handbook
+    ? resolveHandbookPage(item.title, elementName, handbook.pages.pages)
+    : null;
+  const videoUrl = item.video
+    ? resolveVideoUrl(handbook?.resource.itData, item.video.program)
+    : null;
   return (
     <div className="space-y-6">
       {/* Back link */}
@@ -483,25 +508,36 @@ function ActivityDetail({
       {/* Description */}
       <p className="text-lm-ink-mid text-sm leading-relaxed">{item.description}</p>
 
-      {/* Video or self-directed */}
-      {item.video ? (
-        <div className="flex justify-end">
+      {/* Handbook + video resources */}
+      <div className="flex flex-wrap items-center gap-2">
+        {handbookPage != null && (
+          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-lm-dark bg-lm-subtle border border-lm-sunken px-3 py-1.5 rounded-lg">
+            <BookOpen className="w-3 h-3 text-lm-ink-muted" />
+            Handbook p.{handbookPage}
+          </span>
+        )}
+        {item.video && videoUrl ? (
           <a
-            href="#"
-            data-program={item.video.program}
-            data-video-type="masterclass"
+            href={videoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-lm-dark bg-white border border-border px-3 py-1.5 rounded-lg hover:bg-lm-subtle transition-colors"
           >
             {item.video.label}
-            <ArrowUpRight className="w-3 h-3" />
+            <ExternalLink className="w-3 h-3" />
           </a>
-        </div>
-      ) : (
-        <div className="flex items-center gap-2.5 px-4 py-3 rounded-xl bg-lm-subtle border border-lm-sunken">
-          <FileText className="w-4 h-4 text-lm-ink-muted flex-shrink-0" />
-          <p className="text-xs text-lm-ink-muted font-medium">Self-directed activity — no video required</p>
-        </div>
-      )}
+        ) : item.video ? (
+          <span className="inline-flex items-center gap-1.5 text-xs font-medium text-lm-ink-muted bg-lm-subtle border border-lm-sunken px-3 py-1.5 rounded-lg">
+            {item.video.label}
+            <span className="text-lm-ink-muted/70">— select a pilot program for link</span>
+          </span>
+        ) : (
+          <div className="inline-flex items-center gap-2.5 px-4 py-3 rounded-xl bg-lm-subtle border border-lm-sunken">
+            <FileText className="w-4 h-4 text-lm-ink-muted flex-shrink-0" />
+            <p className="text-xs text-lm-ink-muted font-medium">Self-directed activity — no video required</p>
+          </div>
+        )}
+      </div>
 
       {/* Steps */}
       <div>
@@ -552,7 +588,29 @@ function ActivityDetail({
 /* ─────────────────────────────────────────────
    Activities View — KE-organized tools panel
    ───────────────────────────────────────────── */
-function ActivitiesView({ groups }: { groups: KEActivityGroup[] }) {
+function ActivitiesView({
+  groups,
+  handbook,
+  handbookLoading,
+  handbookError,
+  programOptions,
+  selectedProgram,
+  onProgramChange,
+  selectedInstructorId,
+  onInstructorChange,
+  instructors,
+}: {
+  groups: KEActivityGroup[];
+  handbook: HandbookData | null;
+  handbookLoading: boolean;
+  handbookError: string | null;
+  programOptions: string[];
+  selectedProgram: string | null;
+  onProgramChange: (program: string) => void;
+  selectedInstructorId: string | null;
+  onInstructorChange: (instructorId: string) => void;
+  instructors: { id: string; name: string }[];
+}) {
   const [checked, setChecked] = React.useState<Record<string, boolean>>({});
   const [selected, setSelected] = React.useState<{ groupIndex: number; itemIndex: number } | null>(null);
 
@@ -582,6 +640,7 @@ function ActivitiesView({ groups }: { groups: KEActivityGroup[] }) {
         isDone={!!checked[k]}
         onToggle={() => toggle(k)}
         onBack={() => setSelected(null)}
+        handbook={handbook}
       />
     );
   }
@@ -592,7 +651,7 @@ function ActivitiesView({ groups }: { groups: KEActivityGroup[] }) {
   return (
     <div className="space-y-8">
       {/* Header bar */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h3 className="text-xl font-display font-bold text-lm-dark">Activities & Tools</h3>
           <p className="text-sm text-lm-ink-muted mt-0.5">Self-development tasks organized by Key Element</p>
@@ -601,6 +660,79 @@ function ActivitiesView({ groups }: { groups: KEActivityGroup[] }) {
           <p className="text-2xl font-display font-bold text-lm-dark">{checkedCount}<span className="text-lm-ink-muted text-base font-normal">/{totalItems}</span></p>
           <p className="text-[10px] text-lm-ink-muted uppercase tracking-wider">completed</p>
         </div>
+      </div>
+
+      {/* Instructor + program context for handbook links */}
+      <div className="rounded-xl border border-border bg-lm-subtle/40 p-4 space-y-4">
+        <div className="flex items-center gap-2">
+          <BookOpen className="w-4 h-4 text-lm-ink-muted" />
+          <p className="text-sm font-semibold text-lm-dark">Program handbook links</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="activities-instructor" className="text-xs font-medium mb-2 block text-lm-ink-muted">
+              Instructor (optional)
+            </Label>
+            <Select
+              value={selectedInstructorId ?? '_none_'}
+              onValueChange={onInstructorChange}
+            >
+              <SelectTrigger id="activities-instructor">
+                <SelectValue placeholder="Select instructor" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="_none_">No instructor selected</SelectItem>
+                {instructors.map((inst) => (
+                  <SelectItem key={inst.id} value={inst.id}>
+                    {inst.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label htmlFor="activities-program" className="text-xs font-medium mb-2 block text-lm-ink-muted">
+              Program
+            </Label>
+            <Select
+              value={selectedProgram ?? ''}
+              onValueChange={onProgramChange}
+            >
+              <SelectTrigger id="activities-program">
+                <SelectValue placeholder="Select pilot program" />
+              </SelectTrigger>
+              <SelectContent>
+                {programOptions.map((program) => (
+                  <SelectItem key={program} value={program}>
+                    {program}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        {handbookLoading && (
+          <p className="text-xs text-lm-ink-muted">Loading handbook data…</p>
+        )}
+        {handbookError && (
+          <p className="text-xs text-red-600">{handbookError}</p>
+        )}
+        {!selectedProgram && (
+          <p className="text-xs text-lm-ink-muted">
+            Select a pilot program to show Vimeo toolbox links and handbook page references.
+          </p>
+        )}
+        {handbook?.resource.itData.toolbox && (
+          <a
+            href={handbook.resource.itData.toolbox}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-lm-dark hover:underline"
+          >
+            Open pre-work video toolbox
+            <ExternalLink className="w-3 h-3" />
+          </a>
+        )}
       </div>
 
       {/* KE sections */}
@@ -625,6 +757,9 @@ function ActivitiesView({ groups }: { groups: KEActivityGroup[] }) {
                 {group.items.map((item, ii) => {
                   const k = makeKey(gi, ii);
                   const isDone = !!checked[k];
+                  const page = handbook
+                    ? resolveHandbookPage(item.title, group.element, handbook.pages.pages)
+                    : null;
                   return (
                     <button
                       key={k}
@@ -644,7 +779,9 @@ function ActivitiesView({ groups }: { groups: KEActivityGroup[] }) {
                           {item.title}
                         </p>
                         <p className={`text-xs mt-0.5 leading-snug ${isDone ? 'text-lm-ink-muted/60' : 'text-lm-ink-muted'}`}>
-                          {item.duration}{item.video ? ' · Video' : ''}
+                          {item.duration}
+                          {item.video ? ' · Video' : ''}
+                          {page != null ? ` · p.${page}` : ''}
                         </p>
                       </div>
                       <ArrowUpRight className="w-3.5 h-3.5 text-lm-ink-muted/30 flex-shrink-0 mt-0.5 group-hover:text-lm-ink-muted transition-colors rotate-45" />
@@ -730,11 +867,42 @@ function SessionList({
 export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page: string) => void }) {
   const { getSessionsForStage, createSession } = useCustomSessions();
   const { isAdmin } = useAuth();
+  const { instructors } = useData();
   const [activeStage, setActiveStage] = useState(1);
   const [activeSessions, setActiveSessions] = useState<Record<number, string>>({});
   const [activeTab, setActiveTab] = useState<TabId>('brief');
   const [viewMode, setViewMode] = useState<'session' | 'activities'>('session');
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [selectedInstructorId, setSelectedInstructorId] = useState<string | null>(null);
+  const [selectedProgram, setSelectedProgram] = useState<string | null>(null);
+
+  const { handbook, loading: handbookLoading, error: handbookError } = useHandbook(selectedProgram);
+
+  const programOptions = useMemo(() => {
+    if (!selectedInstructorId) return [...HANDBOOK_PROGRAMS];
+    const instructor = instructors.find((i) => i.id === selectedInstructorId);
+    const fromInstructor = (instructor?.programs ?? [])
+      .map((p) => p.name)
+      .filter(isHandbookProgram);
+    return fromInstructor.length > 0 ? fromInstructor : [...HANDBOOK_PROGRAMS];
+  }, [instructors, selectedInstructorId]);
+
+  const handleInstructorChange = (instructorId: string) => {
+    if (instructorId === '_none_') {
+      setSelectedInstructorId(null);
+      return;
+    }
+    setSelectedInstructorId(instructorId);
+    const instructor = instructors.find((i) => i.id === instructorId);
+    const handbookProgram = (instructor?.programs ?? [])
+      .map((p) => p.name)
+      .find(isHandbookProgram);
+    if (handbookProgram) setSelectedProgram(handbookProgram);
+  };
+
+  const handleProgramChange = (program: string) => {
+    setSelectedProgram(program);
+  };
 
   const currentStageData = stageDetails[activeStage];
   const currentStageColor = currentStageData?.color || '#0A0A0A';
@@ -945,24 +1113,57 @@ export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page:
                 <div className="space-y-1">
                   {[
                     { icon: MessageSquareQuote, label: 'Guided Feedback', sub: 'CRC & GROW tools', page: 'feedback' },
-                  ].map(({ icon: Icon, label, sub, page }) => (
-                    <button
-                      key={label}
-                      onClick={() => onNavigate?.(page)}
-                      className="w-full text-left flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-lm-subtle transition-all group focus:outline-none"
-                    >
-                      <div className="w-7 h-7 rounded-lg bg-lm-subtle flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-lm-sunken transition-colors">
-                        <Icon className="w-3.5 h-3.5 text-lm-ink-mid" />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center justify-between gap-1">
-                          <p className="text-sm font-semibold text-lm-dark leading-tight">{label}</p>
-                          <ArrowUpRight className="w-3 h-3 text-lm-ink-muted/40 flex-shrink-0 group-hover:text-lm-ink-muted transition-colors" />
+                    ...(handbook?.resource.itData.toolbox
+                      ? [{
+                          icon: ExternalLink,
+                          label: 'Pre-work Toolbox',
+                          sub: selectedProgram ?? 'Pilot program videos',
+                          href: handbook.resource.itData.toolbox,
+                        }]
+                      : []),
+                  ].map((item) => {
+                    const Icon = item.icon;
+                    if ('href' in item && item.href) {
+                      return (
+                        <a
+                          key={item.label}
+                          href={item.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full text-left flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-lm-subtle transition-all group focus:outline-none"
+                        >
+                          <div className="w-7 h-7 rounded-lg bg-lm-subtle flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-lm-sunken transition-colors">
+                            <Icon className="w-3.5 h-3.5 text-lm-ink-mid" />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center justify-between gap-1">
+                              <p className="text-sm font-semibold text-lm-dark leading-tight">{item.label}</p>
+                              <ArrowUpRight className="w-3 h-3 text-lm-ink-muted/40 flex-shrink-0 group-hover:text-lm-ink-muted transition-colors" />
+                            </div>
+                            <p className="text-[11px] text-lm-ink-muted mt-0.5 leading-snug">{item.sub}</p>
+                          </div>
+                        </a>
+                      );
+                    }
+                    return (
+                      <button
+                        key={item.label}
+                        onClick={() => onNavigate?.((item as { page: string }).page)}
+                        className="w-full text-left flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-lm-subtle transition-all group focus:outline-none"
+                      >
+                        <div className="w-7 h-7 rounded-lg bg-lm-subtle flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-lm-sunken transition-colors">
+                          <Icon className="w-3.5 h-3.5 text-lm-ink-mid" />
                         </div>
-                        <p className="text-[11px] text-lm-ink-muted mt-0.5 leading-snug">{sub}</p>
-                      </div>
-                    </button>
-                  ))}
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center justify-between gap-1">
+                            <p className="text-sm font-semibold text-lm-dark leading-tight">{item.label}</p>
+                            <ArrowUpRight className="w-3 h-3 text-lm-ink-muted/40 flex-shrink-0 group-hover:text-lm-ink-muted transition-colors" />
+                          </div>
+                          <p className="text-[11px] text-lm-ink-muted mt-0.5 leading-snug">{item.sub}</p>
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -971,7 +1172,18 @@ export default function DevelopmentPathway({ onNavigate }: { onNavigate?: (page:
             <div className="flex-1 min-w-0">
               <div className="bg-white rounded-2xl border border-border px-8 py-7 shadow-sm">
                 {viewMode === 'activities' ? (
-                  <ActivitiesView groups={currentStageData.keActivities || []} />
+                  <ActivitiesView
+                    groups={currentStageData.keActivities || []}
+                    handbook={handbook}
+                    handbookLoading={handbookLoading}
+                    handbookError={handbookError}
+                    programOptions={programOptions}
+                    selectedProgram={selectedProgram}
+                    onProgramChange={handleProgramChange}
+                    selectedInstructorId={selectedInstructorId}
+                    onInstructorChange={handleInstructorChange}
+                    instructors={instructors}
+                  />
                 ) : currentSession ? (
                   <SessionWorkspace
                     key={currentSession.id}
