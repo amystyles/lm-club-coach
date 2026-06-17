@@ -264,7 +264,7 @@ Progress is always keyed by **`user_id` + `club_id` + `path_key`** — a GFM's o
 |------|---------------------|---------------------|-------------------------|----------------|------------------------|
 | **Club Coach** | — (LMUS enrolls) | Participant once enrolled | — | — | Full access |
 | **GFM** | — (LMUS enrolls) | Participant once enrolled | Read progress + notes | — | Full access |
-| **TAP Coach** | — | Read assigned; write `tap_feedback` + sign-off | Read assigned coaches' clubs | Assigned coaches only | Read observations, dev notes, assessments | Add debrief notes; optional TAP assessments |
+| **TAP Coach** | — | Read assigned; write `tap_feedback` + sign-off | — | Assigned coaches only | Read observations, dev notes, assessments; optional TAP-authored notes |
 | **LMUS Super Admin** | Enroll any user; assign TAP | — | All clubs (ops view) | Assign TAP ↔ coach | Provision accounts |
 
 ### Completion states (proposed)
