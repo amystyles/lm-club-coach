@@ -48,18 +48,18 @@ export const coachPathStages: Record<number, StageDetail> = {
               duration: '5 min',
               title: 'Connection',
               steps: [
-                "TAP Coach asks: tell me about your journey into fitness and coaching",
+                "Share your journey into fitness and coaching",
                 "Listen and respond honestly — there's no right answer here.",
               ],
-              tip: "Don't rush past this. Your TAP Coach is building a mental model of who you are.",
+              tip: "Don't rush past this. This conversation builds a shared picture of who you are.",
             },
             {
               duration: '10 min',
               title: 'What is Club Coach?',
               steps: [
-                "TAP Coach walks you through the 5 stages of the Club Coach pathway",
+                "Walk through the 5 stages of the Club Coach pathway together",
                 "Ask any questions that come up — there are no wrong ones here",
-                "Clarify the difference between Club Coach and your TAP Coach's role vs your role as a developing coach",
+                "Clarify the difference between Club Coach and your role as a developing coach vs your mentor's role",
               ],
             },
             {
@@ -314,9 +314,9 @@ export const coachPathStages: Record<number, StageDetail> = {
               duration: '10 min',
               title: 'Apply It',
               steps: [
-                "TAP Coach describes two real instructors they've worked with — different levels",
+                "Work through two real instructor examples at different levels",
                 "You try to place each one on LMQ using what you've just learned",
-                "TAP Coach gives feedback on your reasoning",
+                "Discuss your reasoning — what landed, what you'd adjust",
               ],
             },
           ],
@@ -401,9 +401,9 @@ export const coachPathStages: Record<number, StageDetail> = {
           what: "Review your observation notes with your TAP Coach. What did you capture well? What did you miss? Learn the difference between observation (facts) and interpretation (judgment). This session is about improving your seeing, not assessing the instructor.",
           why: "Observation bias is invisible until someone holds a mirror to it. Every coach has blind spots — movements they instinctively overlook, elements they interpret rather than observe. Making these visible early prevents them from becoming habitual.",
           how: [
-            "Share your observation notes with your TAP Coach — talk through what you wrote",
-            "TAP Coach highlights two or three things you observed accurately and precisely",
-            "TAP Coach identifies one or two places where you interpreted rather than observed",
+            "Share your observation notes — talk through what you wrote",
+            "Together, name two or three things you observed accurately and precisely",
+            "Spot one or two places where you interpreted rather than observed",
             "For each interpretation, practise restating it as a factual observation",
             "Identify one observation skill you want to sharpen before your next class",
           ],
@@ -435,7 +435,7 @@ export const coachPathStages: Record<number, StageDetail> = {
               title: 'Walk Through Your Notes',
               steps: [
                 "Share your observation notes — talk through what you wrote, section by section",
-                "TAP Coach listens for moments of precise observation vs interpretation",
+                "Walk through your notes together — notice moments of precise observation vs interpretation",
                 "No grading the instructor yet — this session is about your seeing",
               ],
             },
@@ -443,8 +443,8 @@ export const coachPathStages: Record<number, StageDetail> = {
               duration: '15 min',
               title: 'Observation vs Interpretation',
               steps: [
-                "TAP Coach highlights two or three things you observed accurately and precisely — name what made them good observations",
-                "TAP Coach identifies one or two places where you interpreted rather than observed",
+                "Name two or three things you observed accurately and precisely — what made them good observations",
+                "Spot one or two places where you interpreted rather than observed",
                 "For each interpretation: practise restating it as a factual observation together",
                 "Discuss: which Key Elements are hardest for you to observe without opinion creeping in, and why?",
               ],
@@ -534,7 +534,7 @@ export const coachPathStages: Record<number, StageDetail> = {
               duration: '10 min',
               title: 'E-P-E Theory',
               steps: [
-                "TAP Coach explains the Motivational Interviewing roots — why asking outperforms telling",
+                "Discuss the Motivational Interviewing roots — why asking outperforms telling",
                 "Walk through the three stages: Elicit → Provide → Elicit",
                 "Discuss the most common failure mode: skipping the first Elicit",
               ],
@@ -544,7 +544,7 @@ export const coachPathStages: Record<number, StageDetail> = {
               duration: '10 min',
               title: 'Live Practice',
               steps: [
-                "Roleplay: TAP Coach plays an instructor who just taught a class",
+                "Roleplay: one of you plays an instructor who just taught a class",
                 "You run a full E-P-E conversation",
                 "Debrief: what felt natural, what felt forced?",
               ],
@@ -603,7 +603,7 @@ export const coachPathStages: Record<number, StageDetail> = {
               duration: '5 min',
               title: 'Open Questions Check-in',
               steps: [
-                "TAP Coach asks: how did it feel to ask more and tell less this week?",
+                "Reflect: how did it feel to ask more and tell less this week?",
                 "What resistance — from the instructor, or from yourself — did you notice?",
               ],
             },
@@ -611,8 +611,8 @@ export const coachPathStages: Record<number, StageDetail> = {
               duration: '15 min',
               title: 'The Righting Reflex',
               steps: [
-                "TAP Coach introduces the concept: what is the righting reflex, and why does it feel like caring?",
-                "Roleplay exercise: TAP Coach plays an instructor making an obvious mistake — coach practises sitting with the urge to fix before responding",
+                "Discuss the righting reflex — what it is, and why it feels like caring",
+                "Roleplay: one of you plays an instructor making an obvious mistake — practise sitting with the urge to fix before responding",
                 "Debrief the roleplay: what did it feel like to pause? What question emerged instead?",
                 "Key paradox: the more you push, the more they resist — discuss a real example from your experience",
               ],
@@ -696,10 +696,10 @@ export const coachPathStages: Record<number, StageDetail> = {
               duration: '15 min',
               title: 'Question Types',
               steps: [
-                "TAP Coach walks through the three question types: closed, leading, genuinely open",
+                "Walk through the three question types: closed, leading, genuinely open",
                 "Work through examples of each — classify them together",
                 "Practise converting a closed or leading question into a genuinely open version",
-                "Try scaling questions live: TAP Coach plays the instructor, coach asks 'On a scale of 1–10…' and follows up",
+                "Try scaling questions live: take turns — one plays the instructor while the other asks 'On a scale of 1–10…' and follows up",
                 "Try exception-finding: 'When does this challenge not happen — what's different about those classes?'",
               ],
               tip: "A genuinely open question surprises you too. If you already know the answer you're hoping for, the question is probably leading.",
@@ -775,11 +775,11 @@ export const coachPathStages: Record<number, StageDetail> = {
             },
             {
               duration: '20 min',
-              title: 'TAP Coach debrief (E-P-E on you)',
+              title: 'Debrief (E-P-E on you)',
               steps: [
-                "TAP Coach: 'How did that feel?'",
-                "TAP Coach shares one specific observation from watching you",
-                "TAP Coach asks: what would you do differently?",
+                "Start with: 'How did that feel?'",
+                "Share one specific observation from what you noticed while coaching",
+                "Discuss: what would you do differently?",
                 "Together identify your clearest strength and your sharpest growth edge",
               ],
               tip: "The debrief is the most important part. Don't rush it.",
@@ -846,7 +846,7 @@ export const coachPathStages: Record<number, StageDetail> = {
               duration: '10 min',
               title: 'SSDL',
               steps: [
-                "TAP Coach walks through the 4 coaching roles: Authority → Motivator → Facilitator → Consultant",
+                "Walk through the 4 coaching roles: Authority → Motivator → Facilitator → Consultant",
                 "For each role, discuss: when does this serve an instructor well, and when does it frustrate them?",
                 "Name your default role — the one you reach for instinctively",
               ],
@@ -915,7 +915,7 @@ export const coachPathStages: Record<number, StageDetail> = {
               duration: '10 min',
               title: 'Dreyfus Framework',
               steps: [
-                "TAP Coach walks through the 5 stages: Novice → Advanced Beginner → Competent → Proficient → Expert",
+                "Walk through the 5 stages: Novice → Advanced Beginner → Competent → Proficient → Expert",
                 "For each stage: what does this instructor look like in a live class? What do they need from a coach?",
                 "Connect to the Coaching Approach labels in the app: Tell / Guide / Facilitate / Consult / Challenge",
               ],
@@ -983,7 +983,7 @@ export const coachPathStages: Record<number, StageDetail> = {
               duration: '10 min',
               title: 'Supervision Levels',
               steps: [
-                "TAP Coach explains Direct, Indirect, and Unsupervised — what each looks like in practice",
+                "Discuss Direct, Indirect, and Unsupervised — what each looks like in practice",
                 "Key point: supervision is task-specific, not person-specific",
                 "Open one instructor's Trust Map in the app together — discuss what each level means for your behaviour",
               ],
@@ -1051,7 +1051,7 @@ export const coachPathStages: Record<number, StageDetail> = {
               duration: '10 min',
               title: 'Understanding Liminal Space',
               steps: [
-                "TAP Coach introduces threshold concepts — ideas that permanently change how an instructor sees their practice",
+                "Explore threshold concepts — ideas that permanently change how an instructor sees their practice",
                 "Discuss examples from group fitness: 'the class is about them, not me' / 'connection before choreography'",
                 "Talk through what an instructor in liminal space looks like: working harder, feeling stuck, temporarily less fluent",
               ],
@@ -1129,7 +1129,7 @@ export const coachPathStages: Record<number, StageDetail> = {
               duration: '10 min',
               title: 'The If–Then Structure',
               steps: [
-                "TAP Coach introduces the evidence base: implementation intentions are ~3× more effective than general goals",
+                "Review the evidence: implementation intentions are ~3× more effective than general goals",
                 "Walk through the anatomy: 'If [specific class moment], then I will [specific behaviour]'",
                 "Test two examples together — one vague goal vs one implementation intention — and feel the difference",
               ],
@@ -1139,9 +1139,9 @@ export const coachPathStages: Record<number, StageDetail> = {
               duration: '10 min',
               title: 'Roleplay',
               steps: [
-                "TAP Coach plays an instructor at the end of a coaching conversation",
+                "Roleplay: one of you plays an instructor at the end of a coaching conversation",
                 "You close the conversation by building an if-then plan together",
-                "TAP Coach gives feedback: was the 'if' specific enough? Was the 'then' concrete enough?",
+                "Give each other feedback: was the 'if' specific enough? Was the 'then' concrete enough?",
                 "Repeat with a different scenario — practise until it feels natural",
               ],
             },
@@ -1150,7 +1150,7 @@ export const coachPathStages: Record<number, StageDetail> = {
               title: 'Stage 3 Close',
               steps: [
                 "Commit: every coaching conversation this week ends with one if-then plan",
-                "TAP Coach acknowledges your completion of Stage 3 — learn to adapt",
+                "Celebrate completing Stage 3 — Learn to Adapt",
                 "Agree on timing for Stage 4",
               ],
             },
@@ -1207,7 +1207,7 @@ export const coachPathStages: Record<number, StageDetail> = {
               duration: '10 min',
               title: 'Marginal Gains Strategy',
               steps: [
-                "TAP Coach introduces the 1% principle: focus compounds, scatter doesn't",
+                "Discuss the 1% principle: focus compounds, scatter doesn't",
                 "Open Key Element profiles for 2-3 instructors on your team",
                 "For each, discuss: which element is both underdeveloped and highest leverage? Where would a small improvement unlock the most progress?",
               ],
@@ -1274,7 +1274,7 @@ export const coachPathStages: Record<number, StageDetail> = {
               duration: '10 min',
               title: 'SDT Framework',
               steps: [
-                "TAP Coach introduces the three needs: Autonomy (choice), Competence (visible progress), Relatedness (connection to peers)",
+                "Explore the three needs: Autonomy (choice), Competence (visible progress), Relatedness (connection to peers)",
                 "For each need: what does it look like when it's supported, and what does it look like when it's frustrated?",
                 "Discuss the core risk: coaches who direct too much create compliance, not commitment",
               ],
@@ -1352,7 +1352,7 @@ export const coachPathStages: Record<number, StageDetail> = {
               duration: '10 min',
               title: 'Identity vs Behaviour',
               steps: [
-                "TAP Coach explains the levels of change: environment → behaviour → habit → identity",
+                "Walk through the levels of change: environment → behaviour → habit → identity",
                 "Key point: identity change is self-sustaining; behaviour change requires constant willpower",
                 "Listen for examples of limiting identity language: 'I'm not a performer,' 'I'm not really a connection coach'",
                 "Discuss how identity language in your instructors shows up — and what it closes down",
@@ -1363,7 +1363,7 @@ export const coachPathStages: Record<number, StageDetail> = {
               duration: '10 min',
               title: 'Practice',
               steps: [
-                "TAP Coach plays an instructor who uses limiting identity language",
+                "Roleplay: one of you plays an instructor using limiting identity language",
                 "You introduce a gentle reframe and ask one identity-anchoring question",
                 "Debrief: did the question open up the conversation or close it down?",
                 "Practise until the question feels natural, not scripted",
@@ -1421,7 +1421,7 @@ export const coachPathStages: Record<number, StageDetail> = {
               duration: '10 min',
               title: 'The Between-Session Gap',
               steps: [
-                "TAP Coach introduces the research: frequency of feedback matters more than format or depth",
+                "Review the research: frequency of feedback matters more than format or depth",
                 "Map the current rhythm for your team: how often are you actually in contact with each instructor between formal conversations?",
                 "Identify the instructors with the longest gap — these are the ones losing momentum",
               ],
@@ -1442,7 +1442,7 @@ export const coachPathStages: Record<number, StageDetail> = {
               title: 'Stage 4 Close',
               steps: [
                 "Start the nudge rhythm this week — even one message counts",
-                "TAP Coach acknowledges your completion of Stage 4 — learn to develop",
+                "Celebrate completing Stage 4 — Learn to Develop",
                 "Agree on timing for Stage 5",
               ],
             },
@@ -1491,7 +1491,7 @@ export const coachPathStages: Record<number, StageDetail> = {
               duration: '10 min',
               title: 'Stage 4 Reflection',
               steps: [
-                "TAP Coach asks: what's the biggest thing that's changed in how you coach since Stage 1?",
+                "Reflect: what's the biggest thing that's changed in how you coach since Stage 1?",
                 "Which of your instructors has grown most noticeably — what did you do that made the difference?",
                 "What does the coaching culture in your club feel like right now?",
               ],
@@ -1500,7 +1500,7 @@ export const coachPathStages: Record<number, StageDetail> = {
               duration: '15 min',
               title: 'The Multiplier Shift',
               steps: [
-                "TAP Coach introduces the Stage 5 shift: from coaching instructors to developing coaches",
+                "Discuss the Stage 5 shift: from coaching instructors to developing coaches",
                 "Discuss the ceiling problem: one coach can only personally reach so many instructors",
                 "Review your team together: who shows natural coaching instincts — curiosity about others, unsolicited but constructive feedback, genuine interest in people's development?",
                 "Identify one candidate — they don't need to be the best instructor, just the right one",
@@ -1583,7 +1583,7 @@ export const coachPathStages: Record<number, StageDetail> = {
                 "Choose one entrustment decision you will communicate this week",
                 "Name your evidence: what have you observed that supports this?",
                 "Plan how you'll communicate it — a clear, affirming statement: 'You're ready to teach this unsupervised'",
-                "TAP Coach challenges any hesitation: what's the worst case, and what would you do?",
+                "Work through any hesitation together: what's the worst case, and what would you do?",
               ],
             },
             {
@@ -1649,7 +1649,7 @@ export const coachPathStages: Record<number, StageDetail> = {
               duration: '10 min',
               title: 'The Reflection Loop',
               steps: [
-                "TAP Coach walks through Kolb's cycle: Experience → Reflect → Conceptualise → Experiment",
+                "Walk through Kolb's cycle: Experience → Reflect → Conceptualise → Experiment",
                 "Key distinction: Schön's reflection-in-action (adjusting in the moment) vs reflection-on-action (reviewing afterward)",
                 "Discuss honestly: do you currently have a reflection practice, or does development happen by accident?",
               ],
@@ -1662,7 +1662,7 @@ export const coachPathStages: Record<number, StageDetail> = {
                 "Choose a fixed time each week: when, where, how long (10 minutes is enough)",
                 "Agree on three standing questions: What went well? What would I do differently? What pattern am I seeing?",
                 "Pick one more advanced instructor you'll introduce the same reflection habit to",
-                "TAP Coach shares their own reflection practice — what it looks like, what it's unlocked",
+                "Swap reflection practices — what works, what each of you has learned from the habit",
               ],
             },
             {
@@ -1720,7 +1720,7 @@ export const coachPathStages: Record<number, StageDetail> = {
               duration: '10 min',
               title: 'Reflection on the journey',
               steps: [
-                "TAP Coach walks you through each stage: what did you take from Learn to See? Learn to Ask?",
+                "Walk through each stage together: what did you take from Learn to See? Learn to Ask?",
                 "You identify one moment from each stage that changed how you coach",
               ],
             },
@@ -1736,11 +1736,11 @@ export const coachPathStages: Record<number, StageDetail> = {
             },
             {
               duration: '15 min',
-              title: 'TAP Coach feedback & celebration',
+              title: 'Feedback & celebration',
               steps: [
-                "TAP Coach reflects the philosophy back: does it match who you've been as a coach?",
+                "Read the philosophy aloud and discuss: does it match who you've been as a coach?",
                 "Identify one moment from your journey that proves this philosophy is true",
-                "TAP Coach formally acknowledges your completion of Club Coach Stage 5",
+                "Celebrate completing Club Coach Stage 5 — Learn to Multiply",
               ],
             },
           ],
