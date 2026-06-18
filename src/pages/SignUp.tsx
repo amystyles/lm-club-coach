@@ -31,6 +31,11 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
+const LABEL = 'text-[10px] font-bold uppercase tracking-[0.15em] text-lm-ink-muted mb-1.5 block';
+const SECTION_HEADER = 'text-[10px] font-bold uppercase tracking-[0.25em] text-lm-ink-muted';
+const INPUT = 'h-10 text-sm bg-white border-[#ddd] text-lm-dark placeholder:text-[#aaa] focus-visible:ring-lm-green/40 focus-visible:border-lm-green';
+const CARD = 'rounded-2xl border border-[#e5e5e5] bg-white shadow-sm overflow-hidden';
+
 function generatePassword(): string {
   const upper = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
   const lower = 'abcdefghjkmnpqrstuvwxyz';
@@ -39,7 +44,6 @@ function generatePassword(): string {
   const all = upper + lower + digits + symbols;
   const rand = (set: string) => set[Math.floor(Math.random() * set.length)];
   const core = Array.from({ length: 10 }, () => rand(all)).join('');
-  // Guarantee at least one of each category
   return (rand(upper) + rand(lower) + rand(digits) + rand(symbols) + core)
     .split('').sort(() => Math.random() - 0.5).join('').slice(0, 14);
 }
@@ -101,15 +105,16 @@ export default function SignUp({ onBack }: Props) {
   if (success) {
     return (
       <div className="max-w-sm mx-auto text-center py-16">
-        <div className="w-14 h-14 rounded-full mx-auto mb-6 flex items-center justify-center" style={{ backgroundColor: '#00FF63' }}>
-          <Check className="w-7 h-7 text-black" />
+        <div className="w-14 h-14 rounded-full mx-auto mb-6 flex items-center justify-center bg-lm-green">
+          <Check className="w-7 h-7 text-lm-dark" />
         </div>
-        <h2 className="font-display font-bold text-2xl mb-2">Account created</h2>
-        <p className="text-muted-foreground text-sm mb-8">Account is ready. Share the credentials with the coach so they can sign in.</p>
+        <h2 className="font-display font-bold text-2xl text-lm-dark mb-2">Account created</h2>
+        <p className="text-lm-ink-muted text-sm mb-8">
+          Account is ready. Share the credentials with the coach so they can sign in.
+        </p>
         <button
           onClick={onBack}
-          className="w-full h-11 rounded-full text-sm font-bold transition-colors"
-          style={{ backgroundColor: '#00FF63', color: '#0A0A0A' }}
+          className="w-full h-11 rounded-full text-sm font-bold transition-colors bg-lm-green text-lm-dark hover:opacity-90"
         >
           Back to Roster
         </button>
@@ -118,191 +123,208 @@ export default function SignUp({ onBack }: Props) {
   }
 
   return (
-    <div className="max-w-lg mx-auto py-6">
-      <div>
+    <div className="max-w-lg mx-auto py-2">
+      <p className="text-sm text-lm-ink-muted mb-6">
+        Fill in the coach&apos;s details below. A password will be generated automatically — copy it before submitting.
+      </p>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-
-          {/* Personal Details */}
-          <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-            <div className="px-5 py-3 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-              <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/40">Personal Details</p>
-            </div>
-            <div className="px-5 py-5 space-y-4">
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <Label className="text-white/60 text-xs mb-1.5 block">First Name</Label>
-                  <Input
-                    {...register('firstName')}
-                    placeholder="Amy"
-                    className="bg-white/6 border-white/10 text-white placeholder:text-white/20 focus-visible:ring-lm-green/40 focus-visible:border-lm-green/50 h-10"
-                  />
-                  {errors.firstName && <p className="text-xs text-red-400 mt-1">{errors.firstName.message}</p>}
-                </div>
-                <div>
-                  <Label className="text-white/60 text-xs mb-1.5 block">Last Name</Label>
-                  <Input
-                    {...register('lastName')}
-                    placeholder="Styles"
-                    className="bg-white/6 border-white/10 text-white placeholder:text-white/20 focus-visible:ring-lm-green/40 focus-visible:border-lm-green/50 h-10"
-                  />
-                  {errors.lastName && <p className="text-xs text-red-400 mt-1">{errors.lastName.message}</p>}
-                </div>
-              </div>
-              <div>
-                <Label className="text-white/60 text-xs mb-1.5 block">Email</Label>
-                <Input
-                  {...register('email')}
-                  type="email"
-                  placeholder="you@lesmills.com"
-                  className="bg-white/6 border-white/10 text-white placeholder:text-white/20 focus-visible:ring-lm-green/40 focus-visible:border-lm-green/50 h-10"
-                />
-                {errors.email && <p className="text-xs text-red-400 mt-1">{errors.email.message}</p>}
-              </div>
-
-              {/* Role toggle */}
-              <div>
-                <Label className="text-white/60 text-xs mb-1.5 block">Role</Label>
-                <Controller
-                  control={control}
-                  name="role"
-                  render={({ field }) => (
-                    <div className="grid grid-cols-3 gap-2">
-                      {(['Club Coach', 'GFM', 'TAP Coach'] as const).map(r => (
-                        <button
-                          key={r}
-                          type="button"
-                          onClick={() => field.onChange(r)}
-                          className="h-10 rounded-lg text-sm font-semibold transition-all border"
-                          style={field.value === r
-                            ? { backgroundColor: '#00FF63', color: '#0A0A0A', borderColor: '#00FF63' }
-                            : { backgroundColor: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.5)', borderColor: 'rgba(255,255,255,0.1)' }
-                          }
-                        >
-                          {r}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                />
-              </div>
-            </div>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        {/* Personal Details */}
+        <div className={CARD}>
+          <div className="px-5 py-3 border-b border-[#f0f0f0] bg-lm-subtle">
+            <p className={SECTION_HEADER}>Personal Details</p>
           </div>
-
-          {/* Club Details */}
-          <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-            <div className="px-5 py-3 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-              <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/40">Club Details</p>
-            </div>
-            <div className="px-5 py-5 space-y-4">
+          <div className="px-5 py-5 space-y-4">
+            <div className="grid grid-cols-2 gap-3">
               <div>
-                <Label className="text-white/60 text-xs mb-1.5 block">Club Name</Label>
+                <Label className={LABEL}>First Name</Label>
                 <Input
-                  {...register('clubName')}
-                  placeholder="e.g. Midtown Fitness Club"
-                  className="bg-white/6 border-white/10 text-white placeholder:text-white/20 focus-visible:ring-lm-green/40 focus-visible:border-lm-green/50 h-10"
+                  {...register('firstName')}
+                  placeholder="Amy"
+                  className={INPUT}
                 />
-                {errors.clubName && <p className="text-xs text-red-400 mt-1">{errors.clubName.message}</p>}
+                {errors.firstName && <p className="text-xs text-lm-red mt-1">{errors.firstName.message}</p>}
               </div>
               <div>
-                <Label className="text-white/60 text-xs mb-1.5 block">Region</Label>
+                <Label className={LABEL}>Last Name</Label>
                 <Input
-                  {...register('region')}
-                  list="regions-list"
-                  placeholder="e.g. Northeast"
-                  autoComplete="off"
-                  className="bg-white/6 border-white/10 text-white placeholder:text-white/20 focus-visible:ring-lm-green/40 focus-visible:border-lm-green/50 h-10"
+                  {...register('lastName')}
+                  placeholder="Styles"
+                  className={INPUT}
                 />
-                <datalist id="regions-list">
-                  {REGIONS.map(r => <option key={r} value={r} />)}
-                </datalist>
-                {errors.region && <p className="text-xs text-red-400 mt-1">{errors.region.message}</p>}
+                {errors.lastName && <p className="text-xs text-lm-red mt-1">{errors.lastName.message}</p>}
               </div>
             </div>
-          </div>
-
-          {/* Password */}
-          <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-            <div className="px-5 py-3 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-              <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/40">Password</p>
+            <div>
+              <Label className={LABEL}>Email</Label>
+              <Input
+                {...register('email')}
+                type="email"
+                placeholder="you@lesmills.com"
+                className={INPUT}
+              />
+              {errors.email && <p className="text-xs text-lm-red mt-1">{errors.email.message}</p>}
             </div>
-            <div className="px-5 py-5 space-y-3">
-              {!useCustomPassword && (
-                <div>
-                  <Label className="text-white/60 text-xs mb-1.5 block">Generated password — copy this before continuing</Label>
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 h-10 rounded-lg px-3 flex items-center font-mono text-sm text-white/90 tracking-wider"
-                      style={{ background: 'rgba(0,255,99,0.06)', border: '1px solid rgba(0,255,99,0.2)' }}>
-                      {showPassword ? password : '•'.repeat(password.length)}
-                    </div>
-                    <button type="button" onClick={() => setShowPassword(v => !v)}
-                      className="w-10 h-10 rounded-lg flex items-center justify-center text-white/40 hover:text-white transition-colors"
-                      style={{ border: '1px solid rgba(255,255,255,0.1)' }}>
-                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
-                    <button type="button" onClick={handleCopy}
-                      className="w-10 h-10 rounded-lg flex items-center justify-center transition-colors"
-                      style={{ background: copied ? '#00FF63' : 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: copied ? '#0A0A0A' : 'rgba(255,255,255,0.5)' }}>
-                      {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                    </button>
-                    <button type="button" onClick={() => setPassword(generatePassword())}
-                      className="w-10 h-10 rounded-lg flex items-center justify-center text-white/40 hover:text-white transition-colors"
-                      style={{ border: '1px solid rgba(255,255,255,0.1)' }}>
-                      <RefreshCw className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              )}
 
+            <div>
+              <Label className={LABEL}>Role</Label>
               <Controller
                 control={control}
-                name="useCustomPassword"
+                name="role"
                 render={({ field }) => (
-                  <button
-                    type="button"
-                    onClick={() => field.onChange(!field.value)}
-                    className="flex items-center gap-2 text-xs text-white/40 hover:text-white/60 transition-colors"
-                  >
-                    <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${field.value ? 'border-lm-green bg-lm-green' : 'border-white/20'}`}>
-                      {field.value && <Check className="w-2.5 h-2.5 text-black" />}
-                    </div>
-                    Set my own password
-                  </button>
+                  <div className="grid grid-cols-3 gap-2">
+                    {(['Club Coach', 'GFM', 'TAP Coach'] as const).map(r => (
+                      <button
+                        key={r}
+                        type="button"
+                        onClick={() => field.onChange(r)}
+                        className={`h-10 rounded-lg text-sm font-semibold transition-all border ${
+                          field.value === r
+                            ? 'bg-lm-green text-lm-dark border-lm-green'
+                            : 'bg-white text-lm-ink-mid border-[#ddd] hover:border-[#bbb] hover:bg-lm-subtle'
+                        }`}
+                      >
+                        {r}
+                      </button>
+                    ))}
+                  </div>
                 )}
               />
-
-              {useCustomPassword && (
-                <div>
-                  <Input
-                    {...register('customPassword')}
-                    type="password"
-                    placeholder="Min. 8 characters"
-                    className="bg-white/6 border-white/10 text-white placeholder:text-white/20 focus-visible:ring-lm-green/40 focus-visible:border-lm-green/50 h-10"
-                  />
-                  {errors.customPassword && <p className="text-xs text-red-400 mt-1">{errors.customPassword.message}</p>}
-                </div>
-              )}
             </div>
           </div>
+        </div>
 
-          {error && (
-            <p className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3">{error}</p>
-          )}
+        {/* Club Details */}
+        <div className={CARD}>
+          <div className="px-5 py-3 border-b border-[#f0f0f0] bg-lm-subtle">
+            <p className={SECTION_HEADER}>Club Details</p>
+          </div>
+          <div className="px-5 py-5 space-y-4">
+            <div>
+              <Label className={LABEL}>Club Name</Label>
+              <Input
+                {...register('clubName')}
+                placeholder="e.g. Midtown Fitness Club"
+                className={INPUT}
+              />
+              {errors.clubName && <p className="text-xs text-lm-red mt-1">{errors.clubName.message}</p>}
+            </div>
+            <div>
+              <Label className={LABEL}>Region</Label>
+              <Input
+                {...register('region')}
+                list="regions-list"
+                placeholder="e.g. Northeast"
+                autoComplete="off"
+                className={INPUT}
+              />
+              <datalist id="regions-list">
+                {REGIONS.map(r => <option key={r} value={r} />)}
+              </datalist>
+              {errors.region && <p className="text-xs text-lm-red mt-1">{errors.region.message}</p>}
+            </div>
+          </div>
+        </div>
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full h-12 rounded-full text-sm font-bold transition-all disabled:opacity-60"
-            style={{ backgroundColor: '#00FF63', color: '#0A0A0A' }}
-          >
-            {isSubmitting ? 'Creating account…' : 'Create Account'}
-          </button>
+        {/* Password */}
+        <div className={CARD}>
+          <div className="px-5 py-3 border-b border-[#f0f0f0] bg-lm-subtle">
+            <p className={SECTION_HEADER}>Password</p>
+          </div>
+          <div className="px-5 py-5 space-y-3">
+            {!useCustomPassword && (
+              <div>
+                <Label className={LABEL}>Generated password — copy this before continuing</Label>
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 h-10 rounded-lg px-3 flex items-center font-mono text-sm text-lm-dark tracking-wider bg-lm-green/10 border border-lm-green/30">
+                    {showPassword ? password : '•'.repeat(password.length)}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(v => !v)}
+                    className="w-10 h-10 rounded-lg flex items-center justify-center text-lm-ink-muted hover:text-lm-dark border border-[#ddd] hover:bg-lm-subtle transition-colors"
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleCopy}
+                    className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors border ${
+                      copied
+                        ? 'bg-lm-green border-lm-green text-lm-dark'
+                        : 'border-[#ddd] text-lm-ink-muted hover:text-lm-dark hover:bg-lm-subtle'
+                    }`}
+                    aria-label="Copy password"
+                  >
+                    {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPassword(generatePassword())}
+                    className="w-10 h-10 rounded-lg flex items-center justify-center text-lm-ink-muted hover:text-lm-dark border border-[#ddd] hover:bg-lm-subtle transition-colors"
+                    aria-label="Generate new password"
+                  >
+                    <RefreshCw className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
 
-          <button type="button" onClick={onBack} className="w-full text-center text-sm text-white/30 hover:text-white/60 transition-colors py-1">
-            Cancel
-          </button>
-        </form>
-      </div>
+            <Controller
+              control={control}
+              name="useCustomPassword"
+              render={({ field }) => (
+                <button
+                  type="button"
+                  onClick={() => field.onChange(!field.value)}
+                  className="flex items-center gap-2 text-xs text-lm-ink-muted hover:text-lm-ink-mid transition-colors"
+                >
+                  <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${
+                    field.value ? 'border-lm-green bg-lm-green' : 'border-[#ccc] bg-white'
+                  }`}>
+                    {field.value && <Check className="w-2.5 h-2.5 text-lm-dark" />}
+                  </div>
+                  Set my own password
+                </button>
+              )}
+            />
+
+            {useCustomPassword && (
+              <div>
+                <Label className={LABEL}>Custom Password</Label>
+                <Input
+                  {...register('customPassword')}
+                  type="password"
+                  placeholder="Min. 8 characters"
+                  className={INPUT}
+                />
+                {errors.customPassword && <p className="text-xs text-lm-red mt-1">{errors.customPassword.message}</p>}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {error && (
+          <p className="text-sm text-lm-red bg-red-50 border border-red-200 rounded-xl px-4 py-3">{error}</p>
+        )}
+
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full h-12 rounded-full text-sm font-bold transition-all disabled:opacity-60 bg-lm-green text-lm-dark hover:opacity-90"
+        >
+          {isSubmitting ? 'Creating account…' : 'Create Account'}
+        </button>
+
+        <button
+          type="button"
+          onClick={onBack}
+          className="w-full text-center text-sm text-lm-ink-muted hover:text-lm-ink-mid transition-colors py-1"
+        >
+          Cancel
+        </button>
+      </form>
     </div>
   );
 }
