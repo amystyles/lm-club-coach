@@ -38,6 +38,8 @@ In the Supabase SQL editor (or via Supabase CLI), run in order:
 - `supabase/migrations/002_feature_completion.sql`
 - `supabase/migrations/003_custom_sessions_and_notes_review.sql`
 - `supabase/migrations/004_custom_sessions_session_data.sql`
+- `supabase/migrations/005_handbook_tables.sql`
+- `supabase/migrations/006_tap_ap_service.sql`
 
 4. **Seed demo data (optional)**
 
@@ -91,6 +93,9 @@ Live app: https://lm-club-coach.vercel.app
 | Observations | Assessment Centre → New Observation |
 | Development notes | Instructor profile |
 | Session notes & coach path progress | `session_progress` |
+| TAP AP enrollment & sign-off | `coach_path_enrollments`, `tap_coach_assignments` |
+| TAP Coach dashboard | `TapCoachDashboard` |
+| LMUS admin enrollment | `LmusAdminPanel` |
 | Custom pathway sessions | `custom_sessions` |
 | Admin: create coach + club | `create-user` edge function |
 
