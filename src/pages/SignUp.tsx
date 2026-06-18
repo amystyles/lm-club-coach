@@ -13,14 +13,20 @@ const schema = z.object({
   firstName: z.string().min(1, 'Required'),
   lastName: z.string().min(1, 'Required'),
   email: z.string().email('Enter a valid email'),
-  role: z.enum(['Club Coach', 'GFM']),
-  clubName: z.string().min(2, 'Required'),
-  region: z.string().min(1, 'Required'),
+  role: z.enum(['Club Coach', 'GFM', 'TAP Coach']),
+  clubName: z.string(),
+  region: z.string(),
   useCustomPassword: z.boolean(),
   customPassword: z.string().optional(),
 }).refine(d => !d.useCustomPassword || (d.customPassword && d.customPassword.length >= 8), {
   message: 'Password must be at least 8 characters',
   path: ['customPassword'],
+}).refine(d => d.role === 'TAP Coach' || d.clubName.trim().length >= 2, {
+  message: 'Required',
+  path: ['clubName'],
+}).refine(d => d.role === 'TAP Coach' || d.region.trim().length >= 1, {
+  message: 'Required',
+  path: ['region'],
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -84,9 +90,11 @@ export default function SignUp({ onBack }: Props) {
         password: finalPassword,
         name: fullName,
         initials,
-        title: values.role,
+        title: values.role === 'TAP Coach' ? 'Club Coach' : values.role,
+        appRole: values.role === 'TAP Coach' ? 'tap_coach' : values.role === 'GFM' ? 'gfm' : 'club_coach',
         clubName: values.clubName,
         region: values.region,
+        skipClub: values.role === 'TAP Coach',
       });
       setSuccess(true);
     } catch (err: any) {
@@ -164,8 +172,8 @@ export default function SignUp({ onBack }: Props) {
                 control={control}
                 name="role"
                 render={({ field }) => (
-                  <div className="grid grid-cols-2 gap-2">
-                    {(['Club Coach', 'GFM'] as const).map(r => (
+                  <div className="grid grid-cols-3 gap-2">
+                    {(['Club Coach', 'GFM', 'TAP Coach'] as const).map(r => (
                       <button
                         key={r}
                         type="button"

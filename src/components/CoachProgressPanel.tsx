@@ -20,12 +20,20 @@ function getNextSession(completedIds: string[]): { stageNum: number; sessionTitl
 }
 
 interface CoachProgressPanelProps {
+  title?: string;
   coaches: ClubCoach[];
   completedSessionIds: Record<string, string[]>;
-  onPrepSession: () => void;
+  onPrepSession?: () => void;
+  showPrepButton?: boolean;
 }
 
-export default function CoachProgressPanel({ coaches, completedSessionIds, onPrepSession }: CoachProgressPanelProps) {
+export default function CoachProgressPanel({
+  title = 'Coach Progress',
+  coaches,
+  completedSessionIds,
+  onPrepSession,
+  showPrepButton = true,
+}: CoachProgressPanelProps) {
   const totalSessions = getTotalSessions();
 
   return (
@@ -33,7 +41,7 @@ export default function CoachProgressPanel({ coaches, completedSessionIds, onPre
       <CardHeader className="p-0">
         <div className="px-5 py-3 bg-[#0d0d0d] rounded-t-lg border-b border-white/8 flex items-center gap-3">
           <div className="w-1 h-8 rounded-full bg-lm-green/80 flex-shrink-0" />
-          <CardTitle className="text-white text-sm leading-tight">Coach Progress</CardTitle>
+          <CardTitle className="text-white text-sm leading-tight">{title}</CardTitle>
         </div>
       </CardHeader>
       <CardContent className="p-0 divide-y divide-lm-sunken">
@@ -77,6 +85,7 @@ export default function CoachProgressPanel({ coaches, completedSessionIds, onPre
               </div>
 
               {/* Prep button */}
+              {showPrepButton && onPrepSession && (
               <button
                 onClick={onPrepSession}
                 className="flex-shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-lm-sunken text-xs font-semibold text-lm-ink-mid hover:border-lm-green hover:text-lm-dark transition-colors"
@@ -84,6 +93,7 @@ export default function CoachProgressPanel({ coaches, completedSessionIds, onPre
                 Prep
                 <ChevronRight className="w-3 h-3" />
               </button>
+              )}
             </div>
           );
         })}

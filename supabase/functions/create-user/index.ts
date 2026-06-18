@@ -21,7 +21,18 @@ Deno.serve(async (req) => {
   if (authError || !user) return new Response('Unauthorized', { status: 401, headers: corsHeaders })
 
   const adminEmail = Deno.env.get('ADMIN_EMAIL')
-  if (!adminEmail || user.email !== adminEmail) {
+
+  const { data: callerProfile } = await callerClient
+    .from('profiles')
+    .select('app_role')
+    .eq('id', user.id)
+    .single()
+
+  const isAuthorizedAdmin =
+    callerProfile?.app_role === 'lmus_admin' ||
+    (!!adminEmail && user.email === adminEmail)
+
+  if (!isAuthorizedAdmin) {
     return new Response('Forbidden', { status: 403, headers: corsHeaders })
   }
 
@@ -30,12 +41,13 @@ Deno.serve(async (req) => {
     Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
   )
 
-  const { email, password, name, initials, title, clubName, region } = await req.json()
+  const { email, password, name, initials, title, appRole, clubName, region, skipClub } = await req.json()
+  const resolvedAppRole = appRole ?? (title === 'GFM' ? 'gfm' : 'club_coach')
 
   const { data: userData, error: userError } = await adminClient.auth.admin.createUser({
     email,
     password,
-    user_metadata: { name, initials, title },
+    user_metadata: { name, initials, title, app_role: resolvedAppRole },
     email_confirm: true,
   })
 
@@ -46,22 +58,29 @@ Deno.serve(async (req) => {
     )
   }
 
-  const { data: club, error: clubError } = await adminClient
-    .from('clubs')
-    .insert({
-      name: clubName,
-      region,
-      deployment_path: 'A',
-      gfm_name: title === 'GFM' ? name : '',
-    })
-    .select('id')
-    .single()
+  await adminClient
+    .from('profiles')
+    .update({ app_role: resolvedAppRole })
+    .eq('id', userData.user.id)
 
-  if (!clubError && club) {
-    await adminClient.from('user_clubs').insert({
-      user_id: userData.user.id,
-      club_id: club.id,
-    })
+  if (!skipClub && clubName && region) {
+    const { data: club, error: clubError } = await adminClient
+      .from('clubs')
+      .insert({
+        name: clubName,
+        region,
+        deployment_path: 'C',
+        gfm_name: title === 'GFM' ? name : '',
+      })
+      .select('id')
+      .single()
+
+    if (!clubError && club) {
+      await adminClient.from('user_clubs').insert({
+        user_id: userData.user.id,
+        club_id: club.id,
+      })
+    }
   }
 
   return new Response(

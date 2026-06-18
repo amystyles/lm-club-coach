@@ -2,6 +2,8 @@ import { createContext, useCallback, useContext, useEffect, useState } from 'rea
 import type { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 import type { Club } from '@/data/types';
+import type { AppRole } from '@/lib/roles';
+import { isLmusAdmin, isTapCoach } from '@/lib/roles';
 
 export interface UserProfile {
   id: string;
@@ -9,6 +11,7 @@ export interface UserProfile {
   initials: string;
   email: string;
   title: 'Club Coach' | 'GFM';
+  appRole: AppRole;
 }
 
 interface AuthContextValue {
@@ -21,6 +24,8 @@ interface AuthContextValue {
   isRecovery: boolean;
   clearRecovery: () => void;
   isAdmin: boolean;
+  isLmusAdmin: boolean;
+  isTapCoach: boolean;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -47,7 +52,8 @@ async function fetchProfile(userId: string): Promise<UserProfile | null> {
     .single();
   if (!data) return null;
   const name = normalizeName(data.name, data.email);
-  return { ...data, name, initials: normalizeInitials(data.initials, name) } as UserProfile;
+  const appRole = (data.app_role ?? 'club_coach') as AppRole;
+  return { ...data, name, initials: normalizeInitials(data.initials, name), appRole } as UserProfile;
 }
 
 async function fetchClubs(userId: string): Promise<Club[]> {
@@ -127,8 +133,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, [hydrate]);
 
+  const adminEmail = import.meta.env.VITE_ADMIN_EMAIL as string | undefined;
+  const lmusAdmin = isLmusAdmin(profile?.appRole, user?.email, adminEmail);
+
   return (
-    <AuthContext.Provider value={{ user, profile, clubs, activeClub, setActiveClub, loading, isRecovery, clearRecovery: () => setIsRecovery(false), isAdmin: user?.email === import.meta.env.VITE_ADMIN_EMAIL }}>
+    <AuthContext.Provider value={{
+      user, profile, clubs, activeClub, setActiveClub, loading, isRecovery,
+      clearRecovery: () => setIsRecovery(false),
+      isAdmin: lmusAdmin,
+      isLmusAdmin: lmusAdmin,
+      isTapCoach: isTapCoach(profile?.appRole),
+    }}>
       {children}
     </AuthContext.Provider>
   );
