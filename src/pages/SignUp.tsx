@@ -14,17 +14,17 @@ const schema = z.object({
   lastName: z.string().min(1, 'Required'),
   email: z.string().email('Enter a valid email'),
   role: z.enum(['Club Coach', 'GFM', 'TAP Coach']),
-  clubName: z.string().min(2, 'Required'),
-  region: z.string().min(1, 'Required'),
+  clubName: z.string(),
+  region: z.string(),
   useCustomPassword: z.boolean(),
   customPassword: z.string().optional(),
 }).refine(d => !d.useCustomPassword || (d.customPassword && d.customPassword.length >= 8), {
   message: 'Password must be at least 8 characters',
   path: ['customPassword'],
-}).refine(d => d.role === 'TAP Coach' || d.clubName.length >= 2, {
+}).refine(d => d.role === 'TAP Coach' || d.clubName.trim().length >= 2, {
   message: 'Required',
   path: ['clubName'],
-}).refine(d => d.role === 'TAP Coach' || d.region.length >= 1, {
+}).refine(d => d.role === 'TAP Coach' || d.region.trim().length >= 1, {
   message: 'Required',
   path: ['region'],
 });

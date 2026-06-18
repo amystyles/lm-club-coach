@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import type { Instructor } from '@/data/types';
 import { STAGE_DATA, KEY_ELEMENT_LABELS } from '@/data/mock-data';
 import { useData } from '@/context/DataContext';
-import type { UserProfile } from '@/context/AuthContext';
+import { useAuth, type UserProfile } from '@/context/AuthContext';
 import { useClubCoachRoster, getConfirmedIdsForUser } from '@/context/ClubCoachRosterContext';
 import { fetchClubCoaches, type ClubCoachMember } from '@/lib/club-coaches';
 import { deriveCoachStage } from '@/lib/coach-path-progress';
@@ -82,6 +82,7 @@ const NEXT_MILESTONE: Record<number, string> = {
 
 
 export default function Dashboard({ onViewInstructor, completedSessionIds, onNavigate, coachProfile }: DashboardProps) {
+  const { activeClub } = useAuth();
   const { instructors, assessments, loading } = useData();
   const { clubProgressByUser } = useClubCoachRoster();
   const [expandedStages, setExpandedStages] = useState<Set<number>>(new Set());
@@ -92,12 +93,12 @@ export default function Dashboard({ onViewInstructor, completedSessionIds, onNav
       setTeamCoaches([]);
       return;
     }
-    const clubId = instructors[0]?.clubId;
+    const clubId = activeClub?.id;
     if (!clubId) return;
     fetchClubCoaches(clubId).then((members) => {
       setTeamCoaches(members.filter((m) => m.id !== coachProfile.id));
     });
-  }, [coachProfile, instructors]);
+  }, [coachProfile, activeClub?.id]);
 
   const myConfirmedIds = coachProfile ? (completedSessionIds[coachProfile.id] ?? []) : [];
 

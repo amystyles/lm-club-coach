@@ -21,7 +21,18 @@ Deno.serve(async (req) => {
   if (authError || !user) return new Response('Unauthorized', { status: 401, headers: corsHeaders })
 
   const adminEmail = Deno.env.get('ADMIN_EMAIL')
-  if (!adminEmail || user.email !== adminEmail) {
+
+  const { data: callerProfile } = await callerClient
+    .from('profiles')
+    .select('app_role')
+    .eq('id', user.id)
+    .single()
+
+  const isAuthorizedAdmin =
+    callerProfile?.app_role === 'lmus_admin' ||
+    (!!adminEmail && user.email === adminEmail)
+
+  if (!isAuthorizedAdmin) {
     return new Response('Forbidden', { status: 403, headers: corsHeaders })
   }
 

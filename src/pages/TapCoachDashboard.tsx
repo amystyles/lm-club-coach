@@ -27,6 +27,11 @@ interface CoachSessionRow {
   tap_feedback: string;
 }
 
+interface ClubCustomSessionRow {
+  id: string;
+  stage_number: number;
+}
+
 export default function TapCoachDashboard() {
   const { user, profile } = useAuth();
   const { confirmSessionForCoach, confirmStageForCoach } = useSessionProgress();
@@ -35,6 +40,7 @@ export default function TapCoachDashboard() {
   const [selectedCoachId, setSelectedCoachId] = useState<string | null>(null);
   const [selectedClubId, setSelectedClubId] = useState<string | null>(null);
   const [coachSessions, setCoachSessions] = useState<CoachSessionRow[]>([]);
+  const [clubCustomSessions, setClubCustomSessions] = useState<ClubCustomSessionRow[]>([]);
   const [stageSignoffs, setStageSignoffs] = useState<Set<number>>(new Set());
   const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
   const [tapFeedback, setTapFeedback] = useState('');
@@ -89,7 +95,7 @@ export default function TapCoachDashboard() {
   }, [loadAssignments]);
 
   const loadCoachDetail = useCallback(async (coachUserId: string, clubId: string) => {
-    const [{ data: sessions }, { data: signoffs }] = await Promise.all([
+    const [{ data: sessions }, { data: signoffs }, { data: customSessions }] = await Promise.all([
       supabase
         .from('session_progress')
         .select('session_id, notes, completion_status, tap_feedback')
@@ -101,9 +107,15 @@ export default function TapCoachDashboard() {
         .select('stage_number')
         .eq('user_id', coachUserId)
         .eq('club_id', clubId),
+      supabase
+        .from('custom_sessions')
+        .select('id, stage_number')
+        .eq('club_id', clubId)
+        .eq('path_key', 'coach-path'),
     ]);
 
     setCoachSessions((sessions ?? []) as CoachSessionRow[]);
+    setClubCustomSessions((customSessions ?? []) as ClubCustomSessionRow[]);
     setStageSignoffs(new Set((signoffs ?? []).map((s) => s.stage_number as number)));
   }, []);
 
@@ -115,7 +127,9 @@ export default function TapCoachDashboard() {
     await loadCoachDetail(coachUserId, clubId);
   };
 
-  const selectedAssignment = assignments.find((a) => a.coach_user_id === selectedCoachId);
+  const selectedAssignment = assignments.find(
+    (a) => a.coach_user_id === selectedCoachId && a.club_id === selectedClubId,
+  );
 
   const confirmedIds = coachSessions
     .filter((s) => s.completion_status === 'tap_confirmed')
@@ -190,7 +204,9 @@ export default function TapCoachDashboard() {
                 type="button"
                 onClick={() => selectCoach(a.coach_user_id, a.club_id)}
                 className={`w-full text-left rounded-xl border p-3 transition-colors ${
-                  selectedCoachId === a.coach_user_id ? 'border-lm-green bg-lm-green-mid/30' : 'border-border hover:border-lm-green/50'
+                  selectedCoachId === a.coach_user_id && selectedClubId === a.club_id
+                    ? 'border-lm-green bg-lm-green-mid/30'
+                    : 'border-border hover:border-lm-green/50'
                 }`}
               >
                 <div className="flex items-center gap-3">
@@ -290,8 +306,13 @@ export default function TapCoachDashboard() {
                 </CardHeader>
                 <CardContent className="flex flex-wrap gap-2">
                   {[1, 2, 3, 4, 5].map((stageNum) => {
-                    const stageSessions = coachPathStages[stageNum]?.sessions ?? [];
-                    const allConfirmed = stageSessions.every((s) => confirmedIds.includes(s.id));
+                    const builtInSessions = coachPathStages[stageNum]?.sessions ?? [];
+                    const customSessions = clubCustomSessions.filter((s) => s.stage_number === stageNum);
+                    const stageSessionIds = [
+                      ...builtInSessions.map((s) => s.id),
+                      ...customSessions.map((s) => s.id),
+                    ];
+                    const allConfirmed = stageSessionIds.length > 0 && stageSessionIds.every((id) => confirmedIds.includes(id));
                     const signed = stageSignoffs.has(stageNum);
                     return (
                       <Button

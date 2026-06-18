@@ -75,9 +75,31 @@ export function SessionProgressProvider({ children }: { children: React.ReactNod
     const clubId = targetClubId ?? activeClub?.id;
     if (!userId || !clubId) return;
 
-    const existing = rows.find(
+    let existing = rows.find(
       (row) => row.path_key === pathKey && row.session_id === sessionId,
     );
+
+    if (targetUserId && !existing) {
+      const { data: remoteRow } = await supabase
+        .from('session_progress')
+        .select('completed, notes, completion_status, tap_feedback')
+        .eq('user_id', userId)
+        .eq('club_id', clubId)
+        .eq('path_key', pathKey)
+        .eq('session_id', sessionId)
+        .maybeSingle();
+
+      if (remoteRow) {
+        existing = {
+          path_key: pathKey,
+          session_id: sessionId,
+          completed: remoteRow.completed ?? false,
+          notes: remoteRow.notes ?? '',
+          completion_status: (remoteRow.completion_status ?? 'not_started') as CompletionStatus,
+          tap_feedback: remoteRow.tap_feedback ?? '',
+        };
+      }
+    }
 
     const nextRow: SessionProgressRow = {
       path_key: pathKey,

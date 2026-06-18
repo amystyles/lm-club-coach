@@ -1178,7 +1178,7 @@ export default function ClubCoachPath({
   onMarkPrepped,
 }: ClubCoachPathProps) {
   const { getSessionsForStage, createSession } = useCustomSessions();
-  const { isAdmin } = useAuth();
+  const { isAdmin, activeClub } = useAuth();
   const { isEnrolled, hasTapAssigned, stageSignoffs, loading: enrollmentLoading } = useCoachPathEnrollment();
   const { getTapFeedback } = useSessionProgress();
   const [activeStage, setActiveStage] = useState(1);
@@ -1237,7 +1237,9 @@ export default function ClubCoachPath({
     return <div className="p-8 text-sm text-muted-foreground">Loading your pathway…</div>;
   }
 
-  if (!isEnrolled) {
+  const requiresTapEnrollment = activeClub?.deploymentPath === 'C';
+
+  if (requiresTapEnrollment && !isEnrolled) {
     return (
       <div className="max-w-lg mx-auto mt-16 rounded-2xl border border-border bg-card p-10 text-center space-y-3">
         <h2 className="text-xl font-bold text-lm-dark">Enrollment pending</h2>
@@ -1248,7 +1250,7 @@ export default function ClubCoachPath({
     );
   }
 
-  if (!hasTapAssigned) {
+  if (requiresTapEnrollment && !hasTapAssigned) {
     return (
       <div className="max-w-lg mx-auto mt-16 rounded-2xl border border-border bg-card p-10 text-center space-y-3">
         <h2 className="text-xl font-bold text-lm-dark">Awaiting TAP Coach</h2>
