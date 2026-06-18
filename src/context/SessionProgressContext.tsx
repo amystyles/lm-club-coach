@@ -23,6 +23,7 @@ interface SessionProgressContextValue {
   getTapFeedback: (pathKey: SessionPathKey, sessionId: string) => string;
   getSessionStatus: (pathKey: SessionPathKey, sessionId: string) => CompletionStatus;
   markPrepped: (pathKey: SessionPathKey, sessionId: string) => Promise<void>;
+  markComplete: (pathKey: SessionPathKey, sessionId: string) => Promise<void>;
   saveNotes: (pathKey: SessionPathKey, sessionId: string, notes: string) => Promise<void>;
   confirmSessionForCoach: (coachUserId: string, clubId: string, sessionId: string, tapFeedback: string) => Promise<void>;
   confirmStageForCoach: (coachUserId: string, clubId: string, stageNumber: number) => Promise<void>;
@@ -194,6 +195,11 @@ export function SessionProgressProvider({ children }: { children: React.ReactNod
     await fetchProgress();
   }, [upsertRow, fetchProgress]);
 
+  const markComplete = useCallback(async (pathKey: SessionPathKey, sessionId: string) => {
+    await upsertRow(pathKey, sessionId, { completed: true });
+    await fetchProgress();
+  }, [upsertRow, fetchProgress]);
+
   const saveNotes = useCallback(async (pathKey: SessionPathKey, sessionId: string, notes: string) => {
     await upsertRow(pathKey, sessionId, { notes });
   }, [upsertRow]);
@@ -243,6 +249,7 @@ export function SessionProgressProvider({ children }: { children: React.ReactNod
         getTapFeedback,
         getSessionStatus,
         markPrepped,
+        markComplete,
         saveNotes,
         confirmSessionForCoach,
         confirmStageForCoach,

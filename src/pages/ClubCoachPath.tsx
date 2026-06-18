@@ -308,7 +308,10 @@ function SessionWorkspace({
   onTabChange,
   sessionStatus,
   tapFeedback,
+  requiresTapWorkflow,
+  isCompleted,
   onMarkPrepped,
+  onMarkComplete,
 }: {
   session: Session;
   stageColor: string;
@@ -316,7 +319,10 @@ function SessionWorkspace({
   onTabChange: (tab: TabId) => void;
   sessionStatus: CompletionStatus;
   tapFeedback: string;
+  requiresTapWorkflow: boolean;
+  isCompleted: boolean;
   onMarkPrepped: () => void;
+  onMarkComplete: () => void;
 }) {
   const availableTabs = TABS.filter((tab) => {
     if (tab.id === 'plan')    return !!session.sessionPlan;
@@ -384,37 +390,52 @@ function SessionWorkspace({
       </div>
 
       <div className="mt-8 pt-5 border-t border-lm-sunken space-y-4">
-        {tapFeedback.trim() && (
+        {requiresTapWorkflow && tapFeedback.trim() && (
           <div className="rounded-xl border border-lm-green/25 bg-lm-green-mid/40 p-4">
             <p className="text-[10px] font-bold uppercase tracking-wide text-lm-dark mb-2">TAP Coach feedback</p>
             <p className="text-sm text-lm-dark whitespace-pre-wrap">{tapFeedback}</p>
           </div>
         )}
 
-        {sessionStatus === 'tap_confirmed' ? (
+        {requiresTapWorkflow ? (
+          sessionStatus === 'tap_confirmed' ? (
+            <div className="flex items-center gap-2 text-lm-green">
+              <CheckCircle2 className="w-4 h-4" />
+              <span className="text-sm font-semibold">TAP confirmed — session complete</span>
+            </div>
+          ) : sessionStatus === 'prepped' ? (
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-amber-700">
+                <Clock className="w-4 h-4" />
+                <span className="text-sm font-semibold">Prepped — awaiting TAP sign-off</span>
+              </div>
+              <p className="text-xs text-lm-ink-muted">Your TAP Coach will confirm after your 1:1 debrief.</p>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              <button
+                onClick={onMarkPrepped}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-lm-green text-lm-dark text-sm font-bold hover:bg-lm-green/90 transition-colors"
+              >
+                <CheckCircle2 className="w-4 h-4" />
+                Mark Prepped for TAP Session
+              </button>
+              <p className="text-xs text-lm-ink-muted">Complete your 1:1 with your TAP Coach, then mark prepped.</p>
+            </div>
+          )
+        ) : isCompleted ? (
           <div className="flex items-center gap-2 text-lm-green">
             <CheckCircle2 className="w-4 h-4" />
-            <span className="text-sm font-semibold">TAP confirmed — session complete</span>
-          </div>
-        ) : sessionStatus === 'prepped' ? (
-          <div className="space-y-2">
-            <div className="flex items-center gap-2 text-amber-700">
-              <Clock className="w-4 h-4" />
-              <span className="text-sm font-semibold">Prepped — awaiting TAP sign-off</span>
-            </div>
-            <p className="text-xs text-lm-ink-muted">Your TAP Coach will confirm after your 1:1 debrief.</p>
+            <span className="text-sm font-semibold">Session completed</span>
           </div>
         ) : (
-          <div className="space-y-2">
-            <button
-              onClick={onMarkPrepped}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-lm-green text-lm-dark text-sm font-bold hover:bg-lm-green/90 transition-colors"
-            >
-              <CheckCircle2 className="w-4 h-4" />
-              Mark Prepped for TAP Session
-            </button>
-            <p className="text-xs text-lm-ink-muted">Complete your 1:1 with your TAP Coach, then mark prepped.</p>
-          </div>
+          <button
+            onClick={onMarkComplete}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-lm-green text-lm-dark text-sm font-bold hover:bg-lm-green/90 transition-colors"
+          >
+            <CheckCircle2 className="w-4 h-4" />
+            Mark Session Complete
+          </button>
         )}
       </div>
     </div>
@@ -432,6 +453,7 @@ function SessionList({
   statusBySessionId,
   stageNum,
   stageSignoffs,
+  requiresTapWorkflow,
   onAddSession,
   canAddSession,
 }: {
@@ -442,6 +464,7 @@ function SessionList({
   statusBySessionId: Record<string, CompletionStatus>;
   stageNum: number;
   stageSignoffs: Set<number>;
+  requiresTapWorkflow: boolean;
   onAddSession: () => void;
   canAddSession: boolean;
 }) {
@@ -449,7 +472,15 @@ function SessionList({
     <div className="space-y-0.5">
       {sessions.map((session, idx) => {
         const isActive = session.id === activeId;
-        const locked = isSessionLocked(stageNum, idx, sessions, statusBySessionId, stageSignoffs);
+        const locked = isSessionLocked(
+          stageNum,
+          idx,
+          sessions,
+          statusBySessionId,
+          stageSignoffs,
+          requiresTapWorkflow,
+          confirmedIds,
+        );
         const status = statusBySessionId[session.id] ?? 'not_started';
         const confirmed = status === 'tap_confirmed' || confirmedIds.includes(session.id);
         const prepped = status === 'prepped';
@@ -1169,6 +1200,7 @@ interface ClubCoachPathProps {
   confirmedSessionIds: string[];
   statusBySessionId: Record<string, CompletionStatus>;
   onMarkPrepped: (sessionId: string) => void;
+  onMarkComplete: (sessionId: string) => void;
 }
 
 export default function ClubCoachPath({
@@ -1176,6 +1208,7 @@ export default function ClubCoachPath({
   confirmedSessionIds,
   statusBySessionId,
   onMarkPrepped,
+  onMarkComplete,
 }: ClubCoachPathProps) {
   const { getSessionsForStage, createSession } = useCustomSessions();
   const { isAdmin, activeClub } = useAuth();
@@ -1395,6 +1428,7 @@ export default function ClubCoachPath({
                   statusBySessionId={statusBySessionId}
                   stageNum={activeStage}
                   stageSignoffs={stageSignoffs}
+                  requiresTapWorkflow={requiresTapEnrollment}
                   onAddSession={() => setAddDialogOpen(true)}
                   canAddSession={isAdmin}
                 />
@@ -1466,7 +1500,10 @@ export default function ClubCoachPath({
                     onTabChange={setActiveTab}
                     sessionStatus={statusBySessionId[currentSession.id] ?? 'not_started'}
                     tapFeedback={getTapFeedback('coach-path', currentSession.id)}
+                    requiresTapWorkflow={requiresTapEnrollment}
+                    isCompleted={confirmedSessionIds.includes(currentSession.id)}
                     onMarkPrepped={() => onMarkPrepped(currentSession.id)}
+                    onMarkComplete={() => onMarkComplete(currentSession.id)}
                   />
                 ) : (
                   <p className="text-lm-ink-muted text-sm">Select a session to begin.</p>

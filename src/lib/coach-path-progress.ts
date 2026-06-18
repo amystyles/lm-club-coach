@@ -17,7 +17,23 @@ export function isSessionLocked(
   sessions: { id: string }[],
   statusBySessionId: Record<string, CompletionStatus>,
   stageSignoffs: Set<number>,
+  requiresTapWorkflow: boolean,
+  confirmedIds: string[],
 ): boolean {
+  if (!requiresTapWorkflow) {
+    if (stageNum > 1) {
+      const priorStageSessions = coachPathStages[stageNum - 1]?.sessions ?? [];
+      const priorStageDone =
+        priorStageSessions.length > 0 &&
+        priorStageSessions.every((s) => confirmedIds.includes(s.id));
+      if (!priorStageDone) return true;
+    }
+    if (sessionIndex === 0) return false;
+    const priorId = sessions[sessionIndex - 1]?.id;
+    if (!priorId) return false;
+    return !confirmedIds.includes(priorId);
+  }
+
   if (stageNum > 1 && !stageSignoffs.has(stageNum - 1)) return true;
   if (sessionIndex === 0) return false;
   const priorId = sessions[sessionIndex - 1]?.id;

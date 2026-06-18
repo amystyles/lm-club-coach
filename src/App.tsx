@@ -34,7 +34,7 @@ const PAGE_TITLES: Record<string, { title: string; subtitle?: string }> = {
 
 function App() {
   const { user, clubs, activeClub, loading, isRecovery, isLmusAdmin, isTapCoach, profile } = useAuth();
-  const { confirmedSessionIds, statusBySessionId, markPrepped, refresh: refreshProgress } = useSessionProgress();
+  const { confirmedSessionIds, statusBySessionId, markPrepped, markComplete, refresh: refreshProgress } = useSessionProgress();
   const [activePage, setActivePage] = useState('dashboard');
   const [selectedInstructorId, setSelectedInstructorId] = useState<string | null>(null);
   const [previousPage, setPreviousPage] = useState<'dashboard' | 'roster'>('dashboard');
@@ -76,6 +76,11 @@ function App() {
 
   const handleMarkPrepped = async (sessionId: string) => {
     await markPrepped('coach-path', sessionId);
+    await refreshProgress();
+  };
+
+  const handleMarkComplete = async (sessionId: string) => {
+    await markComplete('coach-path', sessionId);
     await refreshProgress();
   };
 
@@ -123,6 +128,7 @@ function App() {
             confirmedSessionIds={coachConfirmedIds}
             statusBySessionId={statusBySessionId}
             onMarkPrepped={handleMarkPrepped}
+            onMarkComplete={handleMarkComplete}
           />
         );
       case 'lmq-reference':
