@@ -10,6 +10,10 @@ import {
 } from 'lucide-react';
 import { coachPathStages, COACH_STAGE_META } from '@/data/coach-path-data';
 import type { Session } from '@/data/stage-sessions';
+import type { CompletionStatus } from '@/lib/roles';
+import { isSessionLocked } from '@/lib/coach-path-progress';
+import { useCoachPathEnrollment } from '@/context/CoachPathEnrollmentContext';
+import { useSessionProgress } from '@/context/SessionProgressContext';
 import SessionNotesField from '@/components/SessionNotesField';
 import AddSessionDialog from '@/components/AddSessionDialog';
 import { useCustomSessions } from '@/context/CustomSessionsContext';
@@ -302,15 +306,17 @@ function SessionWorkspace({
   stageColor,
   activeTab,
   onTabChange,
-  isCompleted,
-  onComplete,
+  sessionStatus,
+  tapFeedback,
+  onMarkPrepped,
 }: {
   session: Session;
   stageColor: string;
   activeTab: TabId;
   onTabChange: (tab: TabId) => void;
-  isCompleted: boolean;
-  onComplete: () => void;
+  sessionStatus: CompletionStatus;
+  tapFeedback: string;
+  onMarkPrepped: () => void;
 }) {
   const availableTabs = TABS.filter((tab) => {
     if (tab.id === 'plan')    return !!session.sessionPlan;
@@ -377,20 +383,38 @@ function SessionWorkspace({
         {currentTab === 'notes'   && <NotesTab   session={session} />}
       </div>
 
-      <div className="mt-8 pt-5 border-t border-lm-sunken">
-        {isCompleted ? (
+      <div className="mt-8 pt-5 border-t border-lm-sunken space-y-4">
+        {tapFeedback.trim() && (
+          <div className="rounded-xl border border-lm-green/25 bg-lm-green-mid/40 p-4">
+            <p className="text-[10px] font-bold uppercase tracking-wide text-lm-dark mb-2">TAP Coach feedback</p>
+            <p className="text-sm text-lm-dark whitespace-pre-wrap">{tapFeedback}</p>
+          </div>
+        )}
+
+        {sessionStatus === 'tap_confirmed' ? (
           <div className="flex items-center gap-2 text-lm-green">
             <CheckCircle2 className="w-4 h-4" />
-            <span className="text-sm font-semibold">Session completed</span>
+            <span className="text-sm font-semibold">TAP confirmed — session complete</span>
+          </div>
+        ) : sessionStatus === 'prepped' ? (
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-amber-700">
+              <Clock className="w-4 h-4" />
+              <span className="text-sm font-semibold">Prepped — awaiting TAP sign-off</span>
+            </div>
+            <p className="text-xs text-lm-ink-muted">Your TAP Coach will confirm after your 1:1 debrief.</p>
           </div>
         ) : (
-          <button
-            onClick={onComplete}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-lm-green text-lm-dark text-sm font-bold hover:bg-lm-green/90 transition-colors"
-          >
-            <CheckCircle2 className="w-4 h-4" />
-            Mark Session Complete
-          </button>
+          <div className="space-y-2">
+            <button
+              onClick={onMarkPrepped}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-lm-green text-lm-dark text-sm font-bold hover:bg-lm-green/90 transition-colors"
+            >
+              <CheckCircle2 className="w-4 h-4" />
+              Mark Prepped for TAP Session
+            </button>
+            <p className="text-xs text-lm-ink-muted">Complete your 1:1 with your TAP Coach, then mark prepped.</p>
+          </div>
         )}
       </div>
     </div>
@@ -404,14 +428,20 @@ function SessionList({
   sessions,
   activeId,
   onSelect,
-  completedIds,
+  confirmedIds,
+  statusBySessionId,
+  stageNum,
+  stageSignoffs,
   onAddSession,
   canAddSession,
 }: {
   sessions: Session[];
   activeId: string;
   onSelect: (id: string) => void;
-  completedIds: string[];
+  confirmedIds: string[];
+  statusBySessionId: Record<string, CompletionStatus>;
+  stageNum: number;
+  stageSignoffs: Set<number>;
   onAddSession: () => void;
   canAddSession: boolean;
 }) {
@@ -419,8 +449,10 @@ function SessionList({
     <div className="space-y-0.5">
       {sessions.map((session, idx) => {
         const isActive = session.id === activeId;
-        const locked = isSessionLocked(idx, sessions, completedIds);
-        const completed = completedIds.includes(session.id);
+        const locked = isSessionLocked(stageNum, idx, sessions, statusBySessionId, stageSignoffs);
+        const status = statusBySessionId[session.id] ?? 'not_started';
+        const confirmed = status === 'tap_confirmed' || confirmedIds.includes(session.id);
+        const prepped = status === 'prepped';
 
         if (locked) {
           return (
@@ -460,8 +492,11 @@ function SessionList({
                 </p>
               )}
             </div>
-            {completed && (
+            {confirmed && (
               <CheckCircle2 className={`w-3.5 h-3.5 flex-shrink-0 mt-0.5 ${isActive ? 'text-lm-green' : 'text-lm-green/70'}`} />
+            )}
+            {!confirmed && prepped && (
+              <Clock className={`w-3.5 h-3.5 flex-shrink-0 mt-0.5 ${isActive ? 'text-amber-300' : 'text-amber-600'}`} />
             )}
           </button>
         );
@@ -1125,26 +1160,27 @@ function SSDLTool() {
 }
 
 /* ─────────────────────────────────────────────
-   Session locking helper
-   ───────────────────────────────────────────── */
-function isSessionLocked(_sessionIndex: number, _sessions: { id: string }[], _completedIds: string[]): boolean {
-  return false;
-}
-
-/* ─────────────────────────────────────────────
    Main Page
    ───────────────────────────────────────────── */
 type ViewMode = 'session' | 'conversation-templates' | 'observation-framework' | 'intention-builder' | 'frameworks-overview' | 'dreyfus-model' | 'etas' | 'ssdl';
 
 interface ClubCoachPathProps {
   onNavigate?: (page: string) => void;
-  completedSessionIds: string[];
-  onCompleteSession: (sessionId: string) => void;
+  confirmedSessionIds: string[];
+  statusBySessionId: Record<string, CompletionStatus>;
+  onMarkPrepped: (sessionId: string) => void;
 }
 
-export default function ClubCoachPath({ onNavigate: _onNavigate, completedSessionIds, onCompleteSession }: ClubCoachPathProps) {
+export default function ClubCoachPath({
+  onNavigate: _onNavigate,
+  confirmedSessionIds,
+  statusBySessionId,
+  onMarkPrepped,
+}: ClubCoachPathProps) {
   const { getSessionsForStage, createSession } = useCustomSessions();
   const { isAdmin } = useAuth();
+  const { isEnrolled, hasTapAssigned, stageSignoffs, loading: enrollmentLoading } = useCoachPathEnrollment();
+  const { getTapFeedback } = useSessionProgress();
   const [activeStage, setActiveStage] = useState(1);
   const [activeSessions, setActiveSessions] = useState<Record<number, string>>({});
   const [activeTab, setActiveTab] = useState<TabId>('brief');
@@ -1196,6 +1232,32 @@ export default function ClubCoachPath({ onNavigate: _onNavigate, completedSessio
     });
     handleSessionSelect(session.id);
   };
+
+  if (enrollmentLoading) {
+    return <div className="p-8 text-sm text-muted-foreground">Loading your pathway…</div>;
+  }
+
+  if (!isEnrolled) {
+    return (
+      <div className="max-w-lg mx-auto mt-16 rounded-2xl border border-border bg-card p-10 text-center space-y-3">
+        <h2 className="text-xl font-bold text-lm-dark">Enrollment pending</h2>
+        <p className="text-sm text-muted-foreground">
+          Your Club Coach Path opens once LMUS enrolls you in the TAP AP service and assigns your TAP Coach.
+        </p>
+      </div>
+    );
+  }
+
+  if (!hasTapAssigned) {
+    return (
+      <div className="max-w-lg mx-auto mt-16 rounded-2xl border border-border bg-card p-10 text-center space-y-3">
+        <h2 className="text-xl font-bold text-lm-dark">Awaiting TAP Coach</h2>
+        <p className="text-sm text-muted-foreground">
+          You are enrolled. LMUS will assign your TAP Coach shortly.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background -m-6">
@@ -1327,7 +1389,10 @@ export default function ClubCoachPath({ onNavigate: _onNavigate, completedSessio
                   sessions={stageSessions}
                   activeId={getActiveSessionId(activeStage)}
                   onSelect={handleSessionSelect}
-                  completedIds={completedSessionIds}
+                  confirmedIds={confirmedSessionIds}
+                  statusBySessionId={statusBySessionId}
+                  stageNum={activeStage}
+                  stageSignoffs={stageSignoffs}
                   onAddSession={() => setAddDialogOpen(true)}
                   canAddSession={isAdmin}
                 />
@@ -1397,8 +1462,9 @@ export default function ClubCoachPath({ onNavigate: _onNavigate, completedSessio
                     stageColor={currentStageColor}
                     activeTab={activeTab}
                     onTabChange={setActiveTab}
-                    isCompleted={completedSessionIds.includes(currentSession.id)}
-                    onComplete={() => onCompleteSession(currentSession.id)}
+                    sessionStatus={statusBySessionId[currentSession.id] ?? 'not_started'}
+                    tapFeedback={getTapFeedback('coach-path', currentSession.id)}
+                    onMarkPrepped={() => onMarkPrepped(currentSession.id)}
                   />
                 ) : (
                   <p className="text-lm-ink-muted text-sm">Select a session to begin.</p>

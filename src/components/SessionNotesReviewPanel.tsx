@@ -23,7 +23,7 @@ interface ProfileRow {
   initials: string;
 }
 
-export default function SessionNotesReviewPanel() {
+export default function SessionNotesReviewPanel({ title = 'Session Notes Review' }: { title?: string }) {
   const { activeClub, user } = useAuth();
   const { rows: customSessions } = useCustomSessions();
   const [notes, setNotes] = useState<SessionNoteRow[]>([]);
@@ -92,7 +92,7 @@ export default function SessionNotesReviewPanel() {
         <div className="px-5 py-3 bg-[#0d0d0d] rounded-t-lg border-b border-white/8 flex items-center gap-3">
           <div className="w-1 h-8 rounded-full bg-lm-green/80 flex-shrink-0" />
           <div>
-            <CardTitle className="text-white text-sm leading-tight">Session Notes Review</CardTitle>
+            <CardTitle className="text-white text-sm leading-tight">{title}</CardTitle>
             <p className="text-white/40 text-xs mt-0.5">Saved notes from coaches across your club</p>
           </div>
         </div>

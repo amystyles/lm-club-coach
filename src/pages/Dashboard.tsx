@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import type { Instructor } from '@/data/types';
 import { STAGE_DATA, KEY_ELEMENT_LABELS } from '@/data/mock-data';
 import { useData } from '@/context/DataContext';
 import type { UserProfile } from '@/context/AuthContext';
+import { useClubCoachRoster, getConfirmedIdsForUser } from '@/context/ClubCoachRosterContext';
+import { fetchClubCoaches, type ClubCoachMember } from '@/lib/club-coaches';
+import { deriveCoachStage } from '@/lib/coach-path-progress';
 import KeyElementHeatmap from '@/components/KeyElementHeatmap';
 import ProgramProgress from '@/components/ProgramProgress';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -80,23 +83,56 @@ const NEXT_MILESTONE: Record<number, string> = {
 
 export default function Dashboard({ onViewInstructor, completedSessionIds, onNavigate, coachProfile }: DashboardProps) {
   const { instructors, assessments, loading } = useData();
+  const { clubProgressByUser } = useClubCoachRoster();
   const [expandedStages, setExpandedStages] = useState<Set<number>>(new Set());
+  const [teamCoaches, setTeamCoaches] = useState<ClubCoachMember[]>([]);
+
+  useEffect(() => {
+    if (!coachProfile || coachProfile.title !== 'GFM') {
+      setTeamCoaches([]);
+      return;
+    }
+    const clubId = instructors[0]?.clubId;
+    if (!clubId) return;
+    fetchClubCoaches(clubId).then((members) => {
+      setTeamCoaches(members.filter((m) => m.id !== coachProfile.id));
+    });
+  }, [coachProfile, instructors]);
+
+  const myConfirmedIds = coachProfile ? (completedSessionIds[coachProfile.id] ?? []) : [];
 
   const coaches = coachProfile
     ? [{
         id: coachProfile.id,
         name: coachProfile.name,
         initials: coachProfile.initials,
-        coachStage: 1 as const,
+        coachStage: deriveCoachStage(myConfirmedIds) as 1,
         instructorIds: instructors.map((i) => i.id),
         clubId: instructors[0]?.clubId ?? '',
         lmqLevel: 1 as const,
         programs: [],
         yearsTeaching: 0,
         skillsCompleted: [],
-        completedSessionIds: completedSessionIds[coachProfile.id] ?? [],
+        completedSessionIds: myConfirmedIds,
       }]
     : [];
+
+  const teamCoachEntries = useMemo(() => teamCoaches.map((member) => {
+    const confirmed = getConfirmedIdsForUser(clubProgressByUser, member.id);
+    return {
+      id: member.id,
+      name: member.name,
+      initials: member.initials,
+      coachStage: deriveCoachStage(confirmed) as 1,
+      instructorIds: [] as string[],
+      clubId: instructors[0]?.clubId ?? '',
+      lmqLevel: 1 as const,
+      programs: [],
+      yearsTeaching: 0,
+      skillsCompleted: [],
+      completedSessionIds: confirmed,
+    };
+  }), [teamCoaches, clubProgressByUser, instructors]);
 
   if (loading) {
     return <div className="p-8 text-muted-foreground text-sm">Loading instructors…</div>;
@@ -283,12 +319,29 @@ export default function Dashboard({ onViewInstructor, completedSessionIds, onNav
 
       {/* Coach Progress */}
       <CoachProgressPanel
+        title="My Club Coach Path"
         coaches={coaches}
         completedSessionIds={completedSessionIds}
         onPrepSession={() => onNavigate('coach-path')}
+        showPrepButton
       />
 
-      <SessionNotesReviewPanel />
+      {coachProfile?.title === 'GFM' && teamCoachEntries.length > 0 && (
+        <CoachProgressPanel
+          title="Team Coach Development"
+          coaches={teamCoachEntries}
+          completedSessionIds={Object.fromEntries(
+            teamCoachEntries.map((c) => [c.id, c.completedSessionIds]),
+          )}
+          showPrepButton={false}
+        />
+      )}
+
+      {coachProfile?.title === 'GFM' ? (
+        <SessionNotesReviewPanel title="Team Session Notes" />
+      ) : (
+        <SessionNotesReviewPanel />
+      )}
 
       <div>
         <h2 className="text-lg font-bold mb-4">
